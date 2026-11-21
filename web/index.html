@@ -185,6 +185,32 @@ svg{ display: block; }
 .spinner{ width:15px; height:15px; border:2px solid rgba(255,255,255,.45); border-top-color:#fff; border-radius:50%; animation: spin .7s linear infinite; }
 @keyframes spin{ to{ transform:rotate(360deg); } }
 
+/* ── Action menu ──────────────────────────────────────────── */
+.menu{ position:relative; display:inline-flex; }
+.menu__trigger[aria-expanded="true"] svg{ transform:rotate(180deg); }
+.menu__trigger svg{ transition:transform .15s; }
+.menu__panel{
+  position:absolute; z-index:40; top:calc(100% + 6px); right:0; min-width:210px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow-2); padding:6px;
+}
+.menu__panel[hidden]{ display:none; }
+.menu__panel:not([hidden]){ animation:menuin .14s ease-out; }
+@keyframes menuin{ from{ opacity:0; transform:translateY(-4px); } to{ opacity:1; transform:none; } }
+.menu__item{
+  width:100%; display:flex; align-items:center; gap:10px;
+  padding:9px 10px; border:0; background:none; cursor:pointer;
+  border-radius:7px; font:14px var(--font-sans); color:var(--ink); text-align:left;
+}
+.menu__item:hover,.menu__item:focus-visible{ background:var(--bg-deep); outline:none; }
+.menu__item svg{ width:16px; height:16px; color:var(--ink-3); flex:none; }
+.menu__item--danger,.menu__item--danger svg{ color:var(--danger); }
+.menu__item--danger:hover{ background:var(--danger-soft); }
+.menu__item:disabled{ opacity:.45; cursor:not-allowed; }
+.menu__item:disabled:hover{ background:none; }
+.menu__shortcut{ margin-left:auto; font-size:12px; color:var(--ink-3); }
+.menu__divider{ height:1px; background:var(--line); margin:5px 4px; }
+
 /* ── Form controls ────────────────────────────────────────── */
 .field{ display:flex; flex-direction:column; gap:7px; }
 .field__label{ font-size:13px; font-weight:600; color:var(--ink); }
@@ -681,6 +707,10 @@ svg{ display: block; }
   <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
   <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
   <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0 5-5m-5 5-5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13"/></symbol>
 </svg>
 
 <div class="app">
@@ -695,6 +725,7 @@ svg{ display: block; }
       <div class="nav-group">
         <div class="nav-label">Basics</div>
         <a href="#buttons"><svg><use href="#i-button"/></svg>Buttons</a>
+        <a href="#action-menu"><svg><use href="#i-more"/></svg>Action menu</a>
         <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
         <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
         <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
@@ -764,6 +795,38 @@ svg{ display: block; }
           <button class="btn btn--primary btn--lg">Large</button>
           <button class="btn btn--primary" disabled>Disabled</button>
           <button class="btn btn--primary" id="loadingBtn"><span class="spinner"></span>Loading</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action menu -->
+    <section class="section" id="action-menu">
+      <div class="section__head"><h2>Action menu</h2><p>A popover of actions anchored to a button. Navigate with the arrow keys, activate with Enter, and close with Escape or an outside click.</p></div>
+      <div class="demo">
+        <div class="row">
+          <div class="menu">
+            <button type="button" class="btn btn--secondary menu__trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="projectMenu">Actions <svg><use href="#i-chevron"/></svg></button>
+            <div class="menu__panel" id="projectMenu" role="menu" hidden>
+              <button type="button" class="menu__item" role="menuitem" data-action="Edit project"><svg><use href="#i-edit"/></svg>Edit project<span class="menu__shortcut">Ctrl E</span></button>
+              <button type="button" class="menu__item" role="menuitem" data-action="Duplicate"><svg><use href="#i-copy"/></svg>Duplicate<span class="menu__shortcut">Ctrl D</span></button>
+              <button type="button" class="menu__item" role="menuitem" data-action="Export as CSV"><svg><use href="#i-download"/></svg>Export as CSV</button>
+              <div class="menu__divider" role="separator"></div>
+              <button type="button" class="menu__item" role="menuitem" data-action="Pin to top"><svg><use href="#i-pin"/></svg>Pin to top</button>
+              <button type="button" class="menu__item" role="menuitem" disabled><svg><use href="#i-info"/></svg>Archive</button>
+              <div class="menu__divider" role="separator"></div>
+              <button type="button" class="menu__item menu__item--danger" role="menuitem" data-action="Delete project"><svg><use href="#i-trash"/></svg>Delete project</button>
+            </div>
+          </div>
+          <div class="menu">
+            <button type="button" class="icon-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="compactMenu" aria-label="More actions"><svg><use href="#i-more"/></svg></button>
+            <div class="menu__panel" id="compactMenu" role="menu" hidden>
+              <button type="button" class="menu__item" role="menuitem" data-action="Rename"><svg><use href="#i-edit"/></svg>Rename</button>
+              <button type="button" class="menu__item" role="menuitem" data-action="Make a copy"><svg><use href="#i-copy"/></svg>Make a copy</button>
+              <div class="menu__divider" role="separator"></div>
+              <button type="button" class="menu__item menu__item--danger" role="menuitem" data-action="Remove"><svg><use href="#i-trash"/></svg>Remove</button>
+            </div>
+          </div>
+          <span class="field__hint" id="menuResult">Choose an action…</span>
         </div>
       </div>
     </section>
@@ -2050,6 +2113,66 @@ function initPicker(root){
   render();
 }
 document.querySelectorAll('.picker').forEach(initPicker);
+
+/* Action menus */
+document.querySelectorAll('.menu').forEach(menu => {
+  const trigger = menu.querySelector('[aria-haspopup="menu"]');
+  const panel = menu.querySelector('.menu__panel');
+  const items = [...panel.querySelectorAll('.menu__item')];
+  const enabled = () => items.filter(item => !item.disabled);
+  function position(){
+    panel.style.top = '';
+    panel.style.bottom = '';
+    panel.style.left = '';
+    panel.style.right = '';
+    const t = trigger.getBoundingClientRect();
+    const p = panel.getBoundingClientRect();
+    const host = menu.getBoundingClientRect();
+    const margin = 8, gap = 6;
+    let top = t.bottom + gap;
+    if(top + p.height > innerHeight - margin && t.top - gap - p.height > margin) top = t.top - p.height - gap;
+    top = Math.max(margin, Math.min(top, innerHeight - p.height - margin));
+    let left = t.right - p.width;
+    if(left < margin) left = margin;
+    if(left + p.width > innerWidth - margin) left = innerWidth - p.width - margin;
+    panel.style.top = (top - host.top) + 'px';
+    panel.style.left = (left - host.left) + 'px';
+    panel.style.right = 'auto';
+  }
+  function open(focusFirst){
+    panel.hidden = false;
+    position();
+    trigger.setAttribute('aria-expanded', 'true');
+    if(focusFirst && enabled().length) enabled()[0].focus();
+  }
+  function close(restoreFocus){
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if(restoreFocus) trigger.focus();
+  }
+  trigger.addEventListener('click', () => panel.hidden ? open(true) : close(true));
+  trigger.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown'){ e.preventDefault(); open(true); }
+  });
+  panel.addEventListener('keydown', e => {
+    const list = enabled();
+    const index = list.indexOf(document.activeElement);
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      e.preventDefault();
+      if(index === -1) list[0].focus();
+      else list[(index + (e.key === 'ArrowDown' ? 1 : -1) + list.length) % list.length].focus();
+    } else if(e.key === 'Home'){ e.preventDefault(); list[0].focus(); }
+    else if(e.key === 'End'){ e.preventDefault(); list[list.length - 1].focus(); }
+    else if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(true); }
+    else if(e.key === 'Tab') close(false);
+  });
+  items.forEach(item => item.addEventListener('click', () => {
+    const result = document.getElementById('menuResult');
+    if(result && item.dataset.action) result.textContent = item.dataset.action;
+    close(true);
+  }));
+  document.addEventListener('click', e => { if(!menu.contains(e.target) && !panel.hidden) close(false); });
+});
 
 /* File inputs */
 document.querySelectorAll('.file-input').forEach(box => {
