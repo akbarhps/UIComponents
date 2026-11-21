@@ -343,6 +343,7 @@ svg{ display: block; }
 
 /* ── Table ────────────────────────────────────────────────── */
 .table-wrap{ width:100%; overflow-x:auto; }
+.table--wide{ min-width:1100px; }
 .table{
   width:100%; min-width:640px; font-size:14px;
   border:1px solid var(--line); border-radius:var(--radius);
@@ -379,6 +380,37 @@ svg{ display: block; }
 .segment button:hover{ color:var(--ink); }
 .segment button.active{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow-1); }
 .filter-count{ margin-left:auto; font-size:13px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
+/* ── Sortable / sticky table ──────────────────────────────── */
+.th-inner{ display:flex; align-items:center; gap:7px; }
+.sort-btn{ appearance:none; border:0; background:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px; font:600 12px var(--font-sans); color:var(--ink-2); }
+.sort-btn:hover{ color:var(--ink); }
+.sort-btn.asc,.sort-btn.desc{ color:var(--brand); }
+.sort-icon{ width:13px; height:13px; opacity:.4; transition:transform .15s, opacity .15s; }
+.sort-btn.asc .sort-icon{ transform:rotate(180deg); opacity:1; }
+.sort-btn.desc .sort-icon{ opacity:1; }
+.pin-btn{ appearance:none; border:0; background:none; cursor:pointer; color:var(--ink-3); padding:2px; border-radius:5px; display:grid; place-items:center; }
+.pin-btn:hover{ background:var(--bg-deep); color:var(--ink); }
+.pin-btn[aria-pressed="true"]{ color:var(--brand); }
+.pin-btn svg{ width:14px; height:14px; }
+.table.sticky-column th:first-child,.table.sticky-column td:first-child{ position:sticky; left:0; z-index:1; background:var(--surface); box-shadow:1px 0 0 var(--line); }
+.table.sticky-column thead th:first-child{ z-index:2; background:var(--surface-2); }
+.table.sticky-column tbody tr:hover td:first-child{ background:var(--surface-2); }
+
+/* ── Pagination ───────────────────────────────────────────── */
+.pagination{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; padding-top:16px; }
+.pagination__limit{ grid-column:1; grid-row:1; justify-self:start; display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-2); white-space:nowrap; }
+.pagination__limit .select{ width:auto; min-width:70px; }
+.pagination__info{ grid-column:3; grid-row:1; justify-self:end; text-align:right; font-size:13px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.pagination__controls{ grid-column:2; grid-row:1; justify-self:center; display:flex; align-items:center; gap:6px; }
+.pagination__pages{ display:flex; gap:4px; }
+.page-btn{
+  appearance:none; border:1px solid transparent; background:none; cursor:pointer;
+  min-width:32px; height:32px; border-radius:7px; font:600 13px var(--font-sans); color:var(--ink-2);
+}
+.page-btn:hover{ background:var(--bg-deep); color:var(--ink); }
+.page-btn.active{ background:var(--ink); color:#fff; }
+.page-btn:disabled{ opacity:.4; cursor:not-allowed; }
 
 /* ── Sidebar drawer ───────────────────────────────────────── */
 .drawer-overlay{ padding:0; justify-content:flex-end; }
@@ -496,6 +528,11 @@ svg{ display: block; }
   .demo{ padding:20px; }
   .toast-stack{ right:14px; left:14px; bottom:14px; width:auto; max-width:none; }
   .modal{ padding:22px; }
+  .pagination{ grid-template-columns:1fr; gap:10px; }
+  .pagination__limit,.pagination__controls,.pagination__info{ grid-column:1; justify-self:start; text-align:left; }
+  .pagination__limit{ grid-row:1; }
+  .pagination__controls{ grid-row:2; }
+  .pagination__info{ grid-row:3; }
 }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
@@ -524,6 +561,7 @@ svg{ display: block; }
   <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
   <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
   <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></symbol>
 </svg>
 
 <div class="app">
@@ -548,6 +586,7 @@ svg{ display: block; }
       <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
       <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
       <a href="#column-filters"><svg><use href="#i-filter"/></svg>Column filters</a>
+      <a href="#sort-table"><svg><use href="#i-table"/></svg>Sortable table</a>
       <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
       <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
       <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
@@ -893,6 +932,15 @@ svg{ display: block; }
             </tbody>
           </table>
         </div>
+        <div class="pagination">
+          <label class="pagination__limit">Show <select class="select select--sm" data-page-limit aria-label="Rows per page"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select> per page</label>
+          <span class="pagination__info" data-page-info></span>
+          <div class="pagination__controls">
+            <button type="button" class="btn btn--secondary btn--sm" data-page-prev>Previous</button>
+            <div class="pagination__pages" data-page-list></div>
+            <button type="button" class="btn btn--secondary btn--sm" data-page-next>Next</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -929,6 +977,15 @@ svg{ display: block; }
             </tbody>
           </table>
         </div>
+        <div class="pagination">
+          <label class="pagination__limit">Show <select class="select select--sm" data-page-limit aria-label="Rows per page"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select> per page</label>
+          <span class="pagination__info" data-page-info></span>
+          <div class="pagination__controls">
+            <button type="button" class="btn btn--secondary btn--sm" data-page-prev>Previous</button>
+            <div class="pagination__pages" data-page-list></div>
+            <button type="button" class="btn btn--secondary btn--sm" data-page-next>Next</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -964,6 +1021,70 @@ svg{ display: block; }
               <tr id="colEmpty" hidden><td colspan="6"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></td></tr>
             </tbody>
           </table>
+        </div>
+        <div class="pagination">
+          <label class="pagination__limit">Show <select class="select select--sm" data-page-limit aria-label="Rows per page"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select> per page</label>
+          <span class="pagination__info" data-page-info></span>
+          <div class="pagination__controls">
+            <button type="button" class="btn btn--secondary btn--sm" data-page-prev>Previous</button>
+            <div class="pagination__pages" data-page-list></div>
+            <button type="button" class="btn btn--secondary btn--sm" data-page-next>Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sortable table with sticky column -->
+    <section class="section" id="sort-table">
+      <div class="section__head"><h2>Sortable table with sticky column</h2><p>Ten columns with a filter under each header and sortable titles. The pin button before the Project title keeps that column visible while the table scrolls sideways.</p></div>
+      <div class="demo">
+        <div class="table-wrap">
+          <table class="table table--wide" id="sortTable">
+            <thead>
+              <tr>
+                <th><span class="th-inner"><button type="button" class="pin-btn" id="stickyToggle" aria-pressed="false" aria-label="Pin project column" title="Pin project column"><svg><use href="#i-pin"/></svg></button><button type="button" class="sort-btn" data-sort-key="project">Project <svg class="sort-icon"><use href="#i-chevron"/></svg></button></span></th>
+                <th><button type="button" class="sort-btn" data-sort-key="owner">Owner <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th><button type="button" class="sort-btn" data-sort-key="team">Team <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th><button type="button" class="sort-btn" data-sort-key="status">Status <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th><button type="button" class="sort-btn" data-sort-key="priority">Priority <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th><button type="button" class="sort-btn" data-sort-key="updated">Updated <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th><button type="button" class="sort-btn" data-sort-key="due">Due date <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th class="table__num"><button type="button" class="sort-btn" data-sort-key="budget">Budget <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th class="table__num"><button type="button" class="sort-btn" data-sort-key="progress">Progress <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th></th>
+              </tr>
+              <tr>
+                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Project…" aria-label="Filter by project"/></th>
+                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Owner…" aria-label="Filter by owner"/></th>
+                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Team…" aria-label="Filter by team"/></th>
+                <th class="table__filter"><select class="select select--sm" aria-label="Filter by status"><option value="">All</option><option value="active">Active</option><option value="pending">Pending</option><option value="archived">Archived</option></select></th>
+                <th class="table__filter"><select class="select select--sm" aria-label="Filter by priority"><option value="">All</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></th>
+                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by updated date"/></th>
+                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by due date"/></th>
+                <th class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min" aria-label="Filter by minimum budget"/></th>
+                <th class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min %" aria-label="Filter by minimum progress"/></th>
+                <th class="table__filter"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Website refresh<span class="table__sub">Design team</span></td><td>Ada Lovelace</td><td>Design</td><td><span class="badge badge--success">Active</span></td><td>High</td><td data-sort-value="0">Today</td><td data-sort-value="1012">Oct 12</td><td class="table__num" data-sort-value="12400">$12,400</td><td class="table__num" data-sort-value="72">72%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><td>Mobile app<span class="table__sub">Engineering</span></td><td>Jonas Silva</td><td>Engineering</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="1">Yesterday</td><td data-sort-value="1020">Oct 20</td><td class="table__num" data-sort-value="28900">$28,900</td><td class="table__num" data-sort-value="45">45%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><td>Brand guidelines<span class="table__sub">Design team</span></td><td>Mia Chen</td><td>Design</td><td><span class="badge badge--warning">Pending</span></td><td>Low</td><td data-sort-value="3">3 days ago</td><td data-sort-value="1102">Nov 02</td><td class="table__num" data-sort-value="4200">$4,200</td><td class="table__num" data-sort-value="20">20%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><td>Help center<span class="table__sub">Content</span></td><td>Ada Lovelace</td><td>Content</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="7">Last week</td><td data-sort-value="1110">Nov 10</td><td class="table__num" data-sort-value="8750">$8,750</td><td class="table__num" data-sort-value="88">88%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><td>Q3 campaign<span class="table__sub">Marketing</span></td><td>Sam Patel</td><td>Marketing</td><td><span class="badge badge--warning">Pending</span></td><td>High</td><td data-sort-value="7">Last week</td><td data-sort-value="1118">Nov 18</td><td class="table__num" data-sort-value="15600">$15,600</td><td class="table__num" data-sort-value="60">60%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><td>Legacy archive<span class="table__sub">Operations</span></td><td>Mia Chen</td><td>Operations</td><td><span class="badge badge--neutral">Archived</span></td><td>Low</td><td data-sort-value="14">2 weeks ago</td><td data-sort-value="930">Sep 30</td><td class="table__num" data-sort-value="1100">$1,100</td><td class="table__num" data-sort-value="100">100%</td><td><button class="table__action">Open</button></td></tr>
+              <tr id="sortEmpty" hidden><td colspan="10"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <label class="pagination__limit">Show <select class="select select--sm" data-page-limit aria-label="Rows per page"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option></select> per page</label>
+          <span class="pagination__info" data-page-info></span>
+          <div class="pagination__controls">
+            <button type="button" class="btn btn--secondary btn--sm" data-page-prev>Previous</button>
+            <div class="pagination__pages" data-page-list></div>
+            <button type="button" class="btn btn--secondary btn--sm" data-page-next>Next</button>
+          </div>
         </div>
       </div>
     </section>
@@ -1154,56 +1275,141 @@ document.getElementById('inviteForm').addEventListener('submit', e => {
 });
 document.getElementById('dr-email').addEventListener('input', e => setFieldError(e.target.closest('.field'), false));
 
-/* Filterable table */
-const filterSearch = document.getElementById('tableSearch');
-const filterButtons = [...document.querySelectorAll('#tableFilters button')];
-const tableRows = [...document.querySelectorAll('#filterTable tbody tr[data-status]')];
-const emptyRow = document.getElementById('tableEmpty');
-const countEl = document.getElementById('tableCount');
-let activeStatus = 'all';
-function applyFilters(){
-  const query = filterSearch.value.trim().toLowerCase();
-  let shown = 0;
-  tableRows.forEach(row => {
-    const match = row.textContent.toLowerCase().includes(query) &&
-      (activeStatus === 'all' || row.dataset.status === activeStatus);
-    row.hidden = !match;
-    if(match) shown++;
-  });
-  emptyRow.hidden = shown !== 0;
-  countEl.textContent = shown + ' of ' + tableRows.length + ' projects';
-}
-filterSearch.addEventListener('input', applyFilters);
-filterButtons.forEach(b => b.addEventListener('click', () => {
-  activeStatus = b.dataset.status;
-  filterButtons.forEach(x => x.classList.toggle('active', x === b));
-  applyFilters();
-}));
+/* Table pagination */
+document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
+  const demo = wrap.closest('.demo');
+  const table = wrap.querySelector('table');
+  const getRows = () => [...table.tBodies[0].rows].filter(r => !r.id);
+  const emptyRow = table.querySelector('tbody tr[id]');
+  const info = demo.querySelector('[data-page-info]');
+  const pageList = demo.querySelector('[data-page-list]');
+  const prev = demo.querySelector('[data-page-prev]');
+  const next = demo.querySelector('[data-page-next]');
+  const limit = demo.querySelector('[data-page-limit]');
+  let page = 1;
+  let pageSize = Number(limit.value);
 
-/* Table with column filters */
-const colInputs = [...document.querySelectorAll('#columnTable thead input, #columnTable thead select')];
-const colRows = [...document.querySelectorAll('#columnTable tbody tr[data-status]')];
-const colEmpty = document.getElementById('colEmpty');
-const colCount = document.getElementById('colCount');
-function applyColumnFilters(){
-  const terms = colInputs.map(el => el.value.trim().toLowerCase());
-  const minBudget = parseFloat(document.getElementById('colBudget').value) || 0;
-  let shown = 0;
-  colRows.forEach(row => {
-    const cells = row.cells;
-    const match =
-      cells[0].textContent.toLowerCase().includes(terms[0]) &&
-      cells[1].textContent.toLowerCase().includes(terms[1]) &&
-      (!terms[2] || row.dataset.status === terms[2]) &&
-      cells[3].textContent.toLowerCase().includes(terms[3]) &&
-      Number(row.dataset.budget) >= minBudget;
-    row.hidden = !match;
-    if(match) shown++;
-  });
-  colEmpty.hidden = shown !== 0;
-  colCount.textContent = shown + ' of ' + colRows.length + ' projects';
+  function render(){
+    const rows = getRows();
+    const matched = rows.filter(r => r.dataset.match !== 'false');
+    const pages = Math.max(1, Math.ceil(matched.length / pageSize));
+    page = Math.min(page, pages);
+    const start = (page - 1) * pageSize;
+    const visible = matched.slice(start, start + pageSize);
+    rows.forEach(r => r.hidden = !visible.includes(r));
+    if(emptyRow) emptyRow.hidden = matched.length !== 0;
+    info.textContent = matched.length
+      ? 'Showing ' + (start + 1) + '–' + Math.min(start + pageSize, matched.length) + ' of ' + matched.length
+      : 'No projects to show';
+    pageList.innerHTML = '';
+    for(let i = 1; i <= pages; i++){
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'page-btn' + (i === page ? ' active' : '');
+      btn.textContent = i;
+      btn.setAttribute('aria-label', 'Page ' + i);
+      btn.setAttribute('aria-current', i === page ? 'page' : 'false');
+      btn.addEventListener('click', () => { page = i; render(); });
+      pageList.appendChild(btn);
+    }
+    prev.disabled = page === 1;
+    next.disabled = page === pages;
+  }
+  prev.addEventListener('click', () => { if(page > 1){ page--; render(); } });
+  next.addEventListener('click', () => { page++; render(); });
+  limit.addEventListener('change', () => { pageSize = Number(limit.value); page = 1; render(); });
+  demo._resetPage = () => { page = 1; render(); };
+  render();
+});
+
+/* Search + status filters */
+function bindSimpleFilters(tableId, searchId, filterId, countId){
+  const rows = [...document.querySelectorAll('#' + tableId + ' tbody tr[data-status]')];
+  const search = document.getElementById(searchId);
+  const count = document.getElementById(countId);
+  const buttons = [...document.querySelectorAll('#' + filterId + ' button')];
+  let status = 'all';
+  function apply(){
+    const query = search.value.trim().toLowerCase();
+    let shown = 0;
+    rows.forEach(row => {
+      const match = row.textContent.toLowerCase().includes(query) &&
+        (status === 'all' || row.dataset.status === status);
+      row.dataset.match = String(match);
+      if(match) shown++;
+    });
+    count.textContent = shown + ' of ' + rows.length + ' projects';
+    document.getElementById(tableId).closest('.demo')._resetPage();
+  }
+  search.addEventListener('input', apply);
+  buttons.forEach(b => b.addEventListener('click', () => {
+    status = b.dataset.status;
+    buttons.forEach(x => x.classList.toggle('active', x === b));
+    apply();
+  }));
 }
-colInputs.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', applyColumnFilters));
+bindSimpleFilters('filterTable', 'tableSearch', 'tableFilters', 'tableCount');
+
+/* Sortable table */
+const sortTable = document.getElementById('sortTable');
+const sortBody = sortTable.tBodies[0];
+const sortButtons = [...sortTable.querySelectorAll('[data-sort-key]')];
+let sortKey = '', sortDir = 1;
+sortButtons.forEach(btn => btn.addEventListener('click', () => {
+  const key = btn.dataset.sortKey;
+  if(sortKey === key) sortDir *= -1;
+  else { sortKey = key; sortDir = 1; }
+  sortButtons.forEach(b => b.classList.remove('asc', 'desc'));
+  btn.classList.add(sortDir === 1 ? 'asc' : 'desc');
+  const index = btn.closest('th').cellIndex;
+  [...sortBody.rows].filter(r => !r.id)
+    .sort((a, b) => {
+      const av = a.cells[index].dataset.sortValue || a.cells[index].textContent.trim();
+      const bv = b.cells[index].dataset.sortValue || b.cells[index].textContent.trim();
+      const na = Number(av), nb = Number(bv);
+      const cmp = !Number.isNaN(na) && !Number.isNaN(nb) ? na - nb : av.localeCompare(bv);
+      return cmp * sortDir;
+    })
+    .forEach(row => sortBody.appendChild(row));
+  sortTable.closest('.demo')._resetPage();
+}));
+const stickyToggle = document.getElementById('stickyToggle');
+stickyToggle.addEventListener('click', () => {
+  const pinned = sortTable.classList.toggle('sticky-column');
+  stickyToggle.setAttribute('aria-pressed', String(pinned));
+});
+
+/* Column filters */
+function bindColumnFilters(tableId, countId){
+  const table = document.getElementById(tableId);
+  const controls = [...table.querySelectorAll('thead input, thead select')];
+  const count = document.getElementById(countId);
+  const rows = () => [...table.tBodies[0].rows].filter(r => !r.id);
+  function apply(){
+    const values = controls.map(el => el.value.trim().toLowerCase());
+    let shown = 0;
+    rows().forEach(row => {
+      const cells = [...row.cells];
+      const match = controls.every((el, i) => {
+        const value = values[i];
+        if(!value || !cells[i]) return true;
+        if(el.type === 'number'){
+          const raw = cells[i].dataset.sortValue || cells[i].textContent.replace(/[^0-9.-]/g, '');
+          return Number(raw) >= Number(value);
+        }
+        const text = cells[i].textContent.trim().toLowerCase();
+        return el.tagName === 'SELECT' ? text === value : text.includes(value);
+      });
+      row.dataset.match = String(match);
+      if(match) shown++;
+    });
+    if(count) count.textContent = shown + ' of ' + rows().length + ' projects';
+    table.closest('.demo')._resetPage();
+  }
+  controls.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', apply));
+}
+bindColumnFilters('columnTable', 'colCount');
+bindColumnFilters('sortTable');
 
 /* Searchable selects */
 document.querySelectorAll('.combo').forEach((combo, index) => {
