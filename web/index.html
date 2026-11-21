@@ -315,20 +315,25 @@ svg{ display: block; }
 .icon-btn svg{ width:18px; height:18px; }
 
 /* ── Toast ────────────────────────────────────────────────── */
-.toast-stack{ position:fixed; right:24px; bottom:24px; z-index:200; display:flex; flex-direction:column; gap:10px; }
+.toast-stack{ position:fixed; right:24px; bottom:24px; z-index:200; width:360px; max-width:calc(100vw - 48px); display:flex; flex-direction:column; gap:10px; }
 .toast{
-  display:flex; align-items:flex-start; gap:11px; min-width:280px; max-width:360px;
-  background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--success);
-  border-radius:var(--radius-sm); box-shadow:var(--shadow-2); padding:14px 15px; font-size:14px;
+  display:flex; align-items:flex-start; gap:11px; width:100%;
+  background:var(--success-soft); border:1px solid #d7e7dd;
+  border-radius:var(--radius); box-shadow:var(--shadow-2); padding:14px 16px;
   animation: toastin .25s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes toastin{ from{ opacity:0; transform:translateX(20px); } to{ opacity:1; transform:none; } }
 .toast.out{ opacity:0; transform:translateX(20px); transition:.25s; }
-.toast svg{ width:17px; height:17px; flex:none; color:var(--success); margin-top:1px; }
-.toast strong{ display:block; }
+.toast__icon{ width:24px; height:24px; flex:none; display:grid; place-items:center; border-radius:50%; background:rgba(255,255,255,.75); color:var(--success); }
+.toast__icon svg{ width:14px; height:14px; }
+.toast strong{ display:block; font:600 15px/1.3 var(--font-serif); color:var(--success); }
 .toast span{ color:var(--ink-2); font-size:13px; }
-.toast--info{ border-left-color:var(--info); } .toast--info svg{ color:var(--info); }
-.toast--error{ border-left-color:var(--danger); } .toast--error svg{ color:var(--danger); }
+.toast--info{ background:var(--info-soft); border-color:#d9e4ee; }
+.toast--info .toast__icon{ color:var(--info); }
+.toast--info strong{ color:var(--info); }
+.toast--error{ background:var(--danger-soft); border-color:#f0dcd8; }
+.toast--error .toast__icon{ color:var(--danger); }
+.toast--error strong{ color:var(--danger); }
 
 /* ── Modal form ───────────────────────────────────────────── */
 .modal--form{ max-width:540px; }
@@ -439,6 +444,7 @@ svg{ display: block; }
 }
 .multi__trigger:hover{ border-color:var(--ink-3); }
 .multi__trigger[aria-expanded="true"]{ border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); outline:none; }
+.multi__trigger--empty{ align-items:center; }
 .multi__chips{ display:flex; flex-wrap:wrap; gap:6px; flex:1; }
 .multi__placeholder{ color:var(--ink-3); }
 .multi__chip{ display:inline-flex; align-items:center; gap:5px; background:var(--brand-soft); color:var(--brand); border-radius:6px; padding:4px 7px; font-size:12px; font-weight:600; }
@@ -488,8 +494,7 @@ svg{ display: block; }
 @media (max-width: 520px){
   .masthead h1{ font-size:34px; }
   .demo{ padding:20px; }
-  .toast-stack{ right:14px; left:14px; bottom:14px; }
-  .toast{ max-width:none; }
+  .toast-stack{ right:14px; left:14px; bottom:14px; width:auto; max-width:none; }
   .modal{ padding:22px; }
 }
 @media (prefers-reduced-motion: reduce){
@@ -1079,7 +1084,7 @@ svg{ display: block; }
   </div>
 </div>
 
-<div class="toast-stack" id="toasts" aria-live="polite"></div>
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <script>
 /* Overlays */
@@ -1306,6 +1311,7 @@ document.querySelectorAll('.multi').forEach(multi => {
       });
     }
     count.textContent = chosen.length + ' selected';
+    trigger.classList.toggle('multi__trigger--empty', !chosen.length);
   }
   function close(){
     panel.hidden = true;
@@ -1358,10 +1364,10 @@ const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
 function showToast(type, title, text){
   const el = document.createElement('div');
   el.className = 'toast' + (type !== 'success' ? ' toast--' + type : '');
-  el.innerHTML = '<svg><use href="#' + toastIcons[type] + '"/></svg><div><strong></strong><span></span></div>';
+  el.innerHTML = '<div class="toast__icon"><svg><use href="#' + toastIcons[type] + '"/></svg></div><div><strong></strong><span></span></div>';
   el.querySelector('strong').textContent = title;
   el.querySelector('span').textContent = text;
-  document.getElementById('toasts').appendChild(el);
+  document.getElementById('toastStack').appendChild(el);
   setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 260); }, 3600);
 }
 document.querySelectorAll('[data-toast]').forEach(b => {
