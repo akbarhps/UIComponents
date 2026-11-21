@@ -272,6 +272,34 @@ namespace UIComponents.Wpf.Tests
                 new PropertyCondition(AutomationElement.AutomationIdProperty, "Skeleton"));
             Check("skeleton found", skeleton.Count > 0 || FindByName(root, "Skeleton loader") != null);
 
+            // Tag input — enter a tag via ValuePattern + Enter key is not possible without
+            // keystrokes, but we can verify the field and existing tags are exposed.
+            var tagInput = Find(root, "TagInput");
+            Check("tag input found", tagInput != null);
+            var tagCount = Find(root, "TagCount");
+            Check("tag count found", tagCount != null);
+
+            // Autocomplete
+            var autoInput = Find(root, "AutoInput");
+            Check("autocomplete input found", autoInput != null);
+
+            // File input
+            var browse = Find(root, "BtnBrowse");
+            Check("file browse button found", browse != null);
+            var fileList = Find(root, "FileList");
+            Check("file list found", fileList != null);
+
+            // Date & time
+            var dtDate = Find(root, "DtDate");
+            Check("date-time date found", dtDate != null);
+            var dtTime = Find(root, "DtTime");
+            Check("date-time time found", dtTime != null);
+            if (dtTime != null)
+            {
+                SetValue(dtTime, "14:05:09");
+                Check("date-time time set", GetValue(dtTime).Contains("14:05"));
+            }
+
             Console.WriteLine();
             Console.WriteLine("RESULT  passed=" + _passed + "  failed=" + _failed);
             return _failed == 0 ? 0 : 1;

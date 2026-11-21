@@ -270,6 +270,9 @@
                     </StackPanel>
                 </Border>
 
+                <!-- Form inputs -->
+                <local:InputControls xmlns:local="clr-namespace:UIComponents.Wpf"/>
+
                 <!-- Overlay -->
                 <TextBlock Text="Overlays" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
                 <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
