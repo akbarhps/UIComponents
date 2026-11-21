@@ -197,6 +197,7 @@ namespace UIComponents.Tests
 
             var locked = new ClaudeGrid(columns, rows, false);
             Check("grid no add column", ((Panel)locked.Controls.Cast<Control>().First(c => c.Dock == DockStyle.Top)).Controls.Count == 3);
+
         }
 
         private static DataTable SampleTable()

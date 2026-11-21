@@ -26,6 +26,8 @@ namespace UIComponents
         private readonly DataGridView _grid = new DataGridView();
         private readonly List<GridColumnDef> _columns = new List<GridColumnDef>();
         private bool _allowAddColumn;
+        private DataGridViewCell _dragAnchor;
+        private bool _dragging;
 
         public ClaudeGrid(GridColumnDef[] columns, string[,] rows = null, bool allowAddColumn = true)
         {
@@ -60,7 +62,7 @@ namespace UIComponents
             _grid.MultiSelect = true;
             _grid.SelectionMode = DataGridViewSelectionMode.CellSelect;
             _grid.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            _grid.EditMode = DataGridViewEditMode.EditOnEnter;
+            _grid.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             _grid.AllowUserToAddRows = false;
 
             foreach (var col in _columns)
@@ -88,10 +90,54 @@ namespace UIComponents
                     for (int c = 0; c < _grid.Columns.Count && c < rows.GetLength(1); c++) _grid.Rows[index].Cells[c].Value = rows[r, c];
                 }
 
-            // Multi-cell edit: applying a value to one selected cell updates the rest.
-            _grid.CellValidated += (s, e) =>
+            // Drag selection, matching the web grid's click / shift-click / drag behaviour.
+            _grid.MouseDown += (s, e) =>
             {
-                if (_grid.SelectedCells.Count < 2) return;
+                if (e.Button != MouseButtons.Left) return;
+                if (_grid.IsCurrentCellInEditMode) _grid.CancelEdit();
+                var hit = _grid.HitTest(e.X, e.Y);
+                if (hit.Type == DataGridViewHitTestType.Cell)
+                {
+                    _dragAnchor = _grid.Rows[hit.RowIndex].Cells[hit.ColumnIndex];
+                    _dragging = true;
+                    _grid.ClearSelection();
+                    _dragAnchor.Selected = true;
+                    _grid.CurrentCell = _dragAnchor;
+                }
+            };
+            _grid.MouseMove += (s, e) =>
+            {
+                if (!_dragging || _dragAnchor == null || e.Button != MouseButtons.Left) return;
+                var hit = _grid.HitTest(e.X, e.Y);
+                if (hit.Type != DataGridViewHitTestType.Cell) return;
+                _grid.ClearSelection();
+                int r1 = Math.Min(_dragAnchor.RowIndex, hit.RowIndex), r2 = Math.Max(_dragAnchor.RowIndex, hit.RowIndex);
+                int c1 = Math.Min(_dragAnchor.ColumnIndex, hit.ColumnIndex), c2 = Math.Max(_dragAnchor.ColumnIndex, hit.ColumnIndex);
+                for (int r = r1; r <= r2; r++)
+                    for (int c = c1; c <= c2; c++)
+                        if (r < _grid.Rows.Count && c < _grid.Columns.Count) _grid.Rows[r].Cells[c].Selected = true;
+            };
+            _grid.MouseUp += (s, e) => { _dragging = false; _dragAnchor = null; };
+
+            // Owner-draw cells to match the web grid's surface, borders and selection tint.
+            _grid.CellPainting += (s, e) =>
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+                e.PaintBackground(e.CellBounds, false);
+                bool selected = e.State.HasFlag(DataGridViewElementStates.Selected);
+                Color background = selected ? Theme.BrandSoft : Theme.Surface;
+                using (var brush = new SolidBrush(background)) e.Graphics.FillRectangle(brush, e.CellBounds);
+                e.Graphics.DrawLine(new Pen(Theme.Line), e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
+                e.Graphics.DrawLine(new Pen(Theme.Line), e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
+                var value = e.Value == null ? "" : e.Value.ToString();
+                Draw.CenteredText(e.Graphics, value, new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y, e.CellBounds.Width - 14, e.CellBounds.Height), Theme.Sans(9.5f), Theme.Ink, HorizontalAlignment.Left);
+                e.Handled = true;
+            };
+
+            // Multi-cell edit: applying a value to one selected cell updates the rest.
+            _grid.CellEndEdit += (s, e) =>
+            {
+                if (_dragging || _grid.SelectedCells.Count < 2) return;
                 var value = _grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                 foreach (DataGridViewCell cell in _grid.SelectedCells)
                     if (cell.RowIndex != e.RowIndex || cell.ColumnIndex != e.ColumnIndex)
