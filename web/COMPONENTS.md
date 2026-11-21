@@ -57,6 +57,12 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 - **Don't use for:** a list of actions on one object — use an action menu.
 - **Wire:** `<button class="btn btn--primary" id="myBtn">Save</button>`, then `document.getElementById('myBtn').addEventListener('click', handler)`. For a loading state, replace inner HTML with `<span class="spinner"></span>Working…` and set `disabled`.
 
+### Action menu — `#action-menu`
+
+- **Use for:** three or more actions on one object, anchored to a button or `⋯` icon.
+- **Don't use for:** a single action — use a button. Don't use it as navigation — use the sidebar or breadcrumbs.
+- **Wire:** `.menu` wrapper with a trigger carrying `aria-haspopup="menu"` + `aria-expanded` + `aria-controls`, and a `.menu__panel[role=menu][hidden]` with `.menu__item[role=menuitem]` buttons. Use `.menu__divider[role=separator]` and `.menu__item--danger` where needed. Keyboard (arrows, Home/End, Enter, Escape) and edge-aware positioning are automatic. `data-action` on an item is demo-only — replace with your handler.
+
 ### Badges — `#badges`
 
 - **Use for:** short status labels in tables and cards. `badge--neutral|brand|success|warning|danger`; add `badge--plain` to drop the dot.
@@ -131,6 +137,13 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 - **Don't use for:** read-only data — use a data table.
 - **Wire:** call `createGrid('sheet', columns, rows)`. Columns are objects: `{ name:'Width', type:'text' }`, `{ name:'Category', type:'select', options:['Standard','Pro'] }`, `{ name:'IsActive', type:'checkbox' }`. Markup: `.sheet#sheet` with `.sheet__toolbar` containing `[data-sheet-copy]`, `[data-sheet-clear]` and `[data-sheet-info]`, then `.sheet__scroll > table > thead/tbody`. Add rows/columns from in-table `+` controls. To disable adding columns, pass `{ allowAddColumn: false }`.
 - **Keyboard:** click / Shift-click / Ctrl-click / drag select, Enter moves down, Delete or Clear wipes the selection. Copy (Ctrl+C) and paste (Ctrl+V) are handled globally for the last-used grid, including selections made from row/column headers. Paste expects tab/newline text.
+
+### Typed grid — `#typed-sheet`
+
+- **Use for:** the same grid behaviour where some columns are dropdowns or checkboxes.
+- **Don't use for:** a read-only table — use a data table.
+- **Wire:** same `createGrid()` call, with `type:'select'` + `options:[…]` and `type:'checkbox'` columns. This instance passes `{ allowAddColumn: false }`, so only the in-table add-row control appears. Multi-cell editing, clearing, copy and paste work across typed cells; paste parses `true/false/yes/1` for checkboxes and ignores select values not in `options`.
+- **Accessibility:** generated controls carry `aria-label="{column name}, row {n}"` and header cells use `scope="col"` / `scope="row"` — keep these if you change `cellHTML()`.
 
 ---
 
@@ -260,7 +273,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 5. Keep `aria-*` attributes in sync (`aria-expanded`, `aria-selected`, `aria-pressed`, `aria-current`, `role=listbox/menuitem`, `hidden`). Focus traps and focus restore are automatic for `.overlay`.
 6. Run the design detector after UI edits (Windows):
    `& "C:\Users\akbar\.agents\skills\impeccable\scripts\impeccable.cmd" detect --json web\index.html`
-   Expect two intentional warnings: the cream palette and the loading bar's infinite animation.
+   Expect three intentional warnings: the cream palette, the skeleton shimmer and the loading bar's infinite animation.
 7. Commit only when the user asks; they have been reviewing each iteration before committing.
 
 ---

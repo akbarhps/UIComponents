@@ -648,9 +648,9 @@ svg{ display: block; }
 .table th{ font-size:12px; font-weight:600; color:var(--ink-2); background:var(--surface-2); white-space:nowrap; }
 .table th:first-child{ border-top-left-radius:var(--radius); }
 .table th:last-child{ border-top-right-radius:var(--radius); }
-.table tbody tr:last-child td{ border-bottom:0; }
-.table tbody tr:last-child td:first-child{ border-bottom-left-radius:var(--radius); }
-.table tbody tr:last-child td:last-child{ border-bottom-right-radius:var(--radius); }
+.table tbody tr:last-child > *{ border-bottom:0; }
+.table tbody tr:last-child > :first-child{ border-bottom-left-radius:var(--radius); }
+.table tbody tr:last-child > :last-child{ border-bottom-right-radius:var(--radius); }
 .table tbody tr:hover{ background:var(--surface-2); }
 .table__name{ display:flex; align-items:center; gap:10px; font-weight:600; }
 .table__sub{ display:block; font-size:12px; font-weight:400; color:var(--ink-3); margin-top:2px; }
@@ -690,7 +690,7 @@ svg{ display: block; }
 .pin-btn svg{ width:14px; height:14px; }
 .table.sticky-column th:first-child,.table.sticky-column td:first-child{ position:sticky; left:0; z-index:1; background:var(--surface); box-shadow:1px 0 0 var(--line); }
 .table.sticky-column thead th:first-child{ z-index:2; background:var(--surface-2); }
-.table.sticky-column tbody tr:hover td:first-child{ background:var(--surface-2); }
+.table.sticky-column tbody tr:hover > :first-child{ background:var(--surface-2); }
 
 /* ── Row selection ────────────────────────────────────────── */
 .bulkbar{
@@ -1281,7 +1281,7 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label" id="skillsLabel">Skills</label>
             <div class="multi" data-placeholder="Select skills…">
-              <button type="button" class="multi__trigger" aria-expanded="false" aria-labelledby="skillsLabel" aria-haspopup="listbox">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox">
                 <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="multi__panel" hidden>
@@ -1311,7 +1311,7 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label" id="tagsLabel">Tags</label>
             <div class="multi" data-placeholder="Select tags…">
-              <button type="button" class="multi__trigger" aria-expanded="false" aria-labelledby="tagsLabel" aria-haspopup="listbox">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox">
                 <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="multi__panel" hidden>
@@ -1596,26 +1596,26 @@ svg{ display: block; }
       <div class="demo">
         <div class="table-wrap">
           <table class="table">
-            <thead><tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th><th></th></tr></thead>
+            <thead><tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col" class="table__num">Budget</th><th scope="col"></th></tr></thead>
             <tbody>
               <tr>
-                <td><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Website refresh<span class="table__sub">Design team</span></span></span></td>
+                <th scope="row"><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Website refresh<span class="table__sub">Design team</span></span></span></th>
                 <td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td><td><button class="table__action">Open</button></td>
               </tr>
               <tr>
-                <td><span class="table__name"><span class="avatar avatar--sm avatar--dark">JS</span><span>Mobile app<span class="table__sub">Engineering</span></span></span></td>
+                <th scope="row"><span class="table__name"><span class="avatar avatar--sm avatar--dark">JS</span><span>Mobile app<span class="table__sub">Engineering</span></span></span></th>
                 <td>Jonas Silva</td><td><span class="badge badge--brand">In review</span></td><td>Yesterday</td><td class="table__num">$28,900</td><td><button class="table__action">Open</button></td>
               </tr>
               <tr>
-                <td><span class="table__name"><span class="avatar avatar--sm avatar--sage">MC</span><span>Brand guidelines<span class="table__sub">Design team</span></span></span></td>
+                <th scope="row"><span class="table__name"><span class="avatar avatar--sm avatar--sage">MC</span><span>Brand guidelines<span class="table__sub">Design team</span></span></span></th>
                 <td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td><td><button class="table__action">Open</button></td>
               </tr>
               <tr>
-                <td><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Help center<span class="table__sub">Content</span></span></span></td>
+                <th scope="row"><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Help center<span class="table__sub">Content</span></span></span></th>
                 <td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td><td><button class="table__action">Open</button></td>
               </tr>
               <tr>
-                <td><span class="table__name"><span class="avatar avatar--sm">SP</span><span>Legacy archive<span class="table__sub">Operations</span></span></span></td>
+                <th scope="row"><span class="table__name"><span class="avatar avatar--sm">SP</span><span>Legacy archive<span class="table__sub">Operations</span></span></span></th>
                 <td>Sam Patel</td><td><span class="badge badge--neutral">Draft</span></td><td>2 weeks ago</td><td class="table__num">$1,100</td><td><button class="table__action">Open</button></td>
               </tr>
             </tbody>
@@ -1647,15 +1647,15 @@ svg{ display: block; }
         <div class="table-wrap">
           <table class="table" id="selectionTable">
             <thead><tr>
-              <th class="select-all-check"><label class="check"><input type="checkbox" id="selectAll"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></th>
+              <th class="select-all-check"><label class="check"><input type="checkbox" id="selectAll" aria-label="Select all rows"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></th>
               <th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th>
             </tr></thead>
             <tbody>
-              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Website refresh</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td></tr>
-              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Mobile app</td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td></tr>
-              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Brand guidelines</td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td></tr>
-              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Help center</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td></tr>
-              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Q3 campaign</td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Website refresh</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Mobile app</td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Brand guidelines</td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Help center</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Q3 campaign</td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td></tr>
             </tbody>
           </table>
         </div>
@@ -1715,28 +1715,28 @@ svg{ display: block; }
         <div class="table-wrap">
           <table class="table" id="columnTable">
             <thead>
-              <tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th><th></th></tr>
+              <tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col" class="table__num">Budget</th><th scope="col"></th></tr>
               <tr>
-                <th class="table__filter"><input class="input input--sm" id="colProject" type="search" placeholder="Filter projects…" aria-label="Filter by project"/></th>
-                <th class="table__filter"><input class="input input--sm" id="colOwner" type="search" placeholder="Filter owners…" aria-label="Filter by owner"/></th>
-                <th class="table__filter">
+                <th scope="col" class="table__filter"><input class="input input--sm" id="colProject" type="search" placeholder="Filter projects…" aria-label="Filter by project"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" id="colOwner" type="search" placeholder="Filter owners…" aria-label="Filter by owner"/></th>
+                <th scope="col" class="table__filter">
                   <select class="select select--sm" id="colStatus" aria-label="Filter by status">
                     <option value="">All statuses</option><option value="active">Active</option><option value="pending">Pending</option><option value="archived">Archived</option>
                   </select>
                 </th>
-                <th class="table__filter"><input class="input input--sm" id="colUpdated" type="search" placeholder="Any date" aria-label="Filter by updated date"/></th>
-                <th class="table__filter"><input class="input input--sm" id="colBudget" type="number" min="0" placeholder="Min amount" aria-label="Filter by minimum budget"/></th>
-                <th class="table__filter"></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" id="colUpdated" type="search" placeholder="Any date" aria-label="Filter by updated date"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" id="colBudget" type="number" min="0" placeholder="Min amount" aria-label="Filter by minimum budget"/></th>
+                <th scope="col" class="table__filter"></th>
               </tr>
             </thead>
             <tbody>
-              <tr data-status="active" data-budget="12400"><td>Website refresh<span class="table__sub">Design team</span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td><td><button class="table__action">Open</button></td></tr>
-              <tr data-status="active" data-budget="28900"><td>Mobile app<span class="table__sub">Engineering</span></td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td><td><button class="table__action">Open</button></td></tr>
-              <tr data-status="pending" data-budget="4200"><td>Brand guidelines<span class="table__sub">Design team</span></td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td><td><button class="table__action">Open</button></td></tr>
-              <tr data-status="active" data-budget="8750"><td>Help center<span class="table__sub">Content</span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td><td><button class="table__action">Open</button></td></tr>
-              <tr data-status="pending" data-budget="15600"><td>Q3 campaign<span class="table__sub">Marketing</span></td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td><td><button class="table__action">Open</button></td></tr>
-              <tr data-status="archived" data-budget="1100"><td>Legacy archive<span class="table__sub">Operations</span></td><td>Mia Chen</td><td><span class="badge badge--neutral">Archived</span></td><td>2 weeks ago</td><td class="table__num">$1,100</td><td><button class="table__action">Open</button></td></tr>
-              <tr id="colEmpty" hidden><td colspan="6"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></td></tr>
+              <tr data-status="active" data-budget="12400"><th scope="row">Website refresh<span class="table__sub">Design team</span></th><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="active" data-budget="28900"><th scope="row">Mobile app<span class="table__sub">Engineering</span></th><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="pending" data-budget="4200"><th scope="row">Brand guidelines<span class="table__sub">Design team</span></th><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="active" data-budget="8750"><th scope="row">Help center<span class="table__sub">Content</span></th><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="pending" data-budget="15600"><th scope="row">Q3 campaign<span class="table__sub">Marketing</span></th><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="archived" data-budget="1100"><th scope="row">Legacy archive<span class="table__sub">Operations</span></th><td>Mia Chen</td><td><span class="badge badge--neutral">Archived</span></td><td>2 weeks ago</td><td class="table__num">$1,100</td><td><button class="table__action">Open</button></td></tr>
+              <tr id="colEmpty" hidden><th scope="row" colspan="6"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></th></tr>
             </tbody>
           </table>
         </div>
@@ -1760,38 +1760,38 @@ svg{ display: block; }
           <table class="table table--wide" id="sortTable">
             <thead>
               <tr>
-                <th><span class="th-inner"><button type="button" class="pin-btn" id="stickyToggle" aria-pressed="false" aria-label="Pin project column" title="Pin project column"><svg><use href="#i-pin"/></svg></button><button type="button" class="sort-btn" data-sort-key="project">Project <svg class="sort-icon"><use href="#i-chevron"/></svg></button></span></th>
-                <th><button type="button" class="sort-btn" data-sort-key="owner">Owner <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th><button type="button" class="sort-btn" data-sort-key="team">Team <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th><button type="button" class="sort-btn" data-sort-key="status">Status <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th><button type="button" class="sort-btn" data-sort-key="priority">Priority <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th><button type="button" class="sort-btn" data-sort-key="updated">Updated <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th><button type="button" class="sort-btn" data-sort-key="due">Due date <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th class="table__num"><button type="button" class="sort-btn" data-sort-key="budget">Budget <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th class="table__num"><button type="button" class="sort-btn" data-sort-key="progress">Progress <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
-                <th></th>
+                <th scope="col"><span class="th-inner"><button type="button" class="pin-btn" id="stickyToggle" aria-pressed="false" aria-label="Pin project column" title="Pin project column"><svg><use href="#i-pin"/></svg></button><button type="button" class="sort-btn" data-sort-key="project">Project <svg class="sort-icon"><use href="#i-chevron"/></svg></button></span></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="owner">Owner <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="team">Team <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="status">Status <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="priority">Priority <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="updated">Updated <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"><button type="button" class="sort-btn" data-sort-key="due">Due date <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col" class="table__num"><button type="button" class="sort-btn" data-sort-key="budget">Budget <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col" class="table__num"><button type="button" class="sort-btn" data-sort-key="progress">Progress <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+                <th scope="col"></th>
               </tr>
               <tr>
-                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Project…" aria-label="Filter by project"/></th>
-                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Owner…" aria-label="Filter by owner"/></th>
-                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Team…" aria-label="Filter by team"/></th>
-                <th class="table__filter"><select class="select select--sm" aria-label="Filter by status"><option value="">All</option><option value="active">Active</option><option value="pending">Pending</option><option value="archived">Archived</option></select></th>
-                <th class="table__filter"><select class="select select--sm" aria-label="Filter by priority"><option value="">All</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></th>
-                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by updated date"/></th>
-                <th class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by due date"/></th>
-                <th class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min" aria-label="Filter by minimum budget"/></th>
-                <th class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min %" aria-label="Filter by minimum progress"/></th>
-                <th class="table__filter"></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="search" placeholder="Project…" aria-label="Filter by project"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="search" placeholder="Owner…" aria-label="Filter by owner"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="search" placeholder="Team…" aria-label="Filter by team"/></th>
+                <th scope="col" class="table__filter"><select class="select select--sm" aria-label="Filter by status"><option value="">All</option><option value="active">Active</option><option value="pending">Pending</option><option value="archived">Archived</option></select></th>
+                <th scope="col" class="table__filter"><select class="select select--sm" aria-label="Filter by priority"><option value="">All</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by updated date"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="search" placeholder="Date" aria-label="Filter by due date"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min" aria-label="Filter by minimum budget"/></th>
+                <th scope="col" class="table__filter"><input class="input input--sm" type="number" min="0" placeholder="Min %" aria-label="Filter by minimum progress"/></th>
+                <th scope="col" class="table__filter"></th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Website refresh<span class="table__sub">Design team</span></td><td>Ada Lovelace</td><td>Design</td><td><span class="badge badge--success">Active</span></td><td>High</td><td data-sort-value="0">Today</td><td data-sort-value="1012">Oct 12</td><td class="table__num" data-sort-value="12400">$12,400</td><td class="table__num" data-sort-value="72">72%</td><td><button class="table__action">Open</button></td></tr>
-              <tr><td>Mobile app<span class="table__sub">Engineering</span></td><td>Jonas Silva</td><td>Engineering</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="1">Yesterday</td><td data-sort-value="1020">Oct 20</td><td class="table__num" data-sort-value="28900">$28,900</td><td class="table__num" data-sort-value="45">45%</td><td><button class="table__action">Open</button></td></tr>
-              <tr><td>Brand guidelines<span class="table__sub">Design team</span></td><td>Mia Chen</td><td>Design</td><td><span class="badge badge--warning">Pending</span></td><td>Low</td><td data-sort-value="3">3 days ago</td><td data-sort-value="1102">Nov 02</td><td class="table__num" data-sort-value="4200">$4,200</td><td class="table__num" data-sort-value="20">20%</td><td><button class="table__action">Open</button></td></tr>
-              <tr><td>Help center<span class="table__sub">Content</span></td><td>Ada Lovelace</td><td>Content</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="7">Last week</td><td data-sort-value="1110">Nov 10</td><td class="table__num" data-sort-value="8750">$8,750</td><td class="table__num" data-sort-value="88">88%</td><td><button class="table__action">Open</button></td></tr>
-              <tr><td>Q3 campaign<span class="table__sub">Marketing</span></td><td>Sam Patel</td><td>Marketing</td><td><span class="badge badge--warning">Pending</span></td><td>High</td><td data-sort-value="7">Last week</td><td data-sort-value="1118">Nov 18</td><td class="table__num" data-sort-value="15600">$15,600</td><td class="table__num" data-sort-value="60">60%</td><td><button class="table__action">Open</button></td></tr>
-              <tr><td>Legacy archive<span class="table__sub">Operations</span></td><td>Mia Chen</td><td>Operations</td><td><span class="badge badge--neutral">Archived</span></td><td>Low</td><td data-sort-value="14">2 weeks ago</td><td data-sort-value="930">Sep 30</td><td class="table__num" data-sort-value="1100">$1,100</td><td class="table__num" data-sort-value="100">100%</td><td><button class="table__action">Open</button></td></tr>
-              <tr id="sortEmpty" hidden><td colspan="10"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></td></tr>
+              <tr><th scope="row">Website refresh<span class="table__sub">Design team</span></th><td>Ada Lovelace</td><td>Design</td><td><span class="badge badge--success">Active</span></td><td>High</td><td data-sort-value="0">Today</td><td data-sort-value="1012">Oct 12</td><td class="table__num" data-sort-value="12400">$12,400</td><td class="table__num" data-sort-value="72">72%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><th scope="row">Mobile app<span class="table__sub">Engineering</span></th><td>Jonas Silva</td><td>Engineering</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="1">Yesterday</td><td data-sort-value="1020">Oct 20</td><td class="table__num" data-sort-value="28900">$28,900</td><td class="table__num" data-sort-value="45">45%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><th scope="row">Brand guidelines<span class="table__sub">Design team</span></th><td>Mia Chen</td><td>Design</td><td><span class="badge badge--warning">Pending</span></td><td>Low</td><td data-sort-value="3">3 days ago</td><td data-sort-value="1102">Nov 02</td><td class="table__num" data-sort-value="4200">$4,200</td><td class="table__num" data-sort-value="20">20%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><th scope="row">Help center<span class="table__sub">Content</span></th><td>Ada Lovelace</td><td>Content</td><td><span class="badge badge--success">Active</span></td><td>Medium</td><td data-sort-value="7">Last week</td><td data-sort-value="1110">Nov 10</td><td class="table__num" data-sort-value="8750">$8,750</td><td class="table__num" data-sort-value="88">88%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><th scope="row">Q3 campaign<span class="table__sub">Marketing</span></th><td>Sam Patel</td><td>Marketing</td><td><span class="badge badge--warning">Pending</span></td><td>High</td><td data-sort-value="7">Last week</td><td data-sort-value="1118">Nov 18</td><td class="table__num" data-sort-value="15600">$15,600</td><td class="table__num" data-sort-value="60">60%</td><td><button class="table__action">Open</button></td></tr>
+              <tr><th scope="row">Legacy archive<span class="table__sub">Operations</span></th><td>Mia Chen</td><td>Operations</td><td><span class="badge badge--neutral">Archived</span></td><td>Low</td><td data-sort-value="14">2 weeks ago</td><td data-sort-value="930">Sep 30</td><td class="table__num" data-sort-value="1100">$1,100</td><td class="table__num" data-sort-value="100">100%</td><td><button class="table__action">Open</button></td></tr>
+              <tr id="sortEmpty" hidden><th scope="row" colspan="10"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></th></tr>
             </tbody>
           </table>
         </div>
@@ -1842,19 +1842,19 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label">Full date</label>
             <div class="picker" data-mode="date" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Full date"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Month and year</label>
             <div class="picker" data-mode="month" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Month and year"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Year only</label>
             <div class="picker" data-mode="year" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Year only"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
             </div>
           </div>
         </div>
@@ -1869,31 +1869,31 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label">Full date and time</label>
             <div class="picker" data-mode="date" data-time="true">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Full date and time"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Full date and time with seconds</label>
             <div class="picker" data-mode="date" data-time="true" data-seconds="true">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Full date and time with seconds"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Full date only</label>
             <div class="picker" data-mode="date" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Full date only"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Month and year</label>
             <div class="picker" data-mode="month" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Month and year"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Year only</label>
             <div class="picker" data-mode="year" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" aria-label="Year only"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
             </div>
           </div>
         </div>
@@ -2808,7 +2808,8 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
     const col = columns[c];
     const type = col.type || 'text';
     const sel = selection.has(cellKey(r, c)) ? ' selected' : '';
-    const attrs = 'data-r="' + r + '" data-c="' + c + '"';
+    const label = escapeAttr(col.name + ', row ' + (r + 1));
+    const attrs = 'data-r="' + r + '" data-c="' + c + '" aria-label="' + label + '"';
     if(type === 'checkbox')
       return '<td class="sheet__cell sheet__cell--center' + sel + '"><input type="checkbox" class="sheet__control sheet__checkbox" ' + attrs + (value === 'true' || value === true ? ' checked' : '') + '/></td>';
     if(type === 'select')
@@ -2820,9 +2821,9 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
     const addColHead = allowAddColumn ? '<th class="sheet__add" data-add-col title="Add column">+</th>' : '';
     const addColCell = allowAddColumn ? '<td class="sheet__add-cell"></td>' : '';
     head.innerHTML = '<tr><th class="sheet__head"></th>' + columns.map((col, c) =>
-      '<th class="sheet__head sheet__head--col' + (colSelected(c) ? ' selected' : '') + '" data-col="' + c + '">' + escapeAttr(col.name) + '</th>').join('') + addColHead + '</tr>';
+      '<th scope="col" class="sheet__head sheet__head--col' + (colSelected(c) ? ' selected' : '') + '" data-col="' + c + '">' + escapeAttr(col.name) + '</th>').join('') + addColHead + '</tr>';
     body.innerHTML = data.map((row, r) =>
-      '<tr><th class="sheet__head' + (rowSelected(r) ? ' selected' : '') + '" data-row="' + r + '">' + (r + 1) + '</th>' +
+      '<tr><th scope="row" class="sheet__head' + (rowSelected(r) ? ' selected' : '') + '" data-row="' + r + '">' + (r + 1) + '</th>' +
       row.map((value, c) => cellHTML(r, c, value)).join('') + addColCell + '</tr>').join('') +
       '<tr class="sheet__add-row"><th class="sheet__add" data-add-row title="Add row">+</th><td class="sheet__add-cell" colspan="' + (columns.length + (allowAddColumn ? 1 : 0)) + '" data-add-row>+ Add row</td></tr>';
     paint();
@@ -3437,3 +3438,5 @@ brandToggle.addEventListener('click', () => setCollapsed(!app.classList.contains
 </svg>
 </body>
 </html>
+
+
