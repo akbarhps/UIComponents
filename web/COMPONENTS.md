@@ -276,6 +276,18 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
    Expect three intentional warnings: the cream palette, the skeleton shimmer and the loading bar's infinite animation.
 7. Commit only when the user asks; they have been reviewing each iteration before committing.
 
+### Verification checklist
+
+The detector checks code patterns, not behaviour. After any UI edit, also:
+
+1. Open `web/index.html` in a browser and drive **every state you touched** — open/close, hover, focus, error, empty, loading, selected. Don't just look at the resting screen.
+2. Check the browser console for errors; a thrown error early in the script silently disables everything after it.
+3. Check the 390px-wide layout (single column, no horizontal page scroll) if you changed layout or tables.
+4. Check that the overlay you touched doesn't shift the page when it opens (scrollbar gutter).
+5. Run the design detector (rule 6) and confirm only the three expected warnings remain.
+
+Bugs found in this library that this checklist would have caught: overlay scroll shift, grid copy/paste from row/column headers, and row-header CSS selectors losing their border radius.
+
 ---
 
 ## Appendix: four canonical snippets
