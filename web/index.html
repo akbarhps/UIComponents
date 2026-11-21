@@ -55,7 +55,7 @@
 
 /* ── Reset / base ─────────────────────────────────────────── */
 *,*::before,*::after{ box-sizing: border-box; }
-html{ scroll-behavior: smooth; }
+html{ scroll-behavior: smooth; scrollbar-gutter: stable; }
 body{
   margin: 0;
   background: var(--bg);
@@ -330,6 +330,63 @@ svg{ display: block; }
 .toast--info{ border-left-color:var(--info); } .toast--info svg{ color:var(--info); }
 .toast--error{ border-left-color:var(--danger); } .toast--error svg{ color:var(--danger); }
 
+/* ── Modal form ───────────────────────────────────────────── */
+.modal--form{ max-width:540px; }
+.form-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:22px; }
+.form-grid .field--wide{ grid-column:1 / -1; }
+.modal form > .field{ margin-top:16px; }
+
+/* ── Table ────────────────────────────────────────────────── */
+.table-wrap{ width:100%; overflow-x:auto; }
+.table{
+  width:100%; min-width:640px; font-size:14px;
+  border:1px solid var(--line); border-radius:var(--radius);
+  border-collapse:separate; border-spacing:0; background:var(--surface);
+}
+.table th,.table td{ padding:13px 16px; text-align:left; border-bottom:1px solid var(--line); }
+.table th{ font-size:12px; font-weight:600; color:var(--ink-2); background:var(--surface-2); white-space:nowrap; }
+.table th:first-child{ border-top-left-radius:var(--radius); }
+.table th:last-child{ border-top-right-radius:var(--radius); }
+.table tbody tr:last-child td{ border-bottom:0; }
+.table tbody tr:last-child td:first-child{ border-bottom-left-radius:var(--radius); }
+.table tbody tr:last-child td:last-child{ border-bottom-right-radius:var(--radius); }
+.table tbody tr:hover{ background:var(--surface-2); }
+.table__name{ display:flex; align-items:center; gap:10px; font-weight:600; }
+.table__sub{ display:block; font-size:12px; font-weight:400; color:var(--ink-3); margin-top:2px; }
+.table__num{ text-align:right; font-variant-numeric:tabular-nums; }
+.table__action{ appearance:none; border:0; background:none; padding:4px; cursor:pointer; color:var(--brand); font:600 13px var(--font-sans); }
+.table__action:hover{ text-decoration:underline; }
+.table tr[hidden]{ display:none; }
+.empty{ padding:44px 20px; text-align:center; color:var(--ink-2); font-size:14px; }
+.empty strong{ display:block; color:var(--ink); font-size:15px; margin-bottom:5px; }
+
+/* ── Filter bar ───────────────────────────────────────────── */
+.filters{ display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:16px; }
+.filters__search{ flex:1 1 220px; max-width:320px; }
+.segment{ display:inline-flex; gap:2px; padding:3px; background:var(--bg-deep); border-radius:9px; }
+.segment button{
+  appearance:none; border:0; background:none; cursor:pointer;
+  font:600 13px var(--font-sans); color:var(--ink-2); padding:7px 12px; border-radius:7px;
+}
+.segment button:hover{ color:var(--ink); }
+.segment button.active{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow-1); }
+.filter-count{ margin-left:auto; font-size:13px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
+/* ── Sidebar drawer ───────────────────────────────────────── */
+.drawer-overlay{ padding:0; justify-content:flex-end; }
+.drawer{
+  width:min(440px,100%); height:100%; background:var(--surface);
+  border-left:1px solid var(--line); box-shadow:var(--shadow-2);
+  display:flex; flex-direction:column; min-height:0;
+}
+.drawer-overlay.open .drawer{ animation: drawerin .26s cubic-bezier(.2,.8,.2,1); }
+@keyframes drawerin{ from{ transform:translateX(100%); } to{ transform:none; } }
+.drawer__head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:24px 26px 20px; border-bottom:1px solid var(--line); }
+.drawer__form{ display:flex; flex-direction:column; flex:1; min-height:0; }
+.drawer__body{ padding:24px 26px; overflow-y:auto; display:flex; flex-direction:column; gap:20px; }
+.drawer__intro{ font-size:14px; color:var(--ink-2); }
+.drawer__foot{ margin-top:auto; padding:18px 26px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px; }
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 860px){
   .app{ grid-template-columns: 1fr; }
@@ -340,7 +397,7 @@ svg{ display: block; }
   .nav a svg,.nav-label,.sidebar__foot{ display:none; }
   .main{ padding: 0 22px 72px; }
   .masthead{ padding-top:36px; }
-  .grid-2{ grid-template-columns:1fr; }
+  .grid-2,.form-grid{ grid-template-columns:1fr; }
 }
 @media (max-width: 520px){
   .masthead h1{ font-size:34px; }
@@ -372,6 +429,9 @@ svg{ display: block; }
   <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.5"/></symbol>
+  <symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
+  <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
 </svg>
 
 <div class="app">
@@ -385,11 +445,15 @@ svg{ display: block; }
     <nav class="nav" id="nav">
       <a href="#buttons"><svg><use href="#i-button"/></svg>Buttons</a>
       <a href="#forms"><svg><use href="#i-form"/></svg>Forms</a>
+      <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
       <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
       <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
       <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
       <a href="#tabs"><svg><use href="#i-grid"/></svg>Tabs</a>
       <a href="#avatar"><svg><use href="#i-more"/></svg>Avatars</a>
+      <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
+      <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
+      <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
       <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
       <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
     </nav>
@@ -399,7 +463,7 @@ svg{ display: block; }
   <!-- ── Main ────────────────────────────────────────────── -->
   <main class="main">
     <header class="masthead">
-      <span class="chip"><svg><use href="#i-spark"/></svg> Web components, version 1.0</span>
+      <span class="chip"><svg><use href="#i-spark"/></svg> Web components, version 2.0</span>
       <h1>Interface components</h1>
       <p>A small, reusable set of building blocks with a warm, editorial feel. Every style is defined as a token or a scoped class — lift the markup and CSS of any block into your own project.</p>
     </header>
@@ -496,6 +560,14 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Modal form -->
+    <section class="section" id="form-modal">
+      <div class="section__head"><h2>Modal form</h2><p>A focused form in a dialog. Fields keep the same labels, hints and error states as inline forms.</p></div>
+      <div class="demo">
+        <div class="row"><button class="btn btn--primary" id="openFormModal">Create project</button></div>
+      </div>
+    </section>
+
     <!-- Cards -->
     <section class="section" id="cards">
       <div class="section__head"><h2>Cards</h2><p>Containers for related content, with an optional action row.</p></div>
@@ -577,6 +649,84 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Data table -->
+    <section class="section" id="data-table">
+      <div class="section__head"><h2>Data table</h2><p>Aligned columns, tabular numbers, row hover and status badges. Scrolls sideways on narrow screens.</p></div>
+      <div class="demo">
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Website refresh<span class="table__sub">Design team</span></span></span></td>
+                <td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td><td><button class="table__action">Open</button></td>
+              </tr>
+              <tr>
+                <td><span class="table__name"><span class="avatar avatar--sm avatar--dark">JS</span><span>Mobile app<span class="table__sub">Engineering</span></span></span></td>
+                <td>Jonas Silva</td><td><span class="badge badge--brand">In review</span></td><td>Yesterday</td><td class="table__num">$28,900</td><td><button class="table__action">Open</button></td>
+              </tr>
+              <tr>
+                <td><span class="table__name"><span class="avatar avatar--sm avatar--sage">MC</span><span>Brand guidelines<span class="table__sub">Design team</span></span></span></td>
+                <td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td><td><button class="table__action">Open</button></td>
+              </tr>
+              <tr>
+                <td><span class="table__name"><span class="avatar avatar--sm">AL</span><span>Help center<span class="table__sub">Content</span></span></span></td>
+                <td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td><td><button class="table__action">Open</button></td>
+              </tr>
+              <tr>
+                <td><span class="table__name"><span class="avatar avatar--sm">SP</span><span>Legacy archive<span class="table__sub">Operations</span></span></span></td>
+                <td>Sam Patel</td><td><span class="badge badge--neutral">Draft</span></td><td>2 weeks ago</td><td class="table__num">$1,100</td><td><button class="table__action">Open</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filterable table -->
+    <section class="section" id="filter-table">
+      <div class="section__head"><h2>Table with filters</h2><p>Search by name and narrow by status. The count and empty state update as you type.</p></div>
+      <div class="demo">
+        <div class="filters">
+          <div class="field filters__search">
+            <div class="input-icon">
+              <svg><use href="#i-search"/></svg>
+              <input class="input" id="tableSearch" type="search" placeholder="Search projects…" aria-label="Search projects"/>
+            </div>
+          </div>
+          <div class="segment" id="tableFilters" role="group" aria-label="Filter by status">
+            <button type="button" class="active" data-status="all">All</button>
+            <button type="button" data-status="active">Active</button>
+            <button type="button" data-status="pending">Pending</button>
+            <button type="button" data-status="archived">Archived</button>
+          </div>
+          <span class="filter-count" id="tableCount">6 of 6 projects</span>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="filterTable">
+            <thead><tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th></tr></thead>
+            <tbody>
+              <tr data-status="active"><td><span class="table__name">Website refresh<span class="table__sub">Design team</span></span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td></tr>
+              <tr data-status="active"><td><span class="table__name">Mobile app<span class="table__sub">Engineering</span></span></td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td></tr>
+              <tr data-status="pending"><td><span class="table__name">Brand guidelines<span class="table__sub">Design team</span></span></td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td></tr>
+              <tr data-status="active"><td><span class="table__name">Help center<span class="table__sub">Content</span></span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td></tr>
+              <tr data-status="pending"><td><span class="table__name">Q3 campaign<span class="table__sub">Marketing</span></span></td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td></tr>
+              <tr data-status="archived"><td><span class="table__name">Legacy archive<span class="table__sub">Operations</span></span></td><td>Mia Chen</td><td><span class="badge badge--neutral">Archived</span></td><td>2 weeks ago</td></tr>
+              <tr id="tableEmpty" hidden><td colspan="4"><div class="empty"><strong>No matching projects</strong>Try a different search or status.</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Drawer form -->
+    <section class="section" id="drawer">
+      <div class="section__head"><h2>Sidebar modal form</h2><p>A slide-out panel for longer forms that still need focus. Closes with the button, the backdrop, or Escape.</p></div>
+      <div class="demo">
+        <div class="row"><button class="btn btn--secondary" id="openDrawer">Invite a member</button></div>
+      </div>
+    </section>
+
     <!-- Modal -->
     <section class="section" id="modal">
       <div class="section__head"><h2>Modal dialog</h2><p>Focused confirmation that interrupts the task. Opens from this button; closes via the button, the backdrop, or Escape.</p></div>
@@ -614,21 +764,172 @@ svg{ display: block; }
   </div>
 </div>
 
+<!-- Modal form markup -->
+<div class="overlay" id="formOverlay" role="dialog" aria-modal="true" aria-labelledby="formModalTitle">
+  <div class="modal modal--form">
+    <div class="modal__head">
+      <h3 class="modal__title" id="formModalTitle">Create a project</h3>
+      <button class="icon-btn" id="closeFormModal" aria-label="Close dialog"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <p class="modal__body">Give the project a name and an owner. You can change both later.</p>
+    <form id="projectForm" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label class="field__label" for="fm-name">Project name</label>
+          <input class="input" id="fm-name" placeholder="Website refresh"/>
+          <span class="field__error"><svg><use href="#i-alert"/></svg>Give the project a name.</span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="fm-email">Owner email</label>
+          <input class="input" id="fm-email" type="email" placeholder="you@example.com"/>
+          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+        </div>
+        <div class="field field--wide">
+          <label class="field__label" for="fm-role">Team</label>
+          <select class="select" id="fm-role"><option>Design</option><option>Engineering</option><option>Marketing</option></select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="fm-desc">Description</label>
+        <textarea class="textarea" id="fm-desc" placeholder="What is this project for?"></textarea>
+      </div>
+      <div class="modal__foot">
+        <button type="button" class="btn btn--secondary" id="cancelFormModal">Cancel</button>
+        <button type="submit" class="btn btn--primary">Create project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Drawer form markup -->
+<div class="overlay drawer-overlay" id="drawerOverlay" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="drawer">
+    <div class="drawer__head">
+      <h3 class="modal__title" id="drawerTitle">Invite a member</h3>
+      <button class="icon-btn" id="closeDrawer" aria-label="Close panel"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <form class="drawer__form" id="inviteForm" novalidate>
+      <div class="drawer__body">
+        <p class="drawer__intro">Add someone to this workspace. They'll get an email with a link to join.</p>
+        <div class="field">
+          <label class="field__label" for="dr-email">Email address</label>
+          <input class="input" id="dr-email" type="email" placeholder="teammate@example.com"/>
+          <span class="field__hint">Use their work email so we can find their account.</span>
+          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dr-role">Role</label>
+          <select class="select" id="dr-role"><option>Member</option><option>Admin</option><option>Viewer</option></select>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dr-note">Personal note</label>
+          <textarea class="textarea" id="dr-note" placeholder="Add a short message…"></textarea>
+        </div>
+        <label class="switch"><input type="checkbox" checked/><span class="switch__track"></span>Send an invitation email</label>
+      </div>
+      <div class="drawer__foot">
+        <button type="button" class="btn btn--secondary" id="cancelDrawer">Cancel</button>
+        <button type="submit" class="btn btn--primary">Send invite</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="toast-stack" id="toasts" aria-live="polite"></div>
 
 <script>
-/* Modal */
-const overlay = document.getElementById('overlay');
-const openBtn = document.getElementById('openModal');
+/* Overlays */
+const overlays = [...document.querySelectorAll('.overlay')];
 let lastFocus = null;
-function openModal(){ lastFocus = document.activeElement; overlay.classList.add('open'); document.body.style.overflow='hidden'; document.getElementById('closeModal').focus(); }
-function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; if(lastFocus) lastFocus.focus(); }
-openBtn.addEventListener('click', openModal);
-document.getElementById('closeModal').addEventListener('click', closeModal);
-document.getElementById('cancelModal').addEventListener('click', closeModal);
-document.getElementById('confirmModal').addEventListener('click', () => { closeModal(); showToast('success','Deleted','The project was removed.'); });
-overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+function openOverlay(el, focusEl){
+  lastFocus = document.activeElement;
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  (focusEl || el.querySelector('input, button')).focus();
+}
+function closeOverlay(el){
+  el.classList.remove('open');
+  document.body.style.overflow = '';
+  if(lastFocus) lastFocus.focus();
+}
+overlays.forEach(el => el.addEventListener('click', e => { if(e.target === el) closeOverlay(el); }));
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  const open = overlays.find(el => el.classList.contains('open'));
+  if(open) closeOverlay(open);
+});
+
+/* Confirmation modal */
+const overlay = document.getElementById('overlay');
+document.getElementById('openModal').addEventListener('click', () => openOverlay(overlay, document.getElementById('closeModal')));
+document.getElementById('closeModal').addEventListener('click', () => closeOverlay(overlay));
+document.getElementById('cancelModal').addEventListener('click', () => closeOverlay(overlay));
+document.getElementById('confirmModal').addEventListener('click', () => { closeOverlay(overlay); showToast('success','Deleted','The project was removed.'); });
+
+/* Modal form */
+const formOverlay = document.getElementById('formOverlay');
+const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+function setFieldError(field, on){ field.classList.toggle('has-error', on); }
+document.getElementById('openFormModal').addEventListener('click', () => openOverlay(formOverlay, document.getElementById('fm-name')));
+document.getElementById('closeFormModal').addEventListener('click', () => closeOverlay(formOverlay));
+document.getElementById('cancelFormModal').addEventListener('click', () => closeOverlay(formOverlay));
+document.getElementById('projectForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('fm-name');
+  const email = document.getElementById('fm-email');
+  const validName = name.value.trim().length > 0;
+  const validEmail = emailOk(email.value);
+  setFieldError(name.closest('.field'), !validName);
+  setFieldError(email.closest('.field'), !validEmail);
+  if(!validName || !validEmail) return;
+  closeOverlay(formOverlay);
+  showToast('success','Project created','“' + name.value.trim() + '” is ready.');
+  e.target.reset();
+});
+['fm-name','fm-email'].forEach(id => document.getElementById(id).addEventListener('input', e => setFieldError(e.target.closest('.field'), false)));
+
+/* Sidebar drawer form */
+const drawerOverlay = document.getElementById('drawerOverlay');
+document.getElementById('openDrawer').addEventListener('click', () => openOverlay(drawerOverlay, document.getElementById('dr-email')));
+document.getElementById('closeDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
+document.getElementById('cancelDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
+document.getElementById('inviteForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const email = document.getElementById('dr-email');
+  const valid = emailOk(email.value);
+  setFieldError(email.closest('.field'), !valid);
+  if(!valid) return;
+  closeOverlay(drawerOverlay);
+  showToast('success','Invite sent','An invitation is on its way to ' + email.value.trim() + '.');
+  e.target.reset();
+});
+document.getElementById('dr-email').addEventListener('input', e => setFieldError(e.target.closest('.field'), false));
+
+/* Filterable table */
+const filterSearch = document.getElementById('tableSearch');
+const filterButtons = [...document.querySelectorAll('#tableFilters button')];
+const tableRows = [...document.querySelectorAll('#filterTable tbody tr[data-status]')];
+const emptyRow = document.getElementById('tableEmpty');
+const countEl = document.getElementById('tableCount');
+let activeStatus = 'all';
+function applyFilters(){
+  const query = filterSearch.value.trim().toLowerCase();
+  let shown = 0;
+  tableRows.forEach(row => {
+    const match = row.textContent.toLowerCase().includes(query) &&
+      (activeStatus === 'all' || row.dataset.status === activeStatus);
+    row.hidden = !match;
+    if(match) shown++;
+  });
+  emptyRow.hidden = shown !== 0;
+  countEl.textContent = shown + ' of ' + tableRows.length + ' projects';
+}
+filterSearch.addEventListener('input', applyFilters);
+filterButtons.forEach(b => b.addEventListener('click', () => {
+  activeStatus = b.dataset.status;
+  filterButtons.forEach(x => x.classList.toggle('active', x === b));
+  applyFilters();
+}));
 
 /* Tabs */
 document.querySelectorAll('.tab').forEach(tab => {
