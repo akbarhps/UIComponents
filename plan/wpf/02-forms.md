@@ -151,7 +151,7 @@ The icon sits about 3px below the line top, so it's vertically centred on the te
 - **Box:** 19×19, radius 5, border 1.5 `LineStrong`, background `Surface`.
 - **Checked:** `Brand` fill and border. The check is 13×13, centred, white. In a 24-unit box it's `M5,12 L10,17 L19,7`, stroke about 1.3 (2.4 × 13/24), round caps and joins.
 - **Disabled:** **only the box** gets opacity 0.45. The label stays `Ink` at full opacity, as in `web-forms.png`.
-- **Keyboard focus:** a 2px `Brand` outline, 2px outside the box (a `Margin=-4` border, radius 7). Show it on `IsKeyboardFocused` only. Set `FocusVisualStyle={x:Null}`.
+- **Keyboard focus:** a 2px `Brand` outline, 2px outside the box (a `Margin=-4` border, radius 9 = box radius 5 + 2 offset + 2 outline). Show it on `IsKeyboardFocused` only. Set `FocusVisualStyle={x:Null}`.
 
 **`ClaudeRadio`** (new, a RadioButton based on the same template):
 - The box is a 19px circle with a 1.5 `LineStrong` border.

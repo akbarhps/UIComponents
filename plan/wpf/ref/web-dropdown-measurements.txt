@@ -1,0 +1,164 @@
+# web dropdown geometry, 1400x1100, scale 1, Edge headless, transitions off, real 11px scrollbars (not hidden).
+# 'rel' = x,y,w,h relative to the section's .demo card outer box. section/demo lines are page coordinates.
+# Script: states are built with the page's own JS (click / input / keydown events), see plan 03-dropdown.md.
+== combobox section 314.5,4550.4,984,326.4 demo 314.5,4706.8,984,162
+-- idle
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Assignee"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Project"
+ .combo__trigger[0] rel 31,58.8,450,46 font=400 15px/21px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Select a person…"
+ .combo__trigger[1] rel 503,58.8,450,46 font=400 15px/21px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Select a project…"
+ .combo__value[0] rel 45,71.3,111.7,21 font=400 15px/21px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Select a person…"
+ .combo__value[1] rel 517,71.3,112.5,21 font=400 15px/21px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Select a project…"
+ trigger svg[0] rel 451,73.8,16,16 font=400 15px/21px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ trigger svg[1] rel 923,73.8,16,16 font=400 15px/21px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .field__hint[0] rel 31,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Type a name to narrow the list"
+ .field__hint[1] rel 503,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Arrow keys and Enter work too."
+-- open: Assignee, Jonas selected, Mia active (ArrowDown on trigger, 2x ArrowDown in search)
+ .combo__trigger(open) rel 31,58.8,450,46 font=400 15px/21px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Jonas Silva"
+ .combo__value(selected) rel 45,71.3,70.8,21 font=400 15px/21px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Jonas Silva"
+ .combo__panel rel 31,110.8,450,279.2 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .combo__search rel 32,111.8,448,57.2 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=10px shadow=none
+ search svg rel 53,132.4,15,15 font=400 15px/24px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .combo__input(focused) rel 42,121.8,428,36.2 font=400 13px/18.2px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=7px pad=8px 10px 8px 32px shadow=none text="Search people…"
+ .combo__list rel 32,169,448,220 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=6px shadow=none
+  list scrollHeight=254 clientHeight=220 scrollTop=0 activedescendant=combo-0-option-2
+ .combo__option[0] rel 38,175,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .combo__option[1] rel 38,215.4,425,40.4 font=600 14px/22.4px color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=7px pad=9px 10px shadow=none
+ .combo__option[2] rel 38,255.8,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgb(238, 234, 224) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .combo__option[3] rel 38,296.2,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .combo__option[4] rel 38,336.5,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .combo__option[5] rel 38,376.9,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .combo__check[0] rel 48,188.2,14,14 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .combo__check[1] rel 48,228.6,14,14 font=600 14px/22.4px color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ .combo__check[2] rel 48,269,14,14 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .combo__check[3] rel 48,309.3,14,14 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .combo__check[4] rel 48,349.7,14,14 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .combo__check[5] rel 48,390.1,14,14 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .combo__option-label[0] rel 70,184,338.5,22.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Ada Lovelace"
+ .combo__option-label[1] rel 70,224.4,311.9,22.4 font=600 14px/22.4px color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text="Jonas Silva"
+ .combo__option-label[2] rel 70,264.8,338.5,22.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Mia Chen"
+ .combo__option-meta[0] rel 416.5,185.6,36.5,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Design"
+ .combo__option-meta[1] rel 389.9,226,63.1,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Engineering"
+ .combo__option-meta[2] rel 416.5,266.4,36.5,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Design"
+-- Project open, typed xyz (empty)
+ .combo__panel(empty) rel 503,110.8,450,128 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .combo__list(empty) rel 504,169,448,68.8 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=6px shadow=none
+ .combo__empty rel 510,175,436,56.8 font=400 13px/20.8px color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px rgb(91, 85, 74) rad=0px pad=18px 10px shadow=none text="No matches"
+== multi-select section 314.5,4876.8,984,300.2 demo 314.5,5033.2,984,135.8
+-- idle
+ .multi__trigger[0] rel 31,58.8,450,46 font=400 14px/19.6px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=9px 11px shadow=none text="Select skills…"
+ .multi__trigger[1] rel 503,58.8,450,46 font=400 14px/19.6px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=9px 11px shadow=none text="Select tags…"
+ .multi__placeholder[0] rel 43,72,79.8,19.6 font=400 14px/19.6px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Select skills…"
+ .multi__placeholder[1] rel 515,72,76.8,19.6 font=400 14px/19.6px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Select tags…"
+ trigger svg[0] rel 453,75.3,16,16 font=400 14px/19.6px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ trigger svg[1] rel 925,75.3,16,16 font=400 14px/19.6px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+-- Skills: React, TypeScript, Accessibility checked + open
+ .multi__trigger(open,3 chips) rel 31,58.8,450,46 font=400 14px/19.6px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(166, 78, 42) rad=8px pad=9px 11px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="ReactTypeScriptAccessibility"
+ .multi__chips rel 43,68.8,402,24.8 font=400 14px/19.6px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .multi__chip[0] rel 43,68.8,60.8,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[1] rel 109.8,68.8,88,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[2] rel 203.8,68.8,97.3,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ chip button[0] rel 84.8,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ chip button[1] rel 178.8,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ chip button[2] rel 282.1,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ chip svg[0] rel 84.8,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ chip svg[1] rel 178.8,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ chip svg[2] rel 282.1,75.2,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ trigger svg(open) rel 453,71.8,16,16 font=400 14px/19.6px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .multi__panel rel 31,110.8,450,332.2 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .multi__search rel 32,111.8,448,57.2 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=10px shadow=none
+ .multi__input rel 42,121.8,428,36.2 font=400 13px/18.2px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=7px pad=8px 10px 8px 32px shadow=none text="Search skills…"
+ .multi__list rel 32,169,448,220 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=6px shadow=none
+  list scrollHeight=254 clientHeight=220
+ .multi__option[0] rel 38,175,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .multi__option[1] rel 38,215.4,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .multi__option[2] rel 38,255.8,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .multi__option[3] rel 38,296.2,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .multi__option[4] rel 38,336.5,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .multi__option[5] rel 38,376.9,425,40.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none
+ .check__box[0] rel 48,185,19,19 font=400 14px/22.4px color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px rgb(166, 78, 42) rad=5px pad=0px shadow=none
+ .check__box[1] rel 48,225.4,19,19 font=400 14px/22.4px color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px rgb(166, 78, 42) rad=5px pad=0px shadow=none
+ .check__box[2] rel 48,265.8,19,19 font=400 14px/22.4px color=rgb(255, 255, 255) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=5px pad=0px shadow=none
+ .multi__option-label[0] rel 77,184,317.9,22.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="React"
+ .multi__option-label[1] rel 77,224.4,317.9,22.4 font=400 14px/22.4px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="TypeScript"
+ .multi__option-meta[0] rel 404.9,184,48.1,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Frontend"
+ .multi__option-meta[1] rel 404.9,224.4,48.1,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Frontend"
+ .multi__foot rel 32,389,448,53 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px rgb(230, 226, 215) rad=0px pad=10px shadow=none
+ select-all rel 42,400,78.3,32 font=600 13px/13px color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Select all"
+ clear rel 124.3,400,73.1,32 font=600 13px/13px color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear all"
+ .multi__count rel 349.1,406.4,53.3,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="3 selected"
+ done rel 412.4,400,57.6,32 font=600 13px/13px color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Done"
+-- Skills select all (6 chips, closed)
+ .multi__trigger(6 chips) rel 31,58.8,450,75.6 font=400 14px/19.6px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=9px 11px shadow=none text="ReactTypeScriptDesign systemsA"
+ .multi__chip[0] rel 43,68.8,60.8,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[1] rel 109.8,68.8,88,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[2] rel 203.8,68.8,114.7,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[3] rel 324.5,68.8,97.3,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[4] rel 43,99.6,69.7,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .multi__chip[5] rel 118.7,99.6,115.7,24.8 font=600 12px/16.8px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+-- Tags open, typed xyz
+ .multi__panel(empty) rel 503,110.8,450,181 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .multi__list(empty) rel 504,169,448,68.8 font=400 15px/24px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=6px shadow=none
+ .multi__empty rel 510,175,436,56.8 font=400 13px/20.8px color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px rgb(91, 85, 74) rad=0px pad=18px 10px shadow=none text="No matches"
+== tag-input section 314.5,2216.3,984,326.4 demo 314.5,2372.7,984,162
+-- idle
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Tags"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Skills (no duplicates)"
+ .tag-input[0] rel 31,58.8,450,46 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=8px 10px shadow=none
+ .tag-input[1] rel 503,58.8,450,46 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=8px 10px shadow=none
+ .tag[0] rel 42,68.2,67.2,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag[1] rel 115.2,68.2,76.5,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag[2] rel 514,68.2,58,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ tag button[0] rel 90.2,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ tag button[1] rel 172.7,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ tag button[2] rel 553,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none text=""
+ tag svg[0] rel 90.2,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ tag svg[1] rel 172.7,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ tag svg[2] rel 553,75.8,12,12 font=400 13.3333px/normal color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ .tag-input__field[0] rel 197.7,68.3,272.3,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="Add a tag…"
+ .tag-input__field[1] rel 578,68.3,364,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="Add a skill…"
+ .tag-input__hint[0] rel 31,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="2 of 6 tags"
+ .tag-input__hint[1] rel 503,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="1 of 4 tags"
+-- Skills filled to max with vue,node,go then try "x" (rejected), 2 rows via long tags on Tags
+ .tag-input(max) rel 503,58.8,450,46 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=8px 10px shadow=none
+ .tag-input__field(max) rel 750.6,68.3,191.4,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="Add a skill…"
+ hint(max) rel 503,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="4 of 4 tags"
+ .tag-input(wrap) rel 31,58.8,450,78.2 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=8px 10px shadow=none
+ .tag(wrap)[0] rel 42,67.8,67.2,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag(wrap)[1] rel 115.2,67.8,76.5,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag(wrap)[2] rel 197.7,67.8,112.8,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag(wrap)[3] rel 316.5,67.8,126.8,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ .tag-input__field(wrap) rel 42,101,428,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="Add a tag…"
+== autocomplete section 314.5,2574.9,984,326.4 demo 314.5,2731.3,984,162
+-- idle
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Technologies as tags"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Framework"
+ ac0 .tag-input rel 31,58.8,450,46 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=8px 10px shadow=none
+ ac0 field rel 42,68.3,428,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="Search technologies…"
+ .ac__hint rel 31,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="0 selected"
+ ac1 .input rel 503,58.8,450,45 font=400 15px/21px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(213, 207, 192) rad=8px pad=11px 13px 11px 38px shadow=none text="Search or type your own…"
+ ac1 icon rel 516,73.3,16,16 font=400 15px/24px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ ac1 .field__hint rel 503,110.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Pick a suggestion or keep your"
+-- ac0: React, Vue chosen, typed o, 2x ArrowDown
+ ac0 .tag-input(focus) rel 31,58.8,450,46 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(166, 78, 42) rad=8px pad=8px 10px shadow=rgb(248, 236, 228) 0px 0px 0px 3px
+ ac0 .tag[0] rel 42,68.2,60.8,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ ac0 .tag[1] rel 108.8,68.2,51.7,27.2 font=600 12px/19.2px color=rgb(166, 78, 42) bg=rgb(248, 236, 228) bd=0px rgb(166, 78, 42) rad=6px pad=4px 7px shadow=none
+ ac0 field rel 166.5,68.3,303.5,27 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=0px pad=4px 2px shadow=none text="o"
+ .ac__list rel 31,110.8,450,162 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=6px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .ac__option[0] rel 38,117.8,436,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Node.js"
+ .ac__option[1] rel 38,154.8,436,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgb(238, 234, 224) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Python"
+ .ac__option[2] rel 38,191.8,436,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="PostgreSQL"
+ .ac__option[3] rel 38,228.8,436,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Docker"
+ .ac__hint(2) rel 31,111.8,450,19.2 font=400 12px/19.2px color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px rgb(107, 102, 89) rad=0px pad=0px shadow=none text="2 selected"
+-- ac1: focus (all 7), ArrowDown
+ .ac__list(7) rel 503,109.8,450,220 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=6px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+  list scrollHeight=271 clientHeight=218
+ .ac__option[0] rel 510,116.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="React"
+ .ac__option[1] rel 510,153.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Vue"
+ .ac__option[2] rel 510,190.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Angular"
+ .ac__option[3] rel 510,227.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Svelte"
+ .ac__option[4] rel 510,264.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Solid"
+ .ac__option[5] rel 510,301.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Next.js"
+ .ac__option[6] rel 510,338.8,425,37 font=400 14px/normal color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px rgb(38, 36, 31) rad=7px pad=9px 10px shadow=none text="Nuxt"
+ .ac__list(empty) rel 503,109.8,450,66.8 font=400 15px/24px color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px rgb(230, 226, 215) rad=12px pad=6px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .ac__empty rel 510,116.8,436,52.8 font=400 13px/20.8px color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px rgb(91, 85, 74) rad=0px pad=16px 10px shadow=none text="No suggestions"

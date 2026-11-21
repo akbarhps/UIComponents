@@ -138,7 +138,7 @@ Capture both. Acceptance: matches `web-table-data-table.png` and `web-table-filt
   - text "N rows selected" / "1 row selected", 14px 600 `Brand`
   - "Export" (secondary, small) and "Delete" (danger, small) on the right, 8px apart
   - the bar is about 54 tall
-  - The secondary and danger small button styles don't exist yet. Add `SecondaryButtonSm` and `DangerButtonSm` to `Controls.xaml` next to `GhostButtonSm`'s pattern: radius 7, padding `12,7`, MinHeight 32, 13px 600; hover changes the background, not the opacity.
+  - `SecondaryButtonSm` is defined by task 05 (Themes/Display.xaml); reuse it, do not define another. Add only `DangerButtonSm` to `Controls.xaml` next to `GhostButtonSm`'s pattern (same spec as below; if 05 has not landed `SecondaryButtonSm` yet, ask the reviewer): radius 7, padding `12,7`, MinHeight 32, 13px 600; hover changes the background, not the opacity.
 
 Capture idle, plus a selected state. `--capture` can't click, so for this one capture, temporarily tick rows 1 and 3 in code-behind under `#if DEBUG` behind an env var, or report the visual from the test run. Ask the reviewer if unsure.
 

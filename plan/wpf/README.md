@@ -30,6 +30,8 @@ Edit only your own area. If you need a change in someone else's area, ask in you
 | `SheetGrid.cs`, `Themes/Sheet.xaml`, the Grid input / Typed grid sections of `DataControls` | `grid` |
 | `Themes/Forms.xaml`; the `FieldLabel`, `FieldHint` and `ClaudeCheckBox` styles; the Forms section of `MainWindow.xaml` | `forms` |
 | The `Table*`, `StatusBadgeTemplate`, `SegmentButton`, `SortHeaderButton`, `PinButton` and `WebSelect` styles; `TablePagination`; the table sections of `MainWindow`, `DataControls` and `AdvancedControls` | `tables` |
+| `Themes/Display.xaml`, `Shimmer.cs`; the Cards, Badges, Alerts, Avatar, Skeleton, Progress and Empty state blocks of `MainWindow.xaml` | `display` |
+| `Themes/Dropdown.xaml`, `DropdownPrimitives.cs`, the per-control files of task 03; the Tag input, Autocomplete, Searchable select and Multi-select sections of `InputControls` | `dropdown` |
 | `wpf/build.bat`, `wpf/tests/run-hidden.ps1`, `App.xaml.cs` (`--capture`), `plan/wpf/*` | reviewer |
 | `wpf/tests/UIAutomationTests.cs` | shared: edit only your own assertions. `Main()` belongs to the reviewer |
 
@@ -53,8 +55,9 @@ Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes
 |---|------|-------|--------|
 | 01 | [01-grid-input.md](01-grid-input.md) | Grid input + Typed grid input (`createGrid`) | in progress |
 | 02 | [02-forms.md](02-forms.md) | Forms section: input, search, select, textarea, error, checkbox, radio, switch | ready (after 01) |
-| 03 | — | Dropdown family: searchable select, multi-select, tag input, autocomplete | later |
+| 03 | [03-dropdown.md](03-dropdown.md) | Dropdown family: searchable select, multi-select, tag input, autocomplete | ready (agent `dropdown`) |
 | 04 | [04-tables.md](04-tables.md) | Fix-up of the existing table port: data, row selection, filters, column filters, sortable | ready (agent `tables`) |
+| 05 | [05-display.md](05-display.md) | Cards, badges, alerts, avatar, skeleton, progress, empty state (fix-up audit) | in progress (agent `display`) |
 | … | — | everything else | later |
 
 ## Hard constraints (apply to every task)
@@ -79,6 +82,7 @@ Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes
      - The app renders each element off-screen at 1400x1100 and 96 DPI (`--capture` in `App.xaml.cs`). Text is greyscale, like the headless-Edge web references.
      - `@<FocusId>` focuses that element first, for focus-state shots.
      - `!<ClickId>` clicks a button (or toggles a checkbox or toggle button) first. You can chain several, and they run in order. For example, `InputGrid!InputGrid_row1=...` captures with row 2 selected.
+      - Steps run left to right: `~Down|~Up|~Enter|~Escape|~Tab` raises PreviewKeyDown + KeyDown on the focused element, `^text` sets the focused TextBox's text; e.g. `ComboCard!ComboAssignee_Trigger^eng~Down=...`.
      - `-Capture` also accepts an element's `x:Name`. `Sections` is the whole content column in standalone mode.
      - Pass several captures as **one** comma-separated string.
    - **Don't** launch the exe directly on the user's desktop. Don't use `capture-wpf.ps1` or UIA `SetFocus` against a visible window. Both steal the user's screen and focus.

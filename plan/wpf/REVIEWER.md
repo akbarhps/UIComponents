@@ -8,6 +8,8 @@ You are the **planner and reviewer**, not a worker. The user runs several worker
 
 Read `plan/wpf/README.md` (rules every worker follows) and the task files before doing anything.
 
+**The workers run in OpenCode Desktop, and you drive them directly:** read their reports and send prompts with `docs/oc.ps1`. See [docs/OPENCODE.md](../../docs/OPENCODE.md) for the setup, the session map and the loop. Copy-paste through the user is only the fallback.
+
 ## Goal
 
 `wpf/` (.NET Framework 4.8 WPF, C# 5) must look and behave like `web/index.html` (the source of truth) within ±1px and with exact colours. Glyph rasterisation differences are accepted.
@@ -16,10 +18,12 @@ Read `plan/wpf/README.md` (rules every worker follows) and the task files before
 
 | Task | Agent | Done | Next |
 |---|---|---|---|
-| 01 grid input (`SheetGrid`) | `grid` | Phases 0–3 approved | Phase 4 (data ops) prompt sent; then 5 typed grid, 6 tests |
-| 02 forms | `forms` | Phases 1–2 approved | Phase 3 (checkbox/radio/switch card) prompt sent; then 4 tests |
-| 04 tables (fix-up of an earlier, unplanned port) | `tables` | review written | Phase 1 (shared S1–S9) prompt sent |
-| 03 dropdown family (searchable select, multi-select, tag input, autocomplete) | — | not planned | plan after 02 is done (it reuses `Field*` styles) |
+| 01 grid input (`SheetGrid`) | `grid` | DONE: Phases 0-6 approved, review fixes in (popup-click guard, clipboard-safe tests, select text/focus ring); 100 assertions | follow-up after web fixes: paste respects allowAddColumn:false (C8), copy only selected cells (C9); open-dropdown visuals and popup-click are code-only |
+| 02 forms | `forms` | DONE: Phases 1-4 approved, focus-ring round verified (ring 4px each side, no box movement, 90 assertions) | session archived; accepted quirk: IsKeyboardFocused ring also shows after a mouse click |
+| 04 tables (fix-up of an earlier, unplanned port) | `tables` | Phases 1-2 reviewed; fix round 3 (empty state, last-row line kept in filter tables, segment gaps, avatars, line heights, SectionTitle LineHeight) + Phase 4 sent | Phase 3 (selection + bulk bar) after display's SecondaryButtonSm; delete TableSmallSecondary then |
+| 03 dropdown family (searchable select, multi-select, tag input, autocomplete) | `dropdown` | planned (03-dropdown.md); Phase 0 sent | update M8/A3/A6/S4/S5/S10/A2 once web fixes land |
+| 05 display (cards, badges, alerts, avatar, skeleton, progress, empty state) | `display` | Phase 0 approved, Phase 1 done (review pending) | Phase 2+ |
+| web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | sent | then tell dropdown/grid, refresh autocomplete refs |
 | rest (buttons, cards, badges, alerts, accordion, tabs, toasts, overlays, pickers, file input…) | — | not planned | group into similar sets, one task file each |
 
 Dependencies:
