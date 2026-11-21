@@ -492,6 +492,28 @@ svg{ display: block; }
 .picker__time label{ flex:1; font-size:12px; color:var(--ink-2); display:flex; flex-direction:column; gap:5px; }
 .picker__foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:10px; margin-top:10px; border-top:1px solid var(--line); }
 
+/* ── Skeleton loader ──────────────────────────────────────── */
+.skeleton{ background:var(--bg-deep); border-radius:6px; position:relative; overflow:hidden; }
+.skeleton::after{
+  content:""; position:absolute; inset:0; transform:translateX(-100%);
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent);
+  animation:shimmer 1.4s infinite;
+}
+@keyframes shimmer{ to{ transform:translateX(100%); } }
+.sk-line{ height:12px; }
+.sk-circle{ width:40px; height:40px; border-radius:50%; }
+.sk-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px; }
+.sk-row{ display:flex; align-items:center; gap:12px; }
+.sk-row + .sk-row{ margin-top:18px; }
+.sk-table-row{ display:flex; align-items:center; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); }
+.sk-table-row:last-child{ border-bottom:0; }
+
+/* ── Determinate progress ─────────────────────────────────── */
+.progress{ height:8px; background:var(--bg-deep); border-radius:99px; overflow:hidden; }
+.progress__fill{ height:100%; width:0; background:var(--brand); border-radius:99px; transition:width .25s ease; }
+.progress__meta{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; font-size:13px; color:var(--ink-2); }
+.progress__value{ font-variant-numeric:tabular-nums; font-weight:600; color:var(--ink); }
+
 /* ── Loading modal ────────────────────────────────────────── */
 .loading-modal{ max-width:380px; text-align:center; }
 .loading-modal__spinner{ width:36px; height:36px; margin:0 auto 18px; border:3px solid var(--brand-soft); border-top-color:var(--brand); border-radius:50%; animation:spin .8s linear infinite; }
@@ -843,8 +865,11 @@ svg{ display: block; }
   .pagination__controls{ grid-row:2; }
   .pagination__info{ grid-row:3; }
 }
+.motion-cue{ display:none; font-size:12px; font-weight:600; color:var(--brand); background:var(--brand-soft); border-radius:99px; padding:4px 10px; }
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
+  .motion-cue{ display:inline-flex; align-items:center; gap:6px; }
+  .skeleton{ background:var(--line); }
 }
 </style>
 </head>
@@ -897,6 +922,8 @@ svg{ display: block; }
         <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
         <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
         <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
+        <a href="#skeleton"><svg><use href="#i-card"/></svg>Skeleton</a>
+        <a href="#progress"><svg><use href="#i-more"/></svg>Progress bar</a>
         <a href="#empty-state"><svg><use href="#i-card"/></svg>Empty state</a>
         <a href="#accordion"><svg><use href="#i-chevron"/></svg>Accordion</a>
         <a href="#stepper"><svg><use href="#i-check"/></svg>Stepper</a>
@@ -1356,6 +1383,48 @@ svg{ display: block; }
           <div class="alert alert--success"><svg><use href="#i-check"/></svg><div><div class="alert__title">Saved</div><div class="alert__text">Your settings have been updated.</div></div></div>
           <div class="alert alert--warning"><svg><use href="#i-alert"/></svg><div><div class="alert__title">Check your input</div><div class="alert__text">Some fields still need your attention.</div></div></div>
           <div class="alert alert--danger"><svg><use href="#i-close"/></svg><div><div class="alert__title">Something went wrong</div><div class="alert__text">We couldn't complete that request. Try again.</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skeleton -->
+    <section class="section" id="skeleton">
+      <div class="section__head"><h2>Skeleton loader</h2><p>Placeholders that hold the shape of content while it loads, so the layout doesn't jump when data arrives.</p></div>
+      <div class="demo">
+        <span class="motion-cue">Loading content…</span>
+        <div class="grid-2">
+          <div class="sk-card">
+            <div class="sk-row"><div class="skeleton sk-circle"></div><div style="flex:1"><div class="skeleton sk-line" style="width:55%"></div><div class="skeleton sk-line" style="width:35%; margin-top:8px"></div></div></div>
+            <div class="skeleton sk-line" style="width:100%; margin-top:22px"></div>
+            <div class="skeleton sk-line" style="width:82%; margin-top:9px"></div>
+            <div class="skeleton sk-line" style="width:64%; margin-top:9px"></div>
+          </div>
+          <div class="sk-card">
+            <div class="sk-row"><div class="skeleton sk-circle"></div><div style="flex:1"><div class="skeleton sk-line" style="width:48%"></div><div class="skeleton sk-line" style="width:30%; margin-top:8px"></div></div></div>
+            <div class="skeleton sk-line" style="width:90%; margin-top:22px"></div>
+            <div class="skeleton sk-line" style="width:72%; margin-top:9px"></div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="demo__label">Table rows</div>
+        <div class="sk-card">
+          <div class="sk-table-row"><div class="skeleton sk-line" style="width:28%"></div><div class="skeleton sk-line" style="width:20%"></div><div class="skeleton sk-line" style="width:14%"></div><div class="skeleton sk-line" style="width:10%; margin-left:auto"></div></div>
+          <div class="sk-table-row"><div class="skeleton sk-line" style="width:34%"></div><div class="skeleton sk-line" style="width:18%"></div><div class="skeleton sk-line" style="width:12%"></div><div class="skeleton sk-line" style="width:9%; margin-left:auto"></div></div>
+          <div class="sk-table-row"><div class="skeleton sk-line" style="width:24%"></div><div class="skeleton sk-line" style="width:22%"></div><div class="skeleton sk-line" style="width:15%"></div><div class="skeleton sk-line" style="width:11%; margin-left:auto"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section class="section" id="progress">
+      <div class="section__head"><h2>Progress bar</h2><p>A determinate bar for work with a known duration, such as an upload. The demo animates through a simulated upload.</p></div>
+      <div class="demo">
+        <div class="progress__meta"><span id="progressLabel">Uploading files…</span><span class="progress__value" id="progressValue">0%</span></div>
+        <div class="progress"><div class="progress__fill" id="progressFill"></div></div>
+        <div class="divider"></div>
+        <div class="row">
+          <button class="btn btn--primary" id="progressStart">Start upload</button>
+          <button class="btn btn--secondary" id="progressReset">Reset</button>
         </div>
       </div>
     </section>
@@ -3159,6 +3228,37 @@ document.addEventListener('keydown', e => {
     e.preventDefault();
     openCmdk();
   }
+});
+
+/* Progress bar */
+const progressFill = document.getElementById('progressFill');
+const progressValue = document.getElementById('progressValue');
+const progressLabel = document.getElementById('progressLabel');
+let progressTimer = null;
+function setProgress(value){
+  progressFill.style.width = value + '%';
+  progressValue.textContent = value + '%';
+}
+document.getElementById('progressStart').addEventListener('click', () => {
+  if(progressTimer) return;
+  let value = 0;
+  progressLabel.textContent = 'Uploading files…';
+  progressTimer = setInterval(() => {
+    value = Math.min(100, value + Math.round(Math.random() * 12) + 4);
+    setProgress(value);
+    if(value >= 100){
+      clearInterval(progressTimer);
+      progressTimer = null;
+      progressLabel.textContent = 'Upload complete';
+      showToast('success', 'Upload complete', 'All files were uploaded.');
+    }
+  }, 350);
+});
+document.getElementById('progressReset').addEventListener('click', () => {
+  clearInterval(progressTimer);
+  progressTimer = null;
+  progressLabel.textContent = 'Uploading files…';
+  setProgress(0);
 });
 
 /* Stepper */
