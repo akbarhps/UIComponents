@@ -30,10 +30,11 @@ namespace UIComponents
             set { _box.Multiline = value; _box.Height = value ? 78 : 30; _select.Visible = !value && IsSelect; _box.Visible = !IsSelect; Arrange(); }
         }
         public bool Password { get { return _box.UseSystemPasswordChar; } set { _box.UseSystemPasswordChar = value; } }
+        private bool _isSelect;
         public bool IsSelect
         {
-            get { return _select.Visible; }
-            set { _select.Visible = value; _box.Visible = !value; Arrange(); }
+            get { return _isSelect; }
+            set { _isSelect = value; _select.Visible = value; _box.Visible = !value; Arrange(); }
         }
         public string[] Options
         {
@@ -41,8 +42,8 @@ namespace UIComponents
         }
         public string TextValue
         {
-            get { return IsSelect ? (_select.SelectedItem == null ? "" : _select.SelectedItem.ToString()) : _box.Text; }
-            set { if (IsSelect) _select.SelectedItem = value; else _box.Text = value; }
+            get { return _isSelect ? (_select.SelectedItem == null ? "" : _select.SelectedItem.ToString()) : _box.Text; }
+            set { if (_isSelect) _select.SelectedItem = value; else _box.Text = value; }
         }
 
         public ClaudeField()
@@ -69,6 +70,7 @@ namespace UIComponents
             _select.FlatStyle = FlatStyle.Flat;
             _select.BackColor = Theme.Surface;
             _select.DropDownStyle = ComboBoxStyle.DropDownList;
+            _select.Visible = false;
 
             Controls.AddRange(new Control[] { _label, _box, _select, _hint, _error });
             Arrange();
@@ -196,14 +198,7 @@ namespace UIComponents
             Controls.Add(_list);
             Controls.Add(_input);
 
-            _input.TextChanged += (s, e) =>
-            {
-                var q = _input.Text.Trim().ToLowerInvariant();
-                _list.Items.Clear();
-                foreach (var o in _options)
-                    if (o.ToLowerInvariant().Contains(q) && !_picked.Contains(o)) _list.Items.Add(o);
-                _list.Visible = _list.Items.Count > 0;
-            };
+            _input.TextChanged += (s, e) => Filter();
             _input.KeyDown += (s, e) =>
             {
                 if (!_list.Visible) return;
@@ -217,6 +212,15 @@ namespace UIComponents
                 else if (e.KeyCode == Keys.Escape) _list.Visible = false;
             };
             _list.Click += (s, e) => { if (_list.SelectedIndex >= 0) Choose(_list.SelectedItem.ToString()); };
+        }
+
+        private void Filter()
+        {
+            var q = _input.Text.Trim().ToLowerInvariant();
+            _list.Items.Clear();
+            foreach (var o in _options)
+                if (o.ToLowerInvariant().Contains(q) && !_picked.Contains(o)) _list.Items.Add(o);
+            _list.Visible = _list.Items.Count > 0;
         }
 
         private void Choose(string value)

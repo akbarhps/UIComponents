@@ -89,6 +89,9 @@ namespace UIComponents
             _spin = (_spin + 12) % 360;
             Invalidate();
         }
+
+        /// <summary>Invokes the Click event — useful for automated UI tests.</summary>
+        public void SimulateClick() { OnClick(EventArgs.Empty); }
     }
 
     public enum BadgeTone { Neutral, Brand, Success, Warning, Danger }

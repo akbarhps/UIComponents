@@ -178,6 +178,7 @@ namespace UIComponents
                     int x = 350;
                     foreach (DataColumn col in _source.Columns)
                     {
+                        if (col.ColumnName == "_match") continue;
                         var box = new TextBox { Font = Theme.Sans(8.5f), BorderStyle = BorderStyle.FixedSingle, Location = new Point(x, 8), Width = 100 };
                         box.TextChanged += (s, e) => { _pageIndex = 1; Apply(); };
                         _columnFilters[col.ColumnName] = box;
@@ -250,6 +251,8 @@ namespace UIComponents
 
             Size = new Size(820, 320);
             Apply();
+            if (_options.StickyFirst && _grid.Columns.Count > 0) _grid.Columns[0].Frozen = true;
+            if (_options.Sortable) foreach (DataGridViewColumn col in _grid.Columns) col.SortMode = DataGridViewColumnSortMode.Automatic;
             if (_options.ShowSelection) { _grid.ClearSelection(); _bulkBar.Visible = false; }
         }
 
