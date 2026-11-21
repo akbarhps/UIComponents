@@ -670,6 +670,25 @@ svg{ display: block; }
 .table.sticky-column thead th:first-child{ z-index:2; background:var(--surface-2); }
 .table.sticky-column tbody tr:hover td:first-child{ background:var(--surface-2); }
 
+/* ── Row selection ────────────────────────────────────────── */
+.bulkbar{
+  display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+  background:var(--brand-soft); border:1px solid #ecd4c8; border-radius:var(--radius-sm);
+  padding:10px 14px; margin-bottom:16px; font-size:14px; color:var(--brand);
+}
+.bulkbar[hidden]{ display:none; }
+.bulkbar strong{ font-weight:600; }
+.bulkbar__actions{ display:flex; gap:8px; margin-left:auto; }
+.select-all-check{ cursor:pointer; }
+
+/* ── Toast variants ───────────────────────────────────────── */
+.toast__body{ flex:1; min-width:0; }
+.toast__close{ appearance:none; border:0; background:none; cursor:pointer; color:var(--ink-3); padding:2px; border-radius:5px; display:grid; place-items:center; }
+.toast__close:hover{ color:var(--ink); background:rgba(255,255,255,.6); }
+.toast__close svg{ width:14px; height:14px; color:inherit; margin:0; }
+.toast__action{ display:block; appearance:none; border:0; background:none; cursor:pointer; font:600 13px var(--font-sans); color:var(--brand); padding:2px 0; margin-top:6px; }
+.toast__action:hover{ text-decoration:underline; }
+
 /* ── Pagination ───────────────────────────────────────────── */
 .pagination{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:12px; padding-top:16px; }
 .pagination__limit{ grid-column:1; grid-row:1; justify-self:start; display:inline-flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-2); white-space:nowrap; }
@@ -903,6 +922,7 @@ svg{ display: block; }
       <div class="nav-group">
         <div class="nav-label">Data tables</div>
         <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
+        <a href="#selection-table"><svg><use href="#i-check"/></svg>Row selection</a>
         <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
         <a href="#column-filters"><svg><use href="#i-filter"/></svg>Column filters</a>
         <a href="#sort-table"><svg><use href="#i-table"/></svg>Sortable table</a>
@@ -913,7 +933,8 @@ svg{ display: block; }
         <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
         <a href="#loading"><svg><use href="#i-spark"/></svg>Loading modal</a>
         <a href="#command-palette"><svg><use href="#i-search"/></svg>Command palette</a>
-        <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
+        <a href="#toast-variants"><svg><use href="#i-info"/></svg>Toast variants</a>
+      <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
       </div>
     </nav>
     <div class="sidebar__foot">Single file, no dependencies<br/>Copy any component you need.</div>
@@ -1541,6 +1562,35 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Row selection table -->
+    <section class="section" id="selection-table">
+      <div class="section__head"><h2>Table with row selection</h2><p>Select rows with the header checkbox or individual boxes. A bulk-action bar appears with the count of selected rows.</p></div>
+      <div class="demo">
+        <div class="bulkbar" id="bulkbar" hidden>
+          <strong id="bulkCount">0 selected</strong>
+          <div class="bulkbar__actions">
+            <button type="button" class="btn btn--secondary btn--sm" data-bulk="export">Export</button>
+            <button type="button" class="btn btn--danger btn--sm" data-bulk="delete">Delete</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="selectionTable">
+            <thead><tr>
+              <th class="select-all-check"><label class="check"><input type="checkbox" id="selectAll"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></th>
+              <th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th>
+            </tr></thead>
+            <tbody>
+              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Website refresh</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Mobile app</td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Brand guidelines</td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Help center</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td></tr>
+              <tr><td><label class="check"><input type="checkbox" class="row-check"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Q3 campaign</td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- Filterable table -->
     <section class="section" id="filter-table">
       <div class="section__head"><h2>Table with filters</h2><p>Search by name and narrow by status. The count and empty state update as you type.</p></div>
@@ -1784,6 +1834,18 @@ svg{ display: block; }
       <div class="section__head"><h2>Command palette</h2><p>A search-driven action menu. Press Ctrl+K (or Cmd+K) anywhere, or use the button below, to jump to an action.</p></div>
       <div class="demo">
         <div class="row"><button class="btn btn--secondary" id="openCmdk">Open command palette <kbd class="cmdk__esc">Ctrl K</kbd></button></div>
+      </div>
+    </section>
+
+    <!-- Toast variants -->
+    <section class="section" id="toast-variants">
+      <div class="section__head"><h2>Toast variants</h2><p>Toasts with a manual close button, an inline action, or persistence until dismissed.</p></div>
+      <div class="demo">
+        <div class="row">
+          <button class="btn btn--secondary" id="toastDismissible">Dismissible</button>
+          <button class="btn btn--secondary" id="toastWithAction">With action</button>
+          <button class="btn btn--secondary" id="toastPersistent">Persistent</button>
+        </div>
       </div>
     </section>
 
@@ -2111,6 +2173,7 @@ document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
   const prev = demo.querySelector('[data-page-prev]');
   const next = demo.querySelector('[data-page-next]');
   const limit = demo.querySelector('[data-page-limit]');
+  if(!limit) return;
   let page = 1;
   let pageSize = Number(limit.value);
 
@@ -3092,16 +3155,61 @@ document.querySelectorAll('.tab').forEach(tab => {
   });
 });
 
+/* Row selection */
+const selectionTable = document.getElementById('selectionTable');
+const rowChecks = [...selectionTable.querySelectorAll('.row-check')];
+const selectAll = document.getElementById('selectAll');
+const bulkbar = document.getElementById('bulkbar');
+const bulkCount = document.getElementById('bulkCount');
+function updateBulkbar(){
+  const selected = rowChecks.filter(c => c.checked).length;
+  bulkbar.hidden = selected === 0;
+  bulkCount.textContent = selected + (selected === 1 ? ' row selected' : ' rows selected');
+  selectAll.checked = selected === rowChecks.length && selected > 0;
+  selectAll.indeterminate = selected > 0 && selected < rowChecks.length;
+}
+rowChecks.forEach(c => c.addEventListener('change', updateBulkbar));
+selectAll.addEventListener('change', () => {
+  rowChecks.forEach(c => c.checked = selectAll.checked);
+  updateBulkbar();
+});
+bulkbar.querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => {
+  const action = b.dataset.bulk;
+  const count = rowChecks.filter(c => c.checked).length;
+  if(action === 'delete'){
+    rowChecks.filter(c => c.checked).forEach(c => c.closest('tr').remove());
+    rowChecks.splice(0, rowChecks.length, ...selectionTable.querySelectorAll('.row-check'));
+    showToast('success', 'Rows deleted', count + (count === 1 ? ' row' : ' rows') + ' removed.');
+  } else {
+    showToast('info', 'Export started', 'Preparing ' + count + (count === 1 ? ' row' : ' rows') + ' for export.');
+  }
+  updateBulkbar();
+}));
+
 /* Toasts */
 const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
-function showToast(type, title, text){
+function showToast(type, title, text, options = {}){
   const el = document.createElement('div');
   el.className = 'toast' + (type !== 'success' ? ' toast--' + type : '');
-  el.innerHTML = '<div class="toast__icon"><svg><use href="#' + toastIcons[type] + '"/></svg></div><div><strong></strong><span></span></div>';
+  const body = '<div class="toast__body"><strong></strong><span></span>' +
+    (options.action ? '<button type="button" class="toast__action"></button>' : '') + '</div>';
+  el.innerHTML = '<div class="toast__icon"><svg><use href="#' + toastIcons[type] + '"/></svg></div>' + body +
+    (options.dismissible || options.persistent ? '<button type="button" class="toast__close" aria-label="Dismiss"><svg><use href="#i-close"/></svg></button>' : '');
   el.querySelector('strong').textContent = title;
   el.querySelector('span').textContent = text;
+  if(options.action) el.querySelector('.toast__action').textContent = options.action;
+  function dismiss(){
+    clearTimeout(timer);
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 260);
+  }
+  const closeBtn = el.querySelector('.toast__close');
+  if(closeBtn) closeBtn.addEventListener('click', dismiss);
+  const actionBtn = el.querySelector('.toast__action');
+  if(actionBtn) actionBtn.addEventListener('click', () => { showToast('success', 'Done', 'The action was completed.'); dismiss(); });
   document.getElementById('toastStack').appendChild(el);
-  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 260); }, 3600);
+  const timer = options.persistent ? null : setTimeout(dismiss, 3600);
+  return el;
 }
 document.querySelectorAll('[data-toast]').forEach(b => {
   b.addEventListener('click', () => {
@@ -3114,6 +3222,13 @@ document.querySelectorAll('[data-toast]').forEach(b => {
     showToast(t, msg[0], msg[1]);
   });
 });
+
+document.getElementById('toastDismissible').addEventListener('click', () =>
+  showToast('info', 'New update available', 'Restart to apply the latest changes.', { dismissible: true }));
+document.getElementById('toastWithAction').addEventListener('click', () =>
+  showToast('success', 'Message sent', 'Delivered to the team.', { action: 'Undo', dismissible: true }));
+document.getElementById('toastPersistent').addEventListener('click', () =>
+  showToast('error', 'Connection lost', 'We could not reach the server. Check your network.', { persistent: true, dismissible: true }));
 
 /* Loading button demo */
 const loadingBtn = document.getElementById('loadingBtn');
