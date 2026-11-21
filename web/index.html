@@ -314,6 +314,15 @@ svg{ display: block; }
 .icon-btn:hover{ background:var(--bg-deep); color:var(--ink); }
 .icon-btn svg{ width:18px; height:18px; }
 
+/* ── Loading modal ────────────────────────────────────────── */
+.loading-modal{ max-width:380px; text-align:center; }
+.loading-modal__spinner{ width:36px; height:36px; margin:0 auto 18px; border:3px solid var(--brand-soft); border-top-color:var(--brand); border-radius:50%; animation:spin .8s linear infinite; }
+.loading-modal__title{ font:600 21px/1.25 var(--font-serif); }
+.loading-modal__text{ color:var(--ink-2); font-size:14px; margin-top:9px; }
+.loading-bar{ height:4px; background:var(--bg-deep); border-radius:99px; overflow:hidden; margin-top:22px; }
+.loading-bar::after{ content:""; display:block; width:35%; height:100%; background:var(--brand); border-radius:99px; animation:indeterminate 1.2s ease-in-out infinite; }
+@keyframes indeterminate{ from{ transform:translateX(-100%); } to{ transform:translateX(390%); } }
+
 /* ── Toast ────────────────────────────────────────────────── */
 .toast-stack{ position:fixed; right:24px; bottom:24px; z-index:200; width:360px; max-width:calc(100vw - 48px); display:flex; flex-direction:column; gap:10px; }
 .toast{
@@ -589,6 +598,7 @@ svg{ display: block; }
       <a href="#sort-table"><svg><use href="#i-table"/></svg>Sortable table</a>
       <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
       <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
+      <a href="#loading"><svg><use href="#i-spark"/></svg>Loading modal</a>
       <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
     </nav>
     <div class="sidebar__foot">Single file, no dependencies<br/>Copy any component you need.</div>
@@ -1105,6 +1115,14 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Loading modal -->
+    <section class="section" id="loading">
+      <div class="section__head"><h2>Loading modal</h2><p>Blocks every action while work is in progress. It can't be dismissed by clicking the backdrop or pressing Escape — the task closes it when it finishes.</p></div>
+      <div class="demo">
+        <div class="row"><button class="btn btn--primary" id="openLoading">Start loading</button></div>
+      </div>
+    </section>
+
     <!-- Toasts -->
     <section class="section" id="toasts">
       <div class="section__head"><h2>Toasts</h2><p>Brief, non-blocking feedback that appears in the corner and dismisses itself.</p></div>
@@ -1131,6 +1149,16 @@ svg{ display: block; }
       <button class="btn btn--secondary" id="cancelModal">Cancel</button>
       <button class="btn btn--danger" id="confirmModal">Delete project</button>
     </div>
+  </div>
+</div>
+
+<!-- Loading modal markup -->
+<div class="overlay overlay--blocking" id="loadingOverlay" role="dialog" aria-modal="true" aria-busy="true" aria-labelledby="loadingTitle" aria-describedby="loadingText">
+  <div class="modal loading-modal" tabindex="-1">
+    <div class="loading-modal__spinner" aria-hidden="true"></div>
+    <h3 class="loading-modal__title" id="loadingTitle">Preparing your workspace</h3>
+    <p class="loading-modal__text" id="loadingText">Please wait a moment while we set things up for you.</p>
+    <div class="loading-bar" aria-hidden="true"></div>
   </div>
 </div>
 
@@ -1222,11 +1250,13 @@ function closeOverlay(el){
   document.body.style.overflow = '';
   if(lastFocus) lastFocus.focus();
 }
-overlays.forEach(el => el.addEventListener('click', e => { if(e.target === el) closeOverlay(el); }));
+overlays.forEach(el => el.addEventListener('click', e => {
+  if(e.target === el && !el.classList.contains('overlay--blocking')) closeOverlay(el);
+}));
 document.addEventListener('keydown', e => {
   if(e.key !== 'Escape') return;
   const open = overlays.find(el => el.classList.contains('open'));
-  if(open) closeOverlay(open);
+  if(open && !open.classList.contains('overlay--blocking')) closeOverlay(open);
 });
 
 /* Confirmation modal */
@@ -1235,6 +1265,16 @@ document.getElementById('openModal').addEventListener('click', () => openOverlay
 document.getElementById('closeModal').addEventListener('click', () => closeOverlay(overlay));
 document.getElementById('cancelModal').addEventListener('click', () => closeOverlay(overlay));
 document.getElementById('confirmModal').addEventListener('click', () => { closeOverlay(overlay); showToast('success','Deleted','The project was removed.'); });
+
+/* Loading modal */
+const loadingOverlay = document.getElementById('loadingOverlay');
+document.getElementById('openLoading').addEventListener('click', () => {
+  openOverlay(loadingOverlay, loadingOverlay.querySelector('.loading-modal'));
+  setTimeout(() => {
+    closeOverlay(loadingOverlay);
+    showToast('success', 'Ready', 'Your workspace is ready.');
+  }, 3000);
+});
 
 /* Modal form */
 const formOverlay = document.getElementById('formOverlay');
