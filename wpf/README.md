@@ -11,6 +11,14 @@ build.bat
 bin\Debug\UIComponents.Wpf.exe
 ```
 
+To view one component at a time (handy for visual comparison with the web UI), pass its section title:
+
+```bat
+bin\Debug\UIComponents.Wpf.exe "Data table"
+```
+
+Any `SectionTitle` text works, e.g. `"Buttons"`, `"Forms"`, `"Empty state"`. The app opens normally when no title is given.
+
 ## UI Automation tests — no cursor movement
 
 ```bat

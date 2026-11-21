@@ -35,8 +35,8 @@
         </Border>
 
         <!-- Content -->
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="48,56,48,96">
-            <StackPanel MaxWidth="1000">
+        <ScrollViewer x:Name="ContentScroll" Grid.Column="1" VerticalScrollBarVisibility="Auto" Padding="48,56,48,96">
+            <StackPanel x:Name="Sections" MaxWidth="1000">
                 <!-- Masthead -->
                 <Border Background="{StaticResource BrandSoft}" CornerRadius="99" Padding="11,5" HorizontalAlignment="Left" Margin="0,0,0,18">
                     <TextBlock Text="Web components, version 1.0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Brand}"/>
@@ -100,7 +100,9 @@
                 <!-- Table -->
                 <TextBlock Text="Data table" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
                 <TextBlock Text="Aligned columns, tabular numbers, row hover and status badges." Style="{StaticResource SectionDesc}"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0" Padding="0" ClipToBounds="True">
+                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+                    <StackPanel>
+                    <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
                     <DataGrid x:Name="DemoGrid" AutoGenerateColumns="False" HeadersVisibility="Column"
                               Background="{StaticResource Surface}" BorderThickness="0"
                               Foreground="{StaticResource Ink}" FontSize="14"
@@ -111,7 +113,7 @@
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="DemoGrid">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Project" Width="260">
+                            <DataGridTemplateColumn Header="Project" Width="210">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -146,13 +148,17 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Owner" Width="180" Binding="{Binding Owner}"/>
-                            <DataGridTemplateColumn Header="Status" Width="140">
+                            <DataGridTextColumn Header="Owner" Width="125" Binding="{Binding Owner}"/>
+                            <DataGridTemplateColumn Header="Status" Width="125">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border x:Name="Badge" Style="{StaticResource BadgeSuccess}">
-                                            <TextBlock x:Name="BadgeLabel" Text="{Binding Status}"
-                                                       Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}"/>
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Ellipse Width="6" Height="6" Margin="0,0,6,0"
+                                                         Fill="{Binding ElementName=BadgeLabel, Path=Foreground}"/>
+                                                <TextBlock x:Name="BadgeLabel" Text="{Binding Status}"
+                                                           Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}"/>
+                                            </StackPanel>
                                         </Border>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Status}" Value="In review">
@@ -171,8 +177,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Updated" Width="140" Binding="{Binding Updated}"/>
-                            <DataGridTemplateColumn Header="Budget" Width="140" HeaderStyle="{StaticResource TableHeaderRight}">
+                            <DataGridTextColumn Header="Updated" Width="115" Binding="{Binding Updated}"/>
+                            <DataGridTemplateColumn Header="Budget" Width="95" HeaderStyle="{StaticResource TableHeaderRight}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}"
@@ -181,7 +187,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="" Width="90">
+                            <DataGridTemplateColumn Header="" Width="75">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="Open" Style="{StaticResource TableAction}"/>
@@ -190,6 +196,41 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    </Border>
+
+                    <Grid Margin="0,18,0,0" AutomationProperties.AutomationId="TablePagination">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Show" FontSize="13" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
+                            <Border BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="8"
+                                    Padding="9,0,8,0" Height="32" Margin="8,0" VerticalAlignment="Center">
+                                <Grid>
+                                    <TextBlock Text="25" FontSize="13" Foreground="{StaticResource Ink}"
+                                               VerticalAlignment="Center" Margin="0,0,16,0"/>
+                                    <Path Data="M 1 3 L 5 7 L 9 3" Stroke="{StaticResource Ink3}" StrokeThickness="1.8"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round" Width="10" Height="8" Stretch="Uniform"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <TextBlock Text="per page" FontSize="13" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Content="Previous" Style="{StaticResource SecondaryButton}" MinHeight="32"
+                                    Padding="12,6" FontSize="13" IsEnabled="False" Margin="0,0,6,0"/>
+                            <Button Content="1" Style="{StaticResource SecondaryButton}" MinHeight="32" Padding="12,6"
+                                    FontSize="13" Width="34" Background="{StaticResource Ink}" Foreground="White"
+                                    BorderThickness="0" Margin="0,0,6,0"/>
+                            <Button Content="Next" Style="{StaticResource SecondaryButton}" MinHeight="32"
+                                    Padding="12,6" FontSize="13" IsEnabled="False"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="Showing 1–5 of 5" FontSize="13" Foreground="{StaticResource Ink3}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    </Grid>
+                    </StackPanel>
                 </Border>
 
                 <!-- Alerts -->

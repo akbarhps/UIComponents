@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace UIComponents.Wpf
 {
@@ -23,6 +25,37 @@ namespace UIComponents.Wpf
                 new ProjectRow { Project = "Help center", Owner = "Ada Lovelace", Initials = "AL", Team = "Content", Status = "Active", Updated = "Last week", Budget = "$8,750" },
                 new ProjectRow { Project = "Legacy archive", Owner = "Sam Patel", Initials = "SP", Team = "Operations", Status = "Draft", Updated = "2 weeks ago", Budget = "$1,100" }
             };
+            ApplyStandaloneMode();
+        }
+
+        // Launch with a section title (e.g. "Data table") to show only that section.
+        private void ApplyStandaloneMode()
+        {
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length < 2) return;
+
+            var key = args[1];
+            var titleStyle = (Style)FindResource("SectionTitle");
+            string current = null;
+            bool matched = false;
+            foreach (UIElement child in Sections.Children)
+            {
+                var text = child as TextBlock;
+                if (text != null && text.Style == titleStyle) current = text.Text;
+                bool show = current != null && string.Equals(current, key, StringComparison.OrdinalIgnoreCase);
+                child.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+                if (show) matched = true;
+            }
+
+            if (matched)
+            {
+                Title = key + " — Claude UI";
+                ContentScroll.Padding = new Thickness(48, 40, 48, 48);
+            }
+            else
+            {
+                foreach (UIElement child in Sections.Children) child.Visibility = Visibility.Visible;
+            }
         }
     }
 
