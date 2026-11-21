@@ -357,6 +357,9 @@ svg{ display: block; }
 .table__action{ appearance:none; border:0; background:none; padding:4px; cursor:pointer; color:var(--brand); font:600 13px var(--font-sans); }
 .table__action:hover{ text-decoration:underline; }
 .table tr[hidden]{ display:none; }
+.table th.table__filter{ padding:8px 10px; background:var(--surface); }
+.input--sm,.select--sm{ padding:7px 9px; font-size:13px; min-height:32px; }
+.select--sm{ padding-right:28px; background-position:right 8px center; }
 .empty{ padding:44px 20px; text-align:center; color:var(--ink-2); font-size:14px; }
 .empty strong{ display:block; color:var(--ink); font-size:15px; margin-bottom:5px; }
 
@@ -453,6 +456,7 @@ svg{ display: block; }
       <a href="#avatar"><svg><use href="#i-more"/></svg>Avatars</a>
       <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
       <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
+      <a href="#column-filters"><svg><use href="#i-filter"/></svg>Column filters</a>
       <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
       <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
       <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
@@ -719,6 +723,42 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Table with column filters -->
+    <section class="section" id="column-filters">
+      <div class="section__head"><h2>Table with column filters</h2><p>A filter under every column header. Each one narrows the rows independently, and the count updates as you type.</p></div>
+      <div class="demo">
+        <div class="filters"><span class="filter-count" id="colCount">6 of 6 projects</span></div>
+        <div class="table-wrap">
+          <table class="table" id="columnTable">
+            <thead>
+              <tr><th>Project</th><th>Owner</th><th>Status</th><th>Updated</th><th class="table__num">Budget</th><th></th></tr>
+              <tr>
+                <th class="table__filter"><input class="input input--sm" id="colProject" type="search" placeholder="Filter projects…" aria-label="Filter by project"/></th>
+                <th class="table__filter"><input class="input input--sm" id="colOwner" type="search" placeholder="Filter owners…" aria-label="Filter by owner"/></th>
+                <th class="table__filter">
+                  <select class="select select--sm" id="colStatus" aria-label="Filter by status">
+                    <option value="">All statuses</option><option value="active">Active</option><option value="pending">Pending</option><option value="archived">Archived</option>
+                  </select>
+                </th>
+                <th class="table__filter"><input class="input input--sm" id="colUpdated" type="search" placeholder="Any date" aria-label="Filter by updated date"/></th>
+                <th class="table__filter"><input class="input input--sm" id="colBudget" type="number" min="0" placeholder="Min amount" aria-label="Filter by minimum budget"/></th>
+                <th class="table__filter"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-status="active" data-budget="12400"><td>Website refresh<span class="table__sub">Design team</span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Today</td><td class="table__num">$12,400</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="active" data-budget="28900"><td>Mobile app<span class="table__sub">Engineering</span></td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td><td>Yesterday</td><td class="table__num">$28,900</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="pending" data-budget="4200"><td>Brand guidelines<span class="table__sub">Design team</span></td><td>Mia Chen</td><td><span class="badge badge--warning">Pending</span></td><td>3 days ago</td><td class="table__num">$4,200</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="active" data-budget="8750"><td>Help center<span class="table__sub">Content</span></td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td><td>Last week</td><td class="table__num">$8,750</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="pending" data-budget="15600"><td>Q3 campaign<span class="table__sub">Marketing</span></td><td>Sam Patel</td><td><span class="badge badge--warning">Pending</span></td><td>Last week</td><td class="table__num">$15,600</td><td><button class="table__action">Open</button></td></tr>
+              <tr data-status="archived" data-budget="1100"><td>Legacy archive<span class="table__sub">Operations</span></td><td>Mia Chen</td><td><span class="badge badge--neutral">Archived</span></td><td>2 weeks ago</td><td class="table__num">$1,100</td><td><button class="table__action">Open</button></td></tr>
+              <tr id="colEmpty" hidden><td colspan="6"><div class="empty"><strong>No matching projects</strong>Try changing a column filter.</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
     <!-- Drawer form -->
     <section class="section" id="drawer">
       <div class="section__head"><h2>Sidebar modal form</h2><p>A slide-out panel for longer forms that still need focus. Closes with the button, the backdrop, or Escape.</p></div>
@@ -930,6 +970,31 @@ filterButtons.forEach(b => b.addEventListener('click', () => {
   filterButtons.forEach(x => x.classList.toggle('active', x === b));
   applyFilters();
 }));
+
+/* Table with column filters */
+const colInputs = [...document.querySelectorAll('#columnTable thead input, #columnTable thead select')];
+const colRows = [...document.querySelectorAll('#columnTable tbody tr[data-status]')];
+const colEmpty = document.getElementById('colEmpty');
+const colCount = document.getElementById('colCount');
+function applyColumnFilters(){
+  const terms = colInputs.map(el => el.value.trim().toLowerCase());
+  const minBudget = parseFloat(document.getElementById('colBudget').value) || 0;
+  let shown = 0;
+  colRows.forEach(row => {
+    const cells = row.cells;
+    const match =
+      cells[0].textContent.toLowerCase().includes(terms[0]) &&
+      cells[1].textContent.toLowerCase().includes(terms[1]) &&
+      (!terms[2] || row.dataset.status === terms[2]) &&
+      cells[3].textContent.toLowerCase().includes(terms[3]) &&
+      Number(row.dataset.budget) >= minBudget;
+    row.hidden = !match;
+    if(match) shown++;
+  });
+  colEmpty.hidden = shown !== 0;
+  colCount.textContent = shown + ' of ' + colRows.length + ' projects';
+}
+colInputs.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', applyColumnFilters));
 
 /* Tabs */
 document.querySelectorAll('.tab').forEach(tab => {
