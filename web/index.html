@@ -465,6 +465,40 @@ svg{ display: block; }
 .file-item .icon-btn{ width:26px; height:26px; }
 .file-item .icon-btn svg{ width:15px; height:15px; }
 
+/* ── Spreadsheet input ────────────────────────────────────── */
+.sheet{ display:flex; flex-direction:column; gap:14px; }
+.sheet__toolbar{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; }
+.sheet__actions{ display:flex; flex-wrap:wrap; gap:8px; }
+.sheet__info{ font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.sheet__scroll{ overflow:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+.sheet__table{ width:100%; min-width:560px; border-collapse:separate; border-spacing:0; user-select:none; }
+.sheet__input{ user-select:text; }
+.sheet__table th,.sheet__table td{ border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:0; }
+.sheet__table tr > :last-child{ border-right:0; }
+.sheet__table tbody tr:last-child > *{ border-bottom:0; }
+.sheet__table th.sheet__head{ background:var(--surface-2); font:600 12px var(--font-sans); color:var(--ink-2); padding:9px 12px; text-align:center; min-width:46px; }
+.sheet__table th.sheet__head--col{ min-width:110px; text-align:left; }
+.sheet__table th.sheet__head[data-row],.sheet__table th.sheet__head[data-col]{ cursor:pointer; }
+.sheet__table th.sheet__head:hover{ color:var(--ink); }
+.sheet__table th.sheet__head.selected{ background:var(--brand-soft); color:var(--brand); }
+.sheet__input{ width:100%; min-width:110px; border:0; background:transparent; padding:9px 12px; font:14px var(--font-sans); color:var(--ink); }
+.sheet__input::placeholder{ color:var(--ink-3); }
+.sheet__input:focus{ outline:none; background:var(--surface-2); box-shadow:inset 0 0 0 2px var(--focus); }
+.sheet__cell.selected .sheet__input{ background:var(--brand-soft); }
+.sheet__select{
+  appearance:none; cursor:pointer; padding-right:34px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b6659' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 12px center;
+}
+.sheet__cell--center{ text-align:center; }
+.sheet__checkbox{ width:16px; height:16px; accent-color:var(--brand); cursor:pointer; vertical-align:middle; }
+.sheet__add{ cursor:pointer; min-width:56px; padding:9px 12px; color:var(--brand); background:var(--brand-soft); font:600 20px/1 var(--font-sans); text-align:center; }
+.sheet__add:hover{ background:#f0d9cd; }
+.sheet__add-cell{ background:var(--surface-2); }
+.sheet__add-row .sheet__add-cell{ text-align:center; padding:10px 12px; color:var(--brand); background:var(--brand-soft); font:600 13px var(--font-sans); cursor:pointer; }
+.sheet__add-row .sheet__add-cell:hover{ background:#f0d9cd; }
+.sheet__hint{ font-size:12px; color:var(--ink-3); }
+
 /* ── Table ────────────────────────────────────────────────── */
 .table-wrap{ width:100%; overflow-x:auto; }
 .table--wide{ min-width:1100px; }
@@ -739,6 +773,8 @@ svg{ display: block; }
         <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
         <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
         <a href="#file-input"><svg><use href="#i-upload"/></svg>File input</a>
+        <a href="#sheet-input"><svg><use href="#i-table"/></svg>Grid input</a>
+        <a href="#typed-sheet"><svg><use href="#i-check"/></svg>Typed grid</a>
         <a href="#date-picker"><svg><use href="#i-calendar"/></svg>Date picker</a>
         <a href="#datetime-picker"><svg><use href="#i-clock"/></svg>Date &amp; time</a>
       </div>
@@ -923,6 +959,40 @@ svg{ display: block; }
               <div class="file-count" hidden></div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spreadsheet input -->
+    <section class="section" id="sheet-input">
+      <div class="section__head"><h2>Grid input</h2><p>A table you can type into. Paste a block of Excel cells at once, select a row or column to edit every cell together, and clear a whole selection in one action.</p></div>
+      <div class="demo">
+        <div class="sheet" id="sheet">
+          <div class="sheet__toolbar">
+            <div class="sheet__actions">
+              <button type="button" class="btn btn--ghost btn--sm" data-sheet-clear>Clear selected</button>
+            </div>
+            <span class="sheet__info" data-sheet-info>0 cells selected</span>
+          </div>
+          <div class="sheet__scroll"><table class="sheet__table"><thead></thead><tbody></tbody></table></div>
+          <p class="sheet__hint">Shift-click selects a range, Ctrl/Cmd-click adds cells, and clicking a row or column header selects the whole row or column.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typed grid input -->
+    <section class="section" id="typed-sheet">
+      <div class="section__head"><h2>Typed grid input</h2><p>The same grid with typed columns: plain text, a dropdown select, and a checkbox. Selection, bulk editing, paste and clearing all work across them.</p></div>
+      <div class="demo">
+        <div class="sheet" id="typedSheet">
+          <div class="sheet__toolbar">
+            <div class="sheet__actions">
+              <button type="button" class="btn btn--ghost btn--sm" data-sheet-clear>Clear selected</button>
+            </div>
+            <span class="sheet__info" data-sheet-info>0 cells selected</span>
+          </div>
+          <div class="sheet__scroll"><table class="sheet__table"><thead></thead><tbody></tbody></table></div>
+          <p class="sheet__hint">Select a Category cell to change it with the dropdown, or tick IsActive. Selecting several cells and changing one updates the rest.</p>
         </div>
       </div>
     </section>
@@ -2113,6 +2183,242 @@ function initPicker(root){
   render();
 }
 document.querySelectorAll('.picker').forEach(initPicker);
+
+/* Spreadsheet inputs */
+function createGrid(rootId, initialColumns, initialData, options = {}){
+  const allowAddColumn = options.allowAddColumn !== false;
+  const root = document.getElementById(rootId);
+  let columns = initialColumns.map(col => ({ ...col }));
+  let data = initialData.map(row => [...row]);
+  const selection = new Set();
+  let anchor = null, dragging = false, dragAdditive = false, lastDrag = '';
+  const head = root.querySelector('thead');
+  const body = root.querySelector('tbody');
+  const info = root.querySelector('[data-sheet-info]');
+  const cellKey = (r, c) => r + ':' + c;
+  const control = el => el.closest('.sheet__control');
+  const escapeAttr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const typeOf = c => (columns[c] && columns[c].type) || 'text';
+
+  function ensure(r, c){
+    while(data.length <= r) data.push(Array(columns.length).fill(''));
+    while(columns.length <= c){
+      columns.push({ name: 'Column ' + (columns.length + 1), type: 'text' });
+      data.forEach(row => row.push(''));
+    }
+  }
+  function rowSelected(r){ return Array.from({ length: columns.length }, (_, c) => selection.has(cellKey(r, c))).every(Boolean); }
+  function colSelected(c){ return data.every((_, r) => selection.has(cellKey(r, c))); }
+  function paint(){
+    body.querySelectorAll('.sheet__cell').forEach(td => {
+      const el = td.querySelector('.sheet__control');
+      td.classList.toggle('selected', selection.has(cellKey(+el.dataset.r, +el.dataset.c)));
+    });
+    body.querySelectorAll('[data-row]').forEach(h => h.classList.toggle('selected', rowSelected(+h.dataset.row)));
+    head.querySelectorAll('[data-col]').forEach(h => h.classList.toggle('selected', colSelected(+h.dataset.col)));
+    info.textContent = selection.size + (selection.size === 1 ? ' cell selected' : ' cells selected');
+  }
+  function cellHTML(r, c, value){
+    const col = columns[c];
+    const type = col.type || 'text';
+    const sel = selection.has(cellKey(r, c)) ? ' selected' : '';
+    const attrs = 'data-r="' + r + '" data-c="' + c + '"';
+    if(type === 'checkbox')
+      return '<td class="sheet__cell sheet__cell--center' + sel + '"><input type="checkbox" class="sheet__control sheet__checkbox" ' + attrs + (value === 'true' || value === true ? ' checked' : '') + '/></td>';
+    if(type === 'select')
+      return '<td class="sheet__cell' + sel + '"><select class="sheet__control sheet__input sheet__select" ' + attrs + '><option value=""></option>' +
+        col.options.map(o => '<option value="' + escapeAttr(o) + '"' + (value === o ? ' selected' : '') + '>' + escapeAttr(o) + '</option>').join('') + '</select></td>';
+    return '<td class="sheet__cell' + sel + '"><input class="sheet__control sheet__input" ' + attrs + ' value="' + escapeAttr(value) + '"/></td>';
+  }
+  function render(){
+    const addColHead = allowAddColumn ? '<th class="sheet__add" data-add-col title="Add column">+</th>' : '';
+    const addColCell = allowAddColumn ? '<td class="sheet__add-cell"></td>' : '';
+    head.innerHTML = '<tr><th class="sheet__head"></th>' + columns.map((col, c) =>
+      '<th class="sheet__head sheet__head--col' + (colSelected(c) ? ' selected' : '') + '" data-col="' + c + '">' + escapeAttr(col.name) + '</th>').join('') + addColHead + '</tr>';
+    body.innerHTML = data.map((row, r) =>
+      '<tr><th class="sheet__head' + (rowSelected(r) ? ' selected' : '') + '" data-row="' + r + '">' + (r + 1) + '</th>' +
+      row.map((value, c) => cellHTML(r, c, value)).join('') + addColCell + '</tr>').join('') +
+      '<tr class="sheet__add-row"><th class="sheet__add" data-add-row title="Add row">+</th><td class="sheet__add-cell" colspan="' + (columns.length + (allowAddColumn ? 1 : 0)) + '" data-add-row>+ Add row</td></tr>';
+    paint();
+  }
+  function selectCell(r, c, event){
+    if(event.shiftKey && anchor){
+      const [ar, ac] = anchor;
+      for(let i = Math.min(ar, r); i <= Math.max(ar, r); i++)
+        for(let j = Math.min(ac, c); j <= Math.max(ac, c); j++) selection.add(cellKey(i, j));
+    } else if(event.ctrlKey || event.metaKey){
+      const k = cellKey(r, c);
+      if(selection.has(k)) selection.delete(k); else selection.add(k);
+      anchor = [r, c];
+    } else {
+      selection.clear();
+      selection.add(cellKey(r, c));
+      anchor = [r, c];
+    }
+    paint();
+  }
+  function selectRange(r, c, additive){
+    if(!anchor) return;
+    const [ar, ac] = anchor;
+    if(!additive) selection.clear();
+    for(let i = Math.min(ar, r); i <= Math.max(ar, r); i++)
+      for(let j = Math.min(ac, c); j <= Math.max(ac, c); j++) selection.add(cellKey(i, j));
+    paint();
+  }
+  function clearSelected(){
+    selection.forEach(k => {
+      const [r, c] = k.split(':').map(Number);
+      if(data[r]) data[r][c] = '';
+    });
+    body.querySelectorAll('.sheet__control').forEach(el => {
+      if(!selection.has(cellKey(+el.dataset.r, +el.dataset.c))) return;
+      if(el.type === 'checkbox') el.checked = false; else el.value = '';
+    });
+  }
+  body.addEventListener('click', e => {
+    const row = e.target.closest('[data-row]');
+    if(!row) return;
+    const r = +row.dataset.row;
+    if(e.shiftKey && anchor){
+      const start = Math.min(anchor[0], r), end = Math.max(anchor[0], r);
+      if(!e.ctrlKey && !e.metaKey) selection.clear();
+      for(let i = start; i <= end; i++)
+        for(let c = 0; c < columns.length; c++) selection.add(cellKey(i, c));
+    } else if(e.ctrlKey || e.metaKey){
+      for(let c = 0; c < columns.length; c++){
+        const k = cellKey(r, c);
+        if(selection.has(k)) selection.delete(k); else selection.add(k);
+      }
+      anchor = [r, 0];
+    } else {
+      selection.clear();
+      for(let c = 0; c < columns.length; c++) selection.add(cellKey(r, c));
+      anchor = [r, 0];
+    }
+    paint();
+  });
+  body.addEventListener('mousedown', e => {
+    const el = control(e.target);
+    if(!el) return;
+    dragging = true;
+    dragAdditive = e.ctrlKey || e.metaKey;
+    lastDrag = el.dataset.r + ':' + el.dataset.c;
+    selectCell(+el.dataset.r, +el.dataset.c, e);
+  });
+  body.addEventListener('mouseover', e => {
+    if(!dragging) return;
+    const el = control(e.target);
+    if(!el) return;
+    const key = el.dataset.r + ':' + el.dataset.c;
+    if(key === lastDrag) return;
+    lastDrag = key;
+    selectRange(+el.dataset.r, +el.dataset.c, dragAdditive);
+  });
+  document.addEventListener('mouseup', () => { dragging = false; lastDrag = ''; });
+  body.addEventListener('focusin', e => {
+    const el = control(e.target);
+    if(!el) return;
+    const r = +el.dataset.r, c = +el.dataset.c;
+    if(!selection.has(cellKey(r, c))){
+      selection.clear();
+      selection.add(cellKey(r, c));
+      anchor = [r, c];
+      paint();
+    }
+  });
+  body.addEventListener('input', e => {
+    const el = control(e.target);
+    if(!el) return;
+    const r = +el.dataset.r, c = +el.dataset.c;
+    const value = el.type === 'checkbox' ? String(el.checked) : el.value;
+    data[r][c] = value;
+    if(selection.size > 1){
+      selection.forEach(k => {
+        const [sr, sc] = k.split(':').map(Number);
+        if((sr === r && sc === c) || !data[sr]) return;
+        if(typeOf(sc) !== typeOf(c)) return;
+        if(typeOf(c) !== 'text' && sc !== c) return;
+        data[sr][sc] = value;
+        const target = body.querySelector('.sheet__control[data-r="' + sr + '"][data-c="' + sc + '"]');
+        if(target){ if(target.type === 'checkbox') target.checked = value === 'true'; else target.value = value; }
+      });
+    }
+  });
+  body.addEventListener('keydown', e => {
+    const el = control(e.target);
+    if(!el) return;
+    if((e.key === 'Delete' || e.key === 'Backspace') && selection.size > 1){
+      e.preventDefault();
+      clearSelected();
+    } else if(e.key === 'Enter'){
+      e.preventDefault();
+      const r = +el.dataset.r, c = +el.dataset.c;
+      ensure(r + 1, c);
+      if(body.querySelectorAll('.sheet__control').length !== data.length * columns.length) render();
+      const next = body.querySelector('.sheet__control[data-r="' + (r + 1) + '"][data-c="' + c + '"]');
+      if(next) next.focus();
+    }
+  });
+  head.addEventListener('click', e => {
+    const col = e.target.closest('[data-col]');
+    if(!col) return;
+    const c = +col.dataset.col;
+    selection.clear();
+    data.forEach((_, r) => selection.add(cellKey(r, c)));
+    anchor = [0, c];
+    paint();
+  });
+  root.addEventListener('paste', e => {
+    const text = (e.clipboardData || window.clipboardData).getData('text');
+    if(!text || (!text.includes('\t') && !text.includes('\n'))) return;
+    e.preventDefault();
+    const active = control(document.activeElement);
+    const r = active ? +active.dataset.r : 0;
+    const c = active ? +active.dataset.c : 0;
+    const rows = text.replace(/\r/g, '').split('\n');
+    if(rows[rows.length - 1] === '') rows.pop();
+    rows.forEach((line, ri) => line.split('\t').forEach((value, ci) => {
+      ensure(r + ri, c + ci);
+      const type = typeOf(c + ci);
+      let stored = value;
+      if(type === 'checkbox') stored = /^(true|1|yes)$/i.test(value.trim()) ? 'true' : 'false';
+      else if(type === 'select' && !columns[c + ci].options.includes(value)) stored = '';
+      data[r + ri][c + ci] = stored;
+    }));
+    render();
+    const focusCell = body.querySelector('.sheet__control[data-r="' + r + '"][data-c="' + c + '"]');
+    if(focusCell) focusCell.focus();
+  });
+  root.addEventListener('click', e => {
+    if(e.target.closest('[data-add-row]')){
+      data.push(Array(columns.length).fill(''));
+      render();
+    } else if(e.target.closest('[data-add-col]')){
+      columns.push({ name: 'Column ' + (columns.length + 1), type: 'text' });
+      data.forEach(row => row.push(''));
+      render();
+    }
+  });
+  root.querySelector('[data-sheet-clear]').addEventListener('click', clearSelected);
+  render();
+}
+createGrid('sheet', [
+  { name: 'Width', type: 'text' }, { name: 'Height', type: 'text' },
+  { name: 'Depth', type: 'text' }, { name: 'Weight', type: 'text' }
+], [
+  ['Small', '10', '20', '5'], ['Medium', '14', '24', '8'], ['Large', '18', '30', '12']
+]);
+createGrid('typedSheet', [
+  { name: 'Variant', type: 'text' },
+  { name: 'Width', type: 'text' },
+  { name: 'Height', type: 'text' },
+  { name: 'Category', type: 'select', options: ['Standard', 'Pro', 'Custom'] },
+  { name: 'IsActive', type: 'checkbox' }
+], [
+  ['Small', '10', '20', 'Standard', 'true'],
+  ['Medium', '14', '24', 'Pro', 'true'],
+  ['Large', '18', '30', 'Custom', 'false']
+], { allowAddColumn: false });
 
 /* Action menus */
 document.querySelectorAll('.menu').forEach(menu => {
