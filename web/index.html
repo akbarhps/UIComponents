@@ -390,6 +390,89 @@ svg{ display: block; }
 .drawer__intro{ font-size:14px; color:var(--ink-2); }
 .drawer__foot{ margin-top:auto; padding:18px 26px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px; }
 
+/* ── Searchable select ────────────────────────────────────── */
+.combo{ position:relative; }
+.combo__trigger{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  font:15px/1.4 var(--font-sans); color:var(--ink); text-align:left;
+  background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  padding:11px 13px; min-height:46px; cursor:pointer;
+}
+.combo__trigger:hover{ border-color:var(--ink-3); }
+.combo__trigger[aria-expanded="true"]{ border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); outline:none; }
+.combo__value{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.combo__value.is-placeholder{ color:var(--ink-3); }
+.combo__trigger svg{ width:16px; height:16px; color:var(--ink-3); flex:none; transition:transform .15s; }
+.combo__trigger[aria-expanded="true"] svg{ transform:rotate(180deg); }
+.combo__panel{
+  position:absolute; z-index:30; top:calc(100% + 6px); left:0; right:0;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow-2); overflow:hidden;
+}
+.combo__panel[hidden]{ display:none; }
+.combo__search{ position:relative; padding:10px; border-bottom:1px solid var(--line); }
+.combo__search svg{ position:absolute; left:21px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--ink-3); }
+.combo__input{
+  width:100%; font:13px/1.4 var(--font-sans); color:var(--ink);
+  padding:8px 10px 8px 32px; border:1px solid var(--line-strong); border-radius:7px; background:var(--surface);
+}
+.combo__input::placeholder{ color:var(--ink-3); }
+.combo__input:focus{ outline:none; border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); }
+.combo__list{ max-height:220px; overflow-y:auto; padding:6px; }
+.combo__option{ display:flex; align-items:center; gap:8px; padding:9px 10px; border-radius:7px; font-size:14px; cursor:pointer; }
+.combo__option[hidden]{ display:none; }
+.combo__option:hover,.combo__option.is-active{ background:var(--bg-deep); }
+.combo__option[aria-selected="true"]{ color:var(--brand); font-weight:600; }
+.combo__option-label{ flex:1; }
+.combo__option-meta{ font-size:12px; color:var(--ink-3); font-weight:400; }
+.combo__check{ width:14px; height:14px; visibility:hidden; }
+.combo__option[aria-selected="true"] .combo__check{ visibility:visible; }
+.combo__empty{ padding:18px 10px; text-align:center; font-size:13px; color:var(--ink-2); }
+.combo__empty[hidden]{ display:none; }
+
+/* ── Multi-select with filter ─────────────────────────────── */
+.multi{ position:relative; }
+.multi__trigger{
+  width:100%; display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+  background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+  padding:9px 11px; min-height:46px; cursor:pointer; text-align:left; color:var(--ink); font:14px/1.4 var(--font-sans);
+}
+.multi__trigger:hover{ border-color:var(--ink-3); }
+.multi__trigger[aria-expanded="true"]{ border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); outline:none; }
+.multi__chips{ display:flex; flex-wrap:wrap; gap:6px; flex:1; }
+.multi__placeholder{ color:var(--ink-3); }
+.multi__chip{ display:inline-flex; align-items:center; gap:5px; background:var(--brand-soft); color:var(--brand); border-radius:6px; padding:4px 7px; font-size:12px; font-weight:600; }
+.multi__chip button{ appearance:none; border:0; background:none; color:inherit; cursor:pointer; padding:0; display:grid; place-items:center; }
+.multi__chip svg{ width:12px; height:12px; }
+.multi__trigger > svg{ width:16px; height:16px; color:var(--ink-3); flex:none; margin-top:3px; transition:transform .15s; }
+.multi__trigger[aria-expanded="true"] > svg{ transform:rotate(180deg); }
+.multi__panel{
+  position:absolute; z-index:30; top:calc(100% + 6px); left:0; right:0;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:var(--shadow-2); overflow:hidden;
+}
+.multi__panel[hidden]{ display:none; }
+.multi__search{ position:relative; padding:10px; border-bottom:1px solid var(--line); }
+.multi__search svg{ position:absolute; left:21px; top:50%; transform:translateY(-50%); width:15px; height:15px; color:var(--ink-3); }
+.multi__input{
+  width:100%; font:13px/1.4 var(--font-sans); color:var(--ink);
+  padding:8px 10px 8px 32px; border:1px solid var(--line-strong); border-radius:7px; background:var(--surface);
+}
+.multi__input::placeholder{ color:var(--ink-3); }
+.multi__input:focus{ outline:none; border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); }
+.multi__list{ max-height:220px; overflow-y:auto; padding:6px; }
+.multi__option{ display:flex; width:100%; padding:9px 10px; border-radius:7px; font-size:14px; }
+.multi__option:hover{ background:var(--bg-deep); }
+.multi__option[hidden]{ display:none; }
+.multi__option-label{ flex:1; }
+.multi__option-meta{ font-size:12px; color:var(--ink-3); }
+.multi__empty{ padding:18px 10px; text-align:center; font-size:13px; color:var(--ink-2); }
+.multi__empty[hidden]{ display:none; }
+.multi__foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border-top:1px solid var(--line); }
+.multi__foot-left{ display:flex; gap:4px; }
+.multi__foot-right{ display:flex; align-items:center; gap:10px; }
+.multi__count{ font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 860px){
   .app{ grid-template-columns: 1fr; }
@@ -435,6 +518,7 @@ svg{ display: block; }
   <symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11"/></symbol>
   <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
   <symbol id="i-panel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
 </svg>
 
 <div class="app">
@@ -449,6 +533,8 @@ svg{ display: block; }
       <a href="#buttons"><svg><use href="#i-button"/></svg>Buttons</a>
       <a href="#forms"><svg><use href="#i-form"/></svg>Forms</a>
       <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
+      <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
+      <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
       <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
       <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
       <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
@@ -569,6 +655,124 @@ svg{ display: block; }
       <div class="section__head"><h2>Modal form</h2><p>A focused form in a dialog. Fields keep the same labels, hints and error states as inline forms.</p></div>
       <div class="demo">
         <div class="row"><button class="btn btn--primary" id="openFormModal">Create project</button></div>
+      </div>
+    </section>
+
+    <!-- Searchable select -->
+    <section class="section" id="combobox">
+      <div class="section__head"><h2>Searchable select</h2><p>A dropdown that filters its options as you type. Open it, search, then choose with a click or the arrow keys and Enter.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="field">
+            <label class="field__label" id="assigneeLabel">Assignee</label>
+            <div class="combo">
+              <button type="button" class="combo__trigger" role="combobox" aria-expanded="false" aria-controls="assigneeList" aria-labelledby="assigneeLabel" aria-haspopup="listbox">
+                <span class="combo__value is-placeholder">Select a person…</span><svg><use href="#i-chevron"/></svg>
+              </button>
+              <div class="combo__panel" hidden>
+                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search people…" aria-label="Search people" autocomplete="off"/></div>
+                <div class="combo__list" id="assigneeList" role="listbox" aria-labelledby="assigneeLabel">
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Ada Lovelace</span><span class="combo__option-meta">Design</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Jonas Silva</span><span class="combo__option-meta">Engineering</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Mia Chen</span><span class="combo__option-meta">Design</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Sam Patel</span><span class="combo__option-meta">Operations</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Alex Rivera</span><span class="combo__option-meta">Marketing</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Priya Shah</span><span class="combo__option-meta">Content</span></div>
+                  <div class="combo__empty" hidden>No matches</div>
+                </div>
+              </div>
+            </div>
+            <span class="field__hint">Type a name to narrow the list.</span>
+          </div>
+          <div class="field">
+            <label class="field__label" id="projectComboLabel">Project</label>
+            <div class="combo">
+              <button type="button" class="combo__trigger" role="combobox" aria-expanded="false" aria-controls="projectComboList" aria-labelledby="projectComboLabel" aria-haspopup="listbox">
+                <span class="combo__value is-placeholder">Select a project…</span><svg><use href="#i-chevron"/></svg>
+              </button>
+              <div class="combo__panel" hidden>
+                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search projects…" aria-label="Search projects" autocomplete="off"/></div>
+                <div class="combo__list" id="projectComboList" role="listbox" aria-labelledby="projectComboLabel">
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Website refresh</span><span class="combo__option-meta">Design</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Mobile app</span><span class="combo__option-meta">Engineering</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Brand guidelines</span><span class="combo__option-meta">Design</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Help center</span><span class="combo__option-meta">Content</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Q3 campaign</span><span class="combo__option-meta">Marketing</span></div>
+                  <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Legacy archive</span><span class="combo__option-meta">Operations</span></div>
+                  <div class="combo__empty" hidden>No matches</div>
+                </div>
+              </div>
+            </div>
+            <span class="field__hint">Arrow keys and Enter work too.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Multi-select -->
+    <section class="section" id="multi-select">
+      <div class="section__head"><h2>Multi-select with filter</h2><p>Keep several values at once. Selections appear as removable chips, and the search narrows the options.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="field">
+            <label class="field__label" id="skillsLabel">Skills</label>
+            <div class="multi" data-placeholder="Select skills…">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-labelledby="skillsLabel" aria-haspopup="listbox">
+                <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
+              </button>
+              <div class="multi__panel" hidden>
+                <div class="multi__search"><svg><use href="#i-search"/></svg><input class="multi__input" type="text" placeholder="Search skills…" aria-label="Search skills" autocomplete="off"/></div>
+                <div class="multi__list">
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">React</span><span class="multi__option-meta">Frontend</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">TypeScript</span><span class="multi__option-meta">Frontend</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Design systems</span><span class="multi__option-meta">Design</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Accessibility</span><span class="multi__option-meta">Design</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Testing</span><span class="multi__option-meta">Engineering</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Documentation</span><span class="multi__option-meta">Content</span></label>
+                  <div class="multi__empty" hidden>No matches</div>
+                </div>
+                <div class="multi__foot">
+                  <div class="multi__foot-left">
+                    <button type="button" class="btn btn--ghost btn--sm multi__select-all">Select all</button>
+                    <button type="button" class="btn btn--ghost btn--sm multi__clear">Clear all</button>
+                  </div>
+                  <div class="multi__foot-right">
+                    <span class="multi__count">0 selected</span>
+                    <button type="button" class="btn btn--primary btn--sm multi__done">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" id="tagsLabel">Tags</label>
+            <div class="multi" data-placeholder="Select tags…">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-labelledby="tagsLabel" aria-haspopup="listbox">
+                <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
+              </button>
+              <div class="multi__panel" hidden>
+                <div class="multi__search"><svg><use href="#i-search"/></svg><input class="multi__input" type="text" placeholder="Search tags…" aria-label="Search tags" autocomplete="off"/></div>
+                <div class="multi__list">
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Urgent</span><span class="multi__option-meta">Priority</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Follow-up</span><span class="multi__option-meta">Workflow</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Blocked</span><span class="multi__option-meta">Status</span></label>
+                  <label class="check multi__option"><input type="checkbox"/><span class="check__box"><svg><use href="#i-check"/></svg></span><span class="multi__option-label">Research</span><span class="multi__option-meta">Phase</span></label>
+                  <div class="multi__empty" hidden>No matches</div>
+                </div>
+                <div class="multi__foot">
+                  <div class="multi__foot-left">
+                    <button type="button" class="btn btn--ghost btn--sm multi__select-all">Select all</button>
+                    <button type="button" class="btn btn--ghost btn--sm multi__clear">Clear all</button>
+                  </div>
+                  <div class="multi__foot-right">
+                    <span class="multi__count">0 selected</span>
+                    <button type="button" class="btn btn--primary btn--sm multi__done">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -995,6 +1199,149 @@ function applyColumnFilters(){
   colCount.textContent = shown + ' of ' + colRows.length + ' projects';
 }
 colInputs.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', applyColumnFilters));
+
+/* Searchable selects */
+document.querySelectorAll('.combo').forEach((combo, index) => {
+  const trigger = combo.querySelector('.combo__trigger');
+  const panel = combo.querySelector('.combo__panel');
+  const search = combo.querySelector('.combo__input');
+  const list = combo.querySelector('.combo__list');
+  const options = [...list.querySelectorAll('.combo__option')];
+  const empty = list.querySelector('.combo__empty');
+  const valueEl = combo.querySelector('.combo__value');
+  let activeIndex = -1;
+  options.forEach((o, i) => o.id = 'combo-' + index + '-option-' + i);
+  const visible = () => options.filter(o => !o.hidden);
+
+  function setActive(i){
+    const items = visible();
+    if(!items.length) return;
+    activeIndex = (i + items.length) % items.length;
+    items.forEach((o, n) => o.classList.toggle('is-active', n === activeIndex));
+    search.setAttribute('aria-activedescendant', items[activeIndex].id);
+    items[activeIndex].scrollIntoView({ block: 'nearest' });
+  }
+  function open(){
+    panel.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    search.value = '';
+    options.forEach(o => { o.hidden = false; o.classList.remove('is-active'); });
+    empty.hidden = true;
+    activeIndex = -1;
+    search.removeAttribute('aria-activedescendant');
+    search.focus();
+  }
+  function close(restoreFocus = true){
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    search.removeAttribute('aria-activedescendant');
+    if(restoreFocus) trigger.focus();
+  }
+  function choose(option){
+    options.forEach(o => o.setAttribute('aria-selected', 'false'));
+    option.setAttribute('aria-selected', 'true');
+    valueEl.textContent = option.querySelector('.combo__option-label').textContent;
+    valueEl.classList.remove('is-placeholder');
+    close();
+  }
+  trigger.addEventListener('click', () => panel.hidden ? open() : close());
+  trigger.addEventListener('keydown', e => {
+    if((e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') && panel.hidden){
+      e.preventDefault(); open(); setActive(0);
+    }
+  });
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    options.forEach(o => o.hidden = !o.textContent.toLowerCase().includes(q));
+    empty.hidden = visible().length > 0;
+    activeIndex = -1;
+  });
+  search.addEventListener('keydown', e => {
+    const items = visible();
+    if(e.key === 'ArrowDown'){ e.preventDefault(); setActive(activeIndex + 1); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); setActive(activeIndex - 1); }
+    else if(e.key === 'Enter' && items[activeIndex]){ e.preventDefault(); choose(items[activeIndex]); }
+    else if(e.key === 'Escape'){ e.preventDefault(); close(); }
+  });
+  options.forEach(o => o.addEventListener('click', () => choose(o)));
+  document.addEventListener('click', e => { if(!combo.contains(e.target) && !panel.hidden) close(false); });
+});
+
+/* Multi-selects */
+document.querySelectorAll('.multi').forEach(multi => {
+  const trigger = multi.querySelector('.multi__trigger');
+  const panel = multi.querySelector('.multi__panel');
+  const search = multi.querySelector('.multi__input');
+  const options = [...multi.querySelectorAll('.multi__option')];
+  const empty = multi.querySelector('.multi__empty');
+  const chips = multi.querySelector('.multi__chips');
+  const count = multi.querySelector('.multi__count');
+  const selected = () => options.filter(o => o.querySelector('input').checked);
+
+  function render(){
+    chips.innerHTML = '';
+    const chosen = selected();
+    if(!chosen.length){
+      const placeholder = document.createElement('span');
+      placeholder.className = 'multi__placeholder';
+      placeholder.textContent = multi.dataset.placeholder;
+      chips.appendChild(placeholder);
+    } else {
+      chosen.forEach(option => {
+        const label = option.querySelector('.multi__option-label').textContent;
+        const chip = document.createElement('span');
+        chip.className = 'multi__chip';
+        chip.append(document.createTextNode(label));
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.setAttribute('aria-label', 'Remove ' + label);
+        remove.innerHTML = '<svg><use href="#i-close"/></svg>';
+        remove.addEventListener('click', e => {
+          e.stopPropagation();
+          option.querySelector('input').checked = false;
+          render();
+        });
+        chip.appendChild(remove);
+        chips.appendChild(chip);
+      });
+    }
+    count.textContent = chosen.length + ' selected';
+  }
+  function close(){
+    panel.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.focus();
+  }
+  trigger.addEventListener('click', () => {
+    const open = panel.hidden;
+    panel.hidden = !open;
+    trigger.setAttribute('aria-expanded', String(open));
+    if(open){
+      search.value = '';
+      options.forEach(o => o.hidden = false);
+      empty.hidden = true;
+      search.focus();
+    }
+  });
+  search.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase();
+    options.forEach(o => o.hidden = !o.textContent.toLowerCase().includes(q));
+    empty.hidden = options.some(o => !o.hidden);
+  });
+  options.forEach(o => o.querySelector('input').addEventListener('change', render));
+  multi.querySelector('.multi__select-all').addEventListener('click', () => {
+    options.filter(o => !o.hidden).forEach(o => o.querySelector('input').checked = true);
+    render();
+  });
+  multi.querySelector('.multi__clear').addEventListener('click', () => {
+    options.forEach(o => o.querySelector('input').checked = false);
+    render();
+  });
+  multi.querySelector('.multi__done').addEventListener('click', close);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden) close(); });
+  document.addEventListener('click', e => { if(!multi.contains(e.target) && !panel.hidden) close(); });
+  render();
+});
 
 /* Tabs */
 document.querySelectorAll('.tab').forEach(tab => {
