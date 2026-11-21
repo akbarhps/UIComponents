@@ -415,6 +415,30 @@ svg{ display: block; }
 .form-grid .field--wide{ grid-column:1 / -1; }
 .modal form > .field{ margin-top:16px; }
 
+/* ── File input ───────────────────────────────────────────── */
+.file-input{ display:flex; flex-direction:column; gap:12px; }
+.file-drop{
+  border:1.5px dashed var(--line-strong); border-radius:var(--radius);
+  background:var(--surface-2); padding:26px 20px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center;
+  transition:border-color .15s, background .15s;
+}
+.file-drop:hover,.file-drop.dragover{ border-color:var(--brand); background:var(--brand-soft); }
+.file-drop:focus-within{ border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); }
+.file-drop > svg{ width:24px; height:24px; color:var(--brand); }
+.file-drop strong{ font-size:14px; }
+.file-drop span{ font-size:12px; color:var(--ink-3); }
+.file-count{ font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums; }
+.file-count[hidden]{ display:none; }
+.file-list{ display:flex; flex-direction:column; gap:8px; }
+.file-input[data-multiple="true"] .file-list{ max-height:220px; overflow-y:auto; padding-right:4px; }
+.file-item{ display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); font-size:14px; }
+.file-item > svg{ width:16px; height:16px; color:var(--ink-3); flex:none; }
+.file-item__name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.file-item__size{ font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.file-item .icon-btn{ width:26px; height:26px; }
+.file-item .icon-btn svg{ width:15px; height:15px; }
+
 /* ── Table ────────────────────────────────────────────────── */
 .table-wrap{ width:100%; overflow-x:auto; }
 .table--wide{ min-width:1100px; }
@@ -655,6 +679,8 @@ svg{ display: block; }
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"/></symbol>
   <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></symbol>
 </svg>
 
 <div class="app">
@@ -681,6 +707,7 @@ svg{ display: block; }
         <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
         <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
         <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
+        <a href="#file-input"><svg><use href="#i-upload"/></svg>File input</a>
         <a href="#date-picker"><svg><use href="#i-calendar"/></svg>Date picker</a>
         <a href="#datetime-picker"><svg><use href="#i-clock"/></svg>Date &amp; time</a>
       </div>
@@ -797,6 +824,41 @@ svg{ display: block; }
             <label class="check check--radio"><input type="radio" name="plan" checked/><span class="check__box"><svg><use href="#i-check"/></svg></span>Starter</label>
             <label class="check check--radio"><input type="radio" name="plan"/><span class="check__box"><svg><use href="#i-check"/></svg></span>Pro</label>
             <label class="switch"><input type="checkbox" checked/><span class="switch__track"></span>Dark mode</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- File input -->
+    <section class="section" id="file-input">
+      <div class="section__head"><h2>File input</h2><p>Drop files onto the area or click to browse. Selected files are listed with their size and can be removed individually.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="field">
+            <label class="field__label">Single file</label>
+            <div class="file-input" data-multiple="false">
+              <label class="file-drop">
+                <input class="sr-only" type="file"/>
+                <svg><use href="#i-upload"/></svg>
+                <strong>Drop a file here</strong>
+                <span>or click to browse</span>
+              </label>
+              <div class="file-list"></div>
+              <div class="file-count" hidden></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label">Multiple images</label>
+            <div class="file-input" data-multiple="true">
+              <label class="file-drop">
+                <input class="sr-only" type="file" multiple accept="image/*"/>
+                <svg><use href="#i-upload"/></svg>
+                <strong>Drop images here</strong>
+                <span>or click to browse · images only</span>
+              </label>
+              <div class="file-list"></div>
+              <div class="file-count" hidden></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1988,6 +2050,54 @@ function initPicker(root){
   render();
 }
 document.querySelectorAll('.picker').forEach(initPicker);
+
+/* File inputs */
+document.querySelectorAll('.file-input').forEach(box => {
+  const input = box.querySelector('input[type=file]');
+  const drop = box.querySelector('.file-drop');
+  const list = box.querySelector('.file-list');
+  const count = box.querySelector('.file-count');
+  const multiple = box.dataset.multiple === 'true';
+  let files = [];
+  function sizeLabel(bytes){
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+  function render(){
+    count.hidden = files.length === 0;
+    count.textContent = files.length + (files.length === 1 ? ' file selected' : ' files selected');
+    list.innerHTML = '';
+    files.forEach((file, i) => {
+      const row = document.createElement('div');
+      row.className = 'file-item';
+      row.innerHTML = '<svg><use href="#i-file"/></svg><span class="file-item__name"></span><span class="file-item__size"></span><button type="button" class="icon-btn" aria-label="Remove file"><svg><use href="#i-close"/></svg></button>';
+      row.querySelector('.file-item__name').textContent = file.name;
+      row.querySelector('.file-item__size').textContent = sizeLabel(file.size);
+      row.querySelector('button').addEventListener('click', () => {
+        files.splice(i, 1);
+        input.value = '';
+        render();
+      });
+      list.appendChild(row);
+    });
+  }
+  function add(chosen){
+    files = multiple ? [...files, ...chosen] : chosen.slice(0, 1);
+    render();
+  }
+  input.addEventListener('change', () => add([...input.files]));
+  ['dragenter','dragover'].forEach(type => drop.addEventListener(type, e => {
+    e.preventDefault();
+    drop.classList.add('dragover');
+  }));
+  ['dragleave','drop'].forEach(type => drop.addEventListener(type, e => {
+    e.preventDefault();
+    drop.classList.remove('dragover');
+  }));
+  drop.addEventListener('drop', e => add([...e.dataTransfer.files]));
+  render();
+});
 
 /* Tabs */
 document.querySelectorAll('.tab').forEach(tab => {
