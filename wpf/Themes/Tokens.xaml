@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Mirrors the :root tokens in web/index.html -->
+    <SolidColorBrush x:Key="Bg" Color="#FFF5F4EF"/>
+    <SolidColorBrush x:Key="BgDeep" Color="#FFEEEAE0"/>
+    <SolidColorBrush x:Key="Surface" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="Surface2" Color="#FFFAF9F5"/>
+    <SolidColorBrush x:Key="Ink" Color="#FF26241F"/>
+    <SolidColorBrush x:Key="Ink2" Color="#FF5B554A"/>
+    <SolidColorBrush x:Key="Ink3" Color="#FF6B6659"/>
+    <SolidColorBrush x:Key="Line" Color="#FFE6E2D7"/>
+    <SolidColorBrush x:Key="LineStrong" Color="#FFD5CFC0"/>
+    <SolidColorBrush x:Key="Brand" Color="#FFA64E2A"/>
+    <SolidColorBrush x:Key="BrandHover" Color="#FF8F3F20"/>
+    <SolidColorBrush x:Key="BrandBright" Color="#FFD97757"/>
+    <SolidColorBrush x:Key="BrandSoft" Color="#FFF8ECE4"/>
+    <SolidColorBrush x:Key="Success" Color="#FF356B4C"/>
+    <SolidColorBrush x:Key="SuccessSoft" Color="#FFE8F2EC"/>
+    <SolidColorBrush x:Key="Warning" Color="#FF855A16"/>
+    <SolidColorBrush x:Key="WarningSoft" Color="#FFF8F0DD"/>
+    <SolidColorBrush x:Key="Danger" Color="#FFB0433A"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#FFF9EAE7"/>
+    <SolidColorBrush x:Key="Info" Color="#FF3F6485"/>
+    <SolidColorBrush x:Key="InfoSoft" Color="#FFEAF0F6"/>
+
+    <FontFamily x:Key="Serif">Georgia, Palatino Linotype, serif</FontFamily>
+    <FontFamily x:Key="Sans">Segoe UI, Arial, sans-serif</FontFamily>
+
+    <sys:Double x:Key="Radius">12</sys:Double>
+    <sys:Double x:Key="RadiusSm">8</sys:Double>
+    <sys:Double x:Key="RadiusLg">16</sys:Double>
+
+    <DropShadowEffect x:Key="Shadow1" Color="#28211A" Opacity="0.08" BlurRadius="14" ShadowDepth="2" Direction="270"/>
+    <DropShadowEffect x:Key="Shadow2" Color="#28211A" Opacity="0.16" BlurRadius="30" ShadowDepth="4" Direction="270"/>
+</ResourceDictionary>
