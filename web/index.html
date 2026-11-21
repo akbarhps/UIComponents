@@ -211,6 +211,61 @@ svg{ display: block; }
 .menu__shortcut{ margin-left:auto; font-size:12px; color:var(--ink-3); }
 .menu__divider{ height:1px; background:var(--line); margin:5px 4px; }
 
+/* ── Empty state ──────────────────────────────────────────── */
+.empty-state{ display:flex; flex-direction:column; align-items:center; text-align:center; padding:44px 20px; }
+.empty-state__head{ display:flex; align-items:center; justify-content:center; gap:9px; margin-bottom:6px; flex-wrap:wrap; }
+.empty-state__icon{ color:var(--brand); display:grid; place-items:center; flex:none; }
+.empty-state__icon svg{ width:22px; height:22px; }
+.empty-state__title{ font:600 20px var(--font-serif); }
+.empty-state__text{ color:var(--ink-2); font-size:14px; margin-top:6px; max-width:42ch; }
+.empty-state__actions{ display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; justify-content:center; }
+
+/* ── Command palette ──────────────────────────────────────── */
+.cmdk-overlay{ z-index:120; align-items:flex-start; padding-top:12vh; }
+.cmdk{
+  width:100%; max-width:560px; background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-2);
+  overflow:hidden; transform:translateY(8px) scale(.985); transition:transform .2s cubic-bezier(.2,.8,.2,1);
+}
+.cmdk-overlay.open .cmdk{ transform:none; }
+.cmdk__search{ display:flex; align-items:center; gap:11px; padding:16px 18px; border-bottom:1px solid var(--line); }
+.cmdk__search > svg{ width:18px; height:18px; color:var(--ink-3); flex:none; }
+.cmdk__input{ flex:1; border:0; outline:0; background:none; font:16px var(--font-sans); color:var(--ink); }
+.cmdk__input::placeholder{ color:var(--ink-3); }
+.cmdk__esc{ font:11px var(--font-sans); color:var(--ink-3); border:1px solid var(--line); border-radius:5px; padding:3px 6px; }
+.cmdk__list{ max-height:340px; overflow-y:auto; padding:8px; }
+.cmdk__group{ font-size:11px; font-weight:600; color:var(--ink-3); padding:8px 10px 4px; }
+.cmdk__item{ display:flex; align-items:center; gap:11px; width:100%; border:0; background:none; cursor:pointer; padding:10px 11px; border-radius:8px; font:14px var(--font-sans); color:var(--ink); text-align:left; }
+.cmdk__item:hover,.cmdk__item.is-active{ background:var(--bg-deep); }
+.cmdk__item svg{ width:16px; height:16px; color:var(--ink-3); flex:none; }
+.cmdk__item-label{ flex:1; }
+.cmdk__shortcut{ font-size:11px; color:var(--ink-3); border:1px solid var(--line); border-radius:5px; padding:2px 6px; }
+.cmdk__empty{ padding:28px 16px; text-align:center; color:var(--ink-2); font-size:14px; }
+.cmdk__foot{ display:flex; gap:16px; padding:10px 16px; border-top:1px solid var(--line); font-size:11px; color:var(--ink-3); }
+.cmdk__foot span b{ color:var(--ink-2); font-weight:600; }
+
+/* ── Accordion ────────────────────────────────────────────── */
+.accordion{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:4px; }
+.accordion__item + .accordion__item{ border-top:1px solid var(--line); }
+.accordion__trigger{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  appearance:none; border:0; background:none; cursor:pointer;
+  padding:16px 18px; font:600 15px var(--font-sans); color:var(--ink); text-align:left;
+}
+.accordion__trigger:hover{ background:var(--surface-2); }
+.accordion__trigger svg{ width:16px; height:16px; color:var(--ink-3); flex:none; transition:transform .18s; }
+.accordion__trigger[aria-expanded="true"] svg{ transform:rotate(180deg); }
+.accordion__panel{ padding:0 18px 18px; color:var(--ink-2); font-size:14px; }
+.accordion__panel[hidden]{ display:none; }
+
+/* ── Breadcrumbs ──────────────────────────────────────────── */
+.crumbs{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:13px; }
+.crumbs a{ color:var(--ink-2); text-decoration:none; }
+.crumbs a:hover{ color:var(--brand); text-decoration:underline; }
+.crumbs__sep{ width:13px; height:13px; color:var(--ink-3); flex:none; transform:rotate(-90deg); }
+.crumbs__current{ color:var(--ink); font-weight:600; }
+.crumbs__ellipsis{ color:var(--ink-3); letter-spacing:.08em; }
+
 /* ── Form controls ────────────────────────────────────────── */
 .field{ display:flex; flex-direction:column; gap:7px; }
 .field__label{ font-size:13px; font-weight:600; color:var(--ink); }
@@ -339,6 +394,12 @@ svg{ display: block; }
   opacity:0; transition:.15s; box-shadow:var(--shadow-1);
 }
 .tip:hover::after,.tip:focus-within::after{ opacity:1; transform:translateX(-50%) translateY(0); }
+.tip--bottom::after{ top:calc(100% + 9px); bottom:auto; transform:translateX(-50%) translateY(-4px); }
+.tip--bottom:hover::after,.tip--bottom:focus-within::after{ transform:translateX(-50%) translateY(0); }
+.tip--left::after{ left:auto; right:calc(100% + 9px); top:50%; bottom:auto; transform:translateY(-50%) translateX(4px); }
+.tip--left:hover::after,.tip--left:focus-within::after{ transform:translateY(-50%) translateX(0); }
+.tip--right::after{ left:calc(100% + 9px); top:50%; bottom:auto; transform:translateY(-50%) translateX(-4px); }
+.tip--right:hover::after,.tip--right:focus-within::after{ transform:translateY(-50%) translateX(0); }
 
 /* ── Modal ────────────────────────────────────────────────── */
 .overlay{
@@ -791,6 +852,10 @@ svg{ display: block; }
         <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
         <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
         <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
+        <a href="#empty-state"><svg><use href="#i-card"/></svg>Empty state</a>
+        <a href="#accordion"><svg><use href="#i-chevron"/></svg>Accordion</a>
+        <a href="#breadcrumbs"><svg><use href="#i-more"/></svg>Breadcrumbs</a>
+        <a href="#tooltip-demo"><svg><use href="#i-info"/></svg>Tooltips</a>
         <a href="#tabs"><svg><use href="#i-grid"/></svg>Tabs</a>
         <a href="#avatar"><svg><use href="#i-more"/></svg>Avatars</a>
       </div>
@@ -820,6 +885,7 @@ svg{ display: block; }
         <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
         <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
         <a href="#loading"><svg><use href="#i-spark"/></svg>Loading modal</a>
+        <a href="#command-palette"><svg><use href="#i-search"/></svg>Command palette</a>
         <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
       </div>
     </nav>
@@ -1244,6 +1310,107 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Empty state -->
+    <section class="section" id="empty-state">
+      <div class="section__head"><h2>Empty state</h2><p>A full-size placeholder for when there's nothing to show yet. Give the person a clear next step.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="card">
+            <div class="empty-state">
+              <div class="empty-state__head"><div class="empty-state__icon"><svg><use href="#i-card"/></svg></div><h3 class="empty-state__title">No projects yet</h3></div>
+              <p class="empty-state__text">Projects you create will appear here. Start with a blank project to see how it works.</p>
+              <div class="empty-state__actions"><button class="btn btn--primary">New project</button><button class="btn btn--secondary">View guide</button></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="empty-state">
+              <div class="empty-state__head"><div class="empty-state__icon"><svg><use href="#i-search"/></svg></div><h3 class="empty-state__title">No results found</h3></div>
+              <p class="empty-state__text">We couldn't find anything for that search. Try a different term or clear your filters.</p>
+              <div class="empty-state__actions"><button class="btn btn--secondary">Clear filters</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accordion -->
+    <section class="section" id="accordion">
+      <div class="section__head"><h2>Accordion</h2><p>Collapsible sections. Click a title to open or close it; several can stay open at once.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div>
+            <div class="demo__label">Multiple open</div>
+            <div class="accordion">
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="true" aria-controls="acc-1">Project overview <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-1">Track scope, timeline and ownership for this project in one place.</div>
+              </div>
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="false" aria-controls="acc-2">Team members <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-2" hidden>Invite people, assign roles and manage their access to the workspace.</div>
+              </div>
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="false" aria-controls="acc-3">Billing and plan <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-3" hidden>Review your current plan, payment method and past invoices.</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="demo__label">One at a time</div>
+            <div class="accordion" data-single>
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="true" aria-controls="acc-s1">Account <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-s1">Update your name, email and profile photo.</div>
+              </div>
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="false" aria-controls="acc-s2">Notifications <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-s2" hidden>Choose which updates you receive and how.</div>
+              </div>
+              <div class="accordion__item">
+                <button type="button" class="accordion__trigger" aria-expanded="false" aria-controls="acc-s3">Privacy <svg><use href="#i-chevron"/></svg></button>
+                <div class="accordion__panel" id="acc-s3" hidden>Control who can see your activity and data.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Breadcrumbs -->
+    <section class="section" id="breadcrumbs">
+      <div class="section__head"><h2>Breadcrumbs</h2><p>Path navigation with the current page marked as the final crumb.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a href="#buttons">Workspace</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <a href="#cards">Projects</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <a href="#data-table">Website refresh</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <span class="crumbs__current" aria-current="page">Settings</span>
+          </nav>
+          <nav class="crumbs" aria-label="Breadcrumb with collapsed path">
+            <a href="#buttons">Workspace</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <span class="crumbs__ellipsis" aria-hidden="true">…</span><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <a href="#data-table">Website refresh</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <span class="crumbs__current" aria-current="page">Settings</span>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tooltips -->
+    <section class="section" id="tooltip-demo">
+      <div class="section__head"><h2>Tooltips</h2><p>Hover or focus a control to reveal its label. Tooltips appear on all four sides.</p></div>
+      <div class="demo">
+        <div class="row">
+          <span class="tip" data-tip="Top tooltip" tabindex="0"><button class="btn btn--secondary">Top</button></span>
+          <span class="tip tip--bottom" data-tip="Bottom tooltip" tabindex="0"><button class="btn btn--secondary">Bottom</button></span>
+          <span class="tip tip--left" data-tip="Left tooltip" tabindex="0"><button class="btn btn--secondary">Left</button></span>
+          <span class="tip tip--right" data-tip="Right tooltip" tabindex="0"><button class="btn btn--secondary">Right</button></span>
+          <span class="tip" data-tip="Save your changes" tabindex="0"><button class="btn btn--primary">Save</button></span>
+        </div>
+      </div>
+    </section>
+
     <!-- Tabs -->
     <section class="section" id="tabs">
       <div class="section__head"><h2>Tabs</h2><p>Switch between related views without leaving the page.</p></div>
@@ -1559,6 +1726,14 @@ svg{ display: block; }
       </div>
     </section>
 
+    <!-- Command palette -->
+    <section class="section" id="command-palette">
+      <div class="section__head"><h2>Command palette</h2><p>A search-driven action menu. Press Ctrl+K (or Cmd+K) anywhere, or use the button below, to jump to an action.</p></div>
+      <div class="demo">
+        <div class="row"><button class="btn btn--secondary" id="openCmdk">Open command palette <kbd class="cmdk__esc">Ctrl K</kbd></button></div>
+      </div>
+    </section>
+
     <!-- Toasts -->
     <section class="section" id="toasts">
       <div class="section__head"><h2>Toasts</h2><p>Brief, non-blocking feedback that appears in the corner and dismisses itself.</p></div>
@@ -1630,6 +1805,19 @@ svg{ display: block; }
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Command palette markup -->
+<div class="overlay cmdk-overlay" id="cmdkOverlay" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="cmdk">
+    <div class="cmdk__search">
+      <svg><use href="#i-search"/></svg>
+      <input class="cmdk__input" id="cmdkInput" type="text" placeholder="Search for an action…" aria-label="Search commands" autocomplete="off"/>
+      <span class="cmdk__esc">ESC</span>
+    </div>
+    <div class="cmdk__list" id="cmdkList"></div>
+    <div class="cmdk__foot"><span><b>↑↓</b> to navigate</span><span><b>↵</b> to select</span><span><b>esc</b> to close</span></div>
   </div>
 </div>
 
@@ -2733,6 +2921,91 @@ document.querySelectorAll('.file-input').forEach(box => {
   }));
   drop.addEventListener('drop', e => add([...e.dataTransfer.files]));
   render();
+});
+
+/* Command palette */
+const cmdkOverlay = document.getElementById('cmdkOverlay');
+const cmdkInput = document.getElementById('cmdkInput');
+const cmdkList = document.getElementById('cmdkList');
+const cmdkCommands = [
+  { group:'Actions', label:'Create a project', icon:'i-plus', shortcut:'Ctrl N', run:() => showToast('success','Create project','A new project draft was started.') },
+  { group:'Actions', label:'Invite a member', icon:'i-more', shortcut:'', run:() => showToast('info','Invite member','Opening the invite form.') },
+  { group:'Actions', label:'Export workspace', icon:'i-download', shortcut:'', run:() => showToast('info','Export','Preparing your export.') },
+  { group:'Navigation', label:'Go to Buttons', icon:'i-button', shortcut:'', run:() => goTo('buttons') },
+  { group:'Navigation', label:'Go to Data table', icon:'i-table', shortcut:'', run:() => goTo('data-table') },
+  { group:'Navigation', label:'Go to Grid input', icon:'i-table', shortcut:'', run:() => goTo('sheet-input') },
+  { group:'Navigation', label:'Go to Date picker', icon:'i-calendar', shortcut:'', run:() => goTo('date-picker') },
+  { group:'Appearance', label:'Toggle sidebar', icon:'i-panel', shortcut:'Ctrl \\', run:() => sidebarToggle.click() }
+];
+let cmdkActive = 0, cmdkMatches = [];
+function goTo(id){ document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' }); }
+function renderCmdk(){
+  const q = cmdkInput.value.trim().toLowerCase();
+  cmdkMatches = cmdkCommands.filter(c => c.label.toLowerCase().includes(q));
+  cmdkActive = 0;
+  if(!cmdkMatches.length){ cmdkList.innerHTML = '<div class="cmdk__empty">No matching commands</div>'; return; }
+  let html = '', lastGroup = '';
+  cmdkMatches.forEach((c, i) => {
+    if(c.group !== lastGroup){ html += '<div class="cmdk__group">' + c.group + '</div>'; lastGroup = c.group; }
+    html += '<button type="button" class="cmdk__item' + (i === 0 ? ' is-active' : '') + '" data-i="' + i + '"><svg><use href="#' + c.icon + '"/></svg><span class="cmdk__item-label">' + c.label + '</span>' + (c.shortcut ? '<span class="cmdk__shortcut">' + c.shortcut + '</span>' : '') + '</button>';
+  });
+  cmdkList.innerHTML = html;
+}
+function setCmdkActive(i){
+  const items = cmdkList.querySelectorAll('.cmdk__item');
+  if(!items.length) return;
+  cmdkActive = (i + items.length) % items.length;
+  items.forEach((el, n) => el.classList.toggle('is-active', n === cmdkActive));
+  items[cmdkActive].scrollIntoView({ block:'nearest' });
+}
+function openCmdk(){
+  openOverlay(cmdkOverlay, cmdkInput);
+  cmdkInput.value = '';
+  renderCmdk();
+}
+cmdkInput.addEventListener('input', renderCmdk);
+cmdkInput.addEventListener('keydown', e => {
+  if(e.key === 'ArrowDown'){ e.preventDefault(); setCmdkActive(cmdkActive + 1); }
+  else if(e.key === 'ArrowUp'){ e.preventDefault(); setCmdkActive(cmdkActive - 1); }
+  else if(e.key === 'Enter' && cmdkMatches[cmdkActive]){
+    e.preventDefault();
+    const command = cmdkMatches[cmdkActive];
+    closeOverlay(cmdkOverlay);
+    command.run();
+  }
+});
+cmdkList.addEventListener('click', e => {
+  const item = e.target.closest('.cmdk__item');
+  if(!item) return;
+  const command = cmdkMatches[+item.dataset.i];
+  closeOverlay(cmdkOverlay);
+  command.run();
+});
+document.getElementById('openCmdk').addEventListener('click', openCmdk);
+document.addEventListener('keydown', e => {
+  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+    e.preventDefault();
+    openCmdk();
+  }
+});
+
+/* Accordions */
+document.querySelectorAll('.accordion').forEach(accordion => {
+  const single = accordion.hasAttribute('data-single');
+  accordion.querySelectorAll('.accordion__trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const panel = document.getElementById(trigger.getAttribute('aria-controls'));
+      const open = trigger.getAttribute('aria-expanded') === 'true';
+      if(single && !open){
+        accordion.querySelectorAll('.accordion__trigger').forEach(other => {
+          other.setAttribute('aria-expanded', 'false');
+          document.getElementById(other.getAttribute('aria-controls')).hidden = true;
+        });
+      }
+      trigger.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+    });
+  });
 });
 
 /* Tabs */
