@@ -277,6 +277,9 @@
                 <!-- Data controls -->
                 <local:DataControls/>
 
+                <!-- Advanced controls -->
+                <local:AdvancedControls/>
+
                 <!-- Overlay -->
                 <TextBlock Text="Overlays" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
                 <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">

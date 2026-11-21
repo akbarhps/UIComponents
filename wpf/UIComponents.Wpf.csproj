@@ -43,6 +43,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="AdvancedControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CommandPaletteWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadingWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DrawerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DataControls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,6 +85,18 @@
     </Compile>
     <Compile Include="DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdvancedControls.xaml.cs">
+      <DependentUpon>AdvancedControls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CommandPaletteWindow.xaml.cs">
+      <DependentUpon>CommandPaletteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DrawerWindow.xaml.cs">
+      <DependentUpon>DrawerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataControls.xaml.cs">
       <DependentUpon>DataControls.xaml</DependentUpon>

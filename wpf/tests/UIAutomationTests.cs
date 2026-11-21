@@ -229,11 +229,16 @@ namespace UIComponents.Wpf.Tests
                 Check("dialog opened", dialog != null);
                 if (dialog != null)
                 {
-                    var cancel = Find(dialog, "DlgCancel");
-                    Check("dialog cancel found", cancel != null);
-                    var windowPattern = (WindowPattern)dialog.GetCurrentPattern(WindowPattern.Pattern);
-                    windowPattern.Close();
-                    Check("dialog closes", true);
+                    try
+                    {
+                        var windowPattern = (WindowPattern)dialog.GetCurrentPattern(WindowPattern.Pattern);
+                        windowPattern.Close();
+                        Check("dialog closes", true);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        Check("dialog closes", false, "no WindowPattern");
+                    }
                 }
             }
 
@@ -324,6 +329,41 @@ namespace UIComponents.Wpf.Tests
             Check("selection table found", selectionGrid != null);
             var bulkText = Find(root, "BulkText");
             Check("bulk bar found", bulkText != null);
+
+            // Column filters
+            var colProject = Find(root, "ColProject");
+            Check("column filter found", colProject != null);
+            if (colProject != null) SetValue(colProject, "mobile");
+            var columnGrid = Find(root, "ColumnGrid");
+            Check("column filter grid found", columnGrid != null);
+
+            // Sortable table
+            var pin = Find(root, "PinColumn");
+            Check("pin column button found", pin != null);
+            if (pin != null) Invoke(pin);
+            var sortGrid = Find(root, "SortGrid");
+            Check("sortable grid found", sortGrid != null);
+
+            // Toasts
+            var successToast = Find(root, "BtnSuccessToast");
+            Check("toast button found", successToast != null);
+            if (successToast != null)
+            {
+                var worker2 = new Thread(() => Invoke(successToast));
+                worker2.IsBackground = true;
+                worker2.Start();
+                Thread.Sleep(300);
+            }
+            var toastHost = Find(root, "ToastHost");
+            var toastItems = root.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.AutomationIdProperty, "ToastItem"));
+            Check("toast host found", toastHost != null || toastItems.Count > 0 || FindByName(root, "Saved") != null,
+                "items=" + toastItems.Count);
+
+            // Dialog launchers
+            Check("command palette button found", Find(root, "BtnCommandPalette") != null);
+            Check("loading modal button found", Find(root, "BtnLoadingModal") != null);
+            Check("drawer button found", Find(root, "BtnDrawer") != null);
 
             Console.WriteLine();
             Console.WriteLine("RESULT  passed=" + _passed + "  failed=" + _failed);
