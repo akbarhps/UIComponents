@@ -231,6 +231,7 @@ namespace UIComponents
             grid.Rows.Add("Brand guidelines", "Mia Chen", "Pending", "3 days ago", "$4,200");
             grid.Rows.Add("Help center", "Ada Lovelace", "Active", "Last week", "$8,750");
             grid.Rows.Add("Legacy archive", "Sam Patel", "Draft", "2 weeks ago", "$1,100");
+            grid.ClearSelection();
             tables.Controls.Add(grid);
 
             // Toasts

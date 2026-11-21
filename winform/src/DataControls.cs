@@ -125,12 +125,7 @@ namespace UIComponents
                 if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
                 e.PaintBackground(e.CellBounds, false);
                 bool selected = e.State.HasFlag(DataGridViewElementStates.Selected);
-                Color background = selected ? Theme.BrandSoft : Theme.Surface;
-                using (var brush = new SolidBrush(background)) e.Graphics.FillRectangle(brush, e.CellBounds);
-                e.Graphics.DrawLine(new Pen(Theme.Line), e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
-                e.Graphics.DrawLine(new Pen(Theme.Line), e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
-                var value = e.Value == null ? "" : e.Value.ToString();
-                Draw.CenteredText(e.Graphics, value, new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y, e.CellBounds.Width - 14, e.CellBounds.Height), Theme.Sans(9.5f), Theme.Ink, HorizontalAlignment.Left);
+                Draw.GridCell(e.Graphics, e.CellBounds, e.Value == null ? "" : e.Value.ToString(), selected, Theme.Sans(9.5f), Theme.Ink);
                 e.Handled = true;
             };
 
@@ -257,6 +252,14 @@ namespace UIComponents
             _grid.AllowUserToAddRows = false;
             _grid.AutoGenerateColumns = true;
             _grid.DataSource = _binding;
+            _grid.CellPainting += (s, e) =>
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+                e.PaintBackground(e.CellBounds, false);
+                bool selected = e.State.HasFlag(DataGridViewElementStates.Selected);
+                Draw.GridCell(e.Graphics, e.CellBounds, e.Value == null ? "" : e.Value.ToString(), selected, Theme.Sans(9.5f), Theme.Ink);
+                e.Handled = true;
+            };
             _grid.SelectionMode = _options.ShowSelection ? DataGridViewSelectionMode.FullRowSelect : DataGridViewSelectionMode.CellSelect;
             _grid.MultiSelect = _options.ShowSelection;
             if (_options.StickyFirst && _grid.Columns.Count > 0) _grid.Columns[0].Frozen = true;
