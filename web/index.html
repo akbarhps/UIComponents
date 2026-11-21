@@ -80,11 +80,38 @@ svg{ display: block; }
   display: flex; flex-direction: column;
   overflow-y: auto;
 }
+.brand__icon{ appearance:none; border:0; background:none; padding:0; cursor:pointer; display:grid; place-items:center; flex:none; border-radius:7px; }
+.sidebar__toggle{
+  appearance:none; border:0; background:none; cursor:pointer; margin-left:auto;
+  width:32px; height:32px; border-radius:7px; color:var(--ink-3);
+  display:grid; place-items:center; flex:none;
+}
+.sidebar__toggle:hover{ background:rgba(255,255,255,.6); color:var(--ink); }
+.sidebar__toggle svg{ width:18px; height:18px; transition:transform .18s; }
+.app--collapsed{ grid-template-columns:72px minmax(0,1fr); }
+.app--collapsed .sidebar__toggle{ display:none; }
+.app--collapsed .brand__icon:hover{ background:rgba(255,255,255,.6); }
+.app--collapsed .sidebar{ overflow:visible; padding:28px 8px; }
+.app--collapsed .brand{ justify-content:center; padding:0 0 26px; }
+.app--collapsed .brand__name,.app--collapsed .brand__sub,.app--collapsed .nav-label,.app--collapsed .sidebar__foot{ display:none; }
+.app--collapsed .nav a{ font-size:0; justify-content:center; padding:10px 0; position:relative; }
+.app--collapsed .nav a svg{ width:18px; height:18px; }
+.app--collapsed .nav a::after{
+  content:attr(data-tip); position:absolute; left:calc(100% + 10px); top:50%;
+  transform:translateY(-50%) translateX(-4px);
+  background:var(--ink); color:#fff; font:12px var(--font-sans); white-space:nowrap;
+  padding:6px 9px; border-radius:6px; box-shadow:var(--shadow-1);
+  opacity:0; pointer-events:none; transition:opacity .15s, transform .15s; z-index:60;
+}
+.app--collapsed .nav a:hover::after,.app--collapsed .nav a:focus-visible::after{ opacity:1; transform:translateY(-50%); }
 .brand{ display:flex; align-items:center; gap:11px; padding:0 10px 26px; }
 .brand__mark{ width:30px; height:30px; color: var(--brand-bright); flex:none; }
 .brand__name{ font: 600 18px/1.1 var(--font-serif); letter-spacing:-.01em; }
 .brand__sub{ font-size: 11px; color: var(--ink-3); margin-top:3px; letter-spacing:.02em; }
+.nav-group{ display:flex; flex-direction:column; gap:2px; }
+.nav-group + .nav-group{ margin-top:18px; }
 .nav-label{ font-size:12px; font-weight:600; color:var(--ink-3); padding:0 10px 8px; }
+.app--collapsed .nav-group + .nav-group{ margin-top:10px; padding-top:10px; border-top:1px solid var(--line); }
 .nav{ display:flex; flex-direction:column; gap:2px; }
 .nav a{
   display:flex; align-items:center; gap:10px;
@@ -572,8 +599,17 @@ svg{ display: block; }
   .sidebar{ position:static; height:auto; border-right:0; border-bottom:1px solid var(--line); padding:18px; }
   .brand{ padding-bottom:16px; }
   .nav{ flex-direction:row; flex-wrap:wrap; }
+  .nav-group{ flex-direction:row; flex-wrap:wrap; gap:2px; }
+  .nav-group + .nav-group{ margin-top:0; padding-top:0; border-top:0; }
   .nav a{ padding:7px 10px; }
   .nav a svg,.nav-label,.sidebar__foot{ display:none; }
+  .sidebar__toggle{ display:none; }
+  .app--collapsed{ grid-template-columns:1fr; }
+  .app--collapsed .sidebar{ overflow-y:auto; padding:18px; }
+  .app--collapsed .brand{ justify-content:flex-start; padding-bottom:16px; }
+  .app--collapsed .brand__name,.app--collapsed .brand__sub{ display:block; }
+  .app--collapsed .nav a{ font-size:14px; justify-content:flex-start; padding:7px 10px; }
+  .app--collapsed .nav a::after{ display:none; }
   .main{ padding: 0 22px 72px; }
   .masthead{ padding-top:36px; }
   .grid-2,.form-grid{ grid-template-columns:1fr; }
@@ -625,31 +661,43 @@ svg{ display: block; }
   <!-- ── Sidebar ─────────────────────────────────────────── -->
   <aside class="sidebar">
     <div class="brand">
-      <svg class="brand__mark"><use href="#i-spark"/></svg>
+      <button class="brand__icon" id="brandToggle" aria-label="Collapse sidebar"><svg class="brand__mark"><use href="#i-spark"/></svg></button>
       <div><div class="brand__name">Claude UI</div><div class="brand__sub">Component library</div></div>
+      <button class="sidebar__toggle" id="sidebarToggle" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar"><svg><use href="#i-panel"/></svg></button>
     </div>
-    <div class="nav-label">Components</div>
     <nav class="nav" id="nav">
-      <a href="#buttons"><svg><use href="#i-button"/></svg>Buttons</a>
-      <a href="#forms"><svg><use href="#i-form"/></svg>Forms</a>
-      <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
-      <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
-      <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
-      <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
-      <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
-      <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
-      <a href="#tabs"><svg><use href="#i-grid"/></svg>Tabs</a>
-      <a href="#avatar"><svg><use href="#i-more"/></svg>Avatars</a>
-      <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
-      <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
-      <a href="#column-filters"><svg><use href="#i-filter"/></svg>Column filters</a>
-      <a href="#sort-table"><svg><use href="#i-table"/></svg>Sortable table</a>
-      <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
-      <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
-      <a href="#loading"><svg><use href="#i-spark"/></svg>Loading modal</a>
-      <a href="#date-picker"><svg><use href="#i-calendar"/></svg>Date picker</a>
-      <a href="#datetime-picker"><svg><use href="#i-clock"/></svg>Date &amp; time</a>
-      <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
+      <div class="nav-group">
+        <div class="nav-label">Basics</div>
+        <a href="#buttons"><svg><use href="#i-button"/></svg>Buttons</a>
+        <a href="#cards"><svg><use href="#i-card"/></svg>Cards</a>
+        <a href="#badges"><svg><use href="#i-badge"/></svg>Badges</a>
+        <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
+        <a href="#tabs"><svg><use href="#i-grid"/></svg>Tabs</a>
+        <a href="#avatar"><svg><use href="#i-more"/></svg>Avatars</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Forms</div>
+        <a href="#forms"><svg><use href="#i-form"/></svg>Forms</a>
+        <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
+        <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
+        <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
+        <a href="#date-picker"><svg><use href="#i-calendar"/></svg>Date picker</a>
+        <a href="#datetime-picker"><svg><use href="#i-clock"/></svg>Date &amp; time</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Data tables</div>
+        <a href="#data-table"><svg><use href="#i-table"/></svg>Data table</a>
+        <a href="#filter-table"><svg><use href="#i-filter"/></svg>Filter table</a>
+        <a href="#column-filters"><svg><use href="#i-filter"/></svg>Column filters</a>
+        <a href="#sort-table"><svg><use href="#i-table"/></svg>Sortable table</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Overlays</div>
+        <a href="#drawer"><svg><use href="#i-panel"/></svg>Drawer form</a>
+        <a href="#modal"><svg><use href="#i-modal"/></svg>Modal</a>
+        <a href="#loading"><svg><use href="#i-spark"/></svg>Loading modal</a>
+        <a href="#toasts"><svg><use href="#i-info"/></svg>Toasts</a>
+      </div>
     </nav>
     <div class="sidebar__foot">Single file, no dependencies<br/>Copy any component you need.</div>
   </aside>
@@ -1995,6 +2043,28 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-15% 0px -75% 0px' });
 sections.forEach(s => observer.observe(s));
+
+/* Collapsible sidebar */
+const app = document.querySelector('.app');
+const sidebar = document.querySelector('.sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const brandToggle = document.getElementById('brandToggle');
+navLinks.forEach(a => {
+  const label = a.textContent.trim();
+  if(!a.dataset.tip) a.dataset.tip = label;
+  a.setAttribute('aria-label', label);
+});
+function setCollapsed(collapsed){
+  app.classList.toggle('app--collapsed', collapsed);
+  sidebar.classList.toggle('sidebar--collapsed', collapsed);
+  const label = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+  sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
+  sidebarToggle.setAttribute('aria-label', label);
+  sidebarToggle.title = label;
+  brandToggle.setAttribute('aria-label', label);
+}
+sidebarToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
+brandToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
 </script>
 
 <!-- icon used above but defined here for reuse -->
