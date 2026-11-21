@@ -59,6 +59,8 @@ namespace UIComponents
             Controls.Add(chevron);
             Controls.Add(_value);
             Click += (s, e) => Toggle();
+            _value.Click += (s, e) => Toggle();
+            chevron.Click += (s, e) => Toggle();
             Filter("");
         }
 

@@ -316,13 +316,16 @@ namespace UIComponents
             Controls.Add(_calendar);
             Controls.Add(_chevron);
             Controls.Add(_value);
-            Click += (s, e) =>
+            Action toggle = () =>
             {
                 _open = !_open;
                 _calendar.Visible = _open;
                 Height = _open ? 296 : 38;
                 Invalidate();
             };
+            Click += (s, e) => toggle();
+            _value.Click += (s, e) => toggle();
+            _chevron.Click += (s, e) => toggle();
             UpdateDisplay();
         }
 

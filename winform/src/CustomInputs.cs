@@ -382,7 +382,7 @@ namespace UIComponents
     {
         private readonly Label _value = new Label();
         private readonly Label _chevron = new Label();
-        private readonly ListBox _list = new ListBox();
+        private readonly ClaudeOptionList _list = new ClaudeOptionList();
         private readonly List<string> _options = new List<string>();
         private readonly Label _placeholder = new Label();
         private bool _focused;
@@ -414,31 +414,31 @@ namespace UIComponents
             _chevron.Width = 30;
             _chevron.TextAlign = ContentAlignment.MiddleCenter;
 
-            _list.Font = Theme.Sans(10f);
-            _list.BorderStyle = BorderStyle.FixedSingle;
             _list.Location = new Point(0, 40);
             _list.Width = 260;
             _list.Height = 140;
             _list.Visible = false;
-            _list.Click += (s, e) => { if (_list.SelectedIndex >= 0) Pick(_list.SelectedItem.ToString()); };
+            _list.Picked += (s, v) => Pick(v);
 
             Controls.Add(_list);
             Controls.Add(_chevron);
             Controls.Add(_value);
-            Click += (s, e) =>
+            Action toggle = () =>
             {
                 _focused = true;
                 _list.Visible = !_list.Visible;
                 Invalidate();
             };
+            Click += (s, e) => toggle();
+            _value.Click += (s, e) => toggle();
+            _chevron.Click += (s, e) => toggle();
         }
 
         public void SetOptions(IEnumerable<string> options)
         {
             _options.Clear();
             _options.AddRange(options);
-            _list.Items.Clear();
-            foreach (var o in _options) _list.Items.Add(o);
+            _list.SetItems(_options);
         }
 
         private void Pick(string value)

@@ -146,6 +146,13 @@ namespace UIComponents.Tests
             Check("datepicker month mode", dates.Mode == DatePickerMode.MonthYear && dates.Display.Contains("2026"), "display=" + dates.Display);
             dates.Mode = DatePickerMode.Year;
             Check("datepicker year mode", dates.Display.Length == 4 && dates.Display.StartsWith("20"), "display=" + dates.Display);
+            var dateValueLabel = (Label)Get(dates, "_value");
+            Call(dateValueLabel, "OnClick", EventArgs.Empty);
+            Check("datepicker opens on label click", dates.Height > 38, "height=" + dates.Height);
+            var calendar = (ClaudeCalendar)Get(dates, "_calendar");
+            calendar.Value = new DateTime(2026, 11, 25);
+            Call(calendar, "Raise");
+            Check("datepicker picks date", dates.Value.Day == 25 && dates.Height == 38, "value=" + dates.Value.Day);
 
             var dt = new ClaudeDateTimePicker(true);
             dt.Value = new DateTime(2026, 11, 21, 14, 5, 9);
