@@ -306,10 +306,10 @@ namespace UIComponents.Wpf.Tests
             // Grid input
             var inputGrid = Find(root, "InputGrid");
             Check("grid input found", inputGrid != null);
-            var addRow = Find(root, "GridAddRow");
+            var addRow = Find(root, "GridAddRow") ?? Find(root, "InputGrid_AddRow");
             Check("grid add row found", addRow != null);
             if (addRow != null) Invoke(addRow);
-            var addCol = Find(root, "GridAddCol");
+            var addCol = Find(root, "GridAddCol") ?? Find(root, "InputGrid_AddCol");
             Check("grid add column found", addCol != null);
             if (addCol != null) Invoke(addCol);
 

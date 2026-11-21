@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -15,17 +16,24 @@ namespace UIComponents.Wpf
         {
             InitializeComponent();
 
-            InputGrid.Items.Add(new { Width = "Small", Height = "10", Depth = "20" });
-            InputGrid.Items.Add(new { Width = "Medium", Height = "14", Depth = "24" });
-            InputGrid.Items.Add(new { Width = "Large", Height = "18", Depth = "30" });
+            InputGrid.Hint = "Shift-click selects a range, Ctrl/Cmd-click adds cells, and clicking a row or column header selects the whole row or column.";
+            InputGrid.Setup(
+                new[] { Text("Width"), Text("Height"), Text("Depth"), Text("Weight") },
+                new[] { new[] { "Small", "10", "20", "5" },
+                        new[] { "Medium", "14", "24", "8" },
+                        new[] { "Large", "18", "30", "12" } }, true);
 
             TypedGrid.Items.Add(new { Variant = "Small", Category = "Standard", IsActive = true });
             TypedGrid.Items.Add(new { Variant = "Large", Category = "Custom", IsActive = false });
 
-            _filterRows.Add(new FilterRow { Project = "Website refresh", Owner = "Ada Lovelace", Status = "Active" });
-            _filterRows.Add(new FilterRow { Project = "Mobile app", Owner = "Jonas Silva", Status = "Active" });
-            _filterRows.Add(new FilterRow { Project = "Brand guidelines", Owner = "Mia Chen", Status = "Pending" });
+            _filterRows.Add(new FilterRow { Project = "Website refresh", Team = "Design team", Owner = "Ada Lovelace", Status = "Active", Updated = "Today" });
+            _filterRows.Add(new FilterRow { Project = "Mobile app", Team = "Engineering", Owner = "Jonas Silva", Status = "Active", Updated = "Yesterday" });
+            _filterRows.Add(new FilterRow { Project = "Brand guidelines", Team = "Design team", Owner = "Mia Chen", Status = "Pending", Updated = "3 days ago" });
+            _filterRows.Add(new FilterRow { Project = "Help center", Team = "Content", Owner = "Ada Lovelace", Status = "Active", Updated = "Last week" });
+            _filterRows.Add(new FilterRow { Project = "Q3 campaign", Team = "Marketing", Owner = "Sam Patel", Status = "Pending", Updated = "Last week" });
+            _filterRows.Add(new FilterRow { Project = "Legacy archive", Team = "Operations", Owner = "Mia Chen", Status = "Archived", Updated = "2 weeks ago" });
             FilterGrid.ItemsSource = _filterRows;
+            SegAll.IsChecked = true;
 
             SelectionGrid.ItemsSource = new List<SelectionRow>
             {
@@ -35,22 +43,41 @@ namespace UIComponents.Wpf
             };
         }
 
-        private void GridAddRow_Click(object sender, RoutedEventArgs e)
+        private static SheetColumn Text(string name)
         {
-            InputGrid.Items.Add(new { Width = "", Height = "", Depth = "" });
+            SheetColumn col = new SheetColumn();
+            col.Name = name;
+            col.Type = "text";
+            return col;
         }
 
-        private void GridAddCol_Click(object sender, RoutedEventArgs e)
+        private string _statusFilter = "all";
+
+        private void FilterSegment_Checked(object sender, RoutedEventArgs e)
         {
-            InputGrid.Columns.Add(new DataGridTextColumn { Header = "Column " + (InputGrid.Columns.Count + 1), Width = 120 });
+            var radio = sender as RadioButton;
+            if (radio == null) return;
+            _statusFilter = radio.Tag as string ?? "all";
+            ApplyFilter();
         }
 
         private void FilterSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
+            FilterPlaceholder.Visibility = string.IsNullOrEmpty(FilterSearch.Text)
+                ? Visibility.Visible : Visibility.Collapsed;
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            if (FilterSearch == null || FilterGrid == null) return;
             var q = FilterSearch.Text.Trim().ToLower();
-            FilterGrid.ItemsSource = string.IsNullOrEmpty(q)
-                ? (IEnumerable<FilterRow>)_filterRows
-                : _filterRows.Where(r => r.Project.ToLower().Contains(q) || r.Owner.ToLower().Contains(q)).ToList();
+            var rows = _filterRows.Where(r =>
+                (_statusFilter == "all" || string.Equals(r.Status, _statusFilter, StringComparison.OrdinalIgnoreCase)) &&
+                (q.Length == 0 || r.Project.ToLower().Contains(q) || r.Owner.ToLower().Contains(q))).ToList();
+            FilterGrid.ItemsSource = rows;
+            FilterCount.Text = rows.Count + " of " + _filterRows.Count + " projects";
+            FilterEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void SelectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -63,8 +90,10 @@ namespace UIComponents.Wpf
     public class FilterRow
     {
         public string Project { get; set; }
+        public string Team { get; set; }
         public string Owner { get; set; }
         public string Status { get; set; }
+        public string Updated { get; set; }
     }
 
     public class SelectionRow : INotifyPropertyChanged

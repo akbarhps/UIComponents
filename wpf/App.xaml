@@ -8,6 +8,8 @@
                 <ResourceDictionary Source="Themes/Tokens.xaml"/>
                 <ResourceDictionary Source="Themes/Controls.xaml"/>
                 <ResourceDictionary Source="Themes/ExtraControls.xaml"/>
+                <ResourceDictionary Source="Themes/Sheet.xaml"/>
+                <ResourceDictionary Source="Themes/Forms.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -39,7 +39,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Sheet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Forms.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DialogWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TablePagination.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -86,6 +98,9 @@
     <Compile Include="DialogWindow.xaml.cs">
       <DependentUpon>DialogWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TablePagination.xaml.cs">
+      <DependentUpon>TablePagination.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AdvancedControls.xaml.cs">
       <DependentUpon>AdvancedControls.xaml</DependentUpon>
     </Compile>
@@ -104,6 +119,7 @@
     <Compile Include="InputControls.xaml.cs">
       <DependentUpon>InputControls.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SheetGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

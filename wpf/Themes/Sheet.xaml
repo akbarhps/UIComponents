@@ -1,0 +1,214 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- ==================== Section shell ==================== -->
+    <!-- .section__head p: 15px Ink2, 24px line height, max 501px. -->
+    <Style x:Key="SheetSectionDesc" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="LineHeight" Value="24"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        <Setter Property="MaxWidth" Value="501"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <!-- .demo: Surface, 1px Line, radius 16, padding 30, no shadow. -->
+    <Style x:Key="DemoCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="30"/>
+    </Style>
+
+    <!-- ==================== Toolbar ==================== -->
+    <!-- ghost small button: 600 13px, padding 12,7, min 32px, radius 7.
+         Hover changes background/foreground only, never opacity (unlike ClaudeButtonBase). -->
+    <Style x:Key="GhostButtonSm" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12,7"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="7" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SheetInfo" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="SheetHint" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="LineHeight" Value="19.2"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <!-- ==================== Frame ==================== -->
+    <Style x:Key="SheetFrame" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+    </Style>
+
+    <!-- Plain Surface2 filler: the top-left corner and the empty cells under + column. -->
+    <Style x:Key="SheetFillCell" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+    </Style>
+
+    <!-- ==================== Header cells (.sheet__head) ==================== -->
+    <!-- Column headers are left-aligned; row headers are centred via SheetRowHeadButton. -->
+    <Style x:Key="SheetHeadButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="Padding" Value="12,0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                        <Trigger Property="Tag" Value="selected">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SheetRowHeadButton" TargetType="Button" BasedOn="{StaticResource SheetHeadButton}">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+
+    <!-- ==================== Text cell (.sheet__input) ==================== -->
+    <!-- Content host margin is 10px each side: WPF adds ~2px of inset, so text lands
+         12px from each edge, matching the web's padding:9px 12px. -->
+    <Style x:Key="SheetTextCell" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border x:Name="Bg" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="10,0,10,0" VerticalAlignment="Center"/>
+                            <!-- The focus ring is overlaid so it never shifts the text. -->
+                            <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                                    CornerRadius="2" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="selected">
+                            <Setter TargetName="Bg" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ==================== Add controls ==================== -->
+    <Style x:Key="SheetAddButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoftHover}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SheetAddRowButton" TargetType="Button" BasedOn="{StaticResource SheetAddButton}">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+</ResourceDictionary>

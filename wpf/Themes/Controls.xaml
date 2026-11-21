@@ -105,12 +105,16 @@
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="LineHeight" Value="20.8"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="Margin" Value="0,0,0,7"/>
     </Style>
     <Style x:Key="FieldHint" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="LineHeight" Value="19.2"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="Margin" Value="0,7,0,0"/>
     </Style>
 
@@ -261,6 +265,64 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Reusable status badge for table cells: bind to a row with a Status string -->
+    <DataTemplate x:Key="StatusBadgeTemplate">
+        <Border x:Name="Badge" Style="{StaticResource BadgeSuccess}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Ellipse Width="6" Height="6" Margin="0,0,6,0"
+                         Fill="{Binding ElementName=BadgeLabel, Path=Foreground}"/>
+                <TextBlock x:Name="BadgeLabel" Text="{Binding Status}"
+                           Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}"/>
+            </StackPanel>
+        </Border>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Status}" Value="In review">
+                <Setter TargetName="Badge" Property="Background" Value="{StaticResource BrandSoft}"/>
+                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Brand}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                <Setter TargetName="Badge" Property="Background" Value="{StaticResource WarningSoft}"/>
+                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Warning}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Archived">
+                <Setter TargetName="Badge" Property="Background" Value="{StaticResource BgDeep}"/>
+                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Ink2}"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Status}" Value="Draft">
+                <Setter TargetName="Badge" Property="Background" Value="{StaticResource BgDeep}"/>
+                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Ink2}"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- Segmented filter control (RadioButton styled as a pill) -->
+    <Style x:Key="SegmentButton" TargetType="RadioButton">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="7" Padding="10,7">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Surface}"/>
+                            <Setter TargetName="Bd" Property="Effect" Value="{StaticResource Shadow1}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

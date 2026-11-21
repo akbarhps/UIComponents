@@ -16,6 +16,7 @@
     <SolidColorBrush x:Key="BrandHover" Color="#FF8F3F20"/>
     <SolidColorBrush x:Key="BrandBright" Color="#FFD97757"/>
     <SolidColorBrush x:Key="BrandSoft" Color="#FFF8ECE4"/>
+    <SolidColorBrush x:Key="BrandSoftHover" Color="#FFF0D9CD"/>
     <SolidColorBrush x:Key="Success" Color="#FF356B4C"/>
     <SolidColorBrush x:Key="SuccessSoft" Color="#FFE8F2EC"/>
     <SolidColorBrush x:Key="Warning" Color="#FF855A16"/>
@@ -25,7 +26,8 @@
     <SolidColorBrush x:Key="Info" Color="#FF3F6485"/>
     <SolidColorBrush x:Key="InfoSoft" Color="#FFEAF0F6"/>
 
-    <FontFamily x:Key="Serif">Georgia, Palatino Linotype, serif</FontFamily>
+    <!-- Web order: Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif. -->
+    <FontFamily x:Key="Serif">Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif</FontFamily>
     <FontFamily x:Key="Sans">Segoe UI, Arial, sans-serif</FontFamily>
 
     <sys:Double x:Key="Radius">12</sys:Double>

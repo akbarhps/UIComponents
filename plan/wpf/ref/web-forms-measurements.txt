@@ -1,0 +1,33 @@
+Measured from web/index.html #forms in Edge headless, window 1400x1100, scale 1 (100%). x,y,w,h in CSS px.
+Relative positions are what matter; the absolute y depends on the page.
+
+section head: h2 h=32.4 at +46 ; p w=501.3 h=48 at h2+40.4 ; demo0 at p bottom + 22
+demo0 (fields card)    w=984 h=649.8   inner x+31 (1px border + 30 padding), inner width 922
+demo1 (selection card) w=984 h=191.6   18px below demo0
+
+card 1 (y relative to the card's inner top):
+ grid-2 #1          y=0      h=99     columns 450 | gap 22 | 450
+   label            y=0      h=20.8   13px/20.8 600
+   input            y=27.8   h=45     15px/21
+   hint             y=79.8   h=19.2   12px/19.2
+ divider            y=125    h=1      (26 margin each side)
+ grid-2 #2          y=152    h=72.8
+   label            y=152
+   search input     y=179.8  h=45     icon 16x16 at x+13, y+14.5 within the input
+   role select      y=179.8  h=45
+ divider            y=250.8
+ message field      y=277.8  h=158
+   label            y=277.8
+   textarea         y=305.6  h=104    w=922
+   hint             y=416.6  h=19.2
+ divider            y=461.8
+ username field     y=488.8  h=99
+   input            y=516.6  h=45
+   error line       y=568.6  h=19.2   icon 13x13 at y+3.1
+
+card 2 (relative to the inner top):
+ demo__label        y=0      h=20.8   13px/20.8 600 ink-3
+ grid-2             y=36.7   h=92.8   columns 450 | 22 | 450
+   check rows       y=36.7, 71.1, 105.5   h=22.4 each, box 19x19 at y+1
+   radio rows       y=36.7, 71.1          same box geometry
+   switch row       y=105.5  h=24     track 42x24

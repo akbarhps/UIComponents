@@ -1,27 +1,14 @@
 <UserControl x:Class="UIComponents.Wpf.DataControls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:UIComponents.Wpf">
+    <StackPanel x:Name="SectionList">
         <!-- Grid input -->
         <TextBlock Text="Grid input" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
-                    <Button Content="+ Add row" Style="{StaticResource GhostButton}" Click="GridAddRow_Click" AutomationProperties.AutomationId="GridAddRow"/>
-                    <Button Content="+ Add column" Style="{StaticResource GhostButton}" Click="GridAddCol_Click" AutomationProperties.AutomationId="GridAddCol"/>
-                </StackPanel>
-                <DataGrid x:Name="InputGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                          Background="{StaticResource Surface}" RowBackground="{StaticResource Surface}"
-                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Line}"
-                          BorderBrush="{StaticResource Line}" Foreground="{StaticResource Ink}"
-                          AutomationProperties.AutomationId="InputGrid">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Width" Width="160"/>
-                        <DataGridTextColumn Header="Height" Width="160"/>
-                        <DataGridTextColumn Header="Depth" Width="160"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="A table you can type into. Paste a block of Excel cells at once, select a row or column to edit every cell together, and clear a whole selection in one action."/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
+            <local:SheetGrid x:Name="InputGrid" AutomationProperties.AutomationId="InputGrid"/>
         </Border>
 
         <!-- Typed grid -->
@@ -41,20 +28,75 @@
 
         <!-- Filter table -->
         <TextBlock Text="Table with filters" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Text="Search by name and narrow by status. The count and empty state update as you type." Style="{StaticResource SectionDesc}"/>
         <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
             <StackPanel>
-                <TextBox x:Name="FilterSearch" Style="{StaticResource ClaudeInput}" Width="280" HorizontalAlignment="Left"
-                         TextChanged="FilterSearch_TextChanged" AutomationProperties.AutomationId="FilterSearch"/>
-                <DataGrid x:Name="FilterGrid" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,12,0,0"
-                          Background="{StaticResource Surface}" RowBackground="{StaticResource Surface}"
-                          GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Line}"
-                          Foreground="{StaticResource Ink}" AutomationProperties.AutomationId="FilterGrid">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Project" Width="220" Binding="{Binding Project}"/>
-                        <DataGridTextColumn Header="Owner" Width="180" Binding="{Binding Owner}"/>
-                        <DataGridTextColumn Header="Status" Width="140" Binding="{Binding Status}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Width="320" Height="42" BorderBrush="{StaticResource LineStrong}" BorderThickness="1"
+                            CornerRadius="8" Background="{StaticResource Surface}" VerticalAlignment="Center">
+                        <Grid>
+                            <Path Data="M 6 1 A 5 5 0 1 1 6 11 A 5 5 0 1 1 6 1 M 9.5 9.5 L 14 14"
+                                  Stroke="{StaticResource Ink3}" StrokeThickness="2" Width="15" Height="15" Stretch="Uniform"
+                                  HorizontalAlignment="Left" Margin="13,0,0,0" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="FilterPlaceholder" Text="Search projects…" FontSize="15"
+                                       Foreground="{StaticResource Ink3}" Margin="38,0,13,0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="FilterSearch" Style="{StaticResource ClaudeInput}" BorderThickness="0"
+                                     Padding="38,11,13,11" Background="Transparent" VerticalContentAlignment="Center"
+                                     TextChanged="FilterSearch_TextChanged" AutomationProperties.AutomationId="FilterSearch"/>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1" Background="{StaticResource BgDeep}" CornerRadius="9" Padding="3"
+                            VerticalAlignment="Center" Margin="12,0,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton x:Name="SegAll" Content="All" Tag="all" GroupName="FilterStatus"
+                                         Style="{StaticResource SegmentButton}"
+                                         Checked="FilterSegment_Checked" AutomationProperties.AutomationId="SegAll"/>
+                            <RadioButton Content="Active" Tag="active" GroupName="FilterStatus"
+                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                            <RadioButton Content="Pending" Tag="pending" GroupName="FilterStatus"
+                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                            <RadioButton Content="Archived" Tag="archived" GroupName="FilterStatus"
+                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock x:Name="FilterCount" Grid.Column="2" Text="6 of 6 projects" FontSize="13"
+                               Foreground="{StaticResource Ink3}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               AutomationProperties.AutomationId="FilterCount"/>
+                </Grid>
+
+                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+                    <DataGrid x:Name="FilterGrid" AutoGenerateColumns="False" CanUserAddRows="False"
+                              GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
+                              Background="{StaticResource Surface}" BorderThickness="0" Foreground="{StaticResource Ink}"
+                              ColumnHeaderStyle="{StaticResource TableHeader}" RowStyle="{StaticResource TableRow}"
+                              CellStyle="{StaticResource TableCell}"
+                              AutomationProperties.AutomationId="FilterGrid">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Project" Width="2*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
+                                            <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Owner" Width="1.4*" Binding="{Binding Owner}"/>
+                            <DataGridTemplateColumn Header="Status" Width="1.1*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                            <DataGridTextColumn Header="Updated" Width="1.1*" Binding="{Binding Updated}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+                <TextBlock x:Name="FilterEmpty" Visibility="Collapsed" Text="No matching projects" TextAlignment="Center"
+                           FontSize="15" Foreground="{StaticResource Ink2}" Margin="0,24,0,24"
+                           AutomationProperties.AutomationId="FilterEmpty"/>
+                <local:TablePagination InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="FilterPagination"/>
             </StackPanel>
         </Border>
 

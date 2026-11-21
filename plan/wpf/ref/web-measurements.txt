@@ -1,0 +1,27 @@
+Measured from web/index.html in Edge headless, window 1400x1100, device scale 1 (100%).
+Format per element: x,y,width,height in CSS px (= WPF DIPs at 100%). Measured with the getBoundingClientRect dump in plan/wpf/README.md.
+
+main column: max-width 1080, padding 0 48 => content width 984
+
+#sheet-input (Grid input)
+ section   y=0       (section padding-top 46, padding-bottom 8)
+ h2        y=46   h=32.4   (27px serif, line-height 1.2)
+ p         y=86.4 w=501.3 h=72  (15px, line-height 24, max-width 62ch, margin-top 8)
+ demo      y=180.4 w=984 h=329.2   (p bottom + 22)
+ toolbar   x=+31 y=+31 w=922 h=32
+ btn Copy  w=108.1 h=32     btn Clear x=+116.1 (gap 8) w=107.8 h=32
+ info      right-aligned, w=79.3 h=19.2, vertically centred in toolbar
+ scroll    y=toolbar+46 (gap 14)  w=922 h=188   (1px border all round)
+ thead     h=35 : rownum 60.8 | Width 199.6 | Height 199.6 | Depth 199.6 | Weight 199.6 | add-col 60.8
+ body row  h=38 (37 content + 1 border) x3, same column widths
+ add row   h=37 : rownum-col "+" 60.8 | "+ Add row" colspan 859.3
+ hint      y=scroll bottom + 14, h=19.2
+
+#typed-sheet (Typed grid input)
+ p         h=48 (2 lines)
+ thead     h=35 : rownum 62.1 | Variant 204.2 | Width 204.2 | Height 204.2 | Category 123.2 | IsActive 122.1   (no add-col)
+ body row  h=38 x3
+ add row   h=37 : "+" 62.1 | "+ Add row" colspan 857.9
+ select    fills cell: w=122.2 h=37
+ checkbox  16x16, centred in cell
+ cell input: Segoe UI 14px, line-height normal, height 37

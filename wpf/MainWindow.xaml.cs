@@ -35,27 +35,22 @@ namespace UIComponents.Wpf
             if (args.Length < 2) return;
 
             var key = args[1];
-            var titleStyle = (Style)FindResource("SectionTitle");
-            string current = null;
-            bool matched = false;
-            foreach (UIElement child in Sections.Children)
+            var panels = new Panel[]
             {
-                var text = child as TextBlock;
-                if (text != null && text.Style == titleStyle) current = text.Text;
-                bool show = current != null && string.Equals(current, key, StringComparison.OrdinalIgnoreCase);
-                child.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-                if (show) matched = true;
-            }
+                Sections, FormInputs.SectionList, DataTables.SectionList, AdvancedTables.SectionList
+            };
+            bool found = false;
+            foreach (var panel in panels)
+                if (StandaloneHelper.Contains(panel, key)) { found = true; break; }
+            if (!found) return;
 
-            if (matched)
-            {
-                Title = key + " — Claude UI";
-                ContentScroll.Padding = new Thickness(48, 40, 48, 48);
-            }
-            else
-            {
-                foreach (UIElement child in Sections.Children) child.Visibility = Visibility.Visible;
-            }
+            foreach (var panel in panels) StandaloneHelper.Apply(panel, key);
+            FormInputs.Visibility = StandaloneHelper.Contains(FormInputs.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
+            DataTables.Visibility = StandaloneHelper.Contains(DataTables.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
+            AdvancedTables.Visibility = StandaloneHelper.Contains(AdvancedTables.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
+
+            Title = key + " — Claude UI";
+            ContentScroll.Padding = new Thickness(48, 40, 48, 48);
         }
     }
 
@@ -68,5 +63,34 @@ namespace UIComponents.Wpf
         public string Status { get; set; }
         public string Updated { get; set; }
         public string Budget { get; set; }
+    }
+
+    internal static class StandaloneHelper
+    {
+        public static bool Contains(Panel panel, string key)
+        {
+            var style = (Style)panel.FindResource("SectionTitle");
+            string current = null;
+            foreach (UIElement child in panel.Children)
+            {
+                var text = child as TextBlock;
+                if (text != null && text.Style == style) current = text.Text;
+                if (current != null && string.Equals(current, key, StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
+
+        public static void Apply(Panel panel, string key)
+        {
+            var style = (Style)panel.FindResource("SectionTitle");
+            string current = null;
+            foreach (UIElement child in panel.Children)
+            {
+                var text = child as TextBlock;
+                if (text != null && text.Style == style) current = text.Text;
+                child.Visibility = current != null && string.Equals(current, key, StringComparison.OrdinalIgnoreCase)
+                    ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
     }
 }
