@@ -40,19 +40,17 @@ The machine used to create this had the .NET Framework 4.8 runtime and `csc.exe`
 | Sidebar | `ClaudeSidebar` |
 | Empty state | `ClaudeEmptyState` |
 | Toast | `ClaudeToastHost` |
-| Data table | `Draw.StyleGrid(DataGridView)` |
+| Searchable select | `ClaudeSearchSelect` |
+| Multi-select | `ClaudeMultiSelect` |
+| Date-time picker | `ClaudeDateTimePicker` |
+| Grid input / typed grid | `ClaudeGrid`, `GridColumnDef` |
+| Table variants (filter, column filters, sort, sticky, selection, pagination) | `ClaudeTable`, `TableOptions` |
+| Loading modal | `ClaudeLoadingDialog` |
+| Drawer form with delete confirmation | `ClaudeDrawerForm` |
+| Command palette (Ctrl+K) | `ClaudeCommandPalette` |
+| Tooltips | themed `ToolTip` on the overlay buttons |
 
-## Not ported yet
-
-These web components need more work in WinForms and are intentionally deferred:
-
-- Grid input / typed grid (spreadsheet-style cell editing, multi-cell edit, Excel paste, copy)
-- Searchable select, multi-select (the WinForms autocomplete covers part of this)
-- Table variants: pagination, search/status filter, column filters, sorting, sticky column, row selection
-- Command palette (Ctrl+K)
-- Date-time picker with hour/minute/second fields (the WinForms picker currently has date/month/year modes only)
-- Loading modal (blocking overlay), drawer form with delete confirmation
-- Tooltip demo (native `ToolTip` can be themed with the same palette)
+All web components now have a WinForms counterpart. Note that native WinForms controls (`DateTimePicker`, `NumericUpDown`, `DataGridView`) keep some platform styling — they are themed with the palette but cannot be made pixel-identical to the web versions.
 
 ## Notes for agents extending this
 
