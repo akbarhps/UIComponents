@@ -258,6 +258,32 @@ svg{ display: block; }
 .accordion__panel{ padding:0 18px 18px; color:var(--ink-2); font-size:14px; }
 .accordion__panel[hidden]{ display:none; }
 
+/* ── Stepper ──────────────────────────────────────────────── */
+.stepper{ display:flex; width:100%; }
+.step{ display:flex; flex-direction:column; align-items:flex-start; flex:1; position:relative; }
+.step:last-child{ flex:0 0 auto; }
+.step__marker{
+  width:30px; height:30px; flex:none; border-radius:50%;
+  display:grid; place-items:center; font:600 13px var(--font-sans);
+  background:var(--surface); border:1.5px solid var(--line-strong); color:var(--ink-3);
+  position:relative; z-index:1;
+}
+.step__marker svg{ width:15px; height:15px; }
+.step__text{ margin-top:9px; padding-right:16px; }
+.step__title{ font-size:14px; font-weight:600; color:var(--ink-3); }
+.step__desc{ font-size:12px; color:var(--ink-3); margin-top:2px; }
+.step__line{ position:absolute; top:14px; left:30px; right:10px; height:2px; background:var(--line); }
+.step.is-done .step__marker{ background:var(--brand); border-color:var(--brand); color:#fff; }
+.step.is-done .step__line{ background:var(--brand); }
+.step.is-done .step__title{ color:var(--ink); }
+.step.is-current .step__marker{ border-color:var(--brand); color:var(--brand); background:var(--brand-soft); }
+.step.is-current .step__title{ color:var(--ink); }
+.step--vertical{ flex-direction:column; }
+.step--vertical .step{ width:100%; flex:0 0 auto; padding-bottom:22px; flex-direction:row; gap:14px; }
+.step--vertical .step:last-child{ padding-bottom:0; }
+.step--vertical .step__line{ top:30px; left:14px; right:auto; bottom:-8px; width:2px; height:auto; }
+.step--vertical .step__text{ padding-top:4px; margin-top:0; }
+
 /* ── Breadcrumbs ──────────────────────────────────────────── */
 .crumbs{ display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:13px; }
 .crumbs a{ color:var(--ink-2); text-decoration:none; }
@@ -854,6 +880,7 @@ svg{ display: block; }
         <a href="#alerts"><svg><use href="#i-alert"/></svg>Alerts</a>
         <a href="#empty-state"><svg><use href="#i-card"/></svg>Empty state</a>
         <a href="#accordion"><svg><use href="#i-chevron"/></svg>Accordion</a>
+        <a href="#stepper"><svg><use href="#i-check"/></svg>Stepper</a>
         <a href="#breadcrumbs"><svg><use href="#i-more"/></svg>Breadcrumbs</a>
         <a href="#tooltip-demo"><svg><use href="#i-info"/></svg>Tooltips</a>
         <a href="#tabs"><svg><use href="#i-grid"/></svg>Tabs</a>
@@ -1372,6 +1399,32 @@ svg{ display: block; }
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stepper -->
+    <section class="section" id="stepper">
+      <div class="section__head"><h2>Stepper</h2><p>Progress through a multi-step flow. Completed steps show a check, the current step is highlighted, and the controls below move between them.</p></div>
+      <div class="demo">
+        <div class="stepper" id="stepperDemo">
+          <div class="step is-current"><span class="step__line"></span><span class="step__marker">1</span><div class="step__text"><div class="step__title">Account</div><div class="step__desc">Your details</div></div></div>
+          <div class="step"><span class="step__line"></span><span class="step__marker">2</span><div class="step__text"><div class="step__title">Workspace</div><div class="step__desc">Set it up</div></div></div>
+          <div class="step"><span class="step__line"></span><span class="step__marker">3</span><div class="step__text"><div class="step__title">Review</div><div class="step__desc">Confirm</div></div></div>
+          <div class="step"><span class="step__marker">4</span><div class="step__text"><div class="step__title">Done</div><div class="step__desc">All set</div></div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+          <button class="btn btn--secondary btn--sm" id="stepPrev">Previous</button>
+          <button class="btn btn--primary btn--sm" id="stepNext">Next step</button>
+          <span class="field__hint" id="stepStatus">Step 1 of 4</span>
+        </div>
+        <div class="divider"></div>
+        <div class="demo__label">Vertical</div>
+        <div class="stepper step--vertical">
+          <div class="step is-done"><span class="step__line"></span><span class="step__marker"><svg><use href="#i-check"/></svg></span><div class="step__text"><div class="step__title">Account created</div><div class="step__desc">Your details are saved.</div></div></div>
+          <div class="step is-current"><span class="step__line"></span><span class="step__marker">2</span><div class="step__text"><div class="step__title">Set up workspace</div><div class="step__desc">Invite your team and pick a plan.</div></div></div>
+          <div class="step"><span class="step__marker">3</span><div class="step__text"><div class="step__title">Review and finish</div><div class="step__desc">Confirm everything looks right.</div></div></div>
         </div>
       </div>
     </section>
@@ -2988,6 +3041,27 @@ document.addEventListener('keydown', e => {
     openCmdk();
   }
 });
+
+/* Stepper */
+const stepperDemo = document.getElementById('stepperDemo');
+const stepEls = [...stepperDemo.querySelectorAll('.step')];
+const stepStatus = document.getElementById('stepStatus');
+let currentStep = 0;
+const CHECK = '<svg><use href="#i-check"/></svg>';
+function renderStepper(){
+  stepEls.forEach((step, i) => {
+    const marker = step.querySelector('.step__marker');
+    step.classList.toggle('is-done', i < currentStep);
+    step.classList.toggle('is-current', i === currentStep);
+    marker.innerHTML = i < currentStep ? CHECK : String(i + 1);
+  });
+  stepStatus.textContent = 'Step ' + (currentStep + 1) + ' of ' + stepEls.length;
+  document.getElementById('stepPrev').disabled = currentStep === 0;
+  document.getElementById('stepNext').disabled = currentStep === stepEls.length - 1;
+}
+document.getElementById('stepPrev').addEventListener('click', () => { if(currentStep > 0){ currentStep--; renderStepper(); } });
+document.getElementById('stepNext').addEventListener('click', () => { if(currentStep < stepEls.length - 1){ currentStep++; renderStepper(); } });
+renderStepper();
 
 /* Accordions */
 document.querySelectorAll('.accordion').forEach(accordion => {
