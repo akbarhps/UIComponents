@@ -462,6 +462,7 @@ svg{ display: block; }
 /* ── Sidebar drawer ───────────────────────────────────────── */
 .drawer-overlay{ padding:0; justify-content:flex-end; }
 .drawer{
+  position:relative;
   width:min(440px,100%); height:100%; background:var(--surface);
   border-left:1px solid var(--line); box-shadow:var(--shadow-2);
   display:flex; flex-direction:column; min-height:0;
@@ -473,6 +474,13 @@ svg{ display: block; }
 .drawer__body{ padding:24px 26px; overflow-y:auto; display:flex; flex-direction:column; gap:20px; }
 .drawer__intro{ font-size:14px; color:var(--ink-2); }
 .drawer__foot{ margin-top:auto; padding:18px 26px; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px; }
+.drawer__foot--update .btn--danger{ margin-right:auto; }
+.drawer__confirm{ position:absolute; inset:0; z-index:2; background:var(--surface); display:flex; align-items:center; justify-content:center; padding:26px; }
+.drawer__confirm[hidden]{ display:none; }
+.drawer__confirm-card{ max-width:320px; text-align:center; }
+.confirm-icon{ width:42px; height:42px; margin:0 auto 16px; border-radius:50%; background:var(--danger-soft); color:var(--danger); display:grid; place-items:center; }
+.confirm-icon svg{ width:20px; height:20px; }
+.drawer__confirm-actions{ display:flex; justify-content:center; gap:10px; margin-top:22px; }
 
 /* ── Searchable select ────────────────────────────────────── */
 .combo{ position:relative; }
@@ -1143,9 +1151,12 @@ svg{ display: block; }
 
     <!-- Drawer form -->
     <section class="section" id="drawer">
-      <div class="section__head"><h2>Sidebar modal form</h2><p>A slide-out panel for longer forms that still need focus. Closes with the button, the backdrop, or Escape.</p></div>
+      <div class="section__head"><h2>Sidebar modal form</h2><p>Slide-out panels for longer forms. Create a member, or edit one with a delete step that asks for confirmation first.</p></div>
       <div class="demo">
-        <div class="row"><button class="btn btn--secondary" id="openDrawer">Invite a member</button></div>
+        <div class="row">
+          <button class="btn btn--secondary" id="openDrawer">Invite a member</button>
+          <button class="btn btn--secondary" id="openEditDrawer">Edit member</button>
+        </div>
       </div>
     </section>
 
@@ -1256,6 +1267,51 @@ svg{ display: block; }
     <div class="modal__foot">
       <button class="btn btn--secondary" id="cancelModal">Cancel</button>
       <button class="btn btn--danger" id="confirmModal">Delete project</button>
+    </div>
+  </div>
+</div>
+
+<!-- Update drawer markup -->
+<div class="overlay drawer-overlay" id="editDrawerOverlay" role="dialog" aria-modal="true" aria-labelledby="editDrawerTitle">
+  <div class="drawer">
+    <div class="drawer__head">
+      <h3 class="modal__title" id="editDrawerTitle">Edit member</h3>
+      <button class="icon-btn" id="closeEditDrawer" aria-label="Close panel"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <form class="drawer__form" id="editForm" novalidate>
+      <div class="drawer__body">
+        <p class="drawer__intro">Update this member's details and workspace role.</p>
+        <div class="field">
+          <label class="field__label" for="ed-name">Full name</label>
+          <input class="input" id="ed-name" value="Jamie Rivera"/>
+        </div>
+        <div class="field">
+          <label class="field__label" for="ed-email">Email address</label>
+          <input class="input" id="ed-email" type="email" value="jamie@example.com"/>
+          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+        </div>
+        <div class="field">
+          <label class="field__label" for="ed-role">Role</label>
+          <select class="select" id="ed-role"><option selected>Member</option><option>Admin</option><option>Viewer</option></select>
+        </div>
+        <label class="switch"><input type="checkbox" checked/><span class="switch__track"></span>Active in workspace</label>
+      </div>
+      <div class="drawer__foot drawer__foot--update">
+        <button type="button" class="btn btn--danger btn--sm" id="editDelete">Delete</button>
+        <button type="button" class="btn btn--secondary" id="cancelEditDrawer">Cancel</button>
+        <button type="submit" class="btn btn--primary">Save changes</button>
+      </div>
+    </form>
+    <div class="drawer__confirm" id="editConfirm" hidden>
+      <div class="drawer__confirm-card">
+        <div class="confirm-icon"><svg><use href="#i-alert"/></svg></div>
+        <h4 class="modal__title">Delete this member?</h4>
+        <p class="drawer__intro">Jamie will lose access to this workspace immediately. This can't be undone.</p>
+        <div class="drawer__confirm-actions">
+          <button type="button" class="btn btn--secondary" id="keepMember">Keep member</button>
+          <button type="button" class="btn btn--danger" id="confirmDelete">Delete member</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1422,6 +1478,46 @@ document.getElementById('inviteForm').addEventListener('submit', e => {
   e.target.reset();
 });
 document.getElementById('dr-email').addEventListener('input', e => setFieldError(e.target.closest('.field'), false));
+
+/* Update drawer */
+const editOverlay = document.getElementById('editDrawerOverlay');
+const editConfirm = document.getElementById('editConfirm');
+const editEmail = document.getElementById('ed-email');
+document.getElementById('openEditDrawer').addEventListener('click', () => {
+  editConfirm.hidden = true;
+  openOverlay(editOverlay, document.getElementById('ed-name'));
+});
+document.getElementById('closeEditDrawer').addEventListener('click', () => closeOverlay(editOverlay));
+document.getElementById('cancelEditDrawer').addEventListener('click', () => closeOverlay(editOverlay));
+document.getElementById('editForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const valid = emailOk(editEmail.value);
+  setFieldError(editEmail.closest('.field'), !valid);
+  if(!valid) return;
+  closeOverlay(editOverlay);
+  showToast('success', 'Changes saved', "Jamie's details have been updated.");
+});
+editEmail.addEventListener('input', () => setFieldError(editEmail.closest('.field'), false));
+document.getElementById('editDelete').addEventListener('click', () => {
+  editConfirm.hidden = false;
+  document.getElementById('keepMember').focus();
+});
+document.getElementById('keepMember').addEventListener('click', () => {
+  editConfirm.hidden = true;
+  document.getElementById('editDelete').focus();
+});
+document.getElementById('confirmDelete').addEventListener('click', () => {
+  editConfirm.hidden = true;
+  closeOverlay(editOverlay);
+  showToast('success', 'Member deleted', 'Jamie no longer has access.');
+});
+editOverlay.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && !editConfirm.hidden){
+    e.stopPropagation();
+    editConfirm.hidden = true;
+    document.getElementById('editDelete').focus();
+  }
+});
 
 /* Table pagination */
 document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
