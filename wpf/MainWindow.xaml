@@ -1,6 +1,7 @@
 <Window x:Class="UIComponents.Wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:UIComponents.Wpf"
         Title="Claude UI — WPF components" Height="820" Width="1180"
         Background="{StaticResource Bg}" FontFamily="{StaticResource Sans}">
     <Grid>
@@ -271,7 +272,10 @@
                 </Border>
 
                 <!-- Form inputs -->
-                <local:InputControls xmlns:local="clr-namespace:UIComponents.Wpf"/>
+                <local:InputControls/>
+
+                <!-- Data controls -->
+                <local:DataControls/>
 
                 <!-- Overlay -->
                 <TextBlock Text="Overlays" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>

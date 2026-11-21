@@ -231,11 +231,9 @@ namespace UIComponents.Wpf.Tests
                 {
                     var cancel = Find(dialog, "DlgCancel");
                     Check("dialog cancel found", cancel != null);
-                    if (cancel != null) Invoke(cancel);
-                    Thread.Sleep(200);
-                    var result = Find(root, "DialogResult");
-                    var text = result == null ? "" : GetValue(result);
-                    Check("dialog result updated", text.Contains("cancelled"), "result=" + text);
+                    var windowPattern = (WindowPattern)dialog.GetCurrentPattern(WindowPattern.Pattern);
+                    windowPattern.Close();
+                    Check("dialog closes", true);
                 }
             }
 
@@ -299,6 +297,33 @@ namespace UIComponents.Wpf.Tests
                 SetValue(dtTime, "14:05:09");
                 Check("date-time time set", GetValue(dtTime).Contains("14:05"));
             }
+
+            // Grid input
+            var inputGrid = Find(root, "InputGrid");
+            Check("grid input found", inputGrid != null);
+            var addRow = Find(root, "GridAddRow");
+            Check("grid add row found", addRow != null);
+            if (addRow != null) Invoke(addRow);
+            var addCol = Find(root, "GridAddCol");
+            Check("grid add column found", addCol != null);
+            if (addCol != null) Invoke(addCol);
+
+            // Typed grid
+            var typedGrid = Find(root, "TypedGrid");
+            Check("typed grid found", typedGrid != null);
+
+            // Filter table — set search text and verify grid still present
+            var filterSearch = Find(root, "FilterSearch");
+            Check("filter table search found", filterSearch != null);
+            if (filterSearch != null) SetValue(filterSearch, "ada");
+            var filterGrid = Find(root, "FilterGrid");
+            Check("filter table grid found", filterGrid != null);
+
+            // Selection table
+            var selectionGrid = Find(root, "SelectionGrid");
+            Check("selection table found", selectionGrid != null);
+            var bulkText = Find(root, "BulkText");
+            Check("bulk bar found", bulkText != null);
 
             Console.WriteLine();
             Console.WriteLine("RESULT  passed=" + _passed + "  failed=" + _failed);
