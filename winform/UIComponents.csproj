@@ -31,6 +31,9 @@
     <Compile Include="src\BasicControls.cs" />
     <Compile Include="src\FormControls.cs" />
     <Compile Include="src\NavControls.cs" />
+    <Compile Include="src\SelectionControls.cs" />
+    <Compile Include="src\DataControls.cs" />
+    <Compile Include="src\OverlayControls.cs" />
     <Compile Include="src\DemoForm.cs" />
     <Compile Include="src\Program.cs" />
   </ItemGroup>

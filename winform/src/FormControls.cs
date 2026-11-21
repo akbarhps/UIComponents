@@ -47,7 +47,7 @@ namespace UIComponents
 
         public ClaudeField()
         {
-            BackColor = Theme.Bg;
+            BackColor = Theme.Surface;
             Height = 90;
             _label.Font = Theme.Sans(9.5f, FontStyle.Bold);
             _label.ForeColor = Theme.Ink;
@@ -103,7 +103,7 @@ namespace UIComponents
 
         public ClaudeTagInput(string[] initial = null)
         {
-            BackColor = Theme.Bg;
+            BackColor = Theme.Surface;
             _chips = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = true, Padding = new Padding(6), BackColor = Theme.Surface };
             _input = new TextBox { BorderStyle = BorderStyle.None, Width = 130, Font = Theme.Sans(10f), ForeColor = Theme.Ink };
             _hint = new Label { Dock = DockStyle.Bottom, Height = 20, Font = Theme.Sans(8.5f), ForeColor = Theme.Ink3 };
@@ -176,7 +176,7 @@ namespace UIComponents
         {
             _options = options ?? new string[0];
             _multiple = multiple;
-            BackColor = Theme.Bg;
+            BackColor = Theme.Surface;
             Height = multiple ? 110 : 78;
 
             _input.Font = Theme.Sans(10f);
@@ -247,7 +247,7 @@ namespace UIComponents
 
         public ClaudeFileInput()
         {
-            BackColor = Theme.Bg;
+            BackColor = Theme.Surface;
             Height = 160;
             var btn = new ClaudeButton { Text = "Browse files…", Variant = ButtonVariant.Secondary, Dock = DockStyle.Top, Height = 38 };
             btn.Click += (s, e) =>

@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -58,6 +59,15 @@ namespace UIComponents
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = Theme.Bg;
             Font = Theme.Sans(10f);
+            KeyPreview = true;
+            KeyDown += (s, e) =>
+            {
+                if (e.Control && e.KeyCode == Keys.K)
+                {
+                    e.SuppressKeyPress = true;
+                    ShowCommandPalette();
+                }
+            };
 
             Controls.Add(_main);
             BuildContent();
@@ -86,9 +96,9 @@ namespace UIComponents
         private void BuildSidebar()
         {
             _sidebar.AddGroup("Basics", "Buttons", "Badges & alerts", "Progress & skeleton", "Empty state");
-            _sidebar.AddGroup("Forms", "Fields", "Tag input", "Autocomplete", "Date & file", "Modal form");
-            _sidebar.AddGroup("Navigation", "Tabs & accordion", "Stepper & breadcrumbs", "Tooltips");
-            _sidebar.AddGroup("Data", "Tables", "Toasts");
+            _sidebar.AddGroup("Forms", "Fields", "Tag input", "Autocomplete", "Date & file", "Selects", "Date & time", "Grid input", "Typed grid", "Modal form");
+            _sidebar.AddGroup("Navigation", "Tabs & accordion", "Stepper & breadcrumbs", "Tooltips", "Command palette");
+            _sidebar.AddGroup("Data", "Tables", "Filter table", "Column filters", "Selection table", "Overlays", "Toasts");
             _sidebar.ItemSelected += (s, item) =>
             {
                 int y;
@@ -232,6 +242,110 @@ namespace UIComponents
             var errToast = new ClaudeButton { Text = "Error toast", Variant = ButtonVariant.Secondary, Location = new Point(250, 0), Size = new Size(110, 36) };
             errToast.Click += (s, e) => _toasts.Show("Upload failed", "The file could not be uploaded.", AlertTone.Danger);
             toasts.Controls.AddRange(new Control[] { errToast, infoToast, okToast });
+
+            // Selects
+            var selects = Section("Selects", y, 300, out y);
+            var searchSelect = new ClaudeSearchSelect(new[] { "Ada Lovelace", "Jonas Silva", "Mia Chen", "Sam Patel", "Alex Rivera" }) { Location = new Point(0, 0), Size = new Size(410, 110) };
+            var multiSelect = new ClaudeMultiSelect(new[] { "React", "TypeScript", "Design systems", "Accessibility", "Testing" }, "Select skills…") { Location = new Point(430, 0), Size = new Size(400, 290) };
+            var selectedLabel = new Label { Text = "Selected: —", Font = Theme.Sans(9f), ForeColor = Theme.Ink2, Location = new Point(0, 120), AutoSize = true };
+            searchSelect.SelectedChanged += (s, e) => selectedLabel.Text = "Selected: " + searchSelect.SelectedValue;
+            selects.Controls.Add(selectedLabel);
+            selects.Controls.Add(multiSelect);
+            selects.Controls.Add(searchSelect);
+
+            // Date & time
+            var dateTime = Section("Date & time", y, 100, out y);
+            var dt1 = new ClaudeDateTimePicker { Location = new Point(0, 0), Size = new Size(360, 38) };
+            var dt2 = new ClaudeDateTimePicker(true) { Location = new Point(0, 50), Size = new Size(420, 38) };
+            var dtLabel = new Label { Text = "", Font = Theme.Sans(9f), ForeColor = Theme.Ink3, Location = new Point(440, 8), AutoSize = true };
+            dateTime.Controls.Add(dtLabel);
+            dateTime.Controls.Add(dt2);
+            dateTime.Controls.Add(dt1);
+
+            // Grid input
+            var gridSection = Section("Grid input", y, 270, out y);
+            gridSection.Controls.Add(new ClaudeGrid(
+                new[] { new GridColumnDef("Width", GridColumnType.Text), new GridColumnDef("Height", GridColumnType.Text), new GridColumnDef("Depth", GridColumnType.Text) },
+                new string[,] { { "Small", "10", "20" }, { "Medium", "14", "24" }, { "Large", "18", "30" } }
+            ) { Dock = DockStyle.Fill });
+
+            // Typed grid
+            var typedSection = Section("Typed grid", y, 270, out y);
+            typedSection.Controls.Add(new ClaudeGrid(
+                new[]
+                {
+                    new GridColumnDef("Variant", GridColumnType.Text),
+                    new GridColumnDef("Category", GridColumnType.Select, new[] { "Standard", "Pro", "Custom" }),
+                    new GridColumnDef("IsActive", GridColumnType.Checkbox)
+                },
+                new string[,] { { "Small", "Standard", "true" }, { "Large", "Custom", "false" } },
+                false
+            ) { Dock = DockStyle.Fill });
+
+            // Filter table
+            var filterSection = Section("Filter table", y, 300, out y);
+            filterSection.Controls.Add(new ClaudeTable(BuildTable(), new TableOptions { ShowFilter = true, ShowPagination = true, Sortable = true, PageSize = 10 }) { Dock = DockStyle.Fill });
+
+            // Column filters
+            var columnSection = Section("Column filters", y, 300, out y);
+            columnSection.Controls.Add(new ClaudeTable(BuildTable(), new TableOptions { ShowColumnFilters = true, ShowPagination = true, Sortable = true }) { Dock = DockStyle.Fill });
+
+            // Selection table
+            var selectionSection = Section("Selection table", y, 300, out y);
+            selectionSection.Controls.Add(new ClaudeTable(BuildTable(), new TableOptions { ShowSelection = true, ShowPagination = true, Sortable = true, StickyFirst = true }) { Dock = DockStyle.Fill });
+
+            // Overlays
+            var overlays = Section("Overlays", y, 100, out y);
+            var paletteBtn = new ClaudeButton { Text = "Command palette (Ctrl+K)", Location = new Point(0, 0), Size = new Size(190, 38) };
+            paletteBtn.Click += (s, e) => ShowCommandPalette();
+            var loadingBtn = new ClaudeButton { Text = "Loading modal", Variant = ButtonVariant.Secondary, Location = new Point(200, 0), Size = new Size(130, 38) };
+            loadingBtn.Click += (s, e) =>
+            {
+                var dialog = new ClaudeLoadingDialog("Please wait a moment while we set things up.");
+                var timer = new Timer { Interval = 2200 };
+                timer.Tick += (a, b) => { timer.Stop(); dialog.Close(); _toasts.Show("Ready", "Your workspace is ready."); };
+                dialog.Shown += (a, b) => timer.Start();
+                dialog.ShowDialog(this);
+            };
+            var drawerBtn = new ClaudeButton { Text = "Drawer form", Variant = ButtonVariant.Secondary, Location = new Point(340, 0), Size = new Size(120, 38) };
+            drawerBtn.Click += (s, e) =>
+            {
+                var drawer = new ClaudeDrawerForm();
+                drawer.Location = new Point(Right - drawer.Width - 20, Top + 60);
+                drawer.ShowDialog(this);
+            };
+            var tip = new ToolTip { BackColor = Theme.Ink, ForeColor = Theme.Surface, IsBalloon = false };
+            tip.SetToolTip(paletteBtn, "Search and run an action");
+            tip.SetToolTip(loadingBtn, "Blocks the UI until work finishes");
+            tip.SetToolTip(drawerBtn, "Edit a member with delete confirmation");
+            overlays.Controls.AddRange(new Control[] { drawerBtn, loadingBtn, paletteBtn });
+        }
+
+        private void ShowCommandPalette()
+        {
+            var palette = new ClaudeCommandPalette();
+            palette.Add(new CommandEntry("Actions", "Create a project", () => _toasts.Show("Create project", "A new project draft was started.")));
+            palette.Add(new CommandEntry("Actions", "Invite a member", () => _toasts.Show("Invite member", "Opening the invite form.", AlertTone.Info)));
+            palette.Add(new CommandEntry("Navigation", "Go to Buttons", () => _main.AutoScrollPosition = new Point(0, 0)));
+            palette.Add(new CommandEntry("Navigation", "Go to Tables", () => { int v; if (_anchors.TryGetValue("Tables", out v)) _main.AutoScrollPosition = new Point(0, Math.Max(0, v - 20)); }));
+            palette.ShowDialog(this);
+        }
+
+        private static DataTable BuildTable()
+        {
+            var table = new DataTable();
+            table.Columns.Add("Project", typeof(string));
+            table.Columns.Add("Owner", typeof(string));
+            table.Columns.Add("Status", typeof(string));
+            table.Columns.Add("Updated", typeof(string));
+            table.Columns.Add("Budget", typeof(string));
+            table.Rows.Add("Website refresh", "Ada Lovelace", "Active", "Today", "$12,400");
+            table.Rows.Add("Mobile app", "Jonas Silva", "Active", "Yesterday", "$28,900");
+            table.Rows.Add("Brand guidelines", "Mia Chen", "Pending", "3 days ago", "$4,200");
+            table.Rows.Add("Help center", "Ada Lovelace", "Active", "Last week", "$8,750");
+            table.Rows.Add("Q3 campaign", "Sam Patel", "Pending", "Last week", "$15,600");
+            table.Rows.Add("Legacy archive", "Mia Chen", "Archived", "2 weeks ago", "$1,100");
+            return table;
         }
     }
 }
