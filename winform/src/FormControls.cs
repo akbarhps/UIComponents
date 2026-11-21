@@ -236,14 +236,11 @@ namespace UIComponents
     /// <summary>File picker with a scrollable list of selected files.</summary>
     public class ClaudeFileInput : UserControl
     {
-        private readonly ListBox _list = new ListBox();
+        private readonly ClaudeFileList _list = new ClaudeFileList();
         public string Filter = "All files|*.*";
         public bool MultiSelect = true;
 
-        public string[] Files
-        {
-            get { return _list.Items.Cast<object>().Select(o => o.ToString()).ToArray(); }
-        }
+        public string[] Files { get { return _list.Files; } }
 
         public ClaudeFileInput()
         {
@@ -255,13 +252,11 @@ namespace UIComponents
                 var dlg = new OpenFileDialog { Multiselect = MultiSelect, Filter = Filter };
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    foreach (var f in dlg.FileNames) if (!_list.Items.Contains(f)) _list.Items.Add(f);
+                    foreach (var f in dlg.FileNames) _list.Add(f);
                 }
             };
             var hint = new Label { Text = "or click to browse · selected files are listed below", Dock = DockStyle.Bottom, Height = 22, Font = Theme.Sans(8.5f), ForeColor = Theme.Ink3 };
             _list.Dock = DockStyle.Fill;
-            _list.Font = Theme.Sans(9f);
-            _list.BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(_list);
             Controls.Add(btn);
             Controls.Add(hint);

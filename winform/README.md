@@ -50,7 +50,17 @@ The machine used to create this had the .NET Framework 4.8 runtime and `csc.exe`
 | Command palette (Ctrl+K) | `ClaudeCommandPalette` |
 | Tooltips | themed `ToolTip` on the overlay buttons |
 
-All web components now have a WinForms counterpart. Note that native WinForms controls (`DateTimePicker`, `NumericUpDown`, `DataGridView`) keep some platform styling — they are themed with the palette but cannot be made pixel-identical to the web versions.
+All web components now have a WinForms counterpart. The form controls, pickers, lists and grid/table cells are custom-drawn with GDI+ using the same palette and shape tokens as the web library, so they match closely. The `DataGridView` still provides scrolling and clipboard behaviour under the custom painting, so platform scrollbars may differ slightly.
+
+## Automated tests
+
+```bat
+cd tests
+build-tests.bat
+bin\ComponentTests.exe
+```
+
+The harness instantiates every component and exercises its logic with assertions. It found and prevented regressions such as the field select default, the `_match` filter column leaking into column filters, and sticky-column setup.
 
 ## Notes for agents extending this
 

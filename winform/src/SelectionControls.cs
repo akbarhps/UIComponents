@@ -6,16 +6,18 @@ using System.Windows.Forms;
 
 namespace UIComponents
 {
-    /// <summary>Single select that filters options as you type.</summary>
+    /// <summary>Single select that filters options as you type — fully custom drawn.</summary>
     public class ClaudeSearchSelect : UserControl
     {
-        private readonly TextBox _input = new TextBox();
-        private readonly ListBox _list = new ListBox();
+        private readonly Label _value = new Label();
+        private readonly ClaudeOptionList _list = new ClaudeOptionList();
+        private readonly ClaudeTextBox _search = new ClaudeTextBox();
+        private readonly Panel _popup = new Panel();
         private readonly string[] _options;
-        private readonly Label _chevron = new Label();
         private readonly string _placeholder;
+        private bool _open;
 
-        public string SelectedValue { get { return _input.Text == _placeholder ? "" : _input.Text; } }
+        public string SelectedValue { get { return _value.Text == _placeholder ? "" : _value.Text; } }
         public event EventHandler SelectedChanged;
 
         public ClaudeSearchSelect(string[] options, string placeholder = "Select a value…")
@@ -23,120 +25,112 @@ namespace UIComponents
             _options = options ?? new string[0];
             _placeholder = placeholder;
             BackColor = Theme.Surface;
-            Height = 120;
+            Height = 38;
 
-            var trigger = new Panel { Height = 38, Dock = DockStyle.Top, BackColor = Theme.Surface };
-            trigger.Paint += (s, e) => Draw.RoundedBox(e.Graphics, new Rectangle(1, 1, trigger.Width - 2, trigger.Height - 2), 8, Theme.Surface, Theme.LineStrong);
-            _input.Font = Theme.Sans(10f);
-            _input.BorderStyle = BorderStyle.None;
-            _input.Location = new Point(12, 9);
-            _input.Width = 300;
-            _input.ReadOnly = true;
-            _input.Text = _placeholder;
-            _input.ForeColor = Theme.Ink3;
-            _chevron.Text = "⌄";
-            _chevron.Font = Theme.Sans(11f);
-            _chevron.ForeColor = Theme.Ink3;
-            _chevron.Location = new Point(trigger.Width - 30, 8);
-            _chevron.Click += (s, e) => { _list.Visible = !_list.Visible; if (_list.Visible) _input.Focus(); };
-            _input.Click += (s, e) =>
+            _value.Text = placeholder;
+            _value.ForeColor = Theme.Ink3;
+            _value.Font = Theme.Sans(10f);
+            _value.Location = new Point(13, 10);
+            _value.AutoSize = true;
+            var chevron = new Label { Text = "⌄", Font = Theme.Sans(11f), ForeColor = Theme.Ink3, Dock = DockStyle.Right, Width = 28, TextAlign = ContentAlignment.MiddleCenter };
+
+            _search.Placeholder = "Search…";
+            _search.Dock = DockStyle.Top;
+            _search.TextChanged += (s, e) => Filter(_search.TextValue);
+            _search.KeyDown += (s, e) =>
             {
-                if (_input.Text == _placeholder) { _input.Text = ""; _input.ForeColor = Theme.Ink; }
-                _list.Visible = true;
+                if (e.KeyCode == Keys.Down) { _list.MoveSelection(1); e.SuppressKeyPress = true; }
+                else if (e.KeyCode == Keys.Up) { _list.MoveSelection(-1); e.SuppressKeyPress = true; }
+                else if (e.KeyCode == Keys.Enter) { _list.PickCurrent(); e.SuppressKeyPress = true; }
+                else if (e.KeyCode == Keys.Escape) { _popup.Visible = false; _open = false; Height = 38; }
             };
-            _input.TextChanged += (s, e) => Filter(_input.Text);
-            _input.KeyDown += (s, e) =>
-            {
-                if (e.KeyCode == Keys.Down && _list.Items.Count > 0) { if (_list.SelectedIndex < _list.Items.Count - 1) _list.SelectedIndex++; e.SuppressKeyPress = true; }
-                else if (e.KeyCode == Keys.Up && _list.Items.Count > 0) { if (_list.SelectedIndex > 0) _list.SelectedIndex--; e.SuppressKeyPress = true; }
-                else if (e.KeyCode == Keys.Enter && _list.SelectedIndex >= 0) { Choose(_list.SelectedItem.ToString()); e.SuppressKeyPress = true; }
-                else if (e.KeyCode == Keys.Escape) _list.Visible = false;
-            };
+
             _list.Dock = DockStyle.Fill;
-            _list.Font = Theme.Sans(9.5f);
-            _list.BorderStyle = BorderStyle.FixedSingle;
-            _list.Visible = false;
-            _list.Click += (s, e) => { if (_list.SelectedIndex >= 0) Choose(_list.SelectedItem.ToString()); };
+            _list.Picked += (s, v) => Choose(v);
 
-            trigger.Controls.Add(_chevron);
-            trigger.Controls.Add(_input);
-            Controls.Add(_list);
-            Controls.Add(trigger);
+            _popup.Controls.Add(_list);
+            _popup.Controls.Add(_search);
+            _popup.Location = new Point(0, 42);
+            _popup.Size = new Size(300, 200);
+            _popup.BackColor = Theme.Surface;
+            _popup.Visible = false;
+
+            Controls.Add(_popup);
+            Controls.Add(chevron);
+            Controls.Add(_value);
+            Click += (s, e) => Toggle();
             Filter("");
+        }
+
+        private void Toggle()
+        {
+            _open = !_open;
+            _popup.Visible = _open;
+            Height = _open ? 244 : 38;
+            Invalidate();
         }
 
         private void Filter(string query)
         {
-            _list.Items.Clear();
-            foreach (var o in _options)
-                if (o.ToLowerInvariant().Contains(query.ToLowerInvariant())) _list.Items.Add(o);
+            var q = (query ?? "").Trim().ToLowerInvariant();
+            _list.SetItems(_options.Where(o => o.ToLowerInvariant().Contains(q)));
         }
 
         private void Choose(string value)
         {
-            _input.Text = value;
-            _input.ForeColor = Theme.Ink;
-            _list.Visible = false;
+            _value.Text = value;
+            _value.ForeColor = Theme.Ink;
+            _popup.Visible = false;
+            _open = false;
+            Height = 38;
             if (SelectedChanged != null) SelectedChanged(this, EventArgs.Empty);
         }
     }
 
-    /// <summary>Multiple selection from a fixed list, shown as chips.</summary>
+    /// <summary>Multiple selection from a fixed list, shown as chips — fully custom drawn.</summary>
     public class ClaudeMultiSelect : UserControl
     {
         private readonly FlowLayoutPanel _chips = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = true, BackColor = Theme.Surface, Padding = new Padding(8) };
-        private readonly CheckedListBox _list = new CheckedListBox { Dock = DockStyle.Fill, Font = Theme.Sans(9.5f), BorderStyle = BorderStyle.FixedSingle };
+        private readonly ClaudeCheckList _list = new ClaudeCheckList();
         private readonly Panel _dropdown = new Panel { Visible = false };
-        private readonly TextBox _search = new TextBox { Font = Theme.Sans(9.5f), Dock = DockStyle.Top, BorderStyle = BorderStyle.FixedSingle };
+        private readonly ClaudeTextBox _search = new ClaudeTextBox();
         private readonly Label _placeholder = new Label();
-        public string[] SelectedValues
-        {
-            get
-            {
-                var result = new List<string>();
-                foreach (var item in _list.CheckedItems) result.Add(item.ToString());
-                return result.ToArray();
-            }
-        }
+        private readonly string[] _options;
+
+        public string[] SelectedValues { get { return _list.CheckedValues; } }
 
         public ClaudeMultiSelect(string[] options, string placeholder)
         {
+            _options = options ?? new string[0];
             BackColor = Theme.Surface;
-            Height = 46;
+            Height = 38;
             _placeholder.Text = placeholder;
             _placeholder.ForeColor = Theme.Ink3;
             _placeholder.Font = Theme.Sans(10f);
-            _placeholder.Location = new Point(10, 12);
+            _placeholder.Location = new Point(13, 10);
             _placeholder.AutoSize = true;
 
-            var trigger = new Panel { Height = 46, Dock = DockStyle.Top, BackColor = Theme.Surface };
+            var trigger = new Panel { Dock = DockStyle.Top, Height = 38, BackColor = Theme.Surface };
             trigger.Paint += (s, e) => Draw.RoundedBox(e.Graphics, new Rectangle(1, 1, trigger.Width - 2, trigger.Height - 2), 8, Theme.Surface, Theme.LineStrong);
-            var chevron = new Label { Text = "⌄", Font = Theme.Sans(11f), ForeColor = Theme.Ink3, Dock = DockStyle.Right, Width = 30, TextAlign = ContentAlignment.MiddleCenter };
-            chevron.Click += (s, e) => Toggle();
+            var chevron = new Label { Text = "⌄", Font = Theme.Sans(11f), ForeColor = Theme.Ink3, Dock = DockStyle.Right, Width = 28, TextAlign = ContentAlignment.MiddleCenter };
+            trigger.Click += (s, e) => Toggle();
             trigger.Controls.Add(chevron);
             trigger.Controls.Add(_placeholder);
             trigger.Controls.Add(_chips);
-            trigger.Click += (s, e) => Toggle();
 
-            foreach (var o in options ?? new string[0]) _list.Items.Add(o);
-            _search.TextChanged += (s, e) =>
-            {
-                // CheckedListBox has no filtering; rebuild from the source list.
-                var checkedItems = SelectedValues;
-                _list.Items.Clear();
-                foreach (var o in options ?? new string[0])
-                    if (o.ToLowerInvariant().Contains(_search.Text.Trim().ToLowerInvariant())) _list.Items.Add(o);
-                foreach (var item in checkedItems)
-                    if (_list.Items.Contains(item)) _list.SetItemChecked(_list.Items.IndexOf(item), true);
-            };
+            _search.Placeholder = "Search…";
+            _search.Dock = DockStyle.Top;
+            _search.TextChanged += (s, e) => Filter(_search.TextValue);
+            _list.Dock = DockStyle.Fill;
+            _list.SetItems(_options);
 
-            var selectAll = new ClaudeButton { Text = "Select all", Variant = ButtonVariant.Ghost, Dock = DockStyle.Left, Width = 90, Height = 32 };
-            selectAll.Click += (s, e) => { for (int i = 0; i < _list.Items.Count; i++) _list.SetItemChecked(i, true); Render(); };
-            var clear = new ClaudeButton { Text = "Clear all", Variant = ButtonVariant.Ghost, Dock = DockStyle.Left, Width = 84, Height = 32 };
-            clear.Click += (s, e) => { for (int i = 0; i < _list.Items.Count; i++) _list.SetItemChecked(i, false); Render(); };
-            var done = new ClaudeButton { Text = "Done", Variant = ButtonVariant.Primary, Dock = DockStyle.Right, Width = 70, Height = 30, Margin = new Padding(6) };
-            done.Click += (s, e) => { _dropdown.Visible = false; Height = 46; Render(); };
-            var foot = new Panel { Dock = DockStyle.Bottom, Height = 40, BackColor = Theme.Surface };
+            var selectAll = new ClaudeButton { Text = "Select all", Variant = ButtonVariant.Ghost, Dock = DockStyle.Left, Width = 90, Height = 30 };
+            selectAll.Click += (s, e) => { _list.CheckAll(true); Render(); };
+            var clear = new ClaudeButton { Text = "Clear all", Variant = ButtonVariant.Ghost, Dock = DockStyle.Left, Width = 84, Height = 30 };
+            clear.Click += (s, e) => { _list.CheckAll(false); Render(); };
+            var done = new ClaudeButton { Text = "Done", Variant = ButtonVariant.Primary, Dock = DockStyle.Right, Width = 70, Height = 28 };
+            done.Click += (s, e) => Toggle();
+            var foot = new Panel { Dock = DockStyle.Bottom, Height = 36, BackColor = Theme.Surface };
             foot.Controls.Add(done);
             foot.Controls.Add(clear);
             foot.Controls.Add(selectAll);
@@ -144,7 +138,7 @@ namespace UIComponents
             _dropdown.Controls.Add(foot);
             _dropdown.Controls.Add(_list);
             _dropdown.Controls.Add(_search);
-            _dropdown.Location = new Point(0, 48);
+            _dropdown.Location = new Point(0, 42);
             _dropdown.Size = new Size(360, 230);
             _dropdown.BackColor = Theme.Surface;
 
@@ -156,8 +150,13 @@ namespace UIComponents
         private void Toggle()
         {
             _dropdown.Visible = !_dropdown.Visible;
-            Height = _dropdown.Visible ? 288 : 46;
-            if (_dropdown.Visible) _search.Focus();
+            Height = _dropdown.Visible ? 280 : 38;
+        }
+
+        private void Filter(string query)
+        {
+            var q = (query ?? "").Trim().ToLowerInvariant();
+            _list.SetItems(_options.Where(o => o.ToLowerInvariant().Contains(q)));
         }
 
         private void Render()
@@ -168,7 +167,7 @@ namespace UIComponents
             foreach (var value in values)
             {
                 var chip = new ClaudeBadge { Text = value, Tone = BadgeTone.Brand, ShowDot = false, AutoSize = false, Width = TextRenderer.MeasureText(value, Font).Width + 34, Height = 22, Margin = new Padding(2, 2, 2, 0) };
-                chip.Click += (s, e) => { _list.SetItemChecked(_list.Items.IndexOf(value), false); Render(); };
+                chip.Click += (s, e) => { _list.SetChecked(value, false); Render(); };
                 _chips.Controls.Add(chip);
             }
         }
@@ -177,10 +176,10 @@ namespace UIComponents
     /// <summary>Full date plus hour / minute / second fields.</summary>
     public class ClaudeDateTimePicker : UserControl
     {
-        private readonly DateTimePicker _date = new DateTimePicker();
-        private readonly NumericUpDown _hour = new NumericUpDown { Minimum = 0, Maximum = 23 };
-        private readonly NumericUpDown _minute = new NumericUpDown { Minimum = 0, Maximum = 59 };
-        private readonly NumericUpDown _second = new NumericUpDown { Minimum = 0, Maximum = 59 };
+        private readonly ClaudeDatePicker _date = new ClaudeDatePicker();
+        private readonly ClaudeNumberBox _hour = new ClaudeNumberBox(0, 23, 9);
+        private readonly ClaudeNumberBox _minute = new ClaudeNumberBox(0, 59, 30);
+        private readonly ClaudeNumberBox _second = new ClaudeNumberBox(0, 59, 0);
 
         public DateTime Value
         {
@@ -192,25 +191,20 @@ namespace UIComponents
         {
             BackColor = Theme.Surface;
             Height = 38;
-            _date.Font = Theme.Sans(10f);
-            _date.Format = DateTimePickerFormat.Custom;
-            _date.CustomFormat = "MMM d, yyyy";
-            _date.Location = new Point(0, 4);
-            _date.Width = 150;
+            _date.Location = new Point(0, 0);
+            _date.Width = 170;
             Controls.Add(_date);
 
-            int x = 160;
+            int x = 180;
             AddField(_hour, "h", ref x);
             AddField(_minute, "m", ref x);
             if (includeSeconds) AddField(_second, "s", ref x);
         }
 
-        private void AddField(NumericUpDown field, string suffix, ref int x)
+        private void AddField(ClaudeNumberBox field, string suffix, ref int x)
         {
-            field.Font = Theme.Sans(10f);
-            field.Width = 46;
-            field.Location = new Point(x, 4);
-            var label = new Label { Text = suffix, Font = Theme.Sans(8.5f), ForeColor = Theme.Ink3, Location = new Point(x + 48, 10), AutoSize = true };
+            field.Location = new Point(x, 0);
+            var label = new Label { Text = suffix, Font = Theme.Sans(8.5f), ForeColor = Theme.Ink3, Location = new Point(x + 60, 10), AutoSize = true };
             Controls.Add(label);
             Controls.Add(field);
             x += 66;

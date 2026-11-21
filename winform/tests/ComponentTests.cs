@@ -166,8 +166,8 @@ namespace UIComponents.Tests
             Check("search choose", search.SelectedValue == "Ada");
 
             var multi = new ClaudeMultiSelect(new[] { "React", "Vue" }, "Select…");
-            var list = (CheckedListBox)Get(multi, "_list");
-            list.SetItemChecked(0, true);
+            var list = (ClaudeCheckList)Get(multi, "_list");
+            list.SetChecked("React", true);
             Call(multi, "Render");
             Check("multi select values", multi.SelectedValues.Length == 1 && multi.SelectedValues[0] == "React");
             var all = new ClaudeButton { Text = "Select all" };

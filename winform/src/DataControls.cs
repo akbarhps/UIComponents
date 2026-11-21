@@ -122,6 +122,12 @@ namespace UIComponents
             // Owner-draw cells to match the web grid's surface, borders and selection tint.
             _grid.CellPainting += (s, e) =>
             {
+                if (e.RowIndex == -1 && e.ColumnIndex >= 0)
+                {
+                    Draw.GridHeader(e.Graphics, e.CellBounds, _grid.Columns[e.ColumnIndex].HeaderText, Theme.Sans(9f, FontStyle.Bold));
+                    e.Handled = true;
+                    return;
+                }
                 if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
                 e.PaintBackground(e.CellBounds, false);
                 bool selected = e.State.HasFlag(DataGridViewElementStates.Selected);
@@ -254,6 +260,12 @@ namespace UIComponents
             _grid.DataSource = _binding;
             _grid.CellPainting += (s, e) =>
             {
+                if (e.RowIndex == -1 && e.ColumnIndex >= 0)
+                {
+                    Draw.GridHeader(e.Graphics, e.CellBounds, _grid.Columns[e.ColumnIndex].HeaderText, Theme.Sans(9f, FontStyle.Bold));
+                    e.Handled = true;
+                    return;
+                }
                 if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
                 e.PaintBackground(e.CellBounds, false);
                 bool selected = e.State.HasFlag(DataGridViewElementStates.Selected);

@@ -76,6 +76,14 @@ namespace UIComponents
             }
         }
 
+        public static void GridHeader(Graphics g, Rectangle bounds, string value, Font font)
+        {
+            using (var brush = new SolidBrush(Theme.Surface2)) g.FillRectangle(brush, bounds);
+            g.DrawLine(new Pen(Theme.Line), bounds.Left, bounds.Bottom - 1, bounds.Right - 1, bounds.Bottom - 1);
+            g.DrawLine(new Pen(Theme.Line), bounds.Right - 1, bounds.Top, bounds.Right - 1, bounds.Bottom);
+            CenteredText(g, value ?? "", new Rectangle(bounds.X + 10, bounds.Y, bounds.Width - 14, bounds.Height), font, Theme.Ink2, System.Windows.Forms.HorizontalAlignment.Left);
+        }
+
         public static void GridCell(Graphics g, Rectangle bounds, string value, bool selected, Font font, Color textColor)
         {
             Color background = selected ? Theme.BrandSoft : Theme.Surface;
