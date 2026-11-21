@@ -71,15 +71,15 @@ namespace UIComponents
 
         private Panel Section(string title, int y, int height, out int nextY)
         {
-            var heading = new Label { Text = title, Font = Theme.SerifBold(17f), ForeColor = Theme.Ink, Location = new Point(0, y), AutoSize = true, UseMnemonic = false };
-            var rule = new Panel { BackColor = Theme.Line, Location = new Point(0, y + 32), Size = new Size(860, 1) };
-            _main.Controls.Add(rule);
+            var heading = new Label { Text = title, Font = Theme.Serif(18f), ForeColor = Theme.Ink, Location = new Point(0, y), AutoSize = true, UseMnemonic = false };
             _main.Controls.Add(heading);
             _anchors[title] = y;
-            nextY = y + 46;
-            var panel = new Panel { Location = new Point(0, nextY), Size = new Size(860, height), BackColor = Theme.Bg };
-            _main.Controls.Add(panel);
-            nextY += height + 26;
+            int cardY = y + 36;
+            var card = new ClaudeCard { Location = new Point(0, cardY), Size = new Size(900, height + 44), Padding = new Padding(22) };
+            var panel = new Panel { Location = new Point(22, 22), Size = new Size(856, height), BackColor = Theme.Surface };
+            card.Controls.Add(panel);
+            _main.Controls.Add(card);
+            nextY = cardY + height + 44 + 28;
             return panel;
         }
 
@@ -203,7 +203,7 @@ namespace UIComponents
             var grid = new DataGridView
             {
                 Location = new Point(0, 0),
-                Size = new Size(820, 210)
+                Size = new Size(810, 210)
             };
             Draw.StyleGrid(grid);
             grid.Columns.Add("Project", "Project");
