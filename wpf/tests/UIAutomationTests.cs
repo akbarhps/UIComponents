@@ -27,6 +27,12 @@ namespace UIComponents.Wpf.Tests
             return root.FindFirst(TreeScope.Descendants, condition);
         }
 
+        private static AutomationElement FindByName(AutomationElement root, string name)
+        {
+            var condition = new PropertyCondition(AutomationElement.NameProperty, name);
+            return root.FindFirst(TreeScope.Descendants, condition);
+        }
+
         private static void Invoke(AutomationElement element)
         {
             var pattern = (InvokePattern)element.GetCurrentPattern(InvokePattern.Pattern);
@@ -213,9 +219,13 @@ namespace UIComponents.Wpf.Tests
                 var worker = new Thread(() => Invoke(openDialog));
                 worker.IsBackground = true;
                 worker.Start();
-                Thread.Sleep(600);
-                var dialog = AutomationElement.RootElement.FindFirst(TreeScope.Descendants,
-                    new PropertyCondition(AutomationElement.NameProperty, "Confirm"));
+                AutomationElement dialog = null;
+                for (int i = 0; i < 20 && dialog == null; i++)
+                {
+                    Thread.Sleep(150);
+                    dialog = AutomationElement.RootElement.FindFirst(TreeScope.Descendants,
+                        new PropertyCondition(AutomationElement.NameProperty, "Confirm"));
+                }
                 Check("dialog opened", dialog != null);
                 if (dialog != null)
                 {
@@ -228,6 +238,39 @@ namespace UIComponents.Wpf.Tests
                     Check("dialog result updated", text.Contains("cancelled"), "result=" + text);
                 }
             }
+
+            // Avatars (Border with text child)
+            var avatars = root.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.AutomationIdProperty, "Avatar"));
+            Check("avatars present", avatars.Count >= 1 || FindByName(root, "AL") != null);
+
+            // Breadcrumbs
+            var crumbs = Find(root, "Breadcrumbs") ?? FindByName(root, "Workspace");
+            Check("breadcrumbs found", crumbs != null);
+
+            // Stepper
+            var stepper = Find(root, "Stepper") ?? FindByName(root, "1 Account");
+            Check("stepper found", stepper != null);
+
+            // Tooltip button
+            var tooltipBtn = Find(root, "BtnTooltip");
+            Check("tooltip button found", tooltipBtn != null);
+
+            // Action menu button
+            var menuBtn = Find(root, "BtnMenu");
+            Check("action menu button found", menuBtn != null);
+
+            // Empty state
+            var empty = Find(root, "EmptyState") ?? FindByName(root, "No projects yet");
+            Check("empty state found", empty != null);
+            var emptyAction = Find(root, "EmptyAction");
+            Check("empty state action found", emptyAction != null);
+            if (emptyAction != null) Invoke(emptyAction);
+
+            // Skeleton
+            var skeleton = root.FindAll(TreeScope.Descendants,
+                new PropertyCondition(AutomationElement.AutomationIdProperty, "Skeleton"));
+            Check("skeleton found", skeleton.Count > 0 || FindByName(root, "Skeleton loader") != null);
 
             Console.WriteLine();
             Console.WriteLine("RESULT  passed=" + _passed + "  failed=" + _failed);
