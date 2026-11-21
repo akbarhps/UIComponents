@@ -99,21 +99,95 @@
 
                 <!-- Table -->
                 <TextBlock Text="Data table" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <TextBlock Text="Aligned columns and tinted row hover." Style="{StaticResource SectionDesc}"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0" Padding="0">
+                <TextBlock Text="Aligned columns, tabular numbers, row hover and status badges." Style="{StaticResource SectionDesc}"/>
+                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0" Padding="0" ClipToBounds="True">
                     <DataGrid x:Name="DemoGrid" AutoGenerateColumns="False" HeadersVisibility="Column"
                               Background="{StaticResource Surface}" BorderThickness="0"
-                              RowBackground="{StaticResource Surface}" AlternatingRowBackground="{StaticResource Surface}"
                               Foreground="{StaticResource Ink}" FontSize="14"
-                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Line}"
-                              CanUserAddRows="False"
+                              GridLinesVisibility="None"
+                              CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
+                              ColumnHeaderStyle="{StaticResource TableHeader}"
+                              RowStyle="{StaticResource TableRow}"
+                              CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="DemoGrid">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Project" Width="240" Binding="{Binding Project}"/>
+                            <DataGridTemplateColumn Header="Project" Width="260">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border x:Name="Av" Width="30" Height="30" CornerRadius="99"
+                                                    Background="{StaticResource BrandSoft}" Margin="0,0,10,0">
+                                                <TextBlock x:Name="AvText" Text="{Binding Initials}"
+                                                           FontFamily="{StaticResource Sans}" FontSize="11"
+                                                           FontWeight="SemiBold" Foreground="{StaticResource Brand}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Project}" FontFamily="{StaticResource Sans}"
+                                                           FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
+                                                <TextBlock Text="{Binding Team}" FontFamily="{StaticResource Sans}"
+                                                           FontSize="12" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Owner}" Value="Jonas Silva">
+                                                <Setter TargetName="Av" Property="Background" Value="{StaticResource Ink}"/>
+                                                <Setter TargetName="AvText" Property="Foreground" Value="White"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Owner}" Value="Mia Chen">
+                                                <Setter TargetName="Av" Property="Background" Value="{StaticResource SuccessSoft}"/>
+                                                <Setter TargetName="AvText" Property="Foreground" Value="{StaticResource Success}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Owner}" Value="Sam Patel">
+                                                <Setter TargetName="Av" Property="Background" Value="{StaticResource BgDeep}"/>
+                                                <Setter TargetName="AvText" Property="Foreground" Value="{StaticResource Ink2}"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Owner" Width="180" Binding="{Binding Owner}"/>
-                            <DataGridTextColumn Header="Status" Width="140" Binding="{Binding Status}"/>
+                            <DataGridTemplateColumn Header="Status" Width="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="Badge" Style="{StaticResource BadgeSuccess}">
+                                            <TextBlock x:Name="BadgeLabel" Text="{Binding Status}"
+                                                       Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}"/>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding Status}" Value="In review">
+                                                <Setter TargetName="Badge" Property="Background" Value="{StaticResource BrandSoft}"/>
+                                                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Brand}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                <Setter TargetName="Badge" Property="Background" Value="{StaticResource WarningSoft}"/>
+                                                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Warning}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Status}" Value="Draft">
+                                                <Setter TargetName="Badge" Property="Background" Value="{StaticResource BgDeep}"/>
+                                                <Setter TargetName="BadgeLabel" Property="Foreground" Value="{StaticResource Ink2}"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Updated" Width="140" Binding="{Binding Updated}"/>
-                            <DataGridTextColumn Header="Budget" Width="140" Binding="{Binding Budget}"/>
+                            <DataGridTemplateColumn Header="Budget" Width="140" HeaderStyle="{StaticResource TableHeaderRight}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}"
+                                                   FontSize="14" Foreground="{StaticResource Ink}"
+                                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="" Width="90">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Open" Style="{StaticResource TableAction}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
