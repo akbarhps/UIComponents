@@ -268,37 +268,81 @@ namespace UIComponents
         }
     }
 
-    /// <summary>Date / month / year picker built on the native DateTimePicker.</summary>
+    /// <summary>Date / month / year picker — fully custom drawn, no native chrome.</summary>
     public enum DatePickerMode { Date, MonthYear, Year }
 
-    public class ClaudeDatePicker : Control
+    public class ClaudeDatePicker : UserControl
     {
-        private readonly DateTimePicker _picker = new DateTimePicker();
+        private readonly ClaudeCalendar _calendar = new ClaudeCalendar();
+        private readonly Label _value = new Label();
+        private readonly Label _chevron = new Label();
         private DatePickerMode _mode = DatePickerMode.Date;
+        private DateTime _selectedDate = DateTime.Today;
+        private bool _open;
 
         public DatePickerMode Mode
         {
             get { return _mode; }
-            set { _mode = value; ApplyMode(); }
+            set { _mode = value; _calendar.Mode = value; UpdateDisplay(); Invalidate(); }
         }
-        public DateTime Value { get { return _picker.Value; } set { _picker.Value = value; } }
-        public string Display { get { return _picker.Text; } }
+        public DateTime Value { get { return _selectedDate; } set { _selectedDate = value; _calendar.Value = value; UpdateDisplay(); } }
+        public string Display { get { return _valueLabel; } }
+        private string _valueLabel;
 
         public ClaudeDatePicker()
         {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer | ControlStyles.ResizeRedraw, true);
+            BackColor = Theme.Surface;
             Height = 38;
-            _picker.Font = Theme.Sans(10f);
-            _picker.Format = DateTimePickerFormat.Custom;
-            _picker.CustomFormat = "MMM d, yyyy";
-            Controls.Add(_picker);
-            ApplyMode();
+            _value.Font = Theme.Sans(10f);
+            _value.ForeColor = Theme.Ink;
+            _value.Location = new Point(12, 9);
+            _value.AutoSize = true;
+            _chevron.Text = "⌄";
+            _chevron.Font = Theme.Sans(10f);
+            _chevron.ForeColor = Theme.Ink3;
+            _chevron.Dock = DockStyle.Right;
+            _chevron.Width = 28;
+            _chevron.TextAlign = ContentAlignment.MiddleCenter;
+
+            _calendar.Location = new Point(0, 42);
+            _calendar.Size = new Size(280, 250);
+            _calendar.Visible = false;
+            _calendar.ValueChanged += (s, e) =>
+            {
+                _selectedDate = _calendar.Value;
+                UpdateDisplay();
+                _calendar.Visible = false;
+                _open = false;
+                Height = 38;
+                Invalidate();
+            };
+
+            Controls.Add(_calendar);
+            Controls.Add(_chevron);
+            Controls.Add(_value);
+            Click += (s, e) =>
+            {
+                _open = !_open;
+                _calendar.Visible = _open;
+                Height = _open ? 296 : 38;
+                Invalidate();
+            };
+            UpdateDisplay();
         }
 
-        private void ApplyMode()
+        private void UpdateDisplay()
         {
-            _picker.CustomFormat = _mode == DatePickerMode.Year ? "yyyy"
-                : _mode == DatePickerMode.MonthYear ? "MMMM yyyy" : "MMM d, yyyy";
-            _picker.Dock = DockStyle.Fill;
+            _valueLabel = _mode == DatePickerMode.Year ? _selectedDate.Year.ToString()
+                : _mode == DatePickerMode.MonthYear ? new DateTime(_selectedDate.Year, _selectedDate.Month, 1).ToString("MMMM yyyy")
+                : _selectedDate.ToString("MMM d, yyyy");
+            _value.Text = _valueLabel;
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            Draw.RoundedBox(e.Graphics, new Rectangle(1, 1, Width - 2, Height - 2), 8, Theme.Surface, Theme.LineStrong, 1);
         }
     }
 }

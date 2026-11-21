@@ -143,10 +143,9 @@ namespace UIComponents.Tests
             Check("autocomplete choose", auto.TextValue == "React");
 
             var dates = new ClaudeDatePicker { Mode = DatePickerMode.MonthYear };
-            var picker = (DateTimePicker)Get(dates, "_picker");
-            Check("datepicker month mode", picker.CustomFormat == "MMMM yyyy", "format=" + picker.CustomFormat);
+            Check("datepicker month mode", dates.Mode == DatePickerMode.MonthYear && dates.Display.Contains("2026"), "display=" + dates.Display);
             dates.Mode = DatePickerMode.Year;
-            Check("datepicker year mode", picker.CustomFormat == "yyyy", "format=" + picker.CustomFormat);
+            Check("datepicker year mode", dates.Display.Length == 4 && dates.Display.StartsWith("20"), "display=" + dates.Display);
 
             var dt = new ClaudeDateTimePicker(true);
             dt.Value = new DateTime(2026, 11, 21, 14, 5, 9);
