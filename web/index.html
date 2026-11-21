@@ -1234,7 +1234,7 @@ svg{ display: block; }
                 <span class="combo__value is-placeholder">Select a person…</span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="combo__panel" hidden>
-                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search people…" aria-label="Search people" autocomplete="off"/></div>
+                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search people…" aria-label="Search people" autocomplete="off" role="combobox" aria-controls="assigneeList" aria-expanded="false" aria-autocomplete="list"/></div>
                 <div class="combo__list" id="assigneeList" role="listbox" aria-labelledby="assigneeLabel">
                   <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Ada Lovelace</span><span class="combo__option-meta">Design</span></div>
                   <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Jonas Silva</span><span class="combo__option-meta">Engineering</span></div>
@@ -1255,7 +1255,7 @@ svg{ display: block; }
                 <span class="combo__value is-placeholder">Select a project…</span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="combo__panel" hidden>
-                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search projects…" aria-label="Search projects" autocomplete="off"/></div>
+                <div class="combo__search"><svg><use href="#i-search"/></svg><input class="combo__input" type="text" placeholder="Search projects…" aria-label="Search projects" autocomplete="off" role="combobox" aria-controls="projectComboList" aria-expanded="false" aria-autocomplete="list"/></div>
                 <div class="combo__list" id="projectComboList" role="listbox" aria-labelledby="projectComboLabel">
                   <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Website refresh</span><span class="combo__option-meta">Design</span></div>
                   <div class="combo__option" role="option" aria-selected="false"><svg class="combo__check"><use href="#i-check"/></svg><span class="combo__option-label">Mobile app</span><span class="combo__option-meta">Engineering</span></div>
@@ -1281,7 +1281,7 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label" id="skillsLabel">Skills</label>
             <div class="multi" data-placeholder="Select skills…">
-              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="skillsLabel">
                 <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="multi__panel" hidden>
@@ -1311,7 +1311,7 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label" id="tagsLabel">Tags</label>
             <div class="multi" data-placeholder="Select tags…">
-              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox">
+              <button type="button" class="multi__trigger" aria-expanded="false" aria-haspopup="listbox" aria-labelledby="tagsLabel">
                 <span class="multi__chips"></span><svg><use href="#i-chevron"/></svg>
               </button>
               <div class="multi__panel" hidden>
@@ -1420,7 +1420,7 @@ svg{ display: block; }
       <div class="section__head"><h2>Progress bar</h2><p>A determinate bar for work with a known duration, such as an upload. The demo animates through a simulated upload.</p></div>
       <div class="demo">
         <div class="progress__meta"><span id="progressLabel">Uploading files…</span><span class="progress__value" id="progressValue">0%</span></div>
-        <div class="progress"><div class="progress__fill" id="progressFill"></div></div>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="progressLabel"><div class="progress__fill" id="progressFill"></div></div>
         <div class="divider"></div>
         <div class="row">
           <button class="btn btn--primary" id="progressStart">Start upload</button>
@@ -1561,9 +1561,9 @@ svg{ display: block; }
       <div class="section__head"><h2>Tabs</h2><p>Switch between related views without leaving the page.</p></div>
       <div class="demo">
         <div class="tabs" role="tablist" aria-label="Account sections">
-          <button class="tab" role="tab" aria-selected="true" aria-controls="p-1" id="t-1">Profile</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="p-2" id="t-2">Security</button>
-          <button class="tab" role="tab" aria-selected="false" aria-controls="p-3" id="t-3">Billing</button>
+          <button class="tab" role="tab" aria-selected="true" aria-controls="p-1" id="t-1" tabindex="0">Profile</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="p-2" id="t-2" tabindex="-1">Security</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="p-3" id="t-3" tabindex="-1">Billing</button>
         </div>
         <div class="tabpanel" role="tabpanel" id="p-1" aria-labelledby="t-1">Update your name, photo and public profile details.</div>
         <div class="tabpanel" role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>Manage your password and two-factor authentication.</div>
@@ -1842,19 +1842,19 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label">Full date</label>
             <div class="picker" data-mode="date" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Month and year</label>
             <div class="picker" data-mode="month" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Year only</label>
             <div class="picker" data-mode="year" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
             </div>
           </div>
         </div>
@@ -1869,31 +1869,31 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label">Full date and time</label>
             <div class="picker" data-mode="date" data-time="true">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Full date and time with seconds</label>
             <div class="picker" data-mode="date" data-time="true" data-seconds="true">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date and time…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Full date only</label>
             <div class="picker" data-mode="date" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Month and year</label>
             <div class="picker" data-mode="month" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Year only</label>
             <div class="picker" data-mode="year" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog" <svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
             </div>
           </div>
         </div>
@@ -2158,7 +2158,8 @@ document.getElementById('openLoading').addEventListener('click', () => {
 const formOverlay = document.getElementById('formOverlay');
 const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 function setFieldError(field, on){ field.classList.toggle('has-error', on); }
-document.getElementById('openFormModal').addEventListener('click', () => openOverlay(formOverlay, document.getElementById('fm-name')));
+function resetForm(form){ form.reset(); form.querySelectorAll('.field.has-error').forEach(f => f.classList.remove('has-error')); }
+document.getElementById('openFormModal').addEventListener('click', () => { resetForm(document.getElementById('projectForm')); openOverlay(formOverlay, document.getElementById('fm-name')); });
 document.getElementById('closeFormModal').addEventListener('click', () => closeOverlay(formOverlay));
 document.getElementById('cancelFormModal').addEventListener('click', () => closeOverlay(formOverlay));
 document.getElementById('projectForm').addEventListener('submit', e => {
@@ -2178,7 +2179,7 @@ document.getElementById('projectForm').addEventListener('submit', e => {
 
 /* Sidebar drawer form */
 const drawerOverlay = document.getElementById('drawerOverlay');
-document.getElementById('openDrawer').addEventListener('click', () => openOverlay(drawerOverlay, document.getElementById('dr-email')));
+document.getElementById('openDrawer').addEventListener('click', () => { resetForm(document.getElementById('inviteForm')); openOverlay(drawerOverlay, document.getElementById('dr-email')); });
 document.getElementById('closeDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
 document.getElementById('cancelDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
 document.getElementById('inviteForm').addEventListener('submit', e => {
@@ -2199,6 +2200,7 @@ const editConfirm = document.getElementById('editConfirm');
 const editEmail = document.getElementById('ed-email');
 document.getElementById('openEditDrawer').addEventListener('click', () => {
   editConfirm.hidden = true;
+  resetForm(document.getElementById('editForm'));
   openOverlay(editOverlay, document.getElementById('ed-name'));
 });
 document.getElementById('closeEditDrawer').addEventListener('click', () => closeOverlay(editOverlay));
@@ -2318,8 +2320,9 @@ sortButtons.forEach(btn => btn.addEventListener('click', () => {
   const key = btn.dataset.sortKey;
   if(sortKey === key) sortDir *= -1;
   else { sortKey = key; sortDir = 1; }
-  sortButtons.forEach(b => b.classList.remove('asc', 'desc'));
+  sortButtons.forEach(b => { b.classList.remove('asc', 'desc'); b.closest('th').removeAttribute('aria-sort'); });
   btn.classList.add(sortDir === 1 ? 'asc' : 'desc');
+  btn.closest('th').setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
   const index = btn.closest('th').cellIndex;
   [...sortBody.rows].filter(r => !r.id)
     .sort((a, b) => {
@@ -2394,6 +2397,7 @@ document.querySelectorAll('.combo').forEach((combo, index) => {
   function open(){
     panel.hidden = false;
     trigger.setAttribute('aria-expanded', 'true');
+    search.setAttribute('aria-expanded', 'true');
     search.value = '';
     options.forEach(o => { o.hidden = false; o.classList.remove('is-active'); });
     empty.hidden = true;
@@ -2404,6 +2408,7 @@ document.querySelectorAll('.combo').forEach((combo, index) => {
   function close(restoreFocus = true){
     panel.hidden = true;
     trigger.setAttribute('aria-expanded', 'false');
+    search.setAttribute('aria-expanded', 'false');
     search.removeAttribute('aria-activedescendant');
     if(restoreFocus) trigger.focus();
   }
@@ -2424,17 +2429,21 @@ document.querySelectorAll('.combo').forEach((combo, index) => {
     const q = search.value.trim().toLowerCase();
     options.forEach(o => o.hidden = !o.textContent.toLowerCase().includes(q));
     empty.hidden = visible().length > 0;
+    options.forEach(o => o.classList.remove('is-active'));
+    search.removeAttribute('aria-activedescendant');
     activeIndex = -1;
   });
   search.addEventListener('keydown', e => {
     const items = visible();
     if(e.key === 'ArrowDown'){ e.preventDefault(); setActive(activeIndex + 1); }
-    else if(e.key === 'ArrowUp'){ e.preventDefault(); setActive(activeIndex - 1); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); setActive(activeIndex < 0 ? -1 : activeIndex - 1); }
     else if(e.key === 'Enter' && items[activeIndex]){ e.preventDefault(); choose(items[activeIndex]); }
     else if(e.key === 'Escape'){ e.preventDefault(); close(); }
   });
   options.forEach(o => o.addEventListener('click', () => choose(o)));
   document.addEventListener('click', e => { if(!combo.contains(e.target) && !panel.hidden) close(false); });
+  panel.addEventListener('mousedown', e => { if(e.target !== search) e.preventDefault(); });
+  combo.addEventListener('focusout', e => { if(!combo.contains(e.relatedTarget)) close(false); });
 });
 
 /* Multi-selects */
@@ -2478,10 +2487,10 @@ document.querySelectorAll('.multi').forEach(multi => {
     count.textContent = chosen.length + ' selected';
     trigger.classList.toggle('multi__trigger--empty', !chosen.length);
   }
-  function close(){
+  function close(restoreFocus = true){
     panel.hidden = true;
     trigger.setAttribute('aria-expanded', 'false');
-    trigger.focus();
+    if(restoreFocus) trigger.focus();
   }
   trigger.addEventListener('click', () => {
     const open = panel.hidden;
@@ -2510,7 +2519,7 @@ document.querySelectorAll('.multi').forEach(multi => {
   });
   multi.querySelector('.multi__done').addEventListener('click', close);
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden) close(); });
-  document.addEventListener('click', e => { if(!multi.contains(e.target) && !panel.hidden) close(); });
+  document.addEventListener('click', e => { if(!multi.contains(e.target) && !panel.hidden) close(false); });
   render();
 });
 
@@ -2596,7 +2605,7 @@ function initPicker(root){
       if(viewMonth < 0){ viewMonth = 11; viewYear--; }
       if(viewMonth > 11){ viewMonth = 0; viewYear++; }
     } else if(mode === 'month') viewYear += step;
-    else viewYear += step * 12;
+    else viewYear += step * 20;
     render();
   }
   panel.querySelector('[data-prev]').addEventListener('click', () => navigate(-1));
@@ -2646,6 +2655,7 @@ function initPicker(root){
       if(cell) cell.focus();
     }
   });
+  root.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden){ panel.hidden = true; trigger.setAttribute('aria-expanded','false'); trigger.focus(); } });
   document.addEventListener('click', e => {
     if(!root.contains(e.target) && !panel.hidden){
       panel.hidden = true;
@@ -2662,7 +2672,7 @@ document.querySelectorAll('.ac').forEach(root => {
   const multiple = root.dataset.multiple === 'true';
   const input = root.querySelector('.ac__input');
   const list = root.querySelector('.ac__list');
-  const hint = root.querySelector('.ac__hint');
+  const hint = root.parentElement.querySelector('.ac__hint');
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
   let tags = [], matches = [], active = -1;
 
@@ -2692,9 +2702,9 @@ document.querySelectorAll('.ac').forEach(root => {
     list.hidden = false;
   }
   function hide(){ list.hidden = true; }
-  function highlight(){ list.querySelectorAll('.ac__option').forEach((o, i) => o.classList.toggle('is-active', i === active)); }
+  function highlight(){ list.querySelectorAll('.ac__option').forEach((o, i) => o.classList.toggle('is-active', i === active)); list.querySelectorAll('.ac__option')[active]?.scrollIntoView({block:'nearest'}); }
   function choose(value){
-    if(multiple){ tags.push(value); renderTags(); updateHint(); input.value = ''; }
+    if(multiple){ if(!tags.some(t => t.toLowerCase() === value.toLowerCase())){ tags.push(value); renderTags(); updateHint(); } input.value = ''; }
     else input.value = value;
     hide();
     input.focus();
@@ -2712,11 +2722,13 @@ document.querySelectorAll('.ac').forEach(root => {
       else if(multiple && input.value.trim()){ e.preventDefault(); choose(input.value.trim()); }
     } else if(e.key === 'Escape') hide();
   });
+  list.addEventListener('mousedown', e => e.preventDefault());
   list.addEventListener('click', e => {
     const option = e.target.closest('.ac__option');
     if(option) choose(matches[+option.dataset.i]);
   });
   document.addEventListener('click', e => { if(!root.contains(e.target)) hide(); });
+  root.addEventListener('focusout', e => { if(!root.contains(e.relatedTarget)) hide(); });
   renderTags();
   updateHint();
 });
@@ -2738,6 +2750,7 @@ document.querySelectorAll('.tag-input-wrap').forEach(root => {
       remove.type = 'button';
       remove.setAttribute('aria-label', 'Remove ' + tag);
       remove.innerHTML = '<svg><use href="#i-close"/></svg>';
+      remove.addEventListener('mousedown', e => e.preventDefault());
       remove.addEventListener('click', e => { e.stopPropagation(); tags.splice(i, 1); render(); });
       chip.appendChild(remove);
       container.insertBefore(chip, input);
@@ -2964,6 +2977,7 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
     const rows = text.replace(/\r/g, '').split('\n');
     if(rows[rows.length - 1] === '') rows.pop();
     rows.forEach((line, ri) => line.split('\t').forEach((value, ci) => {
+      if(!allowAddColumn && c + ci >= columns.length) return;
       ensure(r + ri, c + ci);
       const type = typeOf(c + ci);
       let stored = value;
@@ -2986,7 +3000,7 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
       const cells = [];
       for(let c = minC; c <= maxC; c++){
         const el = body.querySelector('.sheet__control[data-r="' + r + '"][data-c="' + c + '"]');
-        cells.push(el ? (el.type === 'checkbox' ? String(el.checked) : el.value) : '');
+        cells.push(selection.has(cellKey(r, c)) && el ? (el.type === 'checkbox' ? String(el.checked) : el.value) : '');
       }
       lines.push(cells.join('\t'));
     }
@@ -3026,6 +3040,7 @@ document.addEventListener('copy', e => {
   const target = e.target;
   if(target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') && target.selectionStart !== target.selectionEnd) return;
   if(!activeGrid || !activeGrid._copySelection) return;
+  const s = getSelection(); if(s && !s.isCollapsed && !activeGrid.contains(s.anchorNode)) return;
   const text = activeGrid._copySelection();
   if(!text) return;
   e.preventDefault();
@@ -3036,6 +3051,7 @@ document.addEventListener('paste', e => {
   const target = e.target;
   if(target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) && target.closest('.sheet') === null) return;
   if(!activeGrid || !activeGrid._pasteData) return;
+  if(!activeGrid.contains(e.target) && e.target !== document.body) return;
   const text = (e.clipboardData || window.clipboardData).getData('text');
   if(activeGrid._pasteData(text)) e.preventDefault();
 });
@@ -3161,7 +3177,7 @@ document.querySelectorAll('.file-input').forEach(box => {
     e.preventDefault();
     drop.classList.remove('dragover');
   }));
-  drop.addEventListener('drop', e => add([...e.dataTransfer.files]));
+  drop.addEventListener('drop', e => add([...e.dataTransfer.files].filter(f => !input.accept || f.type.startsWith('image/'))));
   render();
 });
 
@@ -3226,6 +3242,7 @@ cmdkList.addEventListener('click', e => {
 document.getElementById('openCmdk').addEventListener('click', openCmdk);
 document.addEventListener('keydown', e => {
   if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+    if(overlays.some(o => o.classList.contains('open'))){ e.preventDefault(); return; }
     e.preventDefault();
     openCmdk();
   }
@@ -3239,6 +3256,7 @@ let progressTimer = null;
 function setProgress(value){
   progressFill.style.width = value + '%';
   progressValue.textContent = value + '%';
+  progressFill.parentElement.setAttribute('aria-valuenow', value);
 }
 document.getElementById('progressStart').addEventListener('click', () => {
   if(progressTimer) return;
@@ -3305,10 +3323,22 @@ document.querySelectorAll('.accordion').forEach(accordion => {
 /* Tabs */
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected','false'));
+    tab.closest('[role=tablist]').querySelectorAll('.tab').forEach(t => { t.setAttribute('aria-selected','false'); t.tabIndex = -1; });
     document.querySelectorAll('.tabpanel').forEach(p => p.hidden = true);
     tab.setAttribute('aria-selected','true');
+    tab.tabIndex = 0;
     document.getElementById(tab.getAttribute('aria-controls')).hidden = false;
+  });
+  tab.addEventListener('keydown', e => {
+    const tabs = [...tab.closest('[role=tablist]').querySelectorAll('.tab')];
+    const i = tabs.indexOf(tab);
+    const n = e.key === 'ArrowRight' ? (i + 1) % tabs.length
+      : e.key === 'ArrowLeft' ? (i - 1 + tabs.length) % tabs.length
+      : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : -1;
+    if(n < 0) return;
+    e.preventDefault();
+    tabs[n].click();
+    tabs[n].focus();
   });
 });
 
