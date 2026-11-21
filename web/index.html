@@ -1158,6 +1158,7 @@ svg{ display: block; }
         <div class="sheet" id="sheet">
           <div class="sheet__toolbar">
             <div class="sheet__actions">
+              <button type="button" class="btn btn--ghost btn--sm" data-sheet-copy>Copy selected</button>
               <button type="button" class="btn btn--ghost btn--sm" data-sheet-clear>Clear selected</button>
             </div>
             <span class="sheet__info" data-sheet-info>0 cells selected</span>
@@ -1175,6 +1176,7 @@ svg{ display: block; }
         <div class="sheet" id="typedSheet">
           <div class="sheet__toolbar">
             <div class="sheet__actions">
+              <button type="button" class="btn btn--ghost btn--sm" data-sheet-copy>Copy selected</button>
               <button type="button" class="btn btn--ghost btn--sm" data-sheet-clear>Clear selected</button>
             </div>
             <span class="sheet__info" data-sheet-info>0 cells selected</span>
@@ -2696,6 +2698,7 @@ document.querySelectorAll('.tag-input-wrap').forEach(root => {
 });
 
 /* Spreadsheet inputs */
+let activeGrid = null;
 function createGrid(rootId, initialColumns, initialData, options = {}){
   const allowAddColumn = options.allowAddColumn !== false;
   const root = document.getElementById(rootId);
@@ -2721,6 +2724,9 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
   function rowSelected(r){ return Array.from({ length: columns.length }, (_, c) => selection.has(cellKey(r, c))).every(Boolean); }
   function colSelected(c){ return data.every((_, r) => selection.has(cellKey(r, c))); }
   function paint(){
+    activeGrid = root;
+    root._copySelection = selectionText;
+    root._pasteData = pasteData;
     body.querySelectorAll('.sheet__cell').forEach(td => {
       const el = td.querySelector('.sheet__control');
       td.classList.toggle('selected', selection.has(cellKey(+el.dataset.r, +el.dataset.c)));
@@ -2807,6 +2813,7 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
       anchor = [r, 0];
     }
     paint();
+    if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
   });
   body.addEventListener('mousedown', e => {
     const el = control(e.target);
@@ -2878,14 +2885,12 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
     data.forEach((_, r) => selection.add(cellKey(r, c)));
     anchor = [0, c];
     paint();
+    if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
   });
-  root.addEventListener('paste', e => {
-    const text = (e.clipboardData || window.clipboardData).getData('text');
-    if(!text || (!text.includes('\t') && !text.includes('\n'))) return;
-    e.preventDefault();
+  function pasteData(text){
+    if(!text || (!text.includes('\t') && !text.includes('\n'))) return false;
     const active = control(document.activeElement);
-    const r = active ? +active.dataset.r : 0;
-    const c = active ? +active.dataset.c : 0;
+    const [r, c] = active ? [+active.dataset.r, +active.dataset.c] : (anchor || [0, 0]);
     const rows = text.replace(/\r/g, '').split('\n');
     if(rows[rows.length - 1] === '') rows.pop();
     rows.forEach((line, ri) => line.split('\t').forEach((value, ci) => {
@@ -2899,6 +2904,40 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
     render();
     const focusCell = body.querySelector('.sheet__control[data-r="' + r + '"][data-c="' + c + '"]');
     if(focusCell) focusCell.focus();
+    return true;
+  }
+  function selectionText(){
+    if(selection.size < 2) return '';
+    const rows = [...selection].map(k => k.split(':').map(Number));
+    const minR = Math.min(...rows.map(x => x[0])), maxR = Math.max(...rows.map(x => x[0]));
+    const minC = Math.min(...rows.map(x => x[1])), maxC = Math.max(...rows.map(x => x[1]));
+    const lines = [];
+    for(let r = minR; r <= maxR; r++){
+      const cells = [];
+      for(let c = minC; c <= maxC; c++){
+        const el = body.querySelector('.sheet__control[data-r="' + r + '"][data-c="' + c + '"]');
+        cells.push(el ? (el.type === 'checkbox' ? String(el.checked) : el.value) : '');
+      }
+      lines.push(cells.join('\t'));
+    }
+    return lines.join('\n');
+  }
+  root.querySelector('[data-sheet-copy]').addEventListener('click', async () => {
+    const text = selectionText();
+    if(!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const temp = document.createElement('textarea');
+      temp.value = text;
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand('copy');
+      temp.remove();
+    }
+    showToast('success', 'Copied', selection.size + ' cells copied. Paste into Excel.');
   });
   root.addEventListener('click', e => {
     if(e.target.closest('[data-add-row]')){
@@ -2913,6 +2952,23 @@ function createGrid(rootId, initialColumns, initialData, options = {}){
   root.querySelector('[data-sheet-clear]').addEventListener('click', clearSelected);
   render();
 }
+document.addEventListener('copy', e => {
+  const target = e.target;
+  if(target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') && target.selectionStart !== target.selectionEnd) return;
+  if(!activeGrid || !activeGrid._copySelection) return;
+  const text = activeGrid._copySelection();
+  if(!text) return;
+  e.preventDefault();
+  (e.clipboardData || window.clipboardData).setData('text/plain', text);
+  showToast('success', 'Copied', 'Cells copied. Paste into Excel.');
+});
+document.addEventListener('paste', e => {
+  const target = e.target;
+  if(target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) && target.closest('.sheet') === null) return;
+  if(!activeGrid || !activeGrid._pasteData) return;
+  const text = (e.clipboardData || window.clipboardData).getData('text');
+  if(activeGrid._pasteData(text)) e.preventDefault();
+});
 createGrid('sheet', [
   { name: 'Width', type: 'text' }, { name: 'Height', type: 'text' },
   { name: 'Depth', type: 'text' }, { name: 'Weight', type: 'text' }
