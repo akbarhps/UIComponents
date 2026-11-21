@@ -13,8 +13,8 @@ namespace UIComponents
         private readonly Label _label = new Label();
         private readonly Label _hint = new Label();
         private readonly Label _error = new Label();
-        private readonly TextBox _box = new TextBox();
-        private readonly ComboBox _select = new ComboBox();
+        private readonly ClaudeTextBox _box = new ClaudeTextBox();
+        private readonly ClaudeSelectBox _select = new ClaudeSelectBox();
 
         public string LabelText { get { return _label.Text; } set { _label.Text = value; } }
         public string Hint { get { return _hint.Text; } set { _hint.Text = value; } }
@@ -22,14 +22,14 @@ namespace UIComponents
         public bool HasError
         {
             get { return _error.Visible; }
-            set { _error.Visible = value; _box.BackColor = value ? Theme.DangerSoft : Theme.Surface; Invalidate(); }
+            set { _error.Visible = value; _box.HasError = value; Invalidate(); }
         }
         public bool Multiline
         {
             get { return _box.Multiline; }
-            set { _box.Multiline = value; _box.Height = value ? 78 : 30; _select.Visible = !value && IsSelect; _box.Visible = !IsSelect; Arrange(); }
+            set { _box.Multiline = value; Arrange(); }
         }
-        public bool Password { get { return _box.UseSystemPasswordChar; } set { _box.UseSystemPasswordChar = value; } }
+        public bool Password { get { return _box.Password; } set { _box.Password = value; } }
         private bool _isSelect;
         public bool IsSelect
         {
@@ -38,12 +38,16 @@ namespace UIComponents
         }
         public string[] Options
         {
-            set { _select.Items.Clear(); if (value != null) foreach (var o in value) _select.Items.Add(o); if (_select.Items.Count > 0) _select.SelectedIndex = 0; }
+            set
+            {
+                _select.SetOptions(value ?? new string[0]);
+                if (value != null && value.Length > 0) _select.SelectedValue = value[0];
+            }
         }
         public string TextValue
         {
-            get { return _isSelect ? (_select.SelectedItem == null ? "" : _select.SelectedItem.ToString()) : _box.Text; }
-            set { if (_isSelect) _select.SelectedItem = value; else _box.Text = value; }
+            get { return _isSelect ? _select.SelectedValue : _box.TextValue; }
+            set { if (_isSelect) _select.SelectedValue = value; else _box.TextValue = value; }
         }
 
         public ClaudeField()
@@ -61,15 +65,7 @@ namespace UIComponents
             _error.AutoSize = true;
             _error.Visible = false;
 
-            _box.Font = Theme.Sans(10f);
-            _box.ForeColor = Theme.Ink;
-            _box.BackColor = Theme.Surface;
-            _box.BorderStyle = BorderStyle.FixedSingle;
-
-            _select.Font = Theme.Sans(10f);
-            _select.FlatStyle = FlatStyle.Flat;
-            _select.BackColor = Theme.Surface;
-            _select.DropDownStyle = ComboBoxStyle.DropDownList;
+            _box.Placeholder = "";
             _select.Visible = false;
 
             Controls.AddRange(new Control[] { _label, _box, _select, _hint, _error });
@@ -80,9 +76,9 @@ namespace UIComponents
         {
             _label.Location = new Point(0, 0);
             int inputY = 20;
-            _box.SetBounds(0, inputY, Math.Max(80, Width), _box.Multiline ? 78 : 30);
-            _select.SetBounds(0, inputY, Math.Max(80, Width), 30);
-            int below = inputY + (_box.Multiline ? 78 : 30) + 4;
+            _box.SetBounds(0, inputY, Math.Max(80, Width), _box.Multiline ? 80 : 38);
+            _select.SetBounds(0, inputY, Math.Max(80, Width), 38);
+            int below = inputY + (_box.Multiline ? 80 : 38) + 4;
             _hint.Location = new Point(0, below);
             _error.Location = new Point(0, below + (_hint.Visible ? 14 : 0));
             Height = below + 28;

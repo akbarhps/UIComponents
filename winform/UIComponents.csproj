@@ -30,6 +30,7 @@
     <Compile Include="src\Draw.cs" />
     <Compile Include="src\BasicControls.cs" />
     <Compile Include="src\FormControls.cs" />
+    <Compile Include="src\CustomInputs.cs" />
     <Compile Include="src\NavControls.cs" />
     <Compile Include="src\SelectionControls.cs" />
     <Compile Include="src\DataControls.cs" />
