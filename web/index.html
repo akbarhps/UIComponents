@@ -441,6 +441,34 @@ svg{ display: block; }
 .form-grid .field--wide{ grid-column:1 / -1; }
 .modal form > .field{ margin-top:16px; }
 
+/* ── Tag input ────────────────────────────────────────────── */
+.tag-input{
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+  min-height:46px; padding:8px 10px; cursor:text;
+  background:var(--surface); border:1px solid var(--line-strong); border-radius:var(--radius-sm);
+}
+.tag-input:hover{ border-color:var(--ink-3); }
+.tag-input:focus-within{ border-color:var(--focus); box-shadow:0 0 0 3px var(--brand-soft); outline:none; }
+.tag{ display:inline-flex; align-items:center; gap:5px; background:var(--brand-soft); color:var(--brand); border-radius:6px; padding:4px 7px; font-size:12px; font-weight:600; }
+.tag button{ appearance:none; border:0; background:none; color:inherit; cursor:pointer; padding:0; display:grid; place-items:center; }
+.tag svg{ width:12px; height:12px; }
+.tag-input__field{ flex:1; min-width:120px; border:0; outline:0; background:transparent; padding:4px 2px; font:14px var(--font-sans); color:var(--ink); }
+.tag-input__field::placeholder{ color:var(--ink-3); }
+.tag-input__hint{ font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
+/* ── Autocomplete ─────────────────────────────────────────── */
+.ac{ position:relative; }
+.ac__list{
+  position:absolute; z-index:35; top:calc(100% + 6px); left:0; right:0;
+  max-height:220px; overflow-y:auto; padding:6px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-2);
+}
+.ac__list[hidden]{ display:none; }
+.ac__option{ width:100%; text-align:left; border:0; background:none; cursor:pointer; border-radius:7px; padding:9px 10px; font:14px var(--font-sans); color:var(--ink); }
+.ac__option:hover,.ac__option.is-active{ background:var(--bg-deep); }
+.ac__empty{ padding:16px 10px; text-align:center; font-size:13px; color:var(--ink-2); }
+.ac__hint{ font-size:12px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+
 /* ── File input ───────────────────────────────────────────── */
 .file-input{ display:flex; flex-direction:column; gap:12px; }
 .file-drop{
@@ -772,6 +800,8 @@ svg{ display: block; }
         <a href="#form-modal"><svg><use href="#i-modal"/></svg>Modal form</a>
         <a href="#combobox"><svg><use href="#i-form"/></svg>Searchable select</a>
         <a href="#multi-select"><svg><use href="#i-check"/></svg>Multi-select</a>
+        <a href="#tag-input"><svg><use href="#i-check"/></svg>Tag input</a>
+        <a href="#autocomplete"><svg><use href="#i-search"/></svg>Autocomplete</a>
         <a href="#file-input"><svg><use href="#i-upload"/></svg>File input</a>
         <a href="#sheet-input"><svg><use href="#i-table"/></svg>Grid input</a>
         <a href="#typed-sheet"><svg><use href="#i-check"/></svg>Typed grid</a>
@@ -923,6 +953,50 @@ svg{ display: block; }
             <label class="check check--radio"><input type="radio" name="plan" checked/><span class="check__box"><svg><use href="#i-check"/></svg></span>Starter</label>
             <label class="check check--radio"><input type="radio" name="plan"/><span class="check__box"><svg><use href="#i-check"/></svg></span>Pro</label>
             <label class="switch"><input type="checkbox" checked/><span class="switch__track"></span>Dark mode</label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tag input -->
+    <section class="section" id="tag-input">
+      <div class="section__head"><h2>Tag input</h2><p>Type a value and press Enter or comma to add it as a chip. Backspace on an empty field removes the last one, and each chip has its own remove button.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="field tag-input-wrap" data-tags="design,research" data-max="6">
+            <label class="field__label">Tags</label>
+            <div class="tag-input"><input class="tag-input__field" placeholder="Add a tag…" aria-label="Tags"/></div>
+            <span class="tag-input__hint"></span>
+          </div>
+          <div class="field tag-input-wrap" data-tags="react" data-max="4">
+            <label class="field__label">Skills (no duplicates)</label>
+            <div class="tag-input"><input class="tag-input__field" placeholder="Add a skill…" aria-label="Skills"/></div>
+            <span class="tag-input__hint"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Autocomplete -->
+    <section class="section" id="autocomplete">
+      <div class="section__head"><h2>Autocomplete</h2><p>Suggestions filter as you type. Use the arrow keys and Enter to pick one, or type a value that isn't in the list.</p></div>
+      <div class="demo">
+        <div class="grid-2">
+          <div class="field">
+            <label class="field__label">Technologies as tags</label>
+            <div class="ac" data-multiple="true" data-options="React,TypeScript,Vue,Svelte,Node.js,Python,GraphQL,PostgreSQL,Docker,AWS">
+              <div class="tag-input"><input class="tag-input__field ac__input" placeholder="Search technologies…" aria-label="Technologies"/></div>
+              <div class="ac__list" hidden></div>
+            </div>
+            <span class="ac__hint"></span>
+          </div>
+          <div class="field">
+            <label class="field__label">Framework</label>
+            <div class="ac" data-options="React,Vue,Angular,Svelte,Solid,Next.js,Nuxt">
+              <div class="input-icon"><svg><use href="#i-search"/></svg><input class="input ac__input" placeholder="Search or type your own…" aria-label="Framework"/></div>
+              <div class="ac__list" hidden></div>
+            </div>
+            <span class="field__hint">Pick a suggestion or keep your own text.</span>
           </div>
         </div>
       </div>
@@ -2206,6 +2280,116 @@ function initPicker(root){
   render();
 }
 document.querySelectorAll('.picker').forEach(initPicker);
+
+/* Autocomplete */
+document.querySelectorAll('.ac').forEach(root => {
+  const options = (root.dataset.options || '').split(',').map(s => s.trim()).filter(Boolean);
+  const multiple = root.dataset.multiple === 'true';
+  const input = root.querySelector('.ac__input');
+  const list = root.querySelector('.ac__list');
+  const hint = root.querySelector('.ac__hint');
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  let tags = [], matches = [], active = -1;
+
+  function renderTags(){
+    root.querySelectorAll('.tag').forEach(el => el.remove());
+    tags.forEach((tag, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'tag';
+      chip.append(document.createTextNode(tag));
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.setAttribute('aria-label', 'Remove ' + tag);
+      remove.innerHTML = '<svg><use href="#i-close"/></svg>';
+      remove.addEventListener('click', e => { e.stopPropagation(); tags.splice(i, 1); renderTags(); updateHint(); });
+      chip.appendChild(remove);
+      input.parentElement.insertBefore(chip, input);
+    });
+  }
+  function updateHint(){ if(hint) hint.textContent = tags.length + ' selected'; }
+  function show(){
+    const q = input.value.trim().toLowerCase();
+    matches = options.filter(o => o.toLowerCase().includes(q) && !(multiple && tags.some(t => t.toLowerCase() === o.toLowerCase()))).slice(0, 8);
+    active = -1;
+    list.innerHTML = matches.length
+      ? matches.map((o, i) => '<button type="button" class="ac__option" data-i="' + i + '">' + esc(o) + '</button>').join('')
+      : '<div class="ac__empty">No suggestions</div>';
+    list.hidden = false;
+  }
+  function hide(){ list.hidden = true; }
+  function highlight(){ list.querySelectorAll('.ac__option').forEach((o, i) => o.classList.toggle('is-active', i === active)); }
+  function choose(value){
+    if(multiple){ tags.push(value); renderTags(); updateHint(); input.value = ''; }
+    else input.value = value;
+    hide();
+    input.focus();
+  }
+  input.addEventListener('input', show);
+  input.addEventListener('focus', show);
+  input.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+      e.preventDefault();
+      if(list.hidden || !matches.length){ show(); return; }
+      active = e.key === 'ArrowDown' ? Math.min(active + 1, matches.length - 1) : Math.max(active - 1, 0);
+      highlight();
+    } else if(e.key === 'Enter'){
+      if(!list.hidden && active >= 0 && matches[active]){ e.preventDefault(); choose(matches[active]); }
+      else if(multiple && input.value.trim()){ e.preventDefault(); choose(input.value.trim()); }
+    } else if(e.key === 'Escape') hide();
+  });
+  list.addEventListener('click', e => {
+    const option = e.target.closest('.ac__option');
+    if(option) choose(matches[+option.dataset.i]);
+  });
+  document.addEventListener('click', e => { if(!root.contains(e.target)) hide(); });
+  renderTags();
+  updateHint();
+});
+
+/* Tag inputs */
+document.querySelectorAll('.tag-input-wrap').forEach(root => {
+  const container = root.querySelector('.tag-input');
+  const input = root.querySelector('.tag-input__field');
+  const hint = root.querySelector('.tag-input__hint');
+  const max = Number(root.dataset.max) || Infinity;
+  let tags = (root.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
+  function render(){
+    container.querySelectorAll('.tag').forEach(el => el.remove());
+    tags.forEach((tag, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'tag';
+      chip.append(document.createTextNode(tag));
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.setAttribute('aria-label', 'Remove ' + tag);
+      remove.innerHTML = '<svg><use href="#i-close"/></svg>';
+      remove.addEventListener('click', e => { e.stopPropagation(); tags.splice(i, 1); render(); });
+      chip.appendChild(remove);
+      container.insertBefore(chip, input);
+    });
+    hint.textContent = tags.length + (max !== Infinity ? ' of ' + max : '') + ' tags';
+  }
+  function add(value){
+    const tag = value.trim();
+    if(!tag || tags.length >= max) return;
+    if(tags.some(t => t.toLowerCase() === tag.toLowerCase())) return;
+    tags.push(tag);
+    render();
+  }
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ','){
+      e.preventDefault();
+      input.value.split(',').forEach(add);
+      input.value = '';
+    } else if(e.key === 'Backspace' && !input.value && tags.length){
+      tags.pop();
+      render();
+    }
+  });
+  input.addEventListener('blur', () => { if(input.value.trim()){ add(input.value); input.value = ''; } });
+  container.addEventListener('click', () => input.focus());
+  render();
+});
 
 /* Spreadsheet inputs */
 function createGrid(rootId, initialColumns, initialData, options = {}){
