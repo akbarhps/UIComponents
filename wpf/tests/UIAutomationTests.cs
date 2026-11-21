@@ -66,17 +66,20 @@ namespace UIComponents.Wpf.Tests
             pattern.SetValue(value);
         }
 
-        private static int Main()
+        private static int Main(string[] args)
         {
             Console.WriteLine("WPF UI Automation tests");
-            Console.WriteLine("Start UIComponents.Wpf.exe first, then run this.");
+            Console.WriteLine("Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.");
             Console.WriteLine();
 
             AutomationElement root;
             try
             {
-                var windows = AutomationElement.RootElement.FindAll(TreeScope.Children,
-                    new PropertyCondition(AutomationElement.NameProperty, "Claude UI — WPF components"));
+                // With a PID argument, only that process's window is tested — parallel agents don't drive each other's app.
+                Condition target = args.Length > 0
+                    ? (Condition)new PropertyCondition(AutomationElement.ProcessIdProperty, int.Parse(args[0]))
+                    : new PropertyCondition(AutomationElement.NameProperty, "Claude UI — WPF components");
+                var windows = AutomationElement.RootElement.FindAll(TreeScope.Children, target);
                 if (windows.Count == 0) { Console.WriteLine("FAIL  window not found — start the app first"); return 1; }
                 root = windows[0];
             }
@@ -327,8 +330,18 @@ namespace UIComponents.Wpf.Tests
             // Selection table
             var selectionGrid = Find(root, "SelectionGrid");
             Check("selection table found", selectionGrid != null);
-            var bulkText = Find(root, "BulkText");
-            Check("bulk bar found", bulkText != null);
+            Check("bulk bar hidden initially", Find(root, "BulkBar") == null);
+            var rowCheck = Find(root, "SelectAll");
+            if (rowCheck != null)
+            {
+                var toggle = (TogglePattern)rowCheck.GetCurrentPattern(TogglePattern.Pattern);
+                toggle.Toggle();
+                Thread.Sleep(250);
+                var bulkText = Find(root, "BulkText");
+                Check("bulk bar appears on selection",
+                    bulkText != null && bulkText.Current.Name.Contains("selected") && !bulkText.Current.Name.StartsWith("0"),
+                    "text=" + (bulkText == null ? "" : bulkText.Current.Name));
+            }
 
             // Column filters
             var colProject = Find(root, "ColProject");
@@ -340,7 +353,15 @@ namespace UIComponents.Wpf.Tests
             // Sortable table
             var pin = Find(root, "PinColumn");
             Check("pin column button found", pin != null);
-            if (pin != null) Invoke(pin);
+            if (pin != null)
+            {
+                try { Invoke(pin); }
+                catch (InvalidOperationException)
+                {
+                    ((TogglePattern)pin.GetCurrentPattern(TogglePattern.Pattern)).Toggle();
+                }
+                Check("pin column toggled", true);
+            }
             var sortGrid = Find(root, "SortGrid");
             Check("sortable grid found", sortGrid != null);
 

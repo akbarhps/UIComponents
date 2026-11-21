@@ -37,9 +37,11 @@ namespace UIComponents.Wpf
 
             SelectionGrid.ItemsSource = new List<SelectionRow>
             {
-                new SelectionRow { Project = "Website refresh", Owner = "Ada Lovelace" },
-                new SelectionRow { Project = "Mobile app", Owner = "Jonas Silva" },
-                new SelectionRow { Project = "Brand guidelines", Owner = "Mia Chen" }
+                new SelectionRow { Project = "Website refresh", Owner = "Ada Lovelace", Status = "Active", Updated = "Today", Budget = "$12,400" },
+                new SelectionRow { Project = "Mobile app", Owner = "Jonas Silva", Status = "Active", Updated = "Yesterday", Budget = "$28,900" },
+                new SelectionRow { Project = "Brand guidelines", Owner = "Mia Chen", Status = "Pending", Updated = "3 days ago", Budget = "$4,200" },
+                new SelectionRow { Project = "Help center", Owner = "Ada Lovelace", Status = "Active", Updated = "Last week", Budget = "$8,750" },
+                new SelectionRow { Project = "Q3 campaign", Owner = "Sam Patel", Status = "Pending", Updated = "Last week", Budget = "$15,600" }
             };
         }
 
@@ -80,10 +82,24 @@ namespace UIComponents.Wpf
             FilterEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void SelectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SelectAll_Checked(object sender, RoutedEventArgs e) { SetAllRows(true); }
+        private void SelectAll_Unchecked(object sender, RoutedEventArgs e) { SetAllRows(false); }
+
+        private void SetAllRows(bool selected)
         {
-            int count = SelectionGrid.SelectedItems.Count;
-            BulkText.Text = count == 0 ? "No rows selected" : count + (count == 1 ? " row selected" : " rows selected");
+            foreach (var row in SelectionGrid.Items.OfType<SelectionRow>()) row.Selected = selected;
+            UpdateBulkBar();
+        }
+
+        private void RowCheck_Changed(object sender, RoutedEventArgs e) { UpdateBulkBar(); }
+
+        private void SelectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) { UpdateBulkBar(); }
+
+        private void UpdateBulkBar()
+        {
+            int count = SelectionGrid.Items.OfType<SelectionRow>().Count(r => r.Selected);
+            BulkText.Text = count + " selected";
+            BulkBar.Visibility = count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 
@@ -106,6 +122,9 @@ namespace UIComponents.Wpf
         }
         public string Project { get; set; }
         public string Owner { get; set; }
+        public string Status { get; set; }
+        public string Updated { get; set; }
+        public string Budget { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
     }
 }

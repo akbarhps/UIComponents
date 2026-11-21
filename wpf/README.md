@@ -29,7 +29,7 @@ bin\UIAutomationTests.exe
 
 Start the app first, then run the tests. They find controls through `AutomationElement` and drive them with `InvokePattern`, `ValuePattern`, `TogglePattern`, `SelectionItemPattern`, `ExpandCollapsePattern` and `RangeValuePattern` — no screen coordinates and no cursor movement.
 
-Covered: window, buttons, text fields, data grid, checkbox, combobox, date picker, progress bar, slider, tabs, expander, multi-select list, modal dialog, avatars, breadcrumbs, stepper, tooltips, action menu, empty state, skeleton, tag input, autocomplete, file input, date-time picker, grid input, typed grid, filter table, selection table, column filters, sortable table, toasts and the dialog launchers — 62 assertions in total.
+Covered: window, buttons, text fields, data grid, checkbox, combobox, date picker, progress bar, slider, tabs, expander, multi-select list, modal dialog, avatars, breadcrumbs, stepper, tooltips, action menu, empty state, skeleton, tag input, autocomplete, file input, date-time picker, grid input, typed grid, filter table (search + status segments), selection table (bulk bar), column filters, sortable table (sort headers + pin), toasts and the dialog launchers — 64 assertions in total.
 
 ## Structure
 
