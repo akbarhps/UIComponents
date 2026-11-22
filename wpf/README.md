@@ -1,6 +1,6 @@
 # WPF component library (.NET Framework 4.8)
 
-A WPF counterpart to `web/index.html`, using the same design tokens. WPF renders vector graphics with device-independent pixels, so the UI can match the web version far more closely than WinForms.
+A WPF counterpart to `web/index.html`, using the same design tokens. WPF renders vector graphics with device-independent pixels, so the UI can match the web version closely.
 
 `Themes/Tokens.xaml` mirrors the web `:root` colours, fonts and radii. `Themes/Controls.xaml` holds reusable `Style`/`ControlTemplate` definitions — the equivalent of the web library's CSS classes.
 

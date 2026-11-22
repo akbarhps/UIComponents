@@ -1,6 +1,6 @@
 # ui-design
 
-The web component library in `web/index.html` is the source of truth. `wpf/` (and `winform/`) are ports that must match it pixel for pixel.
+The web component library in `web/index.html` is the source of truth. `wpf/` is a port that must match it pixel for pixel.
 
 WPF parity work is coordinated through `plan/wpf/`:
 - **Planner/reviewer session:** read `plan/wpf/REVIEWER.md` first. It has the playbook, the status board, decisions and gotchas.
