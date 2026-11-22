@@ -73,5 +73,13 @@ Mirror `wpf/App.xaml`: merge the same 11 dictionaries in this order. Omit `Start
 </ResourceDictionary.MergedDictionaries>
 ```
 
-- Code-behind classes use `namespace UIComponents.Wpf`. The csproj is `WinExe` with no DLL output, so compile the `.cs` files into the consumer (referencing an assembly is not verified).
-- `Source` resolves against the consumer project. If `Themes/` sits outside it, copy the folder in or link each file. Not verified here.
+- Code-behind classes use `namespace UIComponents.Wpf`. No DLL is built, so compile the `.cs` files into the consumer (referencing an assembly is not supported).
+- Verified by build (net48, `LangVersion` 5, old-style csproj). Copy `Themes/` in, or link it (below). Compile per family:
+  - Always `Shimmer.cs`: `Themes/Display.xaml` uses `xmlns:local="clr-namespace:UIComponents.Wpf"` and `local:Shimmer.Enabled`. Without it the build fails (MC4003).
+  - `DropdownPrimitives.cs` for `SearchableSelect`, `MultiSelect`, `CalendarPicker`, `Autocomplete`, `TagInput` (without it: CS0246 `ChipWrapPanel`).
+  - `SheetGrid.cs` also needs `Toasts.cs` (CS0103).
+  - Standalone: `OverlayHost.cs`, `Toasts.cs`, `Popover.cs`, `FileInput.cs`. `TablePagination.xaml` (Page) plus `TablePagination.xaml.cs` (Compile).
+  - Not needed by any listed control: `App.xaml.cs`, `MainWindow*.cs`, `*Controls.xaml(.cs)`, `TableClip.cs`.
+- Linked (no copy): `<Page Include="<repo>\wpf\Themes\*.xaml"><Link>Themes\%(Filename)%(Extension)</Link></Page>`, and `<Compile Include="...\X.cs"><Link>Lib\X.cs</Link></Compile>`. `Link` must be a child element (as an attribute: MSB4066). Relative `Source="Themes/Tokens.xaml"` then resolves (same `themes/*.baml` names as the copy). `Source="/Consumer2;component/Themes/Tokens.xaml"` also builds. File-relative `Source="..\..\wpf\Themes\..."` builds but matches no resource (inferred, not run).
+- Required at runtime: `Toasts.Install(window)` casts `window.Content` to `Panel`; `OverlayHost.Install(window, panel)` needs a Panel such as `x:Name="DialogStore"` in that window.
+- Verified at runtime (hidden desktop, copy and link variants, same render): button, field, badge, SearchableSelect, MultiSelect, Autocomplete, CalendarPicker, a dialog via OverlayHost and a toast all render styled, no exceptions. Not run: SheetGrid, FileInput, TablePagination, Popover, TagInput.
