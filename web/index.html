@@ -221,7 +221,7 @@ svg{ display: block; }
 .empty-state__actions{ display:flex; gap:10px; margin-top:22px; flex-wrap:wrap; justify-content:center; }
 
 /* ── Command palette ──────────────────────────────────────── */
-.cmdk-overlay{ z-index:120; align-items:flex-start; padding-top:12vh; }
+.overlay.cmdk-overlay{ z-index:120; align-items:flex-start; padding-top:12vh; }
 .cmdk{
   width:100%; max-width:560px; background:var(--surface);
   border:1px solid var(--line); border-radius:var(--radius-lg); box-shadow:var(--shadow-2);
@@ -412,6 +412,7 @@ svg{ display: block; }
 
 /* ── Tooltip (CSS only, via data-tip) ─────────────────────── */
 .tip{ position:relative; display:inline-flex; }
+.tip:hover,.tip:focus-within{ z-index:30; }
 .tip::after{
   content:attr(data-tip); position:absolute; bottom:calc(100% + 9px); left:50%;
   transform:translateX(-50%) translateY(4px);
@@ -419,7 +420,15 @@ svg{ display: block; }
   padding:6px 9px; border-radius:6px; pointer-events:none;
   opacity:0; transition:.15s; box-shadow:var(--shadow-1);
 }
-.tip:hover::after,.tip:focus-within::after{ opacity:1; transform:translateX(-50%) translateY(0); }
+.tip:hover::after,.tip:focus-within::after{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.tip.is-dismissed:hover,.tip.is-dismissed:focus-within{ z-index:auto; }
+.tip.is-dismissed:hover::after,.tip.is-dismissed:focus-within::after{ opacity:0; pointer-events:none; }
+.tip::before{ content:""; position:absolute; bottom:100%; left:0; width:100%; height:9px; pointer-events:none; }
+.tip--bottom::before{ top:100%; bottom:auto; }
+.tip--left::before{ right:100%; left:auto; top:0; bottom:auto; width:9px; height:100%; }
+.tip--right::before{ left:100%; bottom:auto; top:0; width:9px; height:100%; }
+.tip:hover::before,.tip:focus-within::before{ pointer-events:auto; }
+.tip.is-dismissed:hover::before,.tip.is-dismissed:focus-within::before{ pointer-events:none; }
 .tip--bottom::after{ top:calc(100% + 9px); bottom:auto; transform:translateX(-50%) translateY(-4px); }
 .tip--bottom:hover::after,.tip--bottom:focus-within::after{ transform:translateX(-50%) translateY(0); }
 .tip--left::after{ left:auto; right:calc(100% + 9px); top:50%; bottom:auto; transform:translateY(-50%) translateX(4px); }
@@ -516,6 +525,7 @@ svg{ display: block; }
 
 /* ── Loading modal ────────────────────────────────────────── */
 .loading-modal{ max-width:380px; text-align:center; }
+.loading-modal:focus{ outline:none; }
 .loading-modal__spinner{ width:36px; height:36px; margin:0 auto 18px; border:3px solid var(--brand-soft); border-top-color:var(--brand); border-radius:50%; animation:spin .8s linear infinite; }
 .loading-modal__title{ font:600 21px/1.25 var(--font-serif); }
 .loading-modal__text{ color:var(--ink-2); font-size:14px; margin-top:9px; }
@@ -1033,7 +1043,7 @@ svg{ display: block; }
               <button type="button" class="menu__item menu__item--danger" role="menuitem" data-action="Remove"><svg><use href="#i-trash"/></svg>Remove</button>
             </div>
           </div>
-          <span class="field__hint" id="menuResult">Choose an action…</span>
+          <span class="field__hint" id="menuResult" role="status">Choose an action…</span>
         </div>
       </div>
     </section>
@@ -1509,13 +1519,13 @@ svg{ display: block; }
         <div class="row">
           <button class="btn btn--secondary btn--sm" id="stepPrev">Previous</button>
           <button class="btn btn--primary btn--sm" id="stepNext">Next step</button>
-          <span class="field__hint" id="stepStatus">Step 1 of 4</span>
+          <span class="field__hint" id="stepStatus" role="status">Step 1 of 4</span>
         </div>
         <div class="divider"></div>
         <div class="demo__label">Vertical</div>
         <div class="stepper step--vertical">
-          <div class="step is-done"><span class="step__line"></span><span class="step__marker"><svg><use href="#i-check"/></svg></span><div class="step__text"><div class="step__title">Account created</div><div class="step__desc">Your details are saved.</div></div></div>
-          <div class="step is-current"><span class="step__line"></span><span class="step__marker">2</span><div class="step__text"><div class="step__title">Set up workspace</div><div class="step__desc">Invite your team and pick a plan.</div></div></div>
+          <div class="step is-done"><span class="step__line"></span><span class="step__marker"><svg><use href="#i-check"/></svg></span><div class="step__text"><div class="step__title">Account created</div><div class="step__desc">Your details are saved.</div><span class="sr-only">Completed</span></div></div>
+          <div class="step is-current" aria-current="step"><span class="step__line"></span><span class="step__marker">2</span><div class="step__text"><div class="step__title">Set up workspace</div><div class="step__desc">Invite your team and pick a plan.</div></div></div>
           <div class="step"><span class="step__marker">3</span><div class="step__text"><div class="step__title">Review and finish</div><div class="step__desc">Confirm everything looks right.</div></div></div>
         </div>
       </div>
@@ -1527,15 +1537,15 @@ svg{ display: block; }
       <div class="demo">
         <div class="grid-2">
           <nav class="crumbs" aria-label="Breadcrumb">
-            <a href="#buttons">Workspace</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
-            <a href="#cards">Projects</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
-            <a href="#data-table">Website refresh</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <a href="#buttons">Workspace</a><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
+            <a href="#cards">Projects</a><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
+            <a href="#data-table">Website refresh</a><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
             <span class="crumbs__current" aria-current="page">Settings</span>
           </nav>
           <nav class="crumbs" aria-label="Breadcrumb with collapsed path">
-            <a href="#buttons">Workspace</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
-            <span class="crumbs__ellipsis" aria-hidden="true">…</span><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
-            <a href="#data-table">Website refresh</a><svg class="crumbs__sep"><use href="#i-chevron"/></svg>
+            <a href="#buttons">Workspace</a><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
+            <span class="crumbs__ellipsis" aria-hidden="true">…</span><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
+            <a href="#data-table">Website refresh</a><svg class="crumbs__sep" aria-hidden="true"><use href="#i-chevron"/></svg>
             <span class="crumbs__current" aria-current="page">Settings</span>
           </nav>
         </div>
@@ -1547,11 +1557,11 @@ svg{ display: block; }
       <div class="section__head"><h2>Tooltips</h2><p>Hover or focus a control to reveal its label. Tooltips appear on all four sides.</p></div>
       <div class="demo">
         <div class="row">
-          <span class="tip" data-tip="Top tooltip" tabindex="0"><button class="btn btn--secondary">Top</button></span>
-          <span class="tip tip--bottom" data-tip="Bottom tooltip" tabindex="0"><button class="btn btn--secondary">Bottom</button></span>
-          <span class="tip tip--left" data-tip="Left tooltip" tabindex="0"><button class="btn btn--secondary">Left</button></span>
-          <span class="tip tip--right" data-tip="Right tooltip" tabindex="0"><button class="btn btn--secondary">Right</button></span>
-          <span class="tip" data-tip="Save your changes" tabindex="0"><button class="btn btn--primary">Save</button></span>
+          <span class="tip" data-tip="Top tooltip"><button class="btn btn--secondary" aria-describedby="tip-text-1">Top</button><span class="sr-only" hidden id="tip-text-1">Top tooltip</span></span>
+          <span class="tip tip--bottom" data-tip="Bottom tooltip"><button class="btn btn--secondary" aria-describedby="tip-text-2">Bottom</button><span class="sr-only" hidden id="tip-text-2">Bottom tooltip</span></span>
+          <span class="tip tip--left" data-tip="Left tooltip"><button class="btn btn--secondary" aria-describedby="tip-text-3">Left</button><span class="sr-only" hidden id="tip-text-3">Left tooltip</span></span>
+          <span class="tip tip--right" data-tip="Right tooltip"><button class="btn btn--secondary" aria-describedby="tip-text-4">Right</button><span class="sr-only" hidden id="tip-text-4">Right tooltip</span></span>
+          <span class="tip" data-tip="Save your changes"><button class="btn btn--primary" aria-describedby="tip-text-5">Save</button><span class="sr-only" hidden id="tip-text-5">Save your changes</span></span>
         </div>
       </div>
     </section>
@@ -1565,9 +1575,9 @@ svg{ display: block; }
           <button class="tab" role="tab" aria-selected="false" aria-controls="p-2" id="t-2" tabindex="-1">Security</button>
           <button class="tab" role="tab" aria-selected="false" aria-controls="p-3" id="t-3" tabindex="-1">Billing</button>
         </div>
-        <div class="tabpanel" role="tabpanel" id="p-1" aria-labelledby="t-1">Update your name, photo and public profile details.</div>
-        <div class="tabpanel" role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>Manage your password and two-factor authentication.</div>
-        <div class="tabpanel" role="tabpanel" id="p-3" aria-labelledby="t-3" hidden>View invoices and update your payment method.</div>
+        <div class="tabpanel" role="tabpanel" id="p-1" aria-labelledby="t-1" tabindex="0">Update your name, photo and public profile details.</div>
+        <div class="tabpanel" role="tabpanel" id="p-2" aria-labelledby="t-2" tabindex="0" hidden>Manage your password and two-factor authentication.</div>
+        <div class="tabpanel" role="tabpanel" id="p-3" aria-labelledby="t-3" tabindex="0" hidden>View invoices and update your payment method.</div>
       </div>
     </section>
 
@@ -1881,19 +1891,19 @@ svg{ display: block; }
           <div class="field">
             <label class="field__label">Full date only</label>
             <div class="picker" data-mode="date" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a date…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Month and year</label>
             <div class="picker" data-mode="month" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a month…</span></button>
             </div>
           </div>
           <div class="field">
             <label class="field__label">Year only</label>
             <div class="picker" data-mode="year" data-time="false">
-              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-clock"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
+              <button type="button" class="picker__trigger" aria-expanded="false" aria-haspopup="dialog"><svg><use href="#i-calendar"/></svg><span class="picker__value is-placeholder">Pick a year…</span></button>
             </div>
           </div>
         </div>
@@ -1966,7 +1976,7 @@ svg{ display: block; }
         <div class="field">
           <label class="field__label" for="ed-email">Email address</label>
           <input class="input" id="ed-email" type="email" value="jamie@example.com"/>
-          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+          <span class="field__error" id="ed-email-error" role="alert"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
         </div>
         <div class="field">
           <label class="field__label" for="ed-role">Role</label>
@@ -1999,10 +2009,10 @@ svg{ display: block; }
   <div class="cmdk">
     <div class="cmdk__search">
       <svg><use href="#i-search"/></svg>
-      <input class="cmdk__input" id="cmdkInput" type="text" placeholder="Search for an action…" aria-label="Search commands" autocomplete="off"/>
+      <input class="cmdk__input" id="cmdkInput" type="text" placeholder="Search for an action…" aria-label="Search commands" autocomplete="off" role="combobox" aria-controls="cmdkList" aria-expanded="false"/>
       <span class="cmdk__esc">ESC</span>
     </div>
-    <div class="cmdk__list" id="cmdkList"></div>
+    <div class="cmdk__list" id="cmdkList" role="listbox" aria-label="Commands"></div>
     <div class="cmdk__foot"><span><b>↑↓</b> to navigate</span><span><b>↵</b> to select</span><span><b>esc</b> to close</span></div>
   </div>
 </div>
@@ -2030,12 +2040,12 @@ svg{ display: block; }
         <div class="field">
           <label class="field__label" for="fm-name">Project name</label>
           <input class="input" id="fm-name" placeholder="Website refresh"/>
-          <span class="field__error"><svg><use href="#i-alert"/></svg>Give the project a name.</span>
+          <span class="field__error" id="fm-name-error" role="alert"><svg><use href="#i-alert"/></svg>Give the project a name.</span>
         </div>
         <div class="field">
           <label class="field__label" for="fm-email">Owner email</label>
           <input class="input" id="fm-email" type="email" placeholder="you@example.com"/>
-          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+          <span class="field__error" id="fm-email-error" role="alert"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
         </div>
         <div class="field field--wide">
           <label class="field__label" for="fm-role">Team</label>
@@ -2068,7 +2078,7 @@ svg{ display: block; }
           <label class="field__label" for="dr-email">Email address</label>
           <input class="input" id="dr-email" type="email" placeholder="teammate@example.com"/>
           <span class="field__hint">Use their work email so we can find their account.</span>
-          <span class="field__error"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
+          <span class="field__error" id="dr-email-error" role="alert"><svg><use href="#i-alert"/></svg>Enter a valid email address.</span>
         </div>
         <div class="field">
           <label class="field__label" for="dr-role">Role</label>
@@ -2102,6 +2112,7 @@ function openOverlay(el, focusEl){
 }
 function closeOverlay(el){
   el.classList.remove('open');
+  if(el === cmdkOverlay){ cmdkInput.setAttribute('aria-expanded', 'false'); cmdkInput.removeAttribute('aria-activedescendant'); }
   if(!overlays.some(o => o.classList.contains('open'))) document.body.style.overflow = '';
   const previous = lastFocusByOverlay.get(el);
   lastFocusByOverlay.delete(el);
@@ -2157,8 +2168,14 @@ document.getElementById('openLoading').addEventListener('click', () => {
 /* Modal form */
 const formOverlay = document.getElementById('formOverlay');
 const emailOk = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
-function setFieldError(field, on){ field.classList.toggle('has-error', on); }
-function resetForm(form){ form.reset(); form.querySelectorAll('.field.has-error').forEach(f => f.classList.remove('has-error')); }
+function setFieldError(field, on){
+  field.classList.toggle('has-error', on);
+  const control = field.querySelector('input, select, textarea');
+  const error = field.querySelector('.field__error');
+  if(control) on ? control.setAttribute('aria-invalid','true') : control.removeAttribute('aria-invalid');
+  if(control && error) on ? control.setAttribute('aria-describedby', error.id) : control.removeAttribute('aria-describedby');
+}
+function resetForm(form){ form.reset(); form.querySelectorAll('.field.has-error').forEach(f => setFieldError(f, false)); }
 document.getElementById('openFormModal').addEventListener('click', () => { resetForm(document.getElementById('projectForm')); openOverlay(formOverlay, document.getElementById('fm-name')); });
 document.getElementById('closeFormModal').addEventListener('click', () => closeOverlay(formOverlay));
 document.getElementById('cancelFormModal').addEventListener('click', () => closeOverlay(formOverlay));
@@ -2170,7 +2187,7 @@ document.getElementById('projectForm').addEventListener('submit', e => {
   const validEmail = emailOk(email.value);
   setFieldError(name.closest('.field'), !validName);
   setFieldError(email.closest('.field'), !validEmail);
-  if(!validName || !validEmail) return;
+  if(!validName || !validEmail){ const first = e.target.querySelector('[aria-invalid="true"]'); if(first) first.focus(); return; }
   closeOverlay(formOverlay);
   showToast('success','Project created','“' + name.value.trim() + '” is ready.');
   e.target.reset();
@@ -2187,7 +2204,7 @@ document.getElementById('inviteForm').addEventListener('submit', e => {
   const email = document.getElementById('dr-email');
   const valid = emailOk(email.value);
   setFieldError(email.closest('.field'), !valid);
-  if(!valid) return;
+  if(!valid){ const first = e.target.querySelector('[aria-invalid="true"]'); if(first) first.focus(); return; }
   closeOverlay(drawerOverlay);
   showToast('success','Invite sent','An invitation is on its way to ' + email.value.trim() + '.');
   e.target.reset();
@@ -2209,7 +2226,7 @@ document.getElementById('editForm').addEventListener('submit', e => {
   e.preventDefault();
   const valid = emailOk(editEmail.value);
   setFieldError(editEmail.closest('.field'), !valid);
-  if(!valid) return;
+  if(!valid){ const first = e.target.querySelector('[aria-invalid="true"]'); if(first) first.focus(); return; }
   closeOverlay(editOverlay);
   showToast('success', 'Changes saved', "Jamie's details have been updated.");
 });
@@ -2526,7 +2543,7 @@ document.querySelectorAll('.multi').forEach(multi => {
 /* Date & time pickers */
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-function initPicker(root){
+function initPicker(root, index){
   const mode = root.dataset.mode || 'date';
   const withSeconds = root.dataset.seconds === 'true';
   const withTime = root.dataset.time === 'true' || withSeconds;
@@ -2538,8 +2555,11 @@ function initPicker(root){
   let viewMonth = today.getMonth();
   let selected = null;
 
+  const panelId = 'picker-panel-' + index;
+  const dialogLabel = mode === 'date' ? (withTime ? 'Choose a date and time' : 'Choose a date') : mode === 'month' ? 'Choose a month' : 'Choose a year';
+  trigger.setAttribute('aria-controls', panelId);
   root.insertAdjacentHTML('beforeend', `
-    <div class="picker__panel" hidden>
+    <div class="picker__panel" id="${panelId}" role="dialog" aria-label="${dialogLabel}" hidden>
       <div class="picker__head">
         <button type="button" class="icon-btn" data-prev aria-label="Previous"><svg><use href="#i-chevron"/></svg></button>
         <span class="picker__title"></span>
@@ -2582,20 +2602,22 @@ function initPicker(root){
       let html = '<div class="picker__grid">' + ['S','M','T','W','T','F','S'].map(d => '<span class="picker__dow">' + d + '</span>').join('');
       for(let i = 0; i < start; i++) html += '<span></span>';
       for(let d = 1; d <= days; d++){
-        const cls = (selected && selected.y === viewYear && selected.m === viewMonth && selected.d === d ? ' selected' : '') +
-          (today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === d ? ' today' : '');
-        html += '<button type="button" class="picker__cell' + cls + '" data-day="' + d + '">' + d + '</button>';
+        const isSelected = !!(selected && selected.y === viewYear && selected.m === viewMonth && selected.d === d);
+        const isToday = today.getFullYear() === viewYear && today.getMonth() === viewMonth && today.getDate() === d;
+        html += '<button type="button" class="picker__cell' + (isSelected ? ' selected' : '') + (isToday ? ' today' : '') + '" data-day="' + d + '" aria-label="' + MONTHS_FULL[viewMonth] + ' ' + d + ', ' + viewYear + '"' + (isSelected ? ' aria-pressed="true"' : '') + (isToday ? ' aria-current="date"' : '') + '>' + d + '</button>';
       }
       body.innerHTML = html + '</div>';
     } else if(mode === 'month'){
       title.textContent = viewYear;
-      body.innerHTML = '<div class="picker__months">' + MONTHS_FULL.map((m, i) =>
-        '<button type="button" class="picker__cell' + (selected && selected.y === viewYear && selected.m === i ? ' selected' : '') + '" data-month="' + i + '">' + m.slice(0, 3) + '</button>').join('') + '</div>';
+      body.innerHTML = '<div class="picker__months">' + MONTHS_FULL.map((m, i) => {
+        const isSelected = !!(selected && selected.y === viewYear && selected.m === i);
+        return '<button type="button" class="picker__cell' + (isSelected ? ' selected' : '') + '" data-month="' + i + '" aria-label="' + m + '"' + (isSelected ? ' aria-pressed="true"' : '') + '>' + m.slice(0, 3) + '</button>';
+      }).join('') + '</div>';
     } else {
       const start = viewYear - 8;
       title.textContent = start + '–' + (start + 19);
       let html = '<div class="picker__years">';
-      for(let y = start; y < start + 20; y++) html += '<button type="button" class="picker__cell' + (selected && selected.y === y ? ' selected' : '') + '" data-year="' + y + '">' + y + '</button>';
+      for(let y = start; y < start + 20; y++) html += '<button type="button" class="picker__cell' + (selected && selected.y === y ? ' selected' : '') + '" data-year="' + y + '"' + (selected && selected.y === y ? ' aria-pressed="true"' : '') + '>' + y + '</button>';
       body.innerHTML = html + '</div>';
     }
   }
@@ -2621,8 +2643,9 @@ function initPicker(root){
       selected.h = Number(hour.value) || 0;
       selected.min = Number(minute.value) || 0;
       if(withSeconds) selected.s = Number(second.value) || 0;
-      render();
-    } else commit();
+    }
+    render();
+    if(!withTime) commit();
   });
   if(withTime){
     panel.querySelector('[data-apply]').addEventListener('click', () => {
@@ -2656,6 +2679,16 @@ function initPicker(root){
     }
   });
   root.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden){ panel.hidden = true; trigger.setAttribute('aria-expanded','false'); trigger.focus(); } });
+  panel.addEventListener('mousedown', e => { if(!e.target.closest('input')) e.preventDefault(); });
+  root.addEventListener('focusout', () => {
+    setTimeout(() => {
+      const a = document.activeElement;
+      if(!panel.hidden && a !== document.body && !root.contains(a)){
+        panel.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
   document.addEventListener('click', e => {
     if(!root.contains(e.target) && !panel.hidden){
       panel.hidden = true;
@@ -2664,7 +2697,7 @@ function initPicker(root){
   });
   render();
 }
-document.querySelectorAll('.picker').forEach(initPicker);
+document.querySelectorAll('.picker').forEach((root, index) => initPicker(root, index));
 
 /* Autocomplete */
 document.querySelectorAll('.ac').forEach(root => {
@@ -3153,7 +3186,8 @@ document.querySelectorAll('.file-input').forEach(box => {
     files.forEach((file, i) => {
       const row = document.createElement('div');
       row.className = 'file-item';
-      row.innerHTML = '<svg><use href="#i-file"/></svg><span class="file-item__name"></span><span class="file-item__size"></span><button type="button" class="icon-btn" aria-label="Remove file"><svg><use href="#i-close"/></svg></button>';
+      row.innerHTML = '<svg><use href="#i-file"/></svg><span class="file-item__name"></span><span class="file-item__size"></span><button type="button" class="icon-btn"><svg><use href="#i-close"/></svg></button>';
+      row.querySelector('button').setAttribute('aria-label', 'Remove ' + file.name);
       row.querySelector('.file-item__name').textContent = file.name;
       row.querySelector('.file-item__size').textContent = sizeLabel(file.size);
       row.querySelector('button').addEventListener('click', () => {
@@ -3164,8 +3198,16 @@ document.querySelectorAll('.file-input').forEach(box => {
       list.appendChild(row);
     });
   }
+  const accepted = f => !input.accept || f.type.startsWith('image/');
   function add(chosen){
-    files = multiple ? [...files, ...chosen] : chosen.slice(0, 1);
+    const fresh = [];
+    chosen.forEach(f => {
+      if(!accepted(f)) return;
+      if(multiple && [...files, ...fresh].some(x => x.name === f.name && x.size === f.size)) return;
+      fresh.push(f);
+    });
+    if(!fresh.length) return;
+    files = multiple ? [...files, ...fresh] : fresh.slice(0, 1);
     render();
   }
   input.addEventListener('change', () => add([...input.files]));
@@ -3177,7 +3219,7 @@ document.querySelectorAll('.file-input').forEach(box => {
     e.preventDefault();
     drop.classList.remove('dragover');
   }));
-  drop.addEventListener('drop', e => add([...e.dataTransfer.files].filter(f => !input.accept || f.type.startsWith('image/'))));
+  drop.addEventListener('drop', e => add([...e.dataTransfer.files]));
   render();
 });
 
@@ -3201,26 +3243,30 @@ function renderCmdk(){
   const q = cmdkInput.value.trim().toLowerCase();
   cmdkMatches = cmdkCommands.filter(c => c.label.toLowerCase().includes(q));
   cmdkActive = 0;
-  if(!cmdkMatches.length){ cmdkList.innerHTML = '<div class="cmdk__empty">No matching commands</div>'; return; }
+  if(!cmdkMatches.length){ cmdkList.innerHTML = '<div class="cmdk__empty" role="presentation">No matching commands</div>'; cmdkInput.removeAttribute('aria-activedescendant'); return; }
   let html = '', lastGroup = '';
   cmdkMatches.forEach((c, i) => {
-    if(c.group !== lastGroup){ html += '<div class="cmdk__group">' + c.group + '</div>'; lastGroup = c.group; }
-    html += '<button type="button" class="cmdk__item' + (i === 0 ? ' is-active' : '') + '" data-i="' + i + '"><svg><use href="#' + c.icon + '"/></svg><span class="cmdk__item-label">' + c.label + '</span>' + (c.shortcut ? '<span class="cmdk__shortcut">' + c.shortcut + '</span>' : '') + '</button>';
+    if(c.group !== lastGroup){ html += '<div class="cmdk__group" role="presentation">' + c.group + '</div>'; lastGroup = c.group; }
+    html += '<button type="button" role="option" id="cmdk-option-' + i + '" aria-selected="' + (i === 0) + '" class="cmdk__item' + (i === 0 ? ' is-active' : '') + '" data-i="' + i + '"><svg><use href="#' + c.icon + '"/></svg><span class="cmdk__item-label">' + c.label + '</span>' + (c.shortcut ? '<span class="cmdk__shortcut">' + c.shortcut + '</span>' : '') + '</button>';
   });
   cmdkList.innerHTML = html;
+  cmdkInput.setAttribute('aria-activedescendant', cmdkList.querySelector('.cmdk__item').id);
 }
 function setCmdkActive(i){
   const items = cmdkList.querySelectorAll('.cmdk__item');
   if(!items.length) return;
   cmdkActive = (i + items.length) % items.length;
-  items.forEach((el, n) => el.classList.toggle('is-active', n === cmdkActive));
+  items.forEach((el, n) => { el.classList.toggle('is-active', n === cmdkActive); el.setAttribute('aria-selected', String(n === cmdkActive)); });
+  cmdkInput.setAttribute('aria-activedescendant', items[cmdkActive].id);
   items[cmdkActive].scrollIntoView({ block:'nearest' });
 }
 function openCmdk(){
   openOverlay(cmdkOverlay, cmdkInput);
   cmdkInput.value = '';
+  cmdkInput.setAttribute('aria-expanded', 'true');
   renderCmdk();
 }
+function closeCmdk(){ closeOverlay(cmdkOverlay); }
 cmdkInput.addEventListener('input', renderCmdk);
 cmdkInput.addEventListener('keydown', e => {
   if(e.key === 'ArrowDown'){ e.preventDefault(); setCmdkActive(cmdkActive + 1); }
@@ -3228,7 +3274,7 @@ cmdkInput.addEventListener('keydown', e => {
   else if(e.key === 'Enter' && cmdkMatches[cmdkActive]){
     e.preventDefault();
     const command = cmdkMatches[cmdkActive];
-    closeOverlay(cmdkOverlay);
+    closeCmdk();
     command.run();
   }
 });
@@ -3236,7 +3282,7 @@ cmdkList.addEventListener('click', e => {
   const item = e.target.closest('.cmdk__item');
   if(!item) return;
   const command = cmdkMatches[+item.dataset.i];
-  closeOverlay(cmdkOverlay);
+  closeCmdk();
   command.run();
 });
 document.getElementById('openCmdk').addEventListener('click', openCmdk);
@@ -3291,11 +3337,18 @@ function renderStepper(){
     const marker = step.querySelector('.step__marker');
     step.classList.toggle('is-done', i < currentStep);
     step.classList.toggle('is-current', i === currentStep);
+    if(i === currentStep) step.setAttribute('aria-current','step'); else step.removeAttribute('aria-current');
     marker.innerHTML = i < currentStep ? CHECK : String(i + 1);
+    let done = step.querySelector('.step__text .sr-only');
+    if(i < currentStep && !done){ done = document.createElement('span'); done.className = 'sr-only'; done.textContent = 'Completed'; step.querySelector('.step__text').appendChild(done); }
+    else if(i >= currentStep && done) done.remove();
   });
   stepStatus.textContent = 'Step ' + (currentStep + 1) + ' of ' + stepEls.length;
-  document.getElementById('stepPrev').disabled = currentStep === 0;
-  document.getElementById('stepNext').disabled = currentStep === stepEls.length - 1;
+  const prev = document.getElementById('stepPrev'), next = document.getElementById('stepNext'), active = document.activeElement;
+  prev.disabled = currentStep === 0;
+  next.disabled = currentStep === stepEls.length - 1;
+  if(active === prev && prev.disabled) next.focus();
+  else if(active === next && next.disabled) prev.focus();
 }
 document.getElementById('stepPrev').addEventListener('click', () => { if(currentStep > 0){ currentStep--; renderStepper(); } });
 document.getElementById('stepNext').addEventListener('click', () => { if(currentStep < stepEls.length - 1){ currentStep++; renderStepper(); } });
@@ -3324,7 +3377,10 @@ document.querySelectorAll('.accordion').forEach(accordion => {
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     tab.closest('[role=tablist]').querySelectorAll('.tab').forEach(t => { t.setAttribute('aria-selected','false'); t.tabIndex = -1; });
-    document.querySelectorAll('.tabpanel').forEach(p => p.hidden = true);
+    tab.closest('[role=tablist]').querySelectorAll('.tab').forEach(t => {
+      const panel = document.getElementById(t.getAttribute('aria-controls'));
+      if(panel) panel.hidden = true;
+    });
     tab.setAttribute('aria-selected','true');
     tab.tabIndex = 0;
     document.getElementById(tab.getAttribute('aria-controls')).hidden = false;
@@ -3340,6 +3396,15 @@ document.querySelectorAll('.tab').forEach(tab => {
     tabs[n].click();
     tabs[n].focus();
   });
+});
+
+/* Tooltips */
+document.querySelectorAll('#tooltip-demo .tip').forEach(tip => {
+  const btn = tip.querySelector('button');
+  btn.addEventListener('keydown', e => { if(e.key === 'Escape'){ e.preventDefault(); tip.classList.add('is-dismissed'); } });
+  btn.addEventListener('focus', () => tip.classList.remove('is-dismissed'));
+  btn.addEventListener('blur', () => tip.classList.remove('is-dismissed'));
+  tip.addEventListener('mouseleave', () => tip.classList.remove('is-dismissed'));
 });
 
 /* Row selection */
@@ -3378,6 +3443,8 @@ const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
 function showToast(type, title, text, options = {}){
   const el = document.createElement('div');
   el.className = 'toast' + (type !== 'success' ? ' toast--' + type : '');
+  if(type === 'error') el.setAttribute('role', 'alert');
+  const previousFocus = document.activeElement;
   const body = '<div class="toast__body"><strong></strong><span></span>' +
     (options.action ? '<button type="button" class="toast__action"></button>' : '') + '</div>';
   el.innerHTML = '<div class="toast__icon"><svg><use href="#' + toastIcons[type] + '"/></svg></div>' + body +
@@ -3385,17 +3452,40 @@ function showToast(type, title, text, options = {}){
   el.querySelector('strong').textContent = title;
   el.querySelector('span').textContent = text;
   if(options.action) el.querySelector('.toast__action').textContent = options.action;
+  let timer = null, started = 0, remaining = 3600, dismissed = false;
+  function schedule(){
+    if(dismissed || timer || options.persistent || options.action) return;
+    if(el.matches(':hover') || el.contains(document.activeElement)) return;
+    started = Date.now();
+    timer = setTimeout(dismiss, remaining);
+  }
+  function pause(){
+    if(!timer) return;
+    clearTimeout(timer); timer = null;
+    remaining = Math.max(0, remaining - (Date.now() - started));
+  }
   function dismiss(){
-    clearTimeout(timer);
+    if(dismissed) return;
+    dismissed = true;
+    clearTimeout(timer); timer = null;
+    if(el.contains(document.activeElement)){
+      const next = el.nextElementSibling && el.nextElementSibling.querySelector('.toast__close');
+      const target = next || (previousFocus && previousFocus !== document.body && document.contains(previousFocus) ? previousFocus : null);
+      if(target) target.focus();
+    }
     el.classList.add('out');
     setTimeout(() => el.remove(), 260);
   }
+  el.addEventListener('mouseenter', pause);
+  el.addEventListener('focusin', pause);
+  el.addEventListener('mouseleave', schedule);
+  el.addEventListener('focusout', e => { if(!el.contains(e.relatedTarget)) schedule(); });
   const closeBtn = el.querySelector('.toast__close');
   if(closeBtn) closeBtn.addEventListener('click', dismiss);
   const actionBtn = el.querySelector('.toast__action');
   if(actionBtn) actionBtn.addEventListener('click', () => { showToast('success', 'Done', 'The action was completed.'); dismiss(); });
   document.getElementById('toastStack').appendChild(el);
-  const timer = options.persistent ? null : setTimeout(dismiss, 3600);
+  schedule();
   return el;
 }
 document.querySelectorAll('[data-toast]').forEach(b => {
@@ -3420,11 +3510,11 @@ document.getElementById('toastPersistent').addEventListener('click', () =>
 /* Loading button demo */
 const loadingBtn = document.getElementById('loadingBtn');
 loadingBtn.addEventListener('click', () => {
-  if(loadingBtn.disabled) return;
-  loadingBtn.disabled = true;
+  if(loadingBtn.getAttribute('aria-disabled') === 'true') return;
+  loadingBtn.setAttribute('aria-disabled', 'true');
   const original = loadingBtn.innerHTML;
   loadingBtn.innerHTML = '<span class="spinner"></span>Working…';
-  setTimeout(() => { loadingBtn.innerHTML = original; loadingBtn.disabled = false; }, 1600);
+  setTimeout(() => { loadingBtn.innerHTML = original; loadingBtn.removeAttribute('aria-disabled'); }, 1600);
 });
 
 /* Active nav highlight on scroll */

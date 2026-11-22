@@ -1,7 +1,7 @@
 // CDP regression checks for web/index.html. Node only, no dependencies.
 // Usage: node plan/wpf/web-checks.mjs   (exit code 1 if any check fails)
 import { spawn, spawnSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -62,6 +62,10 @@ const center = async expr => {
 const tab = async () => {
   for(const type of ['rawKeyDown', 'keyUp'])
     await send('Input.dispatchKeyEvent', { type, key: 'Tab', code: 'Tab', windowsVirtualKeyCode: 9, nativeVirtualKeyCode: 9 });
+};
+const press = async (key, code, vk) => {
+  for(const type of ['rawKeyDown', 'keyUp'])
+    await send('Input.dispatchKeyEvent', { type, key, code, windowsVirtualKeyCode: vk, nativeVirtualKeyCode: vk });
 };
 const scroll = async id => { await ev(`document.getElementById('${id}').scrollIntoView({block:'center',behavior:'instant'})`); await sleep(80); };
 
@@ -423,9 +427,381 @@ async function main(){
       detail: `non-rect copy: ${JSON.stringify(r)} (want only selected corners)` };
   });
 
+  await check('W1', async () => {
+    const r = await ev(`(() => {
+      const ov = document.getElementById('cmdkOverlay'), card = ov.querySelector('.cmdk'), i = document.getElementById('cmdkInput');
+      const cs = getComputedStyle(ov), R = v => Math.round(v*10)/10, top = () => R(card.getBoundingClientRect().top);
+      i.value = ''; openCmdk();
+      const out = { z:cs.zIndex, align:cs.alignItems, pt:cs.paddingTop, want:R(innerHeight*0.12), open:top() };
+      i.value = 'go'; i.dispatchEvent(new Event('input',{bubbles:true})); out.go = top();
+      i.value = 'zzz'; i.dispatchEvent(new Event('input',{bubbles:true})); out.empty = top();
+      i.value = ''; i.dispatchEvent(new Event('input',{bubbles:true})); out.clear = top();
+      closeCmdk(); return JSON.stringify(out);
+    })()`);
+    const o = JSON.parse(r);
+    return { ok: o.z === '120' && o.align.includes('start') && Math.abs(parseFloat(o.pt) - o.want) <= 1
+        && o.open === o.go && o.go === o.empty && o.empty === o.clear && Math.abs(o.open - o.want) <= 1,
+      detail: `z=${o.z} align=${o.align} padding-top=${o.pt} (12vh=${o.want}); card top open=${o.open}, "go"=${o.go}, empty=${o.empty}, cleared=${o.clear}` };
+  });
+
+  await check('W2', async () => {
+    const r = await ev(`(() => {
+      const ov = document.getElementById('loadingOverlay'), card = ov.querySelector('.loading-modal');
+      openOverlay(ov, card);
+      const cs = getComputedStyle(card);
+      const out = { focused: document.activeElement === card, outline: cs.outlineStyle + ' ' + cs.outlineWidth, tabIndex: card.tabIndex };
+      closeOverlay(ov); return JSON.stringify(out);
+    })()`);
+    const o = JSON.parse(r);
+    return { ok: o.focused && o.outline.startsWith('none') && o.tabIndex === -1,
+      detail: `focused=${o.focused}, outline=${o.outline}, tabIndex=${o.tabIndex} (want focused, no outline, still focusable)` };
+  });
+
+  await check('W4', async () => {
+    const o = JSON.parse(await ev(`JSON.stringify({
+      time: [...document.querySelectorAll('#datetime-picker .picker__trigger')].slice(0,2).map(t => t.querySelector('use').getAttribute('href')),
+      dateOnly: [...document.querySelectorAll('#datetime-picker .picker__trigger')].slice(2).map(t => t.querySelector('use').getAttribute('href')),
+      dateSection: [...document.querySelectorAll('#date-picker .picker__trigger')].map(t => t.querySelector('use').getAttribute('href'))
+    })`));
+    return { ok: o.time.length === 2 && o.time.every(h => h === '#i-clock')
+        && o.dateOnly.length === 3 && o.dateOnly.every(h => h === '#i-calendar')
+        && o.dateSection.every(h => h === '#i-calendar'),
+      detail: `datetime: time=${o.time.join(',')} date-only=${o.dateOnly.join(',')}; date-picker=${o.dateSection.join(',')}` };
+  });
+
+  await check('W5', async () => {
+    await scroll('date-picker');
+    const el = sel => `document.querySelector('#date-picker .picker ${sel}')`;
+    await click(...await center(el('.picker__trigger'))); await sleep(100);
+    const opened = await ev(`!${el('.picker__panel')}.hidden`);
+    const titleBefore = await ev(`${el('.picker__title')}.textContent`);
+    await click(...await center(el('.picker__panel [data-next]'))); await sleep(100);
+    const titleAfter = await ev(`${el('.picker__title')}.textContent`);
+    const openAfterInsideClick = await ev(`!${el('.picker__panel')}.hidden`);
+    await ev(`(() => { const r=document.querySelector('#date-picker .picker'); const f=[...r.querySelectorAll('button, input, select, textarea')].filter(x => x.offsetParent !== null); f[f.length-1].focus(); })()`);
+    await tab(); await sleep(120);
+    const closedAfterTab = await ev(`${el('.picker__panel')}.hidden`);
+    await click(...await center(el('.picker__trigger'))); await sleep(80);
+    const valueBefore = await ev(`${el('.picker__value')}.textContent`);
+    await click(...await center(el('.picker__panel [data-day="14"]'))); await sleep(120);
+    const valueAfter = await ev(`${el('.picker__value')}.textContent`);
+    const closedAfterPick = await ev(`${el('.picker__panel')}.hidden`);
+
+    // reopened with a value: the selected cell has focus, a real Next click must not close the panel
+    await click(...await center(el('.picker__trigger'))); await sleep(80);
+    const reopenFocus = await ev(`document.activeElement.className`);
+    await click(...await center(el('.picker__panel [data-next]'))); await sleep(120);
+    const openAfterReopenNext = await ev(`!${el('.picker__panel')}.hidden`);
+
+    // date+time picker: hour input focus and typing, day click with a focused cell
+    await scroll('datetime-picker');
+    const dt = sel => `document.querySelector('#datetime-picker .picker ${sel}')`;
+    await click(...await center(dt('.picker__trigger'))); await sleep(100);
+    await click(...await center(dt('[data-hour]'))); await sleep(100);
+    const hourFocused = await ev(`document.activeElement === ${dt('[data-hour]')}`);
+    await send('Input.insertText', { text: '7' }); await sleep(60);
+    const hourValue = await ev(`${dt('[data-hour]')}.value`);
+    await ev(`${dt('.picker__panel [data-day="10"]')}.focus()`);
+    await click(...await center(dt('.picker__panel [data-day="12"]'))); await sleep(120);
+    const dtOpenAfterDay = await ev(`!${dt('.picker__panel')}.hidden`);
+    await ev(`${dt('.picker__panel [data-clear]')}.click()`);
+
+    const ok = opened && titleAfter !== titleBefore && openAfterInsideClick && closedAfterTab
+      && valueAfter !== valueBefore && valueAfter.includes('14') && closedAfterPick
+      && reopenFocus.includes('picker__cell') && openAfterReopenNext
+      && hourFocused && hourValue !== '09' && dtOpenAfterDay;
+    return { ok, detail: `date-only: next kept open=${openAfterInsideClick}, Tab closed=${closedAfterTab}, day selected="${valueAfter}", reopen focus=${reopenFocus}, next after reopen kept open=${openAfterReopenNext}; datetime: hour focused=${hourFocused} value="${hourValue}", day click kept open=${dtOpenAfterDay}` };
+  });
+
+  await check('W7', async () => {
+    const r = await ev(`(() => {
+      const p = document.querySelector('#date-picker .picker'), t = p.querySelector('.picker__trigger'), d = new Date();
+      if(p.querySelector('.picker__panel').hidden) t.click();
+      const wantTitle = d.toLocaleString('en-US',{month:'long'}) + ' ' + d.getFullYear();
+      for(let i = 0; i < 12 && p.querySelector('.picker__title').textContent !== wantTitle; i++) p.querySelector('[data-prev]').click();
+      p.querySelector('[data-clear]').click(); t.click();
+      const panel = p.querySelector('.picker__panel');
+      const c14 = panel.querySelector('[data-day="14"]'), todayCell = panel.querySelector('.picker__cell.today');
+      const month = new Date(d.getFullYear(), d.getMonth(), 14).toLocaleString('en-US', {month:'long'});
+      const out = { role:panel.getAttribute('role'), label:panel.getAttribute('aria-label'),
+        controls: t.getAttribute('aria-controls') === panel.id, hasId: !!panel.id,
+        dayLabel: c14.getAttribute('aria-label'), wantLabel: month + ' 14, ' + d.getFullYear(),
+        todayCurrent: todayCell && todayCell.getAttribute('aria-current'), pressedBefore: c14.getAttribute('aria-pressed') };
+      c14.click(); t.click();
+      out.pressedAfter = p.querySelector('[data-day="14"]').getAttribute('aria-pressed');
+      t.click(); return JSON.stringify(out);
+    })()`);
+    const o = JSON.parse(r);
+    const extra = JSON.parse(await ev(`(() => {
+      const ps = document.querySelectorAll('#date-picker .picker'), m = ps[1], y = ps[2];
+      [m,y].forEach(p => { if(p.querySelector('.picker__panel').hidden) p.querySelector('.picker__trigger').click(); });
+      const yCell = y.querySelector('.picker__cell'), yr = yCell.dataset.year;
+      const out = { monthLabel: m.querySelector('[data-month="4"]').getAttribute('aria-label') };
+      m.querySelector('[data-month="4"]').click(); yCell.click();
+      out.monthPressed = m.querySelector('[data-month="4"]').getAttribute('aria-pressed');
+      out.yearPressed = y.querySelector('[data-year="' + yr + '"]').getAttribute('aria-pressed');
+      return JSON.stringify(out);
+    })()`));
+    return { ok: o.role === 'dialog' && !!o.label && o.controls && o.hasId && o.dayLabel === o.wantLabel
+        && o.todayCurrent === 'date' && o.pressedBefore === null && o.pressedAfter === 'true'
+        && extra.monthLabel === 'May' && extra.monthPressed === 'true' && extra.yearPressed === 'true',
+      detail: `panel role=${o.role} label="${o.label}" controls=${o.controls}; day14 label="${o.dayLabel}" (want "${o.wantLabel}"), today=${o.todayCurrent}, pressed ${o.pressedBefore} -> ${o.pressedAfter}; month label="${extra.monthLabel}" pressed=${extra.monthPressed}, year pressed=${extra.yearPressed}` };
+  });
+
+  await check('W8', async () => {
+    const r = await ev(`(() => {
+      openCmdk();
+      const i = document.getElementById('cmdkInput'), list = document.getElementById('cmdkList'), item = list.querySelector('.cmdk__item');
+      const out = { role:i.getAttribute('role'), controls:i.getAttribute('aria-controls'), expanded:i.getAttribute('aria-expanded'),
+        aad:i.getAttribute('aria-activedescendant'), itemId:item && item.id, listRole:list.getAttribute('role'),
+        itemRole:item && item.getAttribute('role'), selected:item && item.getAttribute('aria-selected') };
+      out.groupRole = list.querySelector('.cmdk__group') && list.querySelector('.cmdk__group').getAttribute('role');
+      __kd(i,'ArrowDown');
+      out.aadAfter = i.getAttribute('aria-activedescendant');
+      out.selectedCount = list.querySelectorAll('[aria-selected="true"]').length;
+      i.value='zzz'; i.dispatchEvent(new Event('input',{bubbles:true}));
+      out.aadEmpty = i.getAttribute('aria-activedescendant');
+      out.emptyRole = list.querySelector('.cmdk__empty') && list.querySelector('.cmdk__empty').getAttribute('role');
+      closeCmdk(); out.expandedClosed = i.getAttribute('aria-expanded'); out.aadClosed = i.getAttribute('aria-activedescendant');
+      openCmdk(); const item2 = list.querySelector('.cmdk__item'); item2.focus(); __kd(item2,'Escape');
+      out.escClosed = { expanded:i.getAttribute('aria-expanded'), aad:i.getAttribute('aria-activedescendant') };
+      openCmdk(); document.getElementById('cmdkOverlay').click();
+      out.backdropClosed = { expanded:i.getAttribute('aria-expanded'), aad:i.getAttribute('aria-activedescendant') };
+      closeCmdk();
+      return JSON.stringify(out);
+    })()`);
+    const o = JSON.parse(r);
+    return { ok: o.role === 'combobox' && o.controls === 'cmdkList' && o.expanded === 'true' && o.aad === o.itemId
+        && o.listRole === 'listbox' && o.itemRole === 'option' && o.selected === 'true'
+        && o.aadAfter && o.aadAfter !== o.itemId && o.selectedCount === 1 && !o.aadEmpty
+        && o.expandedClosed === 'false' && !o.aadClosed
+        && o.groupRole === 'presentation' && o.emptyRole === 'presentation'
+        && o.escClosed.expanded === 'false' && !o.escClosed.aad
+        && o.backdropClosed.expanded === 'false' && !o.backdropClosed.aad,
+      detail: `input role=${o.role} controls=${o.controls} expanded=${o.expanded}; list=${o.listRole}, item=${o.itemRole}#${o.itemId} selected=${o.selected}; aad ${o.aad} -> ${o.aadAfter} -> empty ${o.aadEmpty}; groups/empty roles=${o.groupRole}/${o.emptyRole}; closeCmdk/Escape/backdrop expanded=${o.expandedClosed}/${o.escClosed.expanded}/${o.backdropClosed.expanded}` };
+  });
+
+  await check('W9', async () => {
+    const r = await ev(`(() => {
+      const cancel = { openFormModal:'cancelFormModal', openDrawer:'cancelDrawer', openEditDrawer:'cancelEditDrawer' };
+      return JSON.stringify([['openFormModal','projectForm','fm-name'],['openDrawer','inviteForm','dr-email'],['openEditDrawer','editForm','ed-email']].map(([openBtn, formId, id]) => {
+        document.getElementById(openBtn).click();
+        const form = document.getElementById(formId), field = document.getElementById(id);
+        field.value = ''; form.querySelector('button[type=submit]').click();
+        const error = field.closest('.field').querySelector('.field__error');
+        const out = { id, focused: document.activeElement === field, invalid: field.getAttribute('aria-invalid'),
+          described: field.getAttribute('aria-describedby') === error.id, alert: error.getAttribute('role') };
+        document.getElementById(cancel[openBtn]).click(); return out;
+      }));
+    })()`);
+    const o = JSON.parse(r);
+    return { ok: o.every(x => x.focused && x.invalid === 'true' && x.described && x.alert === 'alert'), detail: JSON.stringify(o) };
+  });
+
+  await check('W10', async () => {
+    const role = JSON.parse(await ev(`(() => { const el = showToast('error','Boom','Failed.',{persistent:true,dismissible:true}); const r = el.getAttribute('role'); el.remove(); return JSON.stringify({r}); })()`)).r;
+    await ev(`(() => { window.__pauseToast = showToast('info','Pause test','Hovering.',{dismissible:true}); window.__pauseToast.dispatchEvent(new MouseEvent('mouseenter')); })()`);
+    await sleep(3800);
+    const survivedHover = await ev(`window.__pauseToast.isConnected`);
+    await ev(`window.__pauseToast.dispatchEvent(new MouseEvent('mouseleave'))`);
+    const hoverAtLeave = await ev(`window.__pauseToast.matches(':hover')`);
+    let goneAfterLeave = false;
+    for(let i = 0; i < 14 && !goneAfterLeave; i++){ await sleep(400); goneAfterLeave = await ev(`!window.__pauseToast.isConnected`); }
+    await ev(`document.getElementById('toastWithAction').click()`);
+    await sleep(3800);
+    const actionSurvived = await ev(`!!document.querySelector('.toast__action')`);
+    const focusRestored = JSON.parse(await ev(`(async () => {
+      document.getElementById('toastDismissible').focus();
+      const el = showToast('info','Focus test','Dismiss me.',{dismissible:true});
+      const btn = el.querySelector('.toast__close'); btn.focus(); btn.click();
+      await new Promise(r => setTimeout(r, 350));
+      return JSON.stringify({ restored: document.activeElement.id === 'toastDismissible' });
+    })()`)).restored;
+    const stray = JSON.parse(await ev(`(async () => {
+      const orig = window.setTimeout; let count = 0;
+      window.setTimeout = function(fn, ms){ if(ms === 3600) count++; return orig.apply(window, arguments); };
+      document.getElementById('toastDismissible').focus();
+      const el = showToast('info','Stray','x',{dismissible:true});
+      const btn = el.querySelector('.toast__close'); btn.focus();
+      const before = count; btn.click(); const after = count;
+      window.setTimeout = orig;
+      await new Promise(r => orig(r, 300));
+      return JSON.stringify({ before, after });
+    })()`));
+    return { ok: role === 'alert' && survivedHover && goneAfterLeave && actionSurvived && focusRestored
+        && stray.after === stray.before,
+      detail: `error role=${role}, hover survived=${survivedHover}, left gone=${goneAfterLeave}, action toast kept=${actionSurvived}, focus restored=${focusRestored}, stray timers ${stray.before} -> ${stray.after}` };
+  });
+
+  await check('W11', async () => {
+    const r = await ev(`(() => {
+      const boxes = document.querySelectorAll('#file-input .file-input'), single = boxes[0], multi = boxes[1];
+      const mk = files => { const dt = new DataTransfer(); files.forEach(f => dt.items.add(new File([new Uint8Array(f[1])],f[0],{type:f[2]}))); return dt; };
+      const change = (inp, files) => { inp.files = mk(files).files; inp.dispatchEvent(new Event('change')); };
+      const drop = (box, files) => box.querySelector('.file-drop').dispatchEvent(new DragEvent('drop',{bubbles:true,cancelable:true,dataTransfer:mk(files)}));
+      const names = box => [...box.querySelectorAll('.file-item__name')].map(n=>n.textContent);
+      document.querySelectorAll('#file-input .file-item button').forEach(b => b.click());
+      change(single.querySelector('input'), [['report.pdf',100,'application/pdf']]);
+      drop(single, []);
+      const out = { singleAfterEmptyDrop: names(single).join('|'), removeLabel: single.querySelector('.file-item button').getAttribute('aria-label') };
+      change(multi.querySelector('input'), [['notes.txt',10,'text/plain']]);
+      out.browseRejected = names(multi).length === 0;
+      drop(multi, [['a.png',512,'image/png'],['a.png',512,'image/png'],['b.jpg',256,'image/jpeg']]);
+      out.deduped = names(multi).join('|'); return JSON.stringify(out);
+    })()`);
+    const o = JSON.parse(r);
+    return { ok: o.singleAfterEmptyDrop === 'report.pdf' && o.removeLabel === 'Remove report.pdf'
+        && o.browseRejected && o.deduped === 'a.png|b.jpg',
+      detail: `single after empty drop=${o.singleAfterEmptyDrop}, remove label="${o.removeLabel}", browse text rejected=${o.browseRejected}, multiple de-duped=${o.deduped}` };
+  });
+
+  await check('W14', async () => {
+    const o = JSON.parse(await ev(`(() => {
+      const t = [...document.querySelectorAll('#tooltip-demo .tip')].find(x => x.classList.contains('tip--right'));
+      const btn = t.querySelector('button'); btn.focus();
+      const out = { z: getComputedStyle(t).zIndex, pointer: getComputedStyle(t, '::after').pointerEvents };
+      btn.blur(); return JSON.stringify(out);
+    })()`));
+    return { ok: o.z === '30' && o.pointer === 'auto',
+      detail: `Right tip on focus: z-index=${o.z}, bubble pointer-events=${o.pointer} (want 30/auto)` };
+  });
+
+  await check('W15', async () => {
+    const o = JSON.parse(await ev(`(() => {
+      const t = [...document.querySelectorAll('#tooltip-demo .tip')].find(x => x.classList.contains('tip--right'));
+      const btn = t.querySelector('button'), id = btn.getAttribute('aria-describedby'), desc = id && document.getElementById(id);
+      btn.focus();
+      const shown = t.matches(':focus-within') && !t.classList.contains('is-dismissed');
+      btn.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+      const escaped = t.classList.contains('is-dismissed');
+      btn.blur(); btn.focus();
+      const reshown = !t.classList.contains('is-dismissed');
+      btn.blur();
+      return JSON.stringify({ wrapperTab: t.getAttribute('tabindex'), descText: desc && desc.textContent, shown, escaped, reshown });
+    })()`));
+    return { ok: o.wrapperTab === null && o.descText === 'Right tooltip' && o.shown && o.escaped && o.reshown,
+      detail: `wrapper tabindex=${o.wrapperTab}, describedby text="${o.descText}", shown=${o.shown}, Escape dismissed=${o.escaped}, refocus restored=${o.reshown}` };
+  });
+
+  await check('W16', async () => {
+    const o = JSON.parse(await ev(`(() => {
+      const list = document.querySelector('[role=tablist]');
+      const panels = [...list.querySelectorAll('.tab')].map(t => document.getElementById(t.getAttribute('aria-controls')));
+      const demo = document.getElementById('tabs').querySelector('.demo');
+      const list2 = document.createElement('div'); list2.setAttribute('role','tablist'); demo.appendChild(list2);
+      const b = document.createElement('button'); b.setAttribute('role','tab'); b.setAttribute('aria-controls','w16-panel'); list2.appendChild(b);
+      const p2 = document.createElement('div'); p2.className = 'tabpanel'; p2.id = 'w16-panel'; demo.appendChild(p2);
+      list.querySelectorAll('.tab')[1].click();
+      const out = { ownHidden: panels.map(p => p.hidden), otherHidden: p2.hidden, panelTabIndex: panels[0].tabIndex };
+      b.remove(); list2.remove(); p2.remove(); list.querySelectorAll('.tab')[0].click();
+      return JSON.stringify(out);
+    })()`));
+    return { ok: o.ownHidden.join(',') === 'true,false,true' && o.otherHidden === false && o.panelTabIndex === 0,
+      detail: `own panels hidden=${o.ownHidden.join(',')}, unrelated panel hidden=${o.otherHidden}, panel tabindex=${o.panelTabIndex}` };
+  });
+
+  await check('W17', async () => {
+    await scroll('stepper');
+    for(let i = 0; i < 3; i++){ await click(...await center(`document.getElementById('stepNext')`)); await sleep(90); }
+    const step = JSON.parse(await ev(`JSON.stringify({ active:document.activeElement.id, nextDisabled:document.getElementById('stepNext').disabled, prevDisabled:document.getElementById('stepPrev').disabled })`));
+    const load = JSON.parse(await ev(`(() => { const b = document.getElementById('loadingBtn'); b.focus(); b.click();
+      return JSON.stringify({ active:document.activeElement.id, ariaDisabled:b.getAttribute('aria-disabled'), disabled:b.disabled }); })()`));
+    await sleep(1700);
+    return { ok: step.active === 'stepPrev' && step.nextDisabled && !step.prevDisabled
+        && load.active === 'loadingBtn' && load.ariaDisabled === 'true' && !load.disabled,
+      detail: `stepper at end: focus=${step.active}, next disabled=${step.nextDisabled}; loading: focus=${load.active}, aria-disabled=${load.ariaDisabled}, disabled=${load.disabled}` };
+  });
+
+  await check('W18', async () => {
+    const o = JSON.parse(await ev(`(() => {
+      const first = document.querySelector('#stepperDemo .step'), status = document.getElementById('stepStatus'), menu = document.getElementById('menuResult');
+      for(let i = 0; i < 3; i++) document.getElementById('stepPrev').click();
+      const out = { statusRole: status.getAttribute('role'), menuRole: menu.getAttribute('role'), current: first.getAttribute('aria-current') };
+      document.getElementById('stepNext').click();
+      const done = document.querySelector('#stepperDemo .step');
+      out.doneText = [...done.querySelectorAll('.sr-only')].map(s => s.textContent).join('|');
+      document.getElementById('stepPrev').click();
+      return JSON.stringify(out);
+    })()`));
+    return { ok: o.statusRole === 'status' && o.menuRole === 'status' && o.current === 'step' && o.doneText.includes('Completed'),
+      detail: `stepStatus role=${o.statusRole}, menuResult role=${o.menuRole}, current step aria-current=${o.current}, done text="${o.doneText}"` };
+  });
+
+  await check('W14b', async () => {
+    await scroll('tooltip-demo');
+    const T = `[...document.querySelectorAll('#tooltip-demo .tip')]`;
+    await ev(`document.activeElement.blur()`);
+    await click(...await center(`${T}[0].querySelector('button')`)); await sleep(80);
+    await press('Escape', 'Escape', 27); await sleep(80);
+    const dismissed = await ev(`${T}[0].classList.contains('is-dismissed')`);
+    await press('Tab', 'Tab', 9); await sleep(80);
+    const focus = await ev(`document.activeElement.textContent.trim()`);
+    const [x, y] = await center(`${T}[0].querySelector('button')`);
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y }); await sleep(80);
+    const shown = await ev(`(() => { const t=${T}[0]; return !t.classList.contains('is-dismissed') && t.matches(':hover'); })()`);
+    return { ok: dismissed && focus === 'Bottom' && shown,
+      detail: `Escape dismissed=${dismissed}, Tab focus=${focus}, hover after Tab shows tip=${shown}` };
+  });
+
+  await check('W14c', async () => {
+    await scroll('tooltip-demo');
+    const T = `[...document.querySelectorAll('#tooltip-demo .tip')]`;
+    await ev(`document.activeElement.blur()`);
+    await click(...await center(`${T}[3].querySelector('button')`)); await sleep(80);
+    await press('Escape', 'Escape', 27); await sleep(80);
+    const o = JSON.parse(await ev(`(() => { const t=${T}[3], s=document.querySelector('#tooltip-demo .btn--primary'), b=s.getBoundingClientRect();
+      const el=document.elementFromPoint(b.left+15,b.top+b.height/2);
+      return JSON.stringify({ dismissed:t.classList.contains('is-dismissed'), hitSave:el===s, hit:el.className }); })()`));
+    return { ok: o.dismissed && o.hitSave,
+      detail: `dismissed=${o.dismissed}, elementFromPoint at Save+15px=${o.hit} (want the Save button)` };
+  });
+
+  await check('W14d', async () => {
+    await scroll('tooltip-demo');
+    const T = `[...document.querySelectorAll('#tooltip-demo .tip')]`;
+    await ev(`document.activeElement.blur()`);
+    const g = JSON.parse(await ev(`(() => { const t=${T}[3], r=t.getBoundingClientRect(), cs=getComputedStyle(t,'::after');
+      return JSON.stringify({ right:r.right, midY:r.top+r.height/2, bx:r.right+9, bw:parseFloat(cs.width) }); })()`));
+    const [sx, sy] = await center(`${T}[3].querySelector('button')`);
+    await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: sx, y: sy }); await sleep(80);
+    for(let x = Math.round(g.right) - 1; x <= Math.round(g.bx + 10); x++)
+      await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y: g.midY });
+    await sleep(120);
+    const o = JSON.parse(await ev(`(() => { const t=${T}[3], x=${Math.round(g.bx + 10)}, y=${g.midY}, el=document.elementFromPoint(x,y);
+      return JSON.stringify({ hover:t.matches(':hover'), hitTip:el===t, hit:el.className }); })()`));
+    return { ok: o.hover && o.hitTip,
+      detail: `1px mouse path across the 9px gap: tip hovered=${o.hover}, bubble hit target=${o.hitTip} (${o.hit})` };
+  });
+
+  await check('W15b', async () => {
+    const o = JSON.parse(await ev(`JSON.stringify([...document.querySelectorAll('#tooltip-demo .tip')].map(t => {
+      const b=t.querySelector('button'), d=document.getElementById(b.getAttribute('aria-describedby'));
+      return { hidden:d.hasAttribute('hidden'), text:d.textContent, want:t.dataset.tip }; }))`));
+    return { ok: o.length === 5 && o.every(x => x.hidden && x.text === x.want),
+      detail: `descriptions hidden=${o.map(x => x.hidden).join(',')}; aria-describedby still resolves text=${o.every(x => x.text === x.want)}` };
+  });
+
+  await check('W18b', async () => {
+    const cur = await ev(`document.querySelector('.step--vertical .step.is-current').getAttribute('aria-current')`);
+    return { ok: cur === 'step', detail: `vertical current step aria-current=${cur}` };
+  });
+
+  await check('NAVMEASURE', async () => {
+    const src = readFileSync(new URL('./ref/web-nav-measure.js', import.meta.url), 'utf8');
+    const txt = readFileSync(new URL('./ref/web-nav-measurements.txt', import.meta.url), 'utf8');
+    const ok = src.includes("getAttribute('aria-disabled')") && /disabled=false aria-disabled=true/.test(txt);
+    return { ok, detail: `measure script logs aria-disabled=${src.includes("getAttribute('aria-disabled')")}, measurements line updated=${/disabled=false aria-disabled=true/.test(txt)}` };
+  });
+
+  await check('NAVCAP', async () => {
+    const src = readFileSync(new URL('./ref/web-nav-capture.ps1', import.meta.url), 'utf8');
+    const ok = /function TipOn[\s\S]{0,300}z-index:30/.test(src);
+    return { ok, detail: `TipOn forces z-index:30=${ok}` };
+  });
+
   console.log(`--- console errors on load (${consoleErrors.length}) ---`);
   consoleErrors.forEach(e => console.log('  ' + e));
-  console.log(`RESULT: ${22 - failures}/22 checks passed, ${failures} failed`);
+  console.log(`RESULT: ${43 - failures}/43 checks passed, ${failures} failed`);
   if(consoleErrors.length) failures++;
   process.exitCode = failures ? 1 : 0;
 }
