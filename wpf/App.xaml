@@ -10,6 +10,12 @@
                 <ResourceDictionary Source="Themes/ExtraControls.xaml"/>
                 <ResourceDictionary Source="Themes/Sheet.xaml"/>
                 <ResourceDictionary Source="Themes/Forms.xaml"/>
+                <ResourceDictionary Source="Themes/Dropdown.xaml"/>
+                <ResourceDictionary Source="Themes/Display.xaml"/>
+                <ResourceDictionary Source="Themes/Toasts.xaml"/>
+                <ResourceDictionary Source="Themes/Overlays.xaml"/>
+                <ResourceDictionary Source="Themes/Pickers.xaml"/>
+                <ResourceDictionary Source="Themes/Navigation.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -2,8 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- ==================== Field input (.input) ==================== -->
-    <!-- Shared by FieldInput, FieldInputError and FieldInputSearch. The border brush is
-         template-bound so each style controls idle/hover/focus colours on its own. -->
+    <!-- WPF applies TextBox.Padding inside PART_ContentHost as well as to its Margin, so
+         styles set Padding=0 and the template fixes the text/placeholder left offset.
+         Border brush is template-bound so each style controls hover/focus on its own. -->
     <ControlTemplate x:Key="FieldInputTemplate" TargetType="TextBox">
         <Grid>
             <!-- 3px BrandSoft ring outside the 1px border; margin -3 keeps it out of layout. -->
@@ -12,16 +13,43 @@
             <Border x:Name="Bd" Background="{StaticResource Surface}"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
                 <Grid>
-                    <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
-                                  VerticalAlignment="Center"/>
+                    <!-- Content host sits 3px left of the placeholder to cancel WPF's
+                         internal text inset: typed text and placeholder share x=14. -->
+                    <ScrollViewer x:Name="PART_ContentHost" Margin="10,0,11,0" VerticalAlignment="Center"/>
                     <!-- Tag holds the placeholder. It stays visible on focus, like the web. -->
-                    <Border Margin="{TemplateBinding Padding}" VerticalAlignment="Center"
-                            IsHitTestVisible="False">
+                    <Border Margin="13,0,11,0" VerticalAlignment="Center" IsHitTestVisible="False">
                         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
                                    FontFamily="{StaticResource Sans}" FontSize="15"
                                    LineHeight="21" LineStackingStrategy="BlockLineHeight"
-                                   Foreground="{StaticResource Ink3}" Margin="2,0,0,0"
-                                   Visibility="Collapsed"/>
+                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- Search: text/placeholder start 39px from the outer edge (1px border + 38). -->
+    <ControlTemplate x:Key="FieldInputSearchTemplate" TargetType="TextBox">
+        <Grid>
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                    CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+            <Border x:Name="Bd" Background="{StaticResource Surface}"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
+                <Grid>
+                    <ScrollViewer x:Name="PART_ContentHost" Margin="35,0,11,0" VerticalAlignment="Center"/>
+                    <Border Margin="38,0,11,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
+                                   FontFamily="{StaticResource Sans}" FontSize="15"
+                                   LineHeight="21" LineStackingStrategy="BlockLineHeight"
+                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
                     </Border>
                 </Grid>
             </Border>
@@ -43,7 +71,7 @@
         <Setter Property="Background" Value="{StaticResource Surface}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="11,0,11,0"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template" Value="{StaticResource FieldInputTemplate}"/>
@@ -57,10 +85,9 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Search: text/placeholder start 39px from the outer edge. The icon is overlaid in
-         MainWindow so it never shifts the text; only the padding changes here. -->
+    <!-- Search keeps the normal focus/error language; only the text inset changes. -->
     <Style x:Key="FieldInputSearch" TargetType="TextBox" BasedOn="{StaticResource FieldInput}">
-        <Setter Property="Padding" Value="36,0,11,0"/>
+        <Setter Property="Template" Value="{StaticResource FieldInputSearchTemplate}"/>
     </Style>
 
     <!-- .field.has-error .input: Danger in every state; focus still shows the BrandSoft ring.
@@ -72,10 +99,273 @@
         <Setter Property="Background" Value="{StaticResource Surface}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Danger}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="11,0,11,0"/>
+        <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template" Value="{StaticResource FieldInputTemplate}"/>
+    </Style>
+
+    <!-- ==================== Field select (.select) ==================== -->
+    <Style x:Key="FieldSelectItem" TargetType="ComboBoxItem">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Padding" Value="13,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="6"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FieldSelect" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource FieldSelectItem}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                                CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Background="{StaticResource Surface}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
+                            <Grid>
+                                <ContentPresenter x:Name="ContentSite" Margin="13,0,38,0" VerticalAlignment="Center"
+                                                  IsHitTestVisible="False"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+                                <!-- 16px chevron in a 24-unit box, 12px from the inner right edge. -->
+                                <Viewbox Width="16" Height="16" Stretch="Uniform" IsHitTestVisible="False"
+                                         HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M6,9 L12,15 L18,9" Stroke="{StaticResource Ink3}"
+                                              StrokeThickness="2" StrokeLineJoin="Round"
+                                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                                <ToggleButton x:Name="Drop" Opacity="0" Focusable="False" ClickMode="Press"
+                                              IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
+                                <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       AllowsTransparency="True" Focusable="False">
+                                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
+                                            BorderThickness="1" CornerRadius="8" Padding="4" Effect="{StaticResource Shadow2}"
+                                            MinWidth="{TemplateBinding ActualWidth}">
+                                        <ScrollViewer MaxHeight="240"><ItemsPresenter/></ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ==================== Field textarea (.textarea) ==================== -->
+    <ControlTemplate x:Key="FieldTextAreaTemplate" TargetType="TextBox">
+        <Grid>
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                    CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+            <Border x:Name="Bd" Background="{StaticResource Surface}"
+                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
+                <Grid>
+                    <!-- Top-aligned; -3px left cancels the host's internal text inset. -->
+                    <ScrollViewer x:Name="PART_ContentHost" Margin="10,11,11,0" VerticalAlignment="Top"
+                                  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"/>
+                    <Border Margin="13,11,11,0" VerticalAlignment="Top" IsHitTestVisible="False">
+                        <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
+                                   FontFamily="{StaticResource Sans}" FontSize="15"
+                                   LineHeight="21" LineStackingStrategy="BlockLineHeight"
+                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="FieldTextArea" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Height" Value="104"/>
+        <Setter Property="MinHeight" Value="104"/>
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template" Value="{StaticResource FieldTextAreaTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Brand}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Chromium-like vertical resize grip: two diagonal Ink3 lines. Handler is attached
+         in MainWindow.xaml (a ResourceDictionary can't resolve window code-behind). -->
+    <Style x:Key="TextAreaGrip" TargetType="Thumb">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Cursor" Value="SizeNS"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Canvas Width="14" Height="14">
+                        <Path Data="M6,14 L14,6 M10,14 L14,10" Stroke="{StaticResource Ink3}"
+                              StrokeThickness="1.1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ==================== Card 2: selection controls ==================== -->
+    <Style x:Key="DemoLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="LineHeight" Value="20.8"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+    </Style>
+
+    <!-- Radio variant of .check: same row language as ClaudeCheckBox, with a dot. -->
+    <Style x:Key="ClaudeRadio" TargetType="RadioButton">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Grid Height="22.4" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="19"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                                CornerRadius="13.5" Height="27" Margin="-4,-3,-4,-27"
+                                VerticalAlignment="Top" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Width="19" Height="19" CornerRadius="9.5"
+                                BorderBrush="{StaticResource LineStrong}" BorderThickness="1.5"
+                                Background="{StaticResource Surface}" Margin="0,1,0,0" VerticalAlignment="Top">
+                            <Ellipse x:Name="Dot" Width="9" Height="9" Fill="{StaticResource Brand}"
+                                     Visibility="Collapsed"/>
+                        </Border>
+                        <ContentPresenter Grid.Column="2" VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Dot" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- .switch: 42x24 track, 18px knob at (3,3) off / (21,3) on. -->
+    <Style x:Key="ClaudeSwitch" TargetType="CheckBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid Height="24" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="42"/>
+                            <ColumnDefinition Width="11"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                                CornerRadius="16" Margin="-4"
+                                Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Track" Width="42" Height="24" CornerRadius="12"
+                                Background="{StaticResource LineStrong}" VerticalAlignment="Center">
+                            <Ellipse x:Name="Knob" Width="18" Height="18" Fill="White"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,0,0">
+                                <Ellipse.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="1"
+                                                      Direction="270" Opacity="0.2"/>
+                                </Ellipse.Effect>
+                            </Ellipse>
+                        </Border>
+                        <ContentPresenter Grid.Column="2" VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Track" Property="Background" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Knob" Property="Margin" Value="21,0,0,0"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <!-- ==================== Icons ==================== -->

@@ -3,6 +3,9 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- ==================== Button ==================== -->
+    <!-- One template for all five full-size variants. The web has a 1px transparent border
+         inside every .btn: the four filled variants use 0 border + 18px padding to keep the
+         fill spanning the box and text+36 width; Secondary keeps 1 border + 17 padding. -->
     <Style x:Key="ClaudeButtonBase" TargetType="Button">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
@@ -10,30 +13,42 @@
         <Setter Property="Padding" Value="17,11"/>
         <Setter Property="MinHeight" Value="42"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="8" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                    </Border>
+                    <Grid x:Name="Root">
+                        <Border x:Name="Shadow" Background="{TemplateBinding Background}"
+                                CornerRadius="8" Effect="{StaticResource Shadow1}"
+                                Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                                CornerRadius="12" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Opacity" Value="0.86"/>
+                        <!-- Tag="Shadow" is the one marker for the primary variant's shadow. -->
+                        <Trigger Property="Tag" Value="Shadow">
+                            <Setter TargetName="Shadow" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Bd" Property="Opacity" Value="0.72"/>
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value><TranslateTransform Y="1"/></Setter.Value>
+                            </Setter>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -45,27 +60,59 @@
         <Setter Property="Background" Value="{StaticResource Brand}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Setter Property="Tag" Value="Shadow"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BrandHover}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource ClaudeButtonBase}">
         <Setter Property="Background" Value="{StaticResource Surface}"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource Surface2}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource ClaudeButtonBase}">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BgDeep}"/>
+                <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ClaudeButtonBase}">
         <Setter Property="Background" Value="{StaticResource Danger}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#982F27"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style x:Key="DarkButton" TargetType="Button" BasedOn="{StaticResource ClaudeButtonBase}">
         <Setter Property="Background" Value="{StaticResource Ink}"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#000000"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- ==================== Input ==================== -->
@@ -88,39 +135,6 @@
                                       VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!-- TextBox that shows its Tag as a placeholder while empty -->
-    <Style x:Key="PlaceholderInput" TargetType="TextBox" BasedOn="{StaticResource ClaudeInput}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="8">
-                        <Grid>
-                            <TextBlock x:Name="Ph" Text="{TemplateBinding Tag}" Foreground="{StaticResource Ink3}"
-                                       FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
-                                       Margin="{TemplateBinding Padding}" VerticalAlignment="Center"
-                                       IsHitTestVisible="False" Visibility="Collapsed"/>
-                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
-                                          VerticalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="Text" Value="">
-                            <Setter TargetName="Ph" Property="Visibility" Value="Visible"/>
-                        </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
                         </Trigger>
@@ -176,9 +190,6 @@
     <Style x:Key="BadgeNeutral" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
         <Setter Property="Background" Value="{StaticResource BgDeep}"/>
     </Style>
-    <Style x:Key="BadgeWarning" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
-        <Setter Property="Background" Value="{StaticResource WarningSoft}"/>
-    </Style>
 
     <Style x:Key="BadgeText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
@@ -191,6 +202,9 @@
     <Style x:Key="SectionTitle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
         <Setter Property="FontSize" Value="27"/>
+        <!-- Web h2 is 27px/1.2 = 32.4 box; integer 32 keeps card tops and borders on whole pixels. -->
+        <Setter Property="LineHeight" Value="32"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
     </Style>
     <Style x:Key="SectionDesc" TargetType="TextBlock">
@@ -201,29 +215,58 @@
         <Setter Property="Margin" Value="0,8,0,0"/>
     </Style>
 
-    <!-- ==================== CheckBox ==================== -->
+    <!-- ==================== CheckBox (.check) ==================== -->
+    <!-- Row 22.4 tall; 19px box pinned to the top with a 1px margin, 10px to the label.
+         Disabled dims only the box, never the label. -->
     <Style x:Key="ClaudeCheckBox" TargetType="CheckBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Grid x:Name="Root" Height="22.4" Background="Transparent">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="19"/>
+                            <ColumnDefinition x:Name="Gap" Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                                CornerRadius="9" Height="27" Margin="-4,-3,-4,-27"
+                                VerticalAlignment="Top" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Width="19" Height="19" CornerRadius="5"
                                 BorderBrush="{StaticResource LineStrong}" BorderThickness="1.5"
-                                Background="{StaticResource Surface}" Margin="0,0,10,0">
-                            <Path x:Name="Check" Data="M 3 8 L 7 12 L 14 4" Stroke="White"
-                                  StrokeThickness="2" StrokeLineJoin="Round" Visibility="Collapsed"/>
+                                Background="{StaticResource Surface}" Margin="0,1,0,0" VerticalAlignment="Top">
+                            <Viewbox Width="13" Height="13" Stretch="Uniform">
+                                <Canvas Width="24" Height="24">
+                                    <Path x:Name="Check" Data="M5,12 L10,17 L19,7" Stroke="White"
+                                          StrokeThickness="2.4" StrokeLineJoin="Round"
+                                          StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                          Visibility="Collapsed"/>
+                                </Canvas>
+                            </Viewbox>
                         </Border>
-                        <ContentPresenter VerticalAlignment="Center"/>
-                    </StackPanel>
+                        <ContentPresenter Grid.Column="2" VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"/>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Bd" Property="Background" Value="{StaticResource Brand}"/>
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
                             <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <!-- Table checkboxes have no text: drop the gap and the fixed row height. -->
+                        <Trigger Property="HasContent" Value="False">
+                            <Setter TargetName="Gap" Property="Width" Value="0"/>
+                            <Setter TargetName="Root" Property="Height" Value="NaN"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -238,6 +281,7 @@
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
         <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="MinHeight" Value="46.2"/>
         <Setter Property="Padding" Value="16,13"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -257,13 +301,10 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="TableHeaderRight" TargetType="DataGridColumnHeader" BasedOn="{StaticResource TableHeader}">
-        <Setter Property="HorizontalContentAlignment" Value="Right"/>
-    </Style>
-
     <Style x:Key="TableCell" TargetType="DataGridCell">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
         <Setter Property="Padding" Value="16,13"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -272,9 +313,68 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
-                    <Border Background="Transparent"
+                    <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TableCellText" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+    <Style x:Key="TableCellWrap" TargetType="TextBlock" BasedOn="{StaticResource TableCellText}">
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <!-- 22.4 matches the web's wrapped pitch; -2 lifts the BlockLineHeight ink to Chromium's rows. -->
+        <Setter Property="Margin" Value="0,-2,0,0"/>
+        <Setter Property="LineHeight" Value="22.4"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+    </Style>
+
+    <Style x:Key="TableRow" TargetType="DataGridRow">
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="MinHeight" Value="52"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridRow">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <DataGridCellsPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Surface2}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="TableRowTall" TargetType="DataGridRow" BasedOn="{StaticResource TableRow}">
+        <Setter Property="MinHeight" Value="67.4"/>
+    </Style>
+
+    <!-- Sortable table rows: two-line cells give 71.8 (web wide table). -->
+    <Style x:Key="TableRowSort" TargetType="DataGridRow" BasedOn="{StaticResource TableRow}">
+        <Setter Property="MinHeight" Value="71.8"/>
+    </Style>
+
+    <!-- Web first column is <th scope="row">: Surface2, 12px 600 Ink2 + 12px 400 Ink3 -->
+    <Style x:Key="TableRowHeaderCell" TargetType="DataGridCell" BasedOn="{StaticResource TableCell}">
+        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <!-- Web th:first-child has border-top-left-radius: the notch repeats under every row line. -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="12,0,0,0" SnapsToDevicePixels="True"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
@@ -283,21 +383,64 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="TableRow" TargetType="DataGridRow">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+    <DataTemplate x:Key="TableRowHeaderTemplate">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="{Binding Project}" FontFamily="{StaticResource Sans}" FontSize="12"
+                       FontWeight="SemiBold" Foreground="{StaticResource Ink2}" TextWrapping="NoWrap"
+                       LineHeight="19.2" LineStackingStrategy="BlockLineHeight"/>
+            <TextBlock Text="{Binding Team}" FontFamily="{StaticResource Sans}" FontSize="12"
+                       FontWeight="Normal" Foreground="{StaticResource Ink3}" Margin="0,2,0,0" TextWrapping="NoWrap"
+                       LineHeight="19.2" LineStackingStrategy="BlockLineHeight"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- Active page button: 32x32 Ink pill with white 13px 600 text (web .page-btn.active). -->
+    <Style x:Key="TablePageButtonActive" TargetType="Button">
+        <Setter Property="MinWidth" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="12,7"/>
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="DataGridRow">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}">
-                        <DataGridCellsPresenter/>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{StaticResource Ink}" CornerRadius="7">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- Small danger button (web danger small button): 600 13px, padding 12,7, min 32, radius 7.
+         Hover changes background, never opacity. -->
+    <Style x:Key="DangerButtonSm" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{StaticResource Danger}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12,7"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                            BorderThickness="0" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Surface2}"/>
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#FF982F27"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -307,7 +450,8 @@
 
     <!-- Reusable status badge for table cells: bind to a row with a Status string -->
     <DataTemplate x:Key="StatusBadgeTemplate">
-        <Border x:Name="Badge" Style="{StaticResource BadgeSuccess}">
+        <Border x:Name="Badge" Style="{StaticResource BadgeSuccess}"
+                Height="24" CornerRadius="12" Padding="10,0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Ellipse Width="6" Height="6" Margin="0,0,6,0"
                          Fill="{Binding ElementName=BadgeLabel, Path=Foreground}"/>
@@ -363,22 +507,43 @@
         </Setter>
     </Style>
 
-    <Style x:Key="TableCellSticky" TargetType="DataGridCell" BasedOn="{StaticResource TableCell}">
+    <!-- Pinned: white body cell with a 1px right Line, Surface2 on row hover. -->
+    <Style x:Key="TableCellStickyPinned" TargetType="DataGridCell" BasedOn="{StaticResource TableRowHeaderCell}">
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                <Setter Property="Background" Value="{StaticResource Surface2}"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="PinButton" TargetType="ToggleButton">
-        <Setter Property="Width" Value="14"/>
-        <Setter Property="Height" Value="14"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Path x:Name="Icon" Data="M 6 1 A 3 3 0 1 1 6 7 A 3 3 0 1 1 6 1 M 6 7 L 6 12"
-                          Stroke="{StaticResource Ink3}" StrokeThickness="1.5" Stretch="Uniform"/>
+                    <Border x:Name="Bd" Background="Transparent" CornerRadius="5" Padding="2">
+                        <Viewbox Width="14" Height="14">
+                            <Canvas Width="24" Height="24">
+                                <Path x:Name="Icon"
+                                      Data="M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z"
+                                      Stroke="{TemplateBinding Foreground}" StrokeThickness="1.8"
+                                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            </Canvas>
+                        </Viewbox>
+                    </Border>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Icon" Property="Stroke" Value="{StaticResource Brand}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Brand}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -398,10 +563,20 @@
                 <ControlTemplate TargetType="Button">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <ContentPresenter VerticalAlignment="Center"/>
-                        <Path Data="M 1 2 L 5 6 L 9 2" Stroke="{StaticResource Ink3}" StrokeThickness="1.5"
-                              Width="9" Height="6" Stretch="Uniform" Margin="5,0,0,0"
-                              VerticalAlignment="Center"/>
+                        <Viewbox x:Name="Chevron" Width="13" Height="13" Margin="5,0,0,0" Opacity="0.4"
+                                 VerticalAlignment="Center">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M6,9 L12,15 L18,9" Stroke="{TemplateBinding Foreground}"
+                                      StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"/>
+                            </Canvas>
+                        </Viewbox>
                     </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -411,23 +586,28 @@
     <Style x:Key="WebSelect" TargetType="ComboBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Height" Value="32"/>
+        <Setter Property="Height" Value="34.2"/>
+        <Setter Property="MinHeight" Value="34.2"/>
         <Setter Property="Background" Value="{StaticResource Surface}"/>
         <Setter Property="Foreground" Value="{StaticResource Ink}"/>
         <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                                CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="8"/>
-                        <ContentPresenter Margin="9,0,26,0" VerticalAlignment="Center"
+                        <ContentPresenter Margin="10,0,29,0" VerticalAlignment="Center"
                                           Content="{TemplateBinding SelectionBoxItem}"
                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
-                        <Path Data="M 1 3 L 5 7 L 9 3" Stroke="{StaticResource Ink3}" StrokeThickness="1.8"
-                              Width="9" Height="7" Stretch="Uniform" HorizontalAlignment="Right" Margin="0,0,9,0"
+                        <Path Data="M0.67,0.67 L4.67,4.67 L8.67,0.67" Stroke="{StaticResource Ink3}"
+                              StrokeThickness="1.33" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              StrokeLineJoin="Round" Stretch="None" HorizontalAlignment="Right" Margin="0,0,12,0"
                               VerticalAlignment="Center"/>
                         <ToggleButton x:Name="Drop" Opacity="0" ClickMode="Press" Focusable="False"
                                       IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
@@ -444,7 +624,121 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
                         </Trigger>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Table-owned small input: 34.2 tall, 13px text and placeholder, 10px text inset -->
+    <Style x:Key="TableFilterInput" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Height" Value="34.2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                                CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="6,0,10,0" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="Ph" Text="{TemplateBinding Tag}" Foreground="{StaticResource Ink3}"
+                                           FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                           Margin="9,0,10,0" VerticalAlignment="Center"
+                                           IsHitTestVisible="False" Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Ph" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Web scrollbar: 11px track, transparent, 5px LineStrong thumb (3px Bg halo each side). -->
+    <Style x:Key="TableThinThumb" TargetType="Thumb">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border Background="{StaticResource LineStrong}" CornerRadius="99" Height="5" Margin="3,0"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TableThinScrollBar" TargetType="ScrollBar">
+        <Setter Property="Height" Value="11"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollBar">
+                    <Grid Background="Transparent">
+                        <Track x:Name="PART_Track" Orientation="Horizontal" IsDirectionReversed="False">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageLeftCommand">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.DecreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Style="{StaticResource TableThinThumb}"/>
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="ScrollBar.PageRightCommand">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton"><Border Background="Transparent"/></ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.IncreaseRepeatButton>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="TableThinScrollViewer" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="0"
+                                                CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                Content="{TemplateBinding Content}"
+                                                ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Row="1" Orientation="Horizontal"
+                                   Style="{StaticResource TableThinScrollBar}" Visibility="Visible"
+                                   Minimum="0" Maximum="{TemplateBinding ScrollableWidth}"
+                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                   Value="{TemplateBinding HorizontalOffset}"/>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -460,7 +754,7 @@
                                Foreground="{StaticResource Brand}" Padding="4,0"/>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Txt" Property="Foreground" Value="{StaticResource BrandHover}"/>
+                            <Setter TargetName="Txt" Property="TextDecorations" Value="Underline"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

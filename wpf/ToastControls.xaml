@@ -1,0 +1,49 @@
+<UserControl x:Class="UIComponents.Wpf.ToastControls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel x:Name="SectionList" MaxWidth="984">
+        <TextBlock Text="Toast variants" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Toasts with a manual close button, an inline action, or persistence until dismissed."/>
+
+        <GroupBox AutomationProperties.AutomationId="ToastVariantsCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Dismissible" Style="{StaticResource SecondaryButton}" Width="107.1"
+                            Click="ToastDismissible_Click" AutomationProperties.AutomationId="ToastDismissible"/>
+                    <Button Content="With action" Style="{StaticResource SecondaryButton}" Width="109.4"
+                            Margin="12,0,0,0" Click="ToastWithAction_Click" AutomationProperties.AutomationId="ToastWithAction"/>
+                    <Button Content="Persistent" Style="{StaticResource SecondaryButton}" Width="97.8"
+                            Margin="12,0,0,0" Click="ToastPersistent_Click" AutomationProperties.AutomationId="ToastPersistent"/>
+                </StackPanel>
+            </Border>
+        </GroupBox>
+
+        <TextBlock Text="Toasts" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Brief, non-blocking feedback that appears in the corner and dismisses itself."/>
+
+        <GroupBox AutomationProperties.AutomationId="ToastsCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Success toast" Style="{StaticResource SecondaryButton}" Width="119.9"
+                            Click="ToastSuccess_Click" AutomationProperties.AutomationId="ToastSuccess"/>
+                    <Button Content="Info toast" Style="{StaticResource SecondaryButton}" Width="96.9"
+                            Margin="12,0,0,0" Click="ToastInfo_Click" AutomationProperties.AutomationId="ToastInfo"/>
+                    <Button Content="Error toast" Style="{StaticResource SecondaryButton}" Width="102.5"
+                            Margin="12,0,0,0" Click="ToastError_Click" AutomationProperties.AutomationId="ToastError"/>
+                </StackPanel>
+            </Border>
+        </GroupBox>
+    </StackPanel>
+</UserControl>

@@ -12,24 +12,18 @@
         </Border>
 
         <!-- Typed grid -->
-        <TextBlock Text="Typed grid" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <DataGrid x:Name="TypedGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                      Background="{StaticResource Surface}" RowBackground="{StaticResource Surface}"
-                      GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource Line}"
-                      Foreground="{StaticResource Ink}" AutomationProperties.AutomationId="TypedGrid">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Variant" Width="160"/>
-                    <DataGridComboBoxColumn Header="Category" Width="160"/>
-                    <DataGridCheckBoxColumn Header="IsActive" Width="100"/>
-                </DataGrid.Columns>
-            </DataGrid>
+        <TextBlock Text="Typed grid input" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="The same grid with typed columns: plain text, a dropdown select, and a checkbox. Selection, bulk editing, paste and clearing all work across them."/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
+            <local:SheetGrid x:Name="TypedGrid" AutomationProperties.AutomationId="TypedGrid"/>
         </Border>
 
         <!-- Filter table -->
         <TextBlock Text="Table with filters" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <TextBlock Text="Search by name and narrow by status. The count and empty state update as you type." Style="{StaticResource SectionDesc}"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+        <TextBlock Text="Search by name and narrow by status. The count and empty state update as you type."
+                   Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
                 <Grid Margin="0,0,0,16">
                     <Grid.ColumnDefinitions>
@@ -37,31 +31,27 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Border Width="320" Height="42" BorderBrush="{StaticResource LineStrong}" BorderThickness="1"
-                            CornerRadius="8" Background="{StaticResource Surface}" VerticalAlignment="Center">
-                        <Grid>
-                            <Path Data="M 6 1 A 5 5 0 1 1 6 11 A 5 5 0 1 1 6 1 M 9.5 9.5 L 14 14"
-                                  Stroke="{StaticResource Ink3}" StrokeThickness="2" Width="15" Height="15" Stretch="Uniform"
-                                  HorizontalAlignment="Left" Margin="13,0,0,0" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="FilterPlaceholder" Text="Search projects…" FontSize="15"
-                                       Foreground="{StaticResource Ink3}" Margin="38,0,13,0" VerticalAlignment="Center"/>
-                            <TextBox x:Name="FilterSearch" Style="{StaticResource ClaudeInput}" BorderThickness="0"
-                                     Padding="38,11,13,11" Background="Transparent" VerticalContentAlignment="Center"
-                                     TextChanged="FilterSearch_TextChanged" AutomationProperties.AutomationId="FilterSearch"/>
-                        </Grid>
-                    </Border>
+                    <Grid Width="320" Height="45" VerticalAlignment="Center">
+                        <TextBox x:Name="FilterSearch" Style="{StaticResource FieldInputSearch}" Tag="Search projects…"
+                                 TextChanged="FilterSearch_TextChanged" AutomationProperties.AutomationId="FilterSearch"/>
+                        <ContentControl Style="{StaticResource SearchIcon}" Margin="13,0,0,0"
+                                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    </Grid>
                     <Border Grid.Column="1" Background="{StaticResource BgDeep}" CornerRadius="9" Padding="3"
-                            VerticalAlignment="Center" Margin="12,0,0,0">
+                            VerticalAlignment="Center" Margin="12,0,0,0" Height="37">
                         <StackPanel Orientation="Horizontal">
                             <RadioButton x:Name="SegAll" Content="All" Tag="all" GroupName="FilterStatus"
-                                         Style="{StaticResource SegmentButton}"
+                                         Style="{StaticResource SegmentButton}" Width="39.5" Height="31"
                                          Checked="FilterSegment_Checked" AutomationProperties.AutomationId="SegAll"/>
                             <RadioButton Content="Active" Tag="active" GroupName="FilterStatus"
-                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                                         Style="{StaticResource SegmentButton}" Width="60.3" Height="31"
+                                         Margin="2,0,0,0" Checked="FilterSegment_Checked"/>
                             <RadioButton Content="Pending" Tag="pending" GroupName="FilterStatus"
-                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                                         Style="{StaticResource SegmentButton}" Width="72.3" Height="31"
+                                         Margin="2,0,0,0" Checked="FilterSegment_Checked"/>
                             <RadioButton Content="Archived" Tag="archived" GroupName="FilterStatus"
-                                         Style="{StaticResource SegmentButton}" Checked="FilterSegment_Checked"/>
+                                         Style="{StaticResource SegmentButton}" Width="75.7" Height="31"
+                                         Margin="2,0,0,0" Checked="FilterSegment_Checked"/>
                         </StackPanel>
                     </Border>
                     <TextBlock x:Name="FilterCount" Grid.Column="2" Text="6 of 6 projects" FontSize="13"
@@ -69,99 +59,113 @@
                                AutomationProperties.AutomationId="FilterCount"/>
                 </Grid>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                    <Grid local:TableClip.Enabled="True">
+                    <StackPanel>
                     <DataGrid x:Name="FilterGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                              GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
+                              HorizontalScrollBarVisibility="Disabled" GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
                               Background="{StaticResource Surface}" BorderThickness="0" Foreground="{StaticResource Ink}"
                               ColumnHeaderStyle="{StaticResource TableHeader}" RowStyle="{StaticResource TableRow}"
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="FilterGrid">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Project" Width="2*">
+                            <DataGridTemplateColumn Header="Project" Width="361*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
-                                            <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="8,0,0,0"/>
+                                            <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="10,0,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Owner" Width="1.4*" Binding="{Binding Owner}"/>
-                            <DataGridTemplateColumn Header="Status" Width="1.1*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
-                            <DataGridTextColumn Header="Updated" Width="1.1*" Binding="{Binding Updated}"/>
+                            <DataGridTextColumn Header="Owner" Width="190*" Binding="{Binding Owner}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTemplateColumn Header="Status" Width="187*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                            <DataGridTextColumn Header="Updated" Width="182*" Binding="{Binding Updated}" ElementStyle="{StaticResource TableCellText}"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <Border x:Name="FilterEmpty" Visibility="Collapsed" Padding="36,57">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
+                                       LineHeight="24" LineStackingStrategy="BlockLineHeight"
+                                       Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                       Margin="0,0,0,5" AutomationProperties.AutomationId="FilterEmpty"/>
+                            <TextBlock Text="Try a different search or status." FontSize="14"
+                                       Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                       LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
+                        </StackPanel>
+                    </Border>
+                    </StackPanel>
+                    </Grid>
                 </Border>
-                <TextBlock x:Name="FilterEmpty" Visibility="Collapsed" Text="No matching projects" TextAlignment="Center"
-                           FontSize="15" Foreground="{StaticResource Ink2}" Margin="0,24,0,24"
-                           AutomationProperties.AutomationId="FilterEmpty"/>
-                <local:TablePagination InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="FilterPagination"/>
+                <local:TablePagination x:Name="FilterPagination" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="FilterPagination"/>
             </StackPanel>
         </Border>
 
         <!-- Selection table -->
         <TextBlock Text="Table with row selection" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Text="Select rows with the header checkbox or individual boxes. A bulk-action bar appears with the count of selected rows."
-                   Style="{StaticResource SectionDesc}"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+                   Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
-                <Border x:Name="BulkBar" Visibility="Collapsed" Background="{StaticResource BgDeep}"
-                        CornerRadius="10" Padding="12,14" Margin="0,0,0,16"
+                <Border x:Name="BulkBar" Visibility="Collapsed" Background="{StaticResource BrandSoft}"
+                        BorderBrush="#FFECD4C8" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,16"
                         AutomationProperties.AutomationId="BulkBar">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="BulkText" Text="0 selected" FontSize="14" FontWeight="SemiBold"
-                                   Foreground="{StaticResource Ink}" VerticalAlignment="Center"
+                        <TextBlock x:Name="BulkText" Text="1 row selected" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{StaticResource Brand}" VerticalAlignment="Center"
                                    AutomationProperties.AutomationId="BulkText"/>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="Export" Style="{StaticResource SecondaryButton}" MinHeight="32"
-                                    Padding="12,6" FontSize="13" Margin="0,0,8,0"/>
-                            <Button Content="Delete" Style="{StaticResource DangerButton}" MinHeight="32"
-                                    Padding="12,6" FontSize="13"/>
+                            <Button Content="Export" Style="{StaticResource SecondaryButtonSm}" Margin="0,0,8,0"/>
+                            <Button Content="Delete" Style="{StaticResource DangerButtonSm}"/>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                    <Grid local:TableClip.Enabled="True">
                     <DataGrid x:Name="SelectionGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                              GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
+                              Margin="0,0,0,-1" HorizontalScrollBarVisibility="Disabled" GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
                               Background="{StaticResource Surface}" BorderThickness="0" Foreground="{StaticResource Ink}"
                               ColumnHeaderStyle="{StaticResource TableHeader}" RowStyle="{StaticResource TableRow}"
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="SelectionGrid">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Width="56">
+                            <DataGridTemplateColumn Width="80">
                                 <DataGridTemplateColumn.Header>
-                                    <CheckBox Style="{StaticResource ClaudeCheckBox}" Checked="SelectAll_Checked"
-                                              Unchecked="SelectAll_Unchecked" AutomationProperties.AutomationId="SelectAll"/>
+                                    <CheckBox Style="{StaticResource ClaudeCheckBox}" Height="22.4"
+                                              Checked="SelectAll_Checked" Unchecked="SelectAll_Unchecked"
+                                              AutomationProperties.AutomationId="SelectAll"/>
                                 </DataGridTemplateColumn.Header>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox Style="{StaticResource ClaudeCheckBox}" IsChecked="{Binding Selected, Mode=TwoWay}"
+                                        <CheckBox Style="{StaticResource ClaudeCheckBox}" Height="22.4"
+                                                  IsChecked="{Binding Selected, Mode=TwoWay}"
                                                   Checked="RowCheck_Changed" Unchecked="RowCheck_Changed"
                                                   AutomationProperties.AutomationId="RowCheck"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Project" Width="2*" Binding="{Binding Project}"/>
-                            <DataGridTextColumn Header="Owner" Width="1.3*" Binding="{Binding Owner}"/>
-                            <DataGridTemplateColumn Header="Status" Width="1.1*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
-                            <DataGridTextColumn Header="Updated" Width="1.1*" Binding="{Binding Updated}"/>
-                            <DataGridTemplateColumn Header="Budget" Width="1*" HeaderStyle="{StaticResource TableHeaderRight}">
+                            <DataGridTextColumn Header="Project" Width="212*" Binding="{Binding Project}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTextColumn Header="Owner" Width="178*" Binding="{Binding Owner}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTemplateColumn Header="Status" Width="170*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                            <DataGridTextColumn Header="Updated" Width="155*" Binding="{Binding Updated}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTemplateColumn Header="Budget" Width="126*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                   Foreground="{StaticResource Ink}" HorizontalAlignment="Right"
+                                                   Foreground="{StaticResource Ink}" HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    </Grid>
                 </Border>
             </StackPanel>
         </Border>

@@ -6,89 +6,84 @@
         <!-- Column filters -->
         <TextBlock Text="Table with column filters" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Text="A filter under every column header. Each one narrows the rows independently, and the count updates as you type."
-                   Style="{StaticResource SectionDesc}"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+                   Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
                 <TextBlock x:Name="ColCount" Text="6 of 6 projects" FontSize="13" Foreground="{StaticResource Ink3}"
-                           HorizontalAlignment="Right" Margin="0,0,0,14"
+                           HorizontalAlignment="Right" Margin="0,0,0,16" LineHeight="20.8"
+                           LineStackingStrategy="MaxHeight"
                            AutomationProperties.AutomationId="ColCount"/>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                    <Grid local:TableClip.Enabled="True">
                     <StackPanel>
                         <!-- Header titles -->
-                        <Grid Background="{StaticResource Surface2}">
+                        <Grid Background="{StaticResource Surface2}" Height="46.2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="210"/><ColumnDefinition Width="125"/>
-                                <ColumnDefinition Width="115"/><ColumnDefinition Width="115"/>
-                                <ColumnDefinition Width="95"/><ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="183*"/><ColumnDefinition Width="181*"/>
+                                <ColumnDefinition Width="123*"/><ColumnDefinition Width="181*"/>
+                                <ColumnDefinition Width="180*"/><ColumnDefinition Width="72*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"/>
+                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
                             <TextBlock Grid.Column="0" Text="Project" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
                             <TextBlock Grid.Column="1" Text="Owner" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
                             <TextBlock Grid.Column="2" Text="Status" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
                             <TextBlock Grid.Column="3" Text="Updated" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
-                            <TextBlock Grid.Column="4" Text="Budget" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13" TextAlignment="Right"/>
+                            <TextBlock Grid.Column="4" Text="Budget" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
                         </Grid>
 
                         <!-- Per-column filters -->
-                        <Grid Background="{StaticResource Surface}">
+                        <Grid Background="{StaticResource Surface}" Height="51.2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="210"/><ColumnDefinition Width="125"/>
-                                <ColumnDefinition Width="115"/><ColumnDefinition Width="115"/>
-                                <ColumnDefinition Width="95"/><ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="183*"/><ColumnDefinition Width="181*"/>
+                                <ColumnDefinition Width="123*"/><ColumnDefinition Width="181*"/>
+                                <ColumnDefinition Width="180*"/><ColumnDefinition Width="72*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"/>
-                            <TextBox x:Name="ColProject" Grid.Column="0" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                     Padding="9,7" Height="32" Margin="8,8,4,8" Tag="Filter projects…"
+                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                            <TextBox x:Name="ColProject" Grid.Column="0" Style="{StaticResource TableFilterInput}"
+                                     Margin="10,8" Tag="Filter projects…"
                                      TextChanged="Filter" AutomationProperties.AutomationId="ColProject"/>
-                            <TextBox x:Name="ColOwner" Grid.Column="1" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                     Padding="9,7" Height="32" Margin="4,8" Tag="Filter owners…"
+                            <TextBox x:Name="ColOwner" Grid.Column="1" Style="{StaticResource TableFilterInput}"
+                                     Margin="10,8" Tag="Filter owners…"
                                      TextChanged="Filter" AutomationProperties.AutomationId="ColOwner"/>
-                            <ComboBox x:Name="ColStatus" Grid.Column="2" Style="{StaticResource WebSelect}" Margin="4,8"
+                            <ComboBox x:Name="ColStatus" Grid.Column="2" Style="{StaticResource WebSelect}" Margin="10,8"
+                                      ItemContainerStyle="{StaticResource FieldSelectItem}"
                                       SelectionChanged="Filter" AutomationProperties.AutomationId="ColStatus">
                                 <ComboBoxItem Content="All statuses" IsSelected="True"/>
                                 <ComboBoxItem Content="Active"/>
                                 <ComboBoxItem Content="Pending"/>
                                 <ComboBoxItem Content="Archived"/>
                             </ComboBox>
-                            <TextBox x:Name="ColUpdated" Grid.Column="3" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                     Padding="9,7" Height="32" Margin="4,8" Tag="Any date"
+                            <TextBox x:Name="ColUpdated" Grid.Column="3" Style="{StaticResource TableFilterInput}"
+                                     Margin="10,8" Tag="Any date"
                                      TextChanged="Filter" AutomationProperties.AutomationId="ColUpdated"/>
-                            <TextBox x:Name="ColBudget" Grid.Column="4" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                     Padding="9,7" Height="32" Margin="4,8" Tag="Min amount"
+                            <TextBox x:Name="ColBudget" Grid.Column="4" Style="{StaticResource TableFilterInput}"
+                                     Margin="10,8" Tag="Min amount"
                                      TextChanged="Filter" AutomationProperties.AutomationId="ColBudget"/>
                         </Grid>
 
-                        <DataGrid x:Name="ColumnGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                                  HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False"
+                        <DataGrid x:Name="ColumnGrid" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
+                                  HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False" SnapsToDevicePixels="True"
                                   IsReadOnly="True" Background="{StaticResource Surface}" BorderThickness="0"
-                                  Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRow}"
+                                  Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRowTall}"
                                   CellStyle="{StaticResource TableCell}"
                                   AutomationProperties.AutomationId="ColumnGrid">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Width="210">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
-                                                <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Width="125" Binding="{Binding Owner}"/>
-                                <DataGridTemplateColumn Width="115" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
-                                <DataGridTextColumn Width="115" Binding="{Binding Updated}"/>
-                                <DataGridTemplateColumn Width="95">
+                                <DataGridTemplateColumn Width="183*" CellStyle="{StaticResource TableRowHeaderCell}"
+                                                        CellTemplate="{StaticResource TableRowHeaderTemplate}"/>
+                                <DataGridTextColumn Width="181*" Binding="{Binding Owner}" ElementStyle="{StaticResource TableCellText}"/>
+                                <DataGridTemplateColumn Width="123*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                                <DataGridTextColumn Width="181*" Binding="{Binding Updated}" ElementStyle="{StaticResource TableCellText}"/>
+                                <DataGridTemplateColumn Width="180*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                       Foreground="{StaticResource Ink}" HorizontalAlignment="Right"
+                                                       Foreground="{StaticResource Ink}" HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Width="75">
+                                <DataGridTemplateColumn Width="72*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Content="Open" Style="{StaticResource TableAction}"/>
@@ -97,149 +92,177 @@
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <Border x:Name="ColEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="No matching projects" FontSize="15" FontWeight="SemiBold"
+                                           Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                           AutomationProperties.AutomationId="ColEmpty"/>
+                                <TextBlock Text="Try changing a column filter." FontSize="14"
+                                           Foreground="{StaticResource Ink2}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
+                    </Grid>
                 </Border>
 
-                <local:TablePagination InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="ColumnPagination"/>
+                <local:TablePagination x:Name="ColumnPagination" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="ColumnPagination"/>
             </StackPanel>
         </Border>
 
         <!-- Sortable table -->
         <TextBlock Text="Sortable table with sticky column" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Text="Ten columns with a filter under each header and sortable titles. The pin button before the Project title keeps that column visible while the table scrolls sideways."
-                   Style="{StaticResource SectionDesc}"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+                   Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+        <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <StackPanel MinWidth="920">
-                            <!-- Header -->
-                            <Grid Background="{StaticResource Surface2}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/><ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="110"/><ColumnDefinition Width="115"/>
-                                    <ColumnDefinition Width="100"/><ColumnDefinition Width="115"/>
-                                    <ColumnDefinition Width="105"/><ColumnDefinition Width="105"/>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.ColumnSpan="9" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"/>
-                                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="16,13,4,13">
-                                    <ToggleButton Style="{StaticResource PinButton}" Click="PinColumn_Click"
-                                                  AutomationProperties.AutomationId="PinColumn"/>
-                                    <Button Content="Project" Tag="Project" Style="{StaticResource SortHeaderButton}"
-                                            Margin="5,0,0,0" Click="SortHeader_Click"/>
-                                </StackPanel>
-                                <Button Grid.Column="1" Content="Owner" Tag="Owner" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="2" Content="Team" Tag="Team" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="3" Content="Status" Tag="Status" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="4" Content="Priority" Tag="Priority" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="5" Content="Updated" Tag="Updated" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="6" Content="Due date" Tag="Due" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="7" Content="Budget" Tag="Budget" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                                <Button Grid.Column="8" Content="Progress" Tag="Progress" Style="{StaticResource SortHeaderButton}" Margin="16,13"/>
-                            </Grid>
+                <ScrollViewer x:Name="SortScroll" Style="{StaticResource TableThinScrollViewer}"
+                              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                              AutomationProperties.AutomationId="SortScroll"
+                              ScrollChanged="SortScroll_ScrollChanged">
+                    <Border Width="973" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                        <Grid local:TableClip.Enabled="True">
+                            <StackPanel>
+                                <!-- Header -->
+                                <Grid x:Name="SortHeaderGrid" Background="{StaticResource Surface2}" Height="46.2"
+                                      AutomationProperties.AutomationId="SortHeaderGrid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="123"/><ColumnDefinition Width="86"/>
+                                        <ColumnDefinition Width="106"/><ColumnDefinition Width="112"/>
+                                        <ColumnDefinition Width="90"/><ColumnDefinition Width="97"/>
+                                        <ColumnDefinition Width="99"/><ColumnDefinition Width="89"/>
+                                        <ColumnDefinition Width="97"/><ColumnDefinition Width="72"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.ColumnSpan="10" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                                    <Border x:Name="PinHeader" Grid.Column="0" Panel.ZIndex="2"
+                                            Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line}"
+                                            BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
+                                        <StackPanel Orientation="Horizontal" Margin="16,13,0,13">
+                                            <ToggleButton x:Name="PinToggle" Style="{StaticResource PinButton}"
+                                                          Checked="PinColumn_Checked" Unchecked="PinColumn_Unchecked"
+                                                          AutomationProperties.AutomationId="PinColumn"/>
+                                            <Button Content="Project" Tag="Project" Style="{StaticResource SortHeaderButton}"
+                                                    Margin="7,0,0,0" Click="SortHeader_Click"
+                                                    AutomationProperties.AutomationId="HeaderProject"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Button Grid.Column="1" Content="Owner" Tag="Owner" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="2" Content="Team" Tag="Team" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="3" Content="Status" Tag="Status" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="4" Content="Priority" Tag="Priority" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="5" Content="Updated" Tag="Updated" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="6" Content="Due date" Tag="Due" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="7" Content="Budget" Tag="Budget" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"
+                                            AutomationProperties.AutomationId="HeaderBudget"/>
+                                    <Button Grid.Column="8" Content="Progress" Tag="Progress" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                </Grid>
 
-                            <!-- Filters -->
-                            <Grid Background="{StaticResource Surface}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/><ColumnDefinition Width="120"/>
-                                    <ColumnDefinition Width="110"/><ColumnDefinition Width="115"/>
-                                    <ColumnDefinition Width="100"/><ColumnDefinition Width="115"/>
-                                    <ColumnDefinition Width="105"/><ColumnDefinition Width="105"/>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.ColumnSpan="9" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"/>
-                                <TextBox x:Name="SortProject" Grid.Column="0" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="8,8,4,8" Tag="Project…" TextChanged="SortFilter"/>
-                                <TextBox x:Name="SortOwner" Grid.Column="1" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Own…" TextChanged="SortFilter"/>
-                                <TextBox x:Name="SortTeam" Grid.Column="2" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Team…" TextChanged="SortFilter"/>
-                                <ComboBox Grid.Column="3" Style="{StaticResource WebSelect}" Margin="4,8">
-                                    <ComboBoxItem Content="All" IsSelected="True"/><ComboBoxItem Content="Active"/>
-                                    <ComboBoxItem Content="Pending"/><ComboBoxItem Content="Archived"/>
-                                </ComboBox>
-                                <ComboBox Grid.Column="4" Style="{StaticResource WebSelect}" Margin="4,8">
-                                    <ComboBoxItem Content="All" IsSelected="True"/><ComboBoxItem Content="High"/>
-                                    <ComboBoxItem Content="Medium"/><ComboBoxItem Content="Low"/>
-                                </ComboBox>
-                                <TextBox x:Name="SortUpdated" Grid.Column="5" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Date" TextChanged="SortFilter"/>
-                                <TextBox x:Name="SortDue" Grid.Column="6" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Date" TextChanged="SortFilter"/>
-                                <TextBox x:Name="SortBudget" Grid.Column="7" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Min" TextChanged="SortFilter"/>
-                                <TextBox x:Name="SortProgress" Grid.Column="8" Style="{StaticResource PlaceholderInput}" FontSize="13"
-                                         Padding="9,7" Height="32" Margin="4,8" Tag="Min %" TextChanged="SortFilter"/>
-                            </Grid>
+                                <!-- Filters -->
+                                <Grid Background="{StaticResource Surface}" Height="51.2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="123"/><ColumnDefinition Width="86"/>
+                                        <ColumnDefinition Width="106"/><ColumnDefinition Width="112"/>
+                                        <ColumnDefinition Width="90"/><ColumnDefinition Width="97"/>
+                                        <ColumnDefinition Width="99"/><ColumnDefinition Width="89"/>
+                                        <ColumnDefinition Width="97"/><ColumnDefinition Width="72"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.ColumnSpan="10" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                                    <Border x:Name="PinFilter" Grid.Column="0" Panel.ZIndex="2"
+                                            Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                                            BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
+                                        <TextBox x:Name="SortProject" Style="{StaticResource TableFilterInput}"
+                                                 Margin="10,8" Tag="Project…" TextChanged="SortFilter"/>
+                                    </Border>
+                                    <TextBox x:Name="SortOwner" Grid.Column="1" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Owner…" TextChanged="SortFilter"/>
+                                    <TextBox x:Name="SortTeam" Grid.Column="2" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Team…" TextChanged="SortFilter"/>
+                                    <ComboBox Grid.Column="3" Style="{StaticResource WebSelect}" Margin="10,8"
+                                              ItemContainerStyle="{StaticResource FieldSelectItem}">
+                                        <ComboBoxItem Content="All" IsSelected="True"/><ComboBoxItem Content="Active"/>
+                                        <ComboBoxItem Content="Pending"/><ComboBoxItem Content="Archived"/>
+                                    </ComboBox>
+                                    <ComboBox Grid.Column="4" Style="{StaticResource WebSelect}" Margin="10,8"
+                                              ItemContainerStyle="{StaticResource FieldSelectItem}">
+                                        <ComboBoxItem Content="All" IsSelected="True"/><ComboBoxItem Content="High"/>
+                                        <ComboBoxItem Content="Medium"/><ComboBoxItem Content="Low"/>
+                                    </ComboBox>
+                                    <TextBox x:Name="SortUpdated" Grid.Column="5" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Date" TextChanged="SortFilter"/>
+                                    <TextBox x:Name="SortDue" Grid.Column="6" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Date" TextChanged="SortFilter"/>
+                                    <TextBox x:Name="SortBudget" Grid.Column="7" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Min" TextChanged="SortFilter"/>
+                                    <TextBox x:Name="SortProgress" Grid.Column="8" Style="{StaticResource TableFilterInput}"
+                                             Margin="10,8" Tag="Min %" TextChanged="SortFilter"/>
+                                </Grid>
 
-                            <DataGrid x:Name="SortGrid" AutoGenerateColumns="False" CanUserAddRows="False"
-                                      HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False"
-                                      IsReadOnly="True" Background="{StaticResource Surface}" BorderThickness="0"
-                                      Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRow}"
-                                      CellStyle="{StaticResource TableCell}"
-                                      AutomationProperties.AutomationId="SortGrid">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Width="150" CellStyle="{StaticResource TableCellSticky}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
-                                                    <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Width="120">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Owner}" Foreground="{StaticResource Ink}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Width="110" Binding="{Binding Team}"/>
-                                    <DataGridTemplateColumn Width="115" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
-                                    <DataGridTextColumn Width="100" Binding="{Binding Priority}"/>
-                                    <DataGridTextColumn Width="115" Binding="{Binding Updated}"/>
-                                    <DataGridTextColumn Width="105" Binding="{Binding Due}"/>
-                                    <DataGridTemplateColumn Width="105">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                           Foreground="{StaticResource Ink}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn Width="100" Binding="{Binding Progress}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </StackPanel>
-                    </ScrollViewer>
-                </Border>
+                                <DataGrid x:Name="SortGrid" AutoGenerateColumns="False" CanUserAddRows="False"
+                                          VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+                                          HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False" SnapsToDevicePixels="True"
+                                          IsReadOnly="True" Background="{StaticResource Surface}" BorderThickness="0"
+                                          Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRowSort}"
+                                          CellStyle="{StaticResource TableCell}"
+                                          AutomationProperties.AutomationId="SortGrid">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="123" CellStyle="{StaticResource TableRowHeaderCell}"
+                                                                CellTemplate="{StaticResource TableRowHeaderTemplate}"/>
+                                        <DataGridTemplateColumn Width="86">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Owner}" Foreground="{StaticResource Ink}"
+                                                                   Style="{StaticResource TableCellWrap}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Width="106" Binding="{Binding Dept}" ElementStyle="{StaticResource TableCellWrap}"/>
+                                        <DataGridTemplateColumn Width="112" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                                        <DataGridTextColumn Width="90" Binding="{Binding Priority}" ElementStyle="{StaticResource TableCellWrap}"/>
+                                        <DataGridTextColumn Width="97" Binding="{Binding Updated}" ElementStyle="{StaticResource TableCellWrap}"/>
+                                        <DataGridTextColumn Width="99" Binding="{Binding Due}" ElementStyle="{StaticResource TableCellWrap}"/>
+                                        <DataGridTemplateColumn Width="89">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
+                                                               Foreground="{StaticResource Ink}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Width="97" Binding="{Binding Progress}" ElementStyle="{StaticResource TableCellWrap}"/>
+                                        <DataGridTemplateColumn Width="72">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button Content="Open" Style="{StaticResource TableAction}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <Border x:Name="SortEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="No matching projects" FontSize="15" FontWeight="SemiBold"
+                                                   Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                                   AutomationProperties.AutomationId="SortEmpty"/>
+                                        <TextBlock Text="Try changing a column filter." FontSize="14"
+                                                   Foreground="{StaticResource Ink2}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </ScrollViewer>
 
-                <local:TablePagination InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="SortPagination"/>
+                <!-- Web puts pagination directly under the 11px scroll track (wrapper bottom = pagination top). -->
+                <local:TablePagination x:Name="SortPagination" Margin="0,-16,0,0" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="SortPagination"/>
             </StackPanel>
         </Border>
-
-        <!-- Toast variants -->
-        <TextBlock Text="Toasts" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Success toast" Style="{StaticResource SecondaryButton}" Click="SuccessToast_Click" AutomationProperties.AutomationId="BtnSuccessToast"/>
-                <Button Content="Info toast" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" Click="InfoToast_Click" AutomationProperties.AutomationId="BtnInfoToast"/>
-                <Button Content="Error toast" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" Click="ErrorToast_Click" AutomationProperties.AutomationId="BtnErrorToast"/>
-            </StackPanel>
-        </Border>
-        <ItemsControl x:Name="ToastHost" AutomationProperties.AutomationId="ToastHost" Margin="0,12,0,0"/>
 
         <!-- Overlay launchers -->
         <TextBlock Text="Dialogs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
             <StackPanel Orientation="Horizontal">
                 <Button Content="Command palette" Style="{StaticResource PrimaryButton}" Click="CommandPalette_Click" AutomationProperties.AutomationId="BtnCommandPalette"/>
-                <Button Content="Loading modal" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" Click="LoadingModal_Click" AutomationProperties.AutomationId="BtnLoadingModal"/>
                 <Button Content="Drawer form" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" Click="Drawer_Click" AutomationProperties.AutomationId="BtnDrawer"/>
             </StackPanel>
         </Border>

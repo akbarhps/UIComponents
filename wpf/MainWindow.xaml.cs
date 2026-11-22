@@ -2,21 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace UIComponents.Wpf
 {
     public partial class MainWindow : Window
     {
-        private void OpenDialog_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new DialogWindow { Owner = this };
-            dialog.ShowDialog();
-            DialogResultText.Text = dialog.Confirmed ? "Project deleted." : "Dialog cancelled.";
-        }
-
         public MainWindow()
         {
             InitializeComponent();
+            Toasts.Install(this);
+            OverlayHost.Install(this, Overlays.DialogStore);
             DemoGrid.ItemsSource = new List<ProjectRow>
             {
                 new ProjectRow { Project = "Website refresh", Owner = "Ada Lovelace", Initials = "AL", Team = "Design team", Status = "Active", Updated = "Today", Budget = "$12,400" },
@@ -26,6 +24,7 @@ namespace UIComponents.Wpf
                 new ProjectRow { Project = "Legacy archive", Owner = "Sam Patel", Initials = "SP", Team = "Operations", Status = "Draft", Updated = "2 weeks ago", Budget = "$1,100" }
             };
             ApplyStandaloneMode();
+            ApplyReducedMotion();
         }
 
         // Launch with a section title (e.g. "Data table") to show only that section.
@@ -35,22 +34,26 @@ namespace UIComponents.Wpf
             if (args.Length < 2) return;
 
             var key = args[1];
-            var panels = new Panel[]
+            // Hosts are the UserControls directly under Sections; each one names its section list "SectionList".
+            var panels = new List<Panel> { Sections };
+            var hosts = new List<UserControl>();
+            foreach (UIElement child in Sections.Children)
             {
-                Sections, FormInputs.SectionList, DataTables.SectionList, AdvancedTables.SectionList
-            };
+                var host = child as UserControl;
+                var list = host == null ? null : host.FindName("SectionList") as Panel;
+                if (list != null) { hosts.Add(host); panels.Add(list); }
+            }
             bool found = false;
             foreach (var panel in panels)
                 if (StandaloneHelper.Contains(panel, key)) { found = true; break; }
             if (!found) return;
 
             foreach (var panel in panels) StandaloneHelper.Apply(panel, key);
-            FormInputs.Visibility = StandaloneHelper.Contains(FormInputs.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
-            DataTables.Visibility = StandaloneHelper.Contains(DataTables.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
-            AdvancedTables.Visibility = StandaloneHelper.Contains(AdvancedTables.SectionList, key) ? Visibility.Visible : Visibility.Collapsed;
+            foreach (var host in hosts)
+                host.Visibility = StandaloneHelper.Contains((Panel)host.FindName("SectionList"), key) ? Visibility.Visible : Visibility.Collapsed;
 
             Title = key + " — Claude UI";
-            ContentScroll.Padding = new Thickness(48, 40, 48, 48);
+            ContentScroll.Padding = new Thickness(48, 8, 48, 24);
         }
     }
 

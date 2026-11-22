@@ -1,15 +1,16 @@
 # Runs the app plus the UI Automation tests (and optional captures) on a hidden Windows desktop.
 # Nothing appears on your screen and nothing takes focus or keyboard input from you.
 #
-# Usage (from the repo root, after wpf\build.bat <agent> and wpf\tests\build-tests.bat):
+# Usage (from the repo root, after wpf\build.bat <agent> and wpf\tests\build-tests.bat <agent>):
 #   pwsh wpf/tests/run-hidden.ps1 -Agent grid
 #   pwsh wpf/tests/run-hidden.ps1 -Agent forms -Section "Forms" -Capture "FormsCard=plan/wpf/ref/wpf-forms-card1.png","FormsCard@FieldName=plan/wpf/ref/wpf-forms-focus.png"
 #   pwsh wpf/tests/run-hidden.ps1 -Agent grid -NoTests -Capture "InputGrid=plan/wpf/ref/wpf-grid-input.png"
+#   pwsh wpf/tests/run-hidden.ps1 -Agent split -Only dropdown   (areas: nav forms tables display overlays dropdown pickers grid toasts)
 #
 # -Capture entries: "<AutomationId>=<out.png>" or "<AutomationId>@<FocusAutomationId>=<out.png>".
 # Each agent gets its own desktop (uitest-<agent>), so parallel agents don't collide either.
 param([Parameter(Mandatory)][string]$Agent, [string]$Section = '', [string[]]$Capture = @(), [switch]$NoTests,
-      [int]$TimeoutSec = 300)
+      [int]$TimeoutSec = 600, [string]$Only = '')
 $ErrorActionPreference = 'Stop'
 $Capture = @($Capture | ForEach-Object { $_ -split ',' } | Where-Object { $_ })   # pwsh -File passes arrays as one comma-joined string
 Add-Type @'
@@ -42,8 +43,11 @@ public static class HiddenDesktop {
 '@
 $root = (Resolve-Path "$PSScriptRoot\..\..").Path
 $exe = Join-Path $root "wpf\bin\$Agent\UIComponents.Wpf.exe"
-$tests = Join-Path $root "wpf\tests\bin\UIAutomationTests.exe"
+$tests = Join-Path $root "wpf\tests\bin\$Agent\UIAutomationTests.exe"   # own copy: wpf\tests\build-tests.bat <agent>
+if (-not (Test-Path $tests)) { $tests = Join-Path $root "wpf\tests\bin\UIAutomationTests.exe" }   # fallback: shared copy (can be locked by another agent)
+elseif ((Get-Item $tests).LastWriteTime -lt (Get-ChildItem (Join-Path $root "wpf\tests\Tests.*.cs") | Sort-Object LastWriteTime | Select-Object -Last 1).LastWriteTime) { "WARNING: $tests is older than the newest wpf\tests\Tests.*.cs - rerun wpf\tests\build-tests.bat $Agent" }
 if (-not (Test-Path $exe)) { throw "missing $exe - run wpf\build.bat $Agent first" }
+$env:UITEST_DRIVE = '1'   # app installs the in-process test driver (App.xaml.cs DriverHook); tests fall back to UIA if absent
 $deskName = "uitest-$Agent"
 $desk = [HiddenDesktop]::CreateDesktop($deskName, [IntPtr]::Zero, [IntPtr]::Zero, 0, 0x10000000 <# GENERIC_ALL #>, [IntPtr]::Zero)
 if ($desk -eq [IntPtr]::Zero) { throw "CreateDesktop failed" }
@@ -73,6 +77,7 @@ function Wait-Process([object]$pi) {
 
 function Get-OutPath([string]$p) { if ([IO.Path]::IsPathRooted($p)) { $p } else { Join-Path $root $p } }
 $sectionArg = if ($Section) { " `"$Section`"" } else { '' }
+$onlyArg = if ($Only) { " --only $Only" } else { '' }
 $exit = 0
 try {
     # Captures: a separate app instance renders each element off-screen (App.xaml.cs --capture), then exits.
@@ -88,19 +93,22 @@ try {
     }
     # Tests: the full app (all sections), tests pinned to its PID.
     if (-not $NoTests) {
+        . "$PSScriptRoot\test-slot.ps1"
+        $slot = Enter-TestSlot   # waits while UITEST_SLOTS (default 4) other suites are running; the timeout below counts only the run
         $app = [HiddenDesktop]::Start($deskName, "`"$exe`"", $root)
         "app PID $($app.dwProcessId) on hidden desktop '$deskName'"
         try {
             Start-Sleep -Seconds 5
-            $result = Invoke-OnDesktop "`"$tests`" $($app.dwProcessId)" "tests.log"
+            $result = Invoke-OnDesktop "`"$tests`" $($app.dwProcessId)$onlyArg" "tests.log"
             $result | Select-Object -SkipLast 1
             if ($result[-1] -ne 0) { $exit = $result[-1] }
         }
         finally {
             [void][HiddenDesktop]::TerminateProcess($app.hProcess, 0)   # only our own PID
             [void][HiddenDesktop]::CloseHandle($app.hProcess); [void][HiddenDesktop]::CloseHandle($app.hThread)
+            Exit-TestSlot $slot
         }
     }
 }
-finally { [void][HiddenDesktop]::CloseDesktop($desk) }
+finally { [void][HiddenDesktop]::CloseDesktop($desk); Remove-Item Env:UITEST_DRIVE -ErrorAction SilentlyContinue }
 exit $exit

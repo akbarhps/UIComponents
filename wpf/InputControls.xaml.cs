@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 namespace UIComponents.Wpf
 {
@@ -67,13 +66,6 @@ namespace UIComponents.Wpf
             if (AutoList.SelectedItem == null) return;
             AutoInput.Text = AutoList.SelectedItem.ToString();
             AutoPopup.IsOpen = false;
-        }
-
-        private void Browse_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new OpenFileDialog { Multiselect = true, Filter = "All files|*.*" };
-            if (dialog.ShowDialog() == true)
-                foreach (var file in dialog.FileNames) FileList.Items.Add(file);
         }
     }
 }

@@ -46,25 +46,88 @@
 
                 <!-- Buttons -->
                 <TextBlock Text="Buttons" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <TextBlock Text="Primary, dark, secondary, ghost and danger variants." Style="{StaticResource SectionDesc}"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Primary action" Style="{StaticResource PrimaryButton}" Margin="0,0,12,0" AutomationProperties.AutomationId="BtnPrimary"/>
-                            <Button Content="Dark" Style="{StaticResource DarkButton}" Margin="0,0,12,0"/>
-                            <Button Content="Secondary" Style="{StaticResource SecondaryButton}" Margin="0,0,12,0"/>
-                            <Button Content="Ghost" Style="{StaticResource GhostButton}" Margin="0,0,12,0"/>
-                            <Button Content="Danger" Style="{StaticResource DangerButton}"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Primary, dark, secondary, ghost and danger variants, with size options and loading / disabled states."/>
+                <GroupBox AutomationProperties.AutomationId="ButtonsCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <TextBlock Text="Variants" Style="{StaticResource DemoLabel}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Primary action" Style="{StaticResource PrimaryButton}"
+                                        Margin="0,0,12,0" AutomationProperties.AutomationId="BtnPrimary"/>
+                                <Button Content="Dark" Style="{StaticResource DarkButton}"
+                                        Margin="0,0,12,0" AutomationProperties.AutomationId="BtnDark"/>
+                                <Button Content="Secondary" Style="{StaticResource SecondaryButton}"
+                                        Margin="0,0,12,0" AutomationProperties.AutomationId="BtnSecondary"/>
+                                <Button Content="Ghost" Style="{StaticResource GhostButton}"
+                                        Margin="0,0,12,0" AutomationProperties.AutomationId="BtnGhost"/>
+                                <Button Content="Danger" Style="{StaticResource DangerButton}"
+                                        AutomationProperties.AutomationId="BtnDanger"/>
+                            </StackPanel>
+                            <Border Style="{StaticResource Divider}"/>
+                            <TextBlock Text="With icons" Style="{StaticResource DemoLabel}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource PrimaryButton}" Margin="0,0,12,0"
+                                        AutomationProperties.AutomationId="BtnNewItem" AutomationProperties.Name="New item">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ContentControl Style="{StaticResource IconPlus}" Width="16" Height="16"/>
+                                        <TextBlock Text="New item" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource SecondaryButton}" Margin="0,0,12,0"
+                                        AutomationProperties.AutomationId="BtnSearch" AutomationProperties.Name="Search">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ContentControl Style="{StaticResource IconSearch}" Width="16" Height="16"/>
+                                        <TextBlock Text="Search" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource SecondaryButton}"
+                                        AutomationProperties.AutomationId="BtnContinue" AutomationProperties.Name="Continue">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Continue"/>
+                                        <ContentControl Style="{StaticResource IconArrow}" Width="16" Height="16" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <Border Style="{StaticResource Divider}"/>
+                            <TextBlock Text="Sizes &amp; states" Style="{StaticResource DemoLabel}"/>
+                            <StackPanel Orientation="Horizontal" Height="50">
+                                <Button Content="Small" Style="{StaticResource PrimaryButtonSm}"
+                                        VerticalAlignment="Center" Margin="0,0,12,0" AutomationProperties.AutomationId="BtnSmall"/>
+                                <!-- Segoe's "Default" advance is 3.5 short of the web's SF advance. -->
+                                <Button Content="Default" Style="{StaticResource PrimaryButton}" MinWidth="82.5"
+                                        VerticalAlignment="Center" Margin="0,0,12,0"
+                                        AutomationProperties.AutomationId="BtnDefault"/>
+                                <Button Content="Large" Style="{StaticResource PrimaryButton}" FontSize="15"
+                                        Padding="23,15" MinHeight="50" VerticalAlignment="Center" Margin="0,0,12,0"
+                                        AutomationProperties.AutomationId="BtnLarge"/>
+                                <Button Content="Disabled" Style="{StaticResource PrimaryButton}" IsEnabled="False"
+                                        VerticalAlignment="Center" Margin="0,0,12,0"
+                                        AutomationProperties.AutomationId="BtnDisabled"/>
+                                <Button x:Name="BtnLoading" Style="{StaticResource PrimaryButton}"
+                                        VerticalAlignment="Center" Click="BtnLoading_Click"
+                                        AutomationProperties.AutomationId="BtnLoading" AutomationProperties.Name="Loading">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ContentControl Style="{StaticResource ButtonSpinner}" Width="15" Height="15"/>
+                                        <TextBlock Text="Loading" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
+                    </Border>
+                </GroupBox>
 
                 <!-- Forms -->
                 <TextBlock Text="Forms" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
                 <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
                            Text="Labels, hints, validation, select, textarea and selection controls. All fields share the same focus and error language."/>
-                <!-- GroupBox gives the card a UIA peer: a plain Border has none, so
-                     capture-wpf.ps1 cannot find an AutomationId on it. No chrome. -->
+                <!-- GroupBox gives the card a UIA peer: a plain Border has none, so the
+                     hidden capture runner cannot find an AutomationId on it. No chrome. -->
                 <GroupBox AutomationProperties.AutomationId="FormsCard" Margin="0,22,0,0">
                     <GroupBox.Template>
                         <ControlTemplate TargetType="GroupBox">
@@ -110,11 +173,30 @@
                                                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 </Grid>
                             </StackPanel>
-                            <!-- Phase 2: Role select -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Role" Style="{StaticResource FieldLabel}"/>
+                                <ComboBox Style="{StaticResource FieldSelect}" SelectedIndex="0"
+                                          AutomationProperties.AutomationId="CmbRole">
+                                    <ComboBoxItem Content="Designer"/>
+                                    <ComboBoxItem Content="Engineer"/>
+                                    <ComboBoxItem Content="Product manager"/>
+                                </ComboBox>
+                            </StackPanel>
                         </Grid>
                         <Border Style="{StaticResource Divider}"/>
 
-                        <!-- Phase 2: Message textarea + hint -->
+                        <!-- Full width: Message textarea + hint. -->
+                        <StackPanel>
+                            <TextBlock Text="Message" Style="{StaticResource FieldLabel}"/>
+                            <Grid>
+                                <TextBox x:Name="MessageText" Style="{StaticResource FieldTextArea}"
+                                         Tag="Write a short note…" AutomationProperties.AutomationId="FieldMessage"/>
+                                <Thumb Style="{StaticResource TextAreaGrip}" HorizontalAlignment="Right"
+                                       VerticalAlignment="Bottom" Margin="0,0,2,2"
+                                       DragDelta="MessageGrip_DragDelta"/>
+                            </Grid>
+                            <TextBlock Text="Keep it under a few sentences." Style="{StaticResource FieldHint}"/>
+                        </StackPanel>
                         <Border Style="{StaticResource Divider}"/>
 
                         <!-- Full width: Username, error state. "ada#" is a real value. -->
@@ -122,62 +204,150 @@
                             <TextBlock Text="Username" Style="{StaticResource FieldLabel}"/>
                             <TextBox Style="{StaticResource FieldInputError}" Text="ada#"
                                      AutomationProperties.AutomationId="FieldUsername"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,7,0,0"
-                                        AutomationProperties.AutomationId="FieldUsernameError">
+                            <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
                                 <ContentControl Style="{StaticResource ErrorIcon}" Margin="0,3,5,0"
                                                 VerticalAlignment="Top"/>
                                 <TextBlock Text="Use letters and numbers only." FontFamily="{StaticResource Sans}"
                                            FontSize="12" Foreground="{StaticResource Danger}"
                                            LineHeight="19.2" LineStackingStrategy="BlockLineHeight"
-                                           VerticalAlignment="Top"/>
+                                           VerticalAlignment="Top"
+                                           AutomationProperties.AutomationId="FieldUsernameError"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                     </Border>
                 </GroupBox>
 
-                <!-- Cards & badges -->
-                <TextBlock Text="Cards &amp; badges" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <TextBlock Text="Workspace settings" FontFamily="{StaticResource Serif}" FontSize="17" Foreground="{StaticResource Ink}"/>
-                        <TextBlock Text="Manage members, permissions and preferences for your team." FontSize="14" Foreground="{StaticResource Ink2}" Margin="0,8,0,18"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Border Style="{StaticResource BadgeSuccess}">
-                                <TextBlock Text="Active" Style="{StaticResource BadgeText}" Foreground="{StaticResource Success}"/>
-                            </Border>
-                            <Border Style="{StaticResource BadgeBrand}" Margin="10,0,0,0">
-                                <TextBlock Text="In review" Style="{StaticResource BadgeText}" Foreground="{StaticResource Brand}"/>
-                            </Border>
-                            <Border Style="{StaticResource BadgeNeutral}" Margin="10,0,0,0">
-                                <TextBlock Text="Draft" Style="{StaticResource BadgeText}" Foreground="{StaticResource Ink2}"/>
-                            </Border>
+                <!-- Card 2: selection controls -->
+                <GroupBox AutomationProperties.AutomationId="SelectionCard" Margin="0,18,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <TextBlock Text="Selection controls" Style="{StaticResource DemoLabel}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="22"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <CheckBox Content="Enable notifications" Style="{StaticResource ClaudeCheckBox}"
+                                              IsChecked="True" AutomationProperties.AutomationId="ChkNotifications"/>
+                                    <CheckBox Content="Weekly digest" Style="{StaticResource ClaudeCheckBox}"
+                                              Margin="0,12,0,0" AutomationProperties.AutomationId="ChkDigest"/>
+                                    <CheckBox Content="Unavailable option" Style="{StaticResource ClaudeCheckBox}"
+                                              Margin="0,12,0,0" IsEnabled="False"
+                                              AutomationProperties.AutomationId="ChkUnavailable"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <RadioButton Content="Starter" Style="{StaticResource ClaudeRadio}"
+                                                 GroupName="plan" IsChecked="True"
+                                                 AutomationProperties.AutomationId="RadStarter"/>
+                                    <RadioButton Content="Pro" Style="{StaticResource ClaudeRadio}"
+                                                 GroupName="plan" Margin="0,12,0,0"
+                                                 AutomationProperties.AutomationId="RadPro"/>
+                                    <CheckBox Content="Dark mode" Style="{StaticResource ClaudeSwitch}"
+                                              IsChecked="True" Margin="0,12,0,0"
+                                              AutomationProperties.AutomationId="SwDarkMode"/>
+                                </StackPanel>
+                            </Grid>
                         </StackPanel>
-                    </StackPanel>
-                </Border>
+                    </Border>
+                </GroupBox>
+
+                <!-- Cards -->
+                <TextBlock Text="Cards" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Containers for related content, with an optional action row."/>
+                <GroupBox AutomationProperties.AutomationId="DisplayCards" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="22"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource DisplayCard}" Height="170.9">
+                                <StackPanel>
+                                    <TextBlock Text="Workspace settings" Style="{StaticResource DisplayCardTitle}"/>
+                                    <TextBlock Text="Manage members, permissions and preferences for your team's shared space."
+                                               Style="{StaticResource DisplayCardText}" Margin="0,8,0,0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                                        <Button Content="Open settings" Style="{StaticResource SecondaryButtonSm}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource DisplayCard}" Height="170.9">
+                                <StackPanel>
+                                    <TextBlock Text="Your plan" Style="{StaticResource DisplayCardTitle}"/>
+                                    <TextBlock Text="You're on the Starter plan. Upgrade any time to unlock more projects and history."
+                                               Style="{StaticResource DisplayCardText}" Margin="0,8,0,0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,18,0,0">
+                                        <Button Content="Upgrade plan" Style="{StaticResource PrimaryButtonSm}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </GroupBox>
+
+                <!-- Badges -->
+                <TextBlock Text="Badges" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Compact status labels. A dot marks state; use the plain variant when no dot is wanted."/>
+                <GroupBox AutomationProperties.AutomationId="DisplayBadges" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel Orientation="Horizontal">
+                            <ContentControl Content="Draft" Style="{StaticResource BadgeNeutralDot}"/>
+                            <ContentControl Content="In review" Style="{StaticResource BadgeBrandDot}" Margin="12,0,0,0"/>
+                            <ContentControl Content="Active" Style="{StaticResource BadgeSuccessDot}" Margin="12,0,0,0"/>
+                            <ContentControl Content="Pending" Style="{StaticResource BadgeWarningDot}" Margin="12,0,0,0"/>
+                            <ContentControl Content="Overdue" Style="{StaticResource BadgeDangerDot}" Margin="12,0,0,0"/>
+                            <ContentControl Content="v1.0" Tag="Plain" Style="{StaticResource BadgeNeutralDot}" Margin="12,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
                 <!-- Table -->
                 <TextBlock Text="Data table" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <TextBlock Text="Aligned columns, tabular numbers, row hover and status badges." Style="{StaticResource SectionDesc}"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
+                <TextBlock Text="Aligned columns, tabular numbers, row hover and status badges. Scrolls sideways on narrow screens."
+                           Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
                     <StackPanel>
-                    <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" ClipToBounds="True">
+                    <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                    <Grid local:TableClip.Enabled="True">
                     <DataGrid x:Name="DemoGrid" AutoGenerateColumns="False" HeadersVisibility="Column"
+                              Margin="0,0,0,-1" HorizontalScrollBarVisibility="Disabled"
                               Background="{StaticResource Surface}" BorderThickness="0"
                               Foreground="{StaticResource Ink}" FontSize="14"
                               GridLinesVisibility="None"
                               CanUserAddRows="False" CanUserSortColumns="False" IsReadOnly="True"
                               ColumnHeaderStyle="{StaticResource TableHeader}"
-                              RowStyle="{StaticResource TableRow}"
+                              RowStyle="{StaticResource TableRowTall}"
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="DemoGrid">
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Project" Width="210">
+                            <DataGridTemplateColumn Header="Project" Width="231*" CellStyle="{StaticResource TableRowHeaderCell}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <Border x:Name="Av" Width="30" Height="30" CornerRadius="99"
-                                                    Background="{StaticResource BrandSoft}" Margin="0,0,10,0">
+                                                    Background="{StaticResource BrandSoft}" BorderThickness="1"
+                                                    BorderBrush="#FFECD4C8" Margin="0,0,10,0">
                                                 <TextBlock x:Name="AvText" Text="{Binding Initials}"
                                                            FontFamily="{StaticResource Sans}" FontSize="11"
                                                            FontWeight="SemiBold" Foreground="{StaticResource Brand}"
@@ -185,41 +355,41 @@
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Project}" FontFamily="{StaticResource Sans}"
-                                                           FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
+                                                           FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}"
+                                                           LineHeight="19.2" LineStackingStrategy="BlockLineHeight"/>
                                                 <TextBlock Text="{Binding Team}" FontFamily="{StaticResource Sans}"
-                                                           FontSize="12" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"/>
+                                                           FontSize="12" Foreground="{StaticResource Ink3}" Margin="0,2,0,0"
+                                                           LineHeight="19.2" LineStackingStrategy="BlockLineHeight"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <DataTemplate.Triggers>
                                             <DataTrigger Binding="{Binding Owner}" Value="Jonas Silva">
                                                 <Setter TargetName="Av" Property="Background" Value="{StaticResource Ink}"/>
+                                                <Setter TargetName="Av" Property="BorderBrush" Value="{StaticResource Ink}"/>
                                                 <Setter TargetName="AvText" Property="Foreground" Value="White"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Owner}" Value="Mia Chen">
-                                                <Setter TargetName="Av" Property="Background" Value="{StaticResource SuccessSoft}"/>
+                                                <Setter TargetName="Av" Property="Background" Value="#FFE6EEE7"/>
+                                                <Setter TargetName="Av" Property="BorderBrush" Value="#FFD3E3D6"/>
                                                 <Setter TargetName="AvText" Property="Foreground" Value="{StaticResource Success}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Owner}" Value="Sam Patel">
-                                                <Setter TargetName="Av" Property="Background" Value="{StaticResource BgDeep}"/>
-                                                <Setter TargetName="AvText" Property="Foreground" Value="{StaticResource Ink2}"/>
                                             </DataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Owner" Width="125" Binding="{Binding Owner}"/>
-                            <DataGridTemplateColumn Header="Status" Width="125" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
-                            <DataGridTextColumn Header="Updated" Width="115" Binding="{Binding Updated}"/>
-                            <DataGridTemplateColumn Header="Budget" Width="95" HeaderStyle="{StaticResource TableHeaderRight}">
+                            <DataGridTextColumn Header="Owner" Width="160*" Binding="{Binding Owner}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTemplateColumn Header="Status" Width="160*" CellTemplate="{StaticResource StatusBadgeTemplate}"/>
+                            <DataGridTextColumn Header="Updated" Width="153*" Binding="{Binding Updated}" ElementStyle="{StaticResource TableCellText}"/>
+                            <DataGridTemplateColumn Header="Budget" Width="114*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}"
                                                    FontSize="14" Foreground="{StaticResource Ink}"
-                                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                   HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="" Width="75">
+                            <DataGridTemplateColumn Header="" Width="102*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Content="Open" Style="{StaticResource TableAction}"/>
@@ -228,6 +398,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
+                    </Grid>
                     </Border>
 
                     <local:TablePagination AutomationProperties.AutomationId="TablePagination"/>
@@ -236,49 +407,134 @@
 
                 <!-- Alerts -->
                 <TextBlock Text="Alerts" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <Border Background="{StaticResource InfoSoft}" CornerRadius="12" Padding="16">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="i" FontSize="18" Foreground="{StaticResource Info}" Margin="0,0,12,0"/>
-                                <StackPanel>
-                                    <TextBlock Text="Good to know" FontWeight="SemiBold" Foreground="{StaticResource Info}"/>
-                                    <TextBlock Text="Your changes save automatically as you type." FontSize="14" Foreground="{StaticResource Ink2}" Margin="0,3,0,0"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                        <Border Background="{StaticResource SuccessSoft}" CornerRadius="12" Padding="16" Margin="0,12,0,0">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="✓" FontSize="18" Foreground="{StaticResource Success}" Margin="0,0,12,0"/>
-                                <StackPanel>
-                                    <TextBlock Text="Saved" FontWeight="SemiBold" Foreground="{StaticResource Success}"/>
-                                    <TextBlock Text="Your settings have been updated." FontSize="14" Foreground="{StaticResource Ink2}" Margin="0,3,0,0"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </Border>
-
-                <!-- Selection controls -->
-                <TextBlock Text="Selection controls" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <CheckBox Content="Enable notifications" Style="{StaticResource ClaudeCheckBox}" IsChecked="True" AutomationProperties.AutomationId="ChkNotifications"/>
-                        <CheckBox Content="Weekly digest" Style="{StaticResource ClaudeCheckBox}" Margin="0,12,0,0" AutomationProperties.AutomationId="ChkDigest"/>
-                        <ComboBox Width="240" HorizontalAlignment="Left" Margin="0,18,0,0" SelectedIndex="0" AutomationProperties.AutomationId="CmbRole">
-                            <ComboBoxItem Content="Designer"/>
-                            <ComboBoxItem Content="Engineer"/>
-                            <ComboBoxItem Content="Product manager"/>
-                        </ComboBox>
-                        <DatePicker Width="200" HorizontalAlignment="Left" Margin="0,18,0,0" AutomationProperties.AutomationId="DatePick"/>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Inline messages for context and feedback."/>
+                <GroupBox AutomationProperties.AutomationId="DisplayAlerts" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="22"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="22"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource Alert}" Background="{StaticResource InfoSoft}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Style="{StaticResource IconInfo}" Foreground="{StaticResource Info}"
+                                                    Width="18" Height="18" Margin="0,1,0,0" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Good to know" Style="{StaticResource AlertTitle}" Foreground="{StaticResource Info}"/>
+                                        <TextBlock Text="Your changes save automatically as you type." Style="{StaticResource AlertText}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource Alert}" Background="{StaticResource SuccessSoft}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Style="{StaticResource IconCheck}" Foreground="{StaticResource Success}"
+                                                    Width="18" Height="18" Margin="0,1,0,0" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Saved" Style="{StaticResource AlertTitle}" Foreground="{StaticResource Success}"/>
+                                        <TextBlock Text="Your settings have been updated." Style="{StaticResource AlertText}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource Alert}" Background="{StaticResource WarningSoft}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Style="{StaticResource IconAlert}" Foreground="{StaticResource Warning}"
+                                                    Width="18" Height="18" Margin="0,1,0,0" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Check your input" Style="{StaticResource AlertTitle}" Foreground="{StaticResource Warning}"/>
+                                        <TextBlock Text="Some fields still need your attention." Style="{StaticResource AlertText}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource Alert}" Background="{StaticResource DangerSoft}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Style="{StaticResource IconClose}" Foreground="{StaticResource Danger}"
+                                                    Width="18" Height="18" Margin="0,1,0,0" VerticalAlignment="Top"/>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Something went wrong" Style="{StaticResource AlertTitle}" Foreground="{StaticResource Danger}"/>
+                                        <TextBlock Text="We couldn't complete that request. Try again." Style="{StaticResource AlertText}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </GroupBox>
 
                 <!-- Progress -->
-                <TextBlock Text="Progress &amp; tabs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Text="Progress bar" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="A determinate bar for work with a known duration, such as an upload. The demo animates through a simulated upload."/>
+                <GroupBox AutomationProperties.AutomationId="DisplayProgress" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <Grid Height="20.8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="ProgressLabel" Text="Uploading files…" FontFamily="{StaticResource Sans}" FontSize="13"
+                                           Foreground="{StaticResource Ink2}" LineHeight="20.8"
+                                           LineStackingStrategy="MaxHeight" VerticalAlignment="Center"
+                                           AutomationProperties.AutomationId="ProgressLabel"/>
+                                <TextBlock x:Name="ProgressValue" Grid.Column="1" Text="0%" FontFamily="{StaticResource Sans}" FontSize="13"
+                                           FontWeight="SemiBold" Foreground="{StaticResource Ink}" LineHeight="20.8"
+                                           LineStackingStrategy="MaxHeight" VerticalAlignment="Center"
+                                           Typography.NumeralAlignment="Tabular" HorizontalAlignment="Right"
+                                           AutomationProperties.AutomationId="ProgressValue"/>
+                            </Grid>
+                            <ProgressBar x:Name="ProgressBar" Style="{StaticResource DisplayProgress}" Margin="0,8,0,0"
+                                         AutomationProperties.AutomationId="ProgressBar"/>
+                            <Border Style="{StaticResource Divider}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Start upload" Style="{StaticResource PrimaryButton}"
+                                        Click="ProgressStart_Click" AutomationProperties.AutomationId="ProgressStart"/>
+                                <Button Content="Reset" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0"
+                                        Click="ProgressReset_Click" AutomationProperties.AutomationId="ProgressReset"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
+
+                <!-- Tabs -->
+                <TextBlock Text="Tabs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
                 <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
                     <StackPanel>
-                        <ProgressBar Height="8" Value="64" Maximum="100" AutomationProperties.AutomationId="ProgressBar"/>
                         <Slider Width="300" HorizontalAlignment="Left" Value="40" Margin="0,20,0,0" AutomationProperties.AutomationId="Slider"/>
                         <TabControl Margin="0,20,0,0" Height="140" AutomationProperties.AutomationId="Tabs">
                             <TabItem Header="Profile">
@@ -314,13 +570,52 @@
 
                 <!-- Avatars -->
                 <TextBlock Text="Avatars" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Border Style="{StaticResource Avatar}"><TextBlock Text="AL" Style="{StaticResource AvatarText}"/></Border>
-                        <Border Style="{StaticResource Avatar}" Background="{StaticResource Ink}" Margin="10,0,0,0"><TextBlock Text="JS" Style="{StaticResource AvatarText}" Foreground="White"/></Border>
-                        <Border Style="{StaticResource Avatar}" Background="#FFE6EEE7" Margin="10,0,0,0"><TextBlock Text="MK" Style="{StaticResource AvatarText}" Foreground="{StaticResource Success}"/></Border>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Initial-based user markers in three sizes and tones."/>
+                <GroupBox AutomationProperties.AutomationId="DisplayAvatars" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="52">
+                                <Border Style="{StaticResource AvatarCircle}" Width="30" Height="30" CornerRadius="15">
+                                    <TextBlock Text="AL" Style="{StaticResource AvatarInitials}" FontSize="11"/>
+                                </Border>
+                                <Border Style="{StaticResource AvatarCircle}" Margin="12,0,0,0">
+                                    <TextBlock Text="AL" Style="{StaticResource AvatarInitials}"/>
+                                </Border>
+                                <Border Style="{StaticResource AvatarCircle}" Width="52" Height="52" CornerRadius="26" Margin="12,0,0,0">
+                                    <TextBlock Text="AL" Style="{StaticResource AvatarInitials}" FontSize="16"/>
+                                </Border>
+                                <Border Style="{StaticResource AvatarCircle}" Background="{StaticResource Ink}"
+                                        BorderBrush="{StaticResource Ink}" Margin="12,0,0,0">
+                                    <TextBlock Text="JS" Style="{StaticResource AvatarInitials}" Foreground="White"/>
+                                </Border>
+                                <Border Style="{StaticResource AvatarCircle}" Background="{StaticResource SageBg}"
+                                        BorderBrush="{StaticResource SageBorder}" Margin="12,0,0,0">
+                                    <TextBlock Text="MK" Style="{StaticResource AvatarInitials}" Foreground="{StaticResource Success}"/>
+                                </Border>
+                            </StackPanel>
+                            <Border Style="{StaticResource Divider}"/>
+                            <StackPanel Orientation="Horizontal" Height="46.4">
+                                <Border Style="{StaticResource AvatarCircle}">
+                                    <TextBlock Text="AL" Style="{StaticResource AvatarInitials}"/>
+                                </Border>
+                                <StackPanel Margin="10,0,0,0">
+                                    <TextBlock Text="Ada Lovelace" FontFamily="{StaticResource Sans}" FontSize="14"
+                                               FontWeight="Bold" Foreground="{StaticResource Ink}" LineHeight="22.4"
+                                               LineStackingStrategy="MaxHeight"/>
+                                    <TextBlock Text="Workspace owner" FontFamily="{StaticResource Sans}" FontSize="12"
+                                               Foreground="{StaticResource Ink3}" LineHeight="19.2"
+                                               LineStackingStrategy="MaxHeight" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
                 <!-- Breadcrumbs -->
                 <TextBlock Text="Breadcrumbs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
@@ -366,29 +661,249 @@
 
                 <!-- Empty state -->
                 <TextBlock Text="Empty state" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel HorizontalAlignment="Center" AutomationProperties.AutomationId="EmptyState">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Border Style="{StaticResource EmptyIcon}"><TextBlock Text="▢" FontSize="18" Foreground="{StaticResource Brand}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
-                            <TextBlock Text="No projects yet" FontFamily="{StaticResource Serif}" FontSize="20" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Text="Projects you create will appear here. Start with a blank project." FontSize="14" Foreground="{StaticResource Ink2}" Margin="0,10,0,0"/>
-                        <Button Content="New project" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Center" Margin="0,20,0,0" AutomationProperties.AutomationId="EmptyAction"/>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="A full-size placeholder for when there's nothing to show yet. Give the person a clear next step."/>
+                <GroupBox AutomationProperties.AutomationId="EmptyState" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="22"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource DisplayCard}" Height="281.8">
+                                <StackPanel Margin="20,44,20,44">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27">
+                                        <ContentControl Style="{StaticResource IconCard}" Foreground="{StaticResource Brand}"
+                                                        Width="22" Height="22" VerticalAlignment="Center"/>
+                                        <TextBlock Width="9"/>
+                                        <TextBlock Text="No projects yet" Style="{StaticResource EmptyTitle}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="Projects you create will appear here. Start with a blank project to see how it works."
+                                               Style="{StaticResource EmptyText}" Margin="0,12,0,0"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
+                                        <Button Content="New project" Style="{StaticResource PrimaryButton}" AutomationProperties.AutomationId="EmptyAction"/>
+                                        <Button Content="View guide" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0"
+                                                AutomationProperties.AutomationId="EmptyGuide"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Style="{StaticResource DisplayCard}" Height="281.8">
+                                <StackPanel Margin="20,44,20,44">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27">
+                                        <ContentControl Style="{StaticResource IconSearch}" Foreground="{StaticResource Brand}"
+                                                        Width="22" Height="22" VerticalAlignment="Center"/>
+                                        <TextBlock Width="9"/>
+                                        <TextBlock Text="No results found" Style="{StaticResource EmptyTitle}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="We couldn't find anything for that search. Try a different term or clear your filters."
+                                               Style="{StaticResource EmptyText}" Margin="0,12,0,0"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22,0,0">
+                                        <Button Content="Clear filters" Style="{StaticResource SecondaryButton}" AutomationProperties.AutomationId="EmptyClear"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </GroupBox>
 
                 <!-- Skeleton -->
                 <TextBlock Text="Skeleton loader" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel AutomationProperties.AutomationId="Skeleton">
-                        <Border Height="14" Width="300" CornerRadius="6" Background="{StaticResource ShimmerBrush}" HorizontalAlignment="Left"/>
-                        <Border Height="14" Width="220" CornerRadius="6" Background="{StaticResource ShimmerBrush}" HorizontalAlignment="Left" Margin="0,10,0,0"/>
-                        <Border Height="14" Width="260" CornerRadius="6" Background="{StaticResource ShimmerBrush}" HorizontalAlignment="Left" Margin="0,10,0,0"/>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Placeholders that hold the shape of content while it loads, so the layout doesn't jump when data arrives."/>
+                <GroupBox AutomationProperties.AutomationId="Skeleton" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox">
+                            <ContentPresenter/>
+                        </ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <Border x:Name="LoadingCue" Style="{StaticResource MotionCue}"
+                                    AutomationProperties.AutomationId="LoadingCue">
+                                <TextBlock Text="Loading content…" FontFamily="{StaticResource Sans}" FontSize="12"
+                                           FontWeight="SemiBold" Foreground="{StaticResource Brand}"/>
+                            </Border>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="22"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Style="{StaticResource DisplayCard}" Height="162">
+                                    <StackPanel>
+                                        <Grid Height="40">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="12"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkCircle}"/>
+                                            <Grid Grid.Column="2" Height="32" VerticalAlignment="Center">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="12"/>
+                                                    <RowDefinition Height="8"/>
+                                                    <RowDefinition Height="12"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="55*"/>
+                                                        <ColumnDefinition Width="45*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Style="{StaticResource SkLine}"/>
+                                                </Grid>
+                                                <Grid Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="35*"/>
+                                                        <ColumnDefinition Width="65*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Style="{StaticResource SkLine}"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Margin="0,22,0,0">
+                                            <Border Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                        <Grid Margin="0,9,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="82*"/>
+                                                <ColumnDefinition Width="18*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                        <Grid Margin="0,9,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="64*"/>
+                                                <ColumnDefinition Width="36*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource DisplayCard}" Height="162">
+                                    <StackPanel>
+                                        <Grid Height="40">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="12"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkCircle}"/>
+                                            <Grid Grid.Column="2" Height="32" VerticalAlignment="Center">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="12"/>
+                                                    <RowDefinition Height="8"/>
+                                                    <RowDefinition Height="12"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="48*"/>
+                                                        <ColumnDefinition Width="52*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Style="{StaticResource SkLine}"/>
+                                                </Grid>
+                                                <Grid Grid.Row="2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30*"/>
+                                                        <ColumnDefinition Width="70*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Border Style="{StaticResource SkLine}"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Margin="0,22,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="90*"/>
+                                                <ColumnDefinition Width="10*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                        <Grid Margin="0,9,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="72*"/>
+                                                <ColumnDefinition Width="28*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <Border Style="{StaticResource Divider}"/>
+                            <TextBlock Text="Table rows" Style="{StaticResource DemoLabel}" Margin="0,0,0,16"/>
+                            <Border Style="{StaticResource DisplayCard}" Height="156">
+                                <StackPanel>
+                                    <Border Height="37" Padding="0,12,0,0" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                        <!-- Star values are the web's % of the 876px row at the 984 reference;
+                                             16px columns are the CSS gap, trailing star is the flex spacer. -->
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="245.3*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="175.2*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="122.6*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="197.3*"/>
+                                                <ColumnDefinition Width="87.6*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="2" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="4" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="7" Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Height="37" Padding="0,12,0,0" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="297.8*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="157.7*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="105.1*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="188.6*"/>
+                                                <ColumnDefinition Width="78.8*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="2" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="4" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="7" Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Height="36" Padding="0,12,0,0">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="210.2*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="192.7*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="131.4*"/>
+                                                <ColumnDefinition Width="16"/>
+                                                <ColumnDefinition Width="197.3*"/>
+                                                <ColumnDefinition Width="96.4*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border Grid.Column="0" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="2" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="4" Style="{StaticResource SkLine}"/>
+                                            <Border Grid.Column="7" Style="{StaticResource SkLine}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
                 <!-- Form inputs -->
                 <local:InputControls x:Name="FormInputs"/>
+
+                <!-- Pickers -->
+                <local:PickerControls x:Name="Pickers"/>
 
                 <!-- Data controls -->
                 <local:DataControls x:Name="DataTables"/>
@@ -396,16 +911,11 @@
                 <!-- Advanced controls -->
                 <local:AdvancedControls x:Name="AdvancedTables"/>
 
-                <!-- Overlay -->
-                <TextBlock Text="Overlays" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <Button Content="Open dialog" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left"
-                                Click="OpenDialog_Click" AutomationProperties.AutomationId="BtnOpenDialog"/>
-                        <TextBlock x:Name="DialogResultText" Text="No dialog opened yet." Margin="0,14,0,0"
-                                   Foreground="{StaticResource Ink2}" AutomationProperties.AutomationId="DialogResult"/>
-                    </StackPanel>
-                </Border>
+                <!-- Toast demos -->
+                <local:ToastControls x:Name="ToastDemos"/>
+
+                <!-- Overlay demos -->
+                <local:OverlayControls x:Name="Overlays"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

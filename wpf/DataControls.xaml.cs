@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace UIComponents.Wpf
 {
@@ -23,8 +24,13 @@ namespace UIComponents.Wpf
                         new[] { "Medium", "14", "24", "8" },
                         new[] { "Large", "18", "30", "12" } }, true);
 
-            TypedGrid.Items.Add(new { Variant = "Small", Category = "Standard", IsActive = true });
-            TypedGrid.Items.Add(new { Variant = "Large", Category = "Custom", IsActive = false });
+            TypedGrid.Hint = "Select a Category cell to change it with the dropdown, or tick IsActive. Selecting several cells and changing one updates the rest.";
+            TypedGrid.Setup(
+                new[] { Text("Variant"), Text("Width"), Text("Height"),
+                        Select("Category", "Standard", "Pro", "Custom"), Check("IsActive") },
+                new[] { new[] { "Small", "10", "20", "Standard", "true" },
+                        new[] { "Medium", "14", "24", "Pro", "true" },
+                        new[] { "Large", "18", "30", "Custom", "false" } }, false);
 
             _filterRows.Add(new FilterRow { Project = "Website refresh", Team = "Design team", Owner = "Ada Lovelace", Status = "Active", Updated = "Today" });
             _filterRows.Add(new FilterRow { Project = "Mobile app", Team = "Engineering", Owner = "Jonas Silva", Status = "Active", Updated = "Yesterday" });
@@ -53,6 +59,23 @@ namespace UIComponents.Wpf
             return col;
         }
 
+        private static SheetColumn Select(string name, params string[] options)
+        {
+            SheetColumn col = new SheetColumn();
+            col.Name = name;
+            col.Type = "select";
+            col.Options = options;
+            return col;
+        }
+
+        private static SheetColumn Check(string name)
+        {
+            SheetColumn col = new SheetColumn();
+            col.Name = name;
+            col.Type = "checkbox";
+            return col;
+        }
+
         private string _statusFilter = "all";
 
         private void FilterSegment_Checked(object sender, RoutedEventArgs e)
@@ -65,8 +88,6 @@ namespace UIComponents.Wpf
 
         private void FilterSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FilterPlaceholder.Visibility = string.IsNullOrEmpty(FilterSearch.Text)
-                ? Visibility.Visible : Visibility.Collapsed;
             ApplyFilter();
         }
 
@@ -80,6 +101,8 @@ namespace UIComponents.Wpf
             FilterGrid.ItemsSource = rows;
             FilterCount.Text = rows.Count + " of " + _filterRows.Count + " projects";
             FilterEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            FilterPagination.InfoText = rows.Count == 0 ? "No projects to show"
+                : "Showing 1–" + rows.Count + " of " + rows.Count;
         }
 
         private void SelectAll_Checked(object sender, RoutedEventArgs e) { SetAllRows(true); }
@@ -91,14 +114,24 @@ namespace UIComponents.Wpf
             UpdateBulkBar();
         }
 
-        private void RowCheck_Changed(object sender, RoutedEventArgs e) { UpdateBulkBar(); }
+        private void RowCheck_Changed(object sender, RoutedEventArgs e)
+        {
+            // The Checked event fires before the IsChecked binding pushes into the row.
+            CheckBox box = sender as CheckBox;
+            if (box != null)
+            {
+                BindingExpression binding = box.GetBindingExpression(CheckBox.IsCheckedProperty);
+                if (binding != null) binding.UpdateSource();
+            }
+            Dispatcher.BeginInvoke(new Action(UpdateBulkBar));
+        }
 
         private void SelectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) { UpdateBulkBar(); }
 
         private void UpdateBulkBar()
         {
             int count = SelectionGrid.Items.OfType<SelectionRow>().Count(r => r.Selected);
-            BulkText.Text = count + " selected";
+            BulkText.Text = count == 1 ? "1 row selected" : count + " rows selected";
             BulkBar.Visibility = count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
     }

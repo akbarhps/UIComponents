@@ -2,23 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <!-- Avatar -->
-    <Style x:Key="Avatar" TargetType="Border">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="CornerRadius" Value="99"/>
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-    </Style>
-    <Style x:Key="AvatarText" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-
     <!-- Breadcrumbs -->
     <Style x:Key="CrumbLink" TargetType="TextBlock">
         <Setter Property="FontSize" Value="13"/>
@@ -95,19 +78,4 @@
         </Setter>
     </Style>
 
-    <!-- Skeleton shimmer -->
-    <LinearGradientBrush x:Key="ShimmerBrush" StartPoint="0,0" EndPoint="1,0">
-        <GradientStop Color="#FFEEEAE0" Offset="0"/>
-        <GradientStop Color="#FFF8F5EC" Offset="0.5"/>
-        <GradientStop Color="#FFEEEAE0" Offset="1"/>
-    </LinearGradientBrush>
-
-    <!-- Empty state icon -->
-    <Style x:Key="EmptyIcon" TargetType="Border">
-        <Setter Property="Width" Value="42"/>
-        <Setter Property="Height" Value="42"/>
-        <Setter Property="CornerRadius" Value="11"/>
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-        <Setter Property="Margin" Value="0,0,12,0"/>
-    </Style>
 </ResourceDictionary>
