@@ -8,7 +8,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 - All colours, radii, shadows and fonts are CSS custom properties in `:root`. Change a token there, not individual rules.
 - Components are scoped classes (`.btn`, `.input`, `.card`, `.modal`, `.picker`, …). Link `web/dist/ui.css` and `web/dist/ui.js` (generated; never copy them) and take each component's markup from `SNIPPETS.md`.
-- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.sheet__table` pagination). Anything added to the DOM **after** that script runs must be initialised with one of the exported functions (`openOverlay`, `closeOverlay`, `setFieldError`, `showToast`, `createGrid`, `bindSimpleFilters`, `bindColumnFilters`) or re-initialised manually. Everything else auto-inits by class at load.
+- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.table-wrap` pagination). Anything added to the DOM **after** that script runs must be initialised with one of the exported functions (`openOverlay`, `closeOverlay`, `setFieldError`, `showToast`, `createGrid`, `bindSimpleFilters`, `bindColumnFilters`, `bindRowSelection`, `bindSortable`, `createCommandPalette`) or re-initialised manually. Everything else auto-inits by class at load.
 - IDs in the demo (`#sheet`, `#filterTable`, `#sortTable`, `#modal`, …) exist for the showcase. In your app, keep the class hooks and change the IDs — but update any JS that references them.
 - **`index.html` is the reference implementation.** For exact markup, class names and CSS, copy from the matching section there. This doc explains the decisions and wiring; the HTML is the working example.
 
@@ -20,7 +20,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 |---|---|---|
 | Trigger a single action | Button | Action menu (only for 3+ actions) |
 | Choose from 3+ actions on one object | Action menu | A row of buttons |
-| Pick one option from a short, known list | Native `.select` | Searchable select (it's for long lists) |
+| Pick one option from a short, known list | Native select | Searchable select (it's for long lists) |
 | Pick one option from a long list, with typing | Searchable select | Multi-select |
 | Pick several values from a known list | Multi-select | Tag input |
 | Enter freeform values not in a fixed list | Tag input | Multi-select |
@@ -45,6 +45,9 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 | Show tabular data | Data table | Grid input (it's for editing) |
 | Narrow rows by search/status | Table with filters | Column-filters table (use when each field has its own rule) |
 | Filter each column independently | Column-filters table | Table with filters |
+| Select several rows and act on them | Row selection table | Data table |
+| Sort and pin columns | Sortable table | Data table |
+| Run a command by search | Command palette | Action menu |
 
 ---
 
@@ -134,7 +137,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 - **Use for:** entering many rows/columns of values, Excel-style pasting, selecting ranges.
 - **Don't use for:** read-only data — use a data table.
-- **Wire:** call `createGrid('mySheet', columns, rows)`. Columns are objects: `{ name:'Width', type:'text' }`, `{ name:'Category', type:'select', options:['Standard','Pro'] }`, `{ name:'IsActive', type:'checkbox' }`. Markup: `.sheet#mySheet` (not `#sheet`, which the demo auto-wires) with `.sheet__toolbar` containing `[data-sheet-copy]`, `[data-sheet-clear]` and `[data-sheet-info]`, then `.sheet__scroll > table > thead/tbody`. Add rows/columns from in-table `+` controls. To disable adding columns, pass `{ allowAddColumn: false }`.
+- **Wire:** call `createGrid('productGrid', columns, rows)`. Columns are objects: `{ name:'Width', type:'text' }`, `{ name:'Category', type:'select', options:['Standard','Pro'] }`, `{ name:'IsActive', type:'checkbox' }`. Markup: `.sheet#productGrid` (not `#sheet`, which the demo auto-wires) with `.sheet__toolbar` containing `[data-sheet-copy]`, `[data-sheet-clear]` and `[data-sheet-info]`, then `.sheet__scroll > table > thead/tbody`. Add rows/columns from in-table `+` controls. To disable adding columns, pass `{ allowAddColumn: false }`.
 - **Keyboard:** click / Shift-click / Ctrl-click / drag select, Enter moves down, Delete or Clear wipes the selection. Copy (Ctrl+C) and paste (Ctrl+V) are handled globally for the last-used grid, including selections made from row/column headers. Paste expects tab/newline text.
 
 ### Typed grid — `#typed-sheet`
@@ -197,7 +200,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 - **Use for:** power-user navigation and actions by search.
 - **Don't use for:** a primary, discoverable action — use a button.
-- **Wire:** `#cmdkOverlay`, `#cmdkInput`, `#cmdkList`. Add entries to the `cmdkCommands` array: `{ group, label, icon, shortcut, run() }`. Global Ctrl/Cmd+K calls `openCmdk()`; each `run()` should perform the action or navigate.
+- **Wire:** `createCommandPalette(overlay, commands)`, called once (one palette per page); `overlay` holds `.cmdk__input` and `.cmdk__list` (see SNIPPETS.md). Commands are `{ group, label, icon, shortcut, run() }`. Global Ctrl/Cmd+K opens the palette; `palette.open` / `palette.close` are returned for a button. Each `run()` should perform the action or navigate.
 
 ---
 
@@ -239,12 +242,12 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 ### Data table — `#data-table`
 
 - **Use for:** read-only tabular data.
-- **Wire:** `.demo > .table-wrap > table.table`. For pagination add a sibling `.pagination` containing `[data-page-limit]` (select, options 10/25/50/100, default 25), `[data-page-info]`, `[data-page-list]`, `[data-page-prev]`, `[data-page-next]`. Tables without `[data-page-limit]` are skipped by the pagination loop.
+- **Wire:** `.table-wrap > table.table`. For pagination add a `.pagination` block in the same parent element as the `.table-wrap` (no `.demo` needed), containing `[data-page-limit]` (select, options 10/25/50/100, default 25), `[data-page-info]`, `[data-page-list]`, `[data-page-prev]`, `[data-page-next]`. A table-wrap whose parent has no `[data-page-limit]` is skipped by the pagination loop.
 
 ### Table with row selection — `#selection-table`
 
 - **Use for:** bulk actions on rows (export, delete).
-- **Wire:** `#selectAll`, `.row-check` on each row, `#bulkbar`, `#bulkCount`, and `[data-bulk="export|delete"]`. Update the `data-bulk` handlers to call your API. Delete removes DOM rows in the demo — replace with a confirmed server call.
+- **Wire:** `bindRowSelection(table, bulkbar, onBulk)`, called once. The header checkbox is `.select-all-check input`, each row has `.row-check`, the bulk bar's `<strong>` shows the count, and `[data-bulk="export|delete"]` buttons call `onBulk(action, checkedRows)`. The function never removes rows: the callback does (the demo deletes rows there; replace with a confirmed server call).
 
 ### Table with filters — `#filter-table`
 
@@ -259,7 +262,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 ### Sortable table — `#sort-table`
 
 - **Use for:** click-to-sort headers and an optional pinned column.
-- **Wire:** `.sort-btn[data-sort-key]` on header buttons; `data-sort-value` on cells whose display text is not sortable (money, dates, percentages). The column is derived from the header's `cellIndex`. `#stickyToggle` toggles `.sticky-column` on the table. This table also uses `bindColumnFilters('sortTable')`.
+- **Wire:** `bindSortable(table)`, called once. `.sort-btn[data-sort-key]` on header buttons; `data-sort-value` on cells whose display text is not sortable (money, dates, percentages). The column is derived from the header's `cellIndex`. A `.pin-btn` in the table toggles `.sticky-column`. The showcase also calls `bindColumnFilters('sortTable')`.
 
 ---
 
@@ -296,12 +299,12 @@ These are the highest-friction wirings. Everything else is either pure markup or
 ### 1. Grid input — column and row shape
 
 ```js
-// Markup: <div class="sheet" id="mySheet"> with a toolbar containing
+// Markup: <div class="sheet" id="productGrid"> with a toolbar containing
 // [data-sheet-copy], [data-sheet-clear], [data-sheet-info], and
 // .sheet__scroll > table > thead + tbody. The + row/column controls are
 // generated for you.
 
-createGrid('mySheet', [
+createGrid('productGrid', [
   { name: 'Variant', type: 'text' },
   { name: 'Category', type: 'select', options: ['Standard', 'Pro', 'Custom'] },
   { name: 'IsActive', type: 'checkbox' }

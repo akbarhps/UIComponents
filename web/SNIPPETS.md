@@ -1,6 +1,6 @@
 # Web snippets
 
-usage = link `dist/ui.css` in `<head>` (path relative to your page), `dist/ui.js` at END of `<body>`, never copy CSS/JS, never read index.html whole (grep -n, then read ranges), ids below are neutral and not wired by ui.js. Never reuse index.html ids (sheet, overlay, filterTable, ...): ui.js wires those by name.
+usage = link `dist/ui.css` in `<head>` (path relative to your page), `dist/ui.js` at END of `<body>`, never copy CSS/JS, never read index.html whole (grep -n, then read ranges), ids below are neutral and not wired by ui.js (except `#toastStack`, which ui.js requires). Never reuse index.html ids (sheet, overlay, filterTable, ...): ui.js wires those by name.
 icons: ui.js injects the sprite; use <svg><use href="#i-name"/></svg>; never inline <symbol>s
 icon ids: spark grid button form card modal badge alert more check close search arrow info table filter panel chevron pin calendar clock upload file edit copy download trash plus
 Markup is copied from index.html: whitespace condensed, repeated rows and options trimmed, showcase ids renamed to neutral ones; otherwise unchanged. Class hooks that ui.js requires are never trimmed. Section names match the Quick picker in COMPONENTS.md.
@@ -147,7 +147,7 @@ when: Edit many cells as a grid
   <div class="sheet__scroll"><table class="sheet__table"><thead></thead><tbody></tbody></table></div>
 </div>
 ```
-init: NOT auto. After the markup is in the DOM, call `createGrid('productGrid', [{ name: 'Width', type: 'text' }, { name: 'Category', type: 'select', options: ['Standard', 'Pro'] }, { name: 'IsActive', type: 'checkbox' }], [['Small', 'Standard', 'true']])`. Typed grid = same call with the same column types (index.html:3103-3119). Signature: `createGrid(rootId, columns, rows, options?)`, rootId is the element id as a string. Optional 4th arg `{ allowAddColumn: false }`.
+init: NOT auto. After the markup is in the DOM, call `createGrid('productGrid', [{ name: 'Width', type: 'text' }, { name: 'Category', type: 'select', options: ['Standard', 'Pro'] }, { name: 'IsActive', type: 'checkbox' }], [['Small', 'Standard', 'true']])`. Typed grid = same call with the same column types (the showcase's `typedSheet`, found by grep). Signature: `createGrid(rootId, columns, rows, options?)`, rootId is the element id as a string. Optional 4th arg `{ allowAddColumn: false }`.
 
 ### Badge
 when: Show a short status
@@ -355,8 +355,7 @@ init: static. ui.js wires Previous/Next only to the showcase ids, so the buttons
 ### Data table
 when: Show tabular data
 ```html
-<div class="demo">
-  <div class="table-wrap">
+<div class="table-wrap">
     <table class="table">
       <thead><tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th><th scope="col" class="table__num">Budget</th><th scope="col"></th></tr></thead>
       <tbody>
@@ -372,9 +371,8 @@ when: Show tabular data
     <span class="pagination__info" data-page-info></span>
     <div class="pagination__controls"> <button type="button" class="btn btn--secondary btn--sm" data-page-prev>Previous</button> <div class="pagination__pages" data-page-list></div> <button type="button" class="btn btn--secondary btn--sm" data-page-next>Next</button> </div>
   </div>
-</div>
 ```
-init: auto-initialised by ui.js at load for every `.demo > .table-wrap` (pagination). Keep the `.demo` wrapper and the pagination block; without them pagination does nothing.
+init: auto-initialised by ui.js at load for every `.table-wrap` whose parent element also holds a pagination block (`[data-page-limit]`). Put one table-wrap and its pagination block in the same parent element (one parent per table). No `.demo` wrapper is needed (`.demo` is the showcase card style). Without the pagination block nothing happens.
 
 ### Table with filters
 when: Narrow rows by search/status
@@ -399,7 +397,7 @@ when: Narrow rows by search/status
   </tbody>
 </table>
 ```
-init: NOT auto. Call `bindSimpleFilters('projectTable', 'projectSearch', 'projectFilters', 'projectCount')` (global, after load). Rows and filter buttons need `data-status`. Pagination is optional: inside a `.demo` with the Data table pagination block, filtering also resets its page.
+init: NOT auto. Call `bindSimpleFilters('projectTable', 'projectSearch', 'projectFilters', 'projectCount')` (global, after load). Rows and filter buttons need `data-status`. Pagination is optional: if the table sits in a `.table-wrap` whose parent also holds a Data table pagination block, filtering also resets its page.
 
 ### Column-filters table
 when: Filter each column independently
@@ -422,4 +420,68 @@ when: Filter each column independently
   </table>
 </div>
 ```
-init: NOT auto. Call `bindColumnFilters('budgetTable')` (global, after load; optional 2nd argument is a count element id). Filters are `thead input, thead select`: keep one filter cell per column. Pagination is optional, as in Table with filters.
+init: NOT auto. Call `bindColumnFilters('budgetTable')` (global, after load; optional 2nd argument is a count element id). Filters are `thead input, thead select`: keep one filter cell per column. Pagination is optional, as in Table with filters (it needs the table in a `.table-wrap` with a pagination block in the same parent).
+
+### Row selection table
+when: Select several rows and act on them
+```html
+<div class="bulkbar" id="myBulkbar" hidden>
+  <strong>0 selected</strong>
+  <div class="bulkbar__actions">
+    <button type="button" class="btn btn--secondary btn--sm" data-bulk="export">Export</button>
+    <button type="button" class="btn btn--danger btn--sm" data-bulk="delete">Delete</button>
+  </div>
+</div>
+<div class="table-wrap">
+  <table class="table" id="mySelectTable">
+    <thead><tr>
+      <th class="select-all-check"><label class="check"><input type="checkbox" aria-label="Select all rows"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></th>
+      <th>Project</th><th>Owner</th><th>Status</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Website refresh</td><td>Ada Lovelace</td><td><span class="badge badge--success">Active</span></td></tr>
+      <tr><td><label class="check"><input type="checkbox" class="row-check" aria-label="Select row"/><span class="check__box"><svg><use href="#i-check"/></svg></span></label></td><td>Mobile app</td><td>Jonas Silva</td><td><span class="badge badge--success">Active</span></td></tr>
+    </tbody>
+  </table>
+</div>
+```
+init: NOT auto. Call once after load: `bindRowSelection(document.getElementById('mySelectTable'), document.getElementById('myBulkbar'), (action, rows) => { ... })`. The header checkbox (`.select-all-check input`) and each `.row-check` drive the bulk bar; its `<strong>` shows the count. The callback gets the `data-bulk` value and the checked `<tr>` elements; the function does not remove rows, so do that in the callback (the showcase deletes them there).
+
+### Sortable table
+when: Click-to-sort headers, optional pinned column
+```html
+<div class="table-wrap">
+  <table class="table table--wide" id="mySortTable">
+    <thead>
+      <tr>
+        <th scope="col"><span class="th-inner"><button type="button" class="pin-btn" aria-pressed="false" aria-label="Pin project column" title="Pin project column"><svg><use href="#i-pin"/></svg></button><button type="button" class="sort-btn" data-sort-key="project">Project <svg class="sort-icon"><use href="#i-chevron"/></svg></button></span></th>
+        <th scope="col"><button type="button" class="sort-btn" data-sort-key="owner">Owner <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+        <th scope="col" class="table__num"><button type="button" class="sort-btn" data-sort-key="budget">Budget <svg class="sort-icon"><use href="#i-chevron"/></svg></button></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">Mobile app</th><td>Jonas Silva</td><td class="table__num" data-sort-value="28900">$28,900</td></tr>
+      <tr><th scope="row">Website refresh</th><td>Ada Lovelace</td><td class="table__num" data-sort-value="12400">$12,400</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+init: NOT auto. Call once after load: `bindSortable(document.getElementById('mySortTable'))`. Header buttons with `data-sort-key` sort the rows (click again to reverse); `data-sort-value` on a cell sorts by that value instead of its text. A `.pin-btn` in the header toggles `.sticky-column` on the table.
+
+### Command palette
+when: Run a command by search
+```html
+<button type="button" class="btn btn--secondary" id="openPalette">Open command palette <kbd class="cmdk__esc">Ctrl K</kbd></button>
+<div class="overlay cmdk-overlay" id="myPalette" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="cmdk">
+    <div class="cmdk__search">
+      <svg><use href="#i-search"/></svg>
+      <input class="cmdk__input" type="text" placeholder="Search for an action…" aria-label="Search commands" autocomplete="off" role="combobox" aria-controls="myPaletteList" aria-expanded="false"/>
+      <span class="cmdk__esc">ESC</span>
+    </div>
+    <div class="cmdk__list" id="myPaletteList" role="listbox" aria-label="Commands"></div>
+    <div class="cmdk__foot"><span><b>↑↓</b> to navigate</span><span><b>↵</b> to select</span><span><b>esc</b> to close</span></div>
+  </div>
+</div>
+```
+init: NOT auto. Call once after load (one palette per page): `const palette = createCommandPalette(document.getElementById('myPalette'), [{ group: 'Actions', label: 'Export workspace', icon: 'i-download', shortcut: '', run: () => exportWorkspace() }]);`. Ctrl/Cmd+K opens it (ignored while another overlay is open); `icon` is an id from the icon list above. Optional: `document.getElementById('openPalette').addEventListener('click', palette.open)`.

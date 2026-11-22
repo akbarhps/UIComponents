@@ -2,7 +2,7 @@
 (function () {
   if (document.documentElement.dataset.uiLoaded) return; // second copy: would bind every component twice
   document.documentElement.dataset.uiLoaded = "1";
-Object.assign(window, { openOverlay, closeOverlay, setFieldError, showToast, createGrid, bindSimpleFilters, bindColumnFilters });
+Object.assign(window, { openOverlay, closeOverlay, setFieldError, showToast, createGrid, bindSimpleFilters, bindColumnFilters, bindRowSelection, bindSortable, createCommandPalette });
 (function () {
   const sprite = "<svg width=\"0\" height=\"0\" style=\"position:absolute\" aria-hidden=\"true\">\n  <symbol id=\"i-spark\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M12 1.6c.5 4.9 2.5 7 7.4 7.4-4.9.5-6.9 2.5-7.4 7.4-.5-4.9-2.5-6.9-7.4-7.4 4.9-.4 6.9-2.5 7.4-7.4Z\"/><path fill=\"currentColor\" d=\"M19.4 15.2c.25 2.4 1.2 3.4 3.6 3.6-2.4.25-3.35 1.2-3.6 3.6-.25-2.4-1.2-3.35-3.6-3.6 2.4-.2 3.35-1.2 3.6-3.6Z\"/></symbol>\n  <symbol id=\"i-grid\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1.5\"/></symbol>\n  <symbol id=\"i-button\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><rect x=\"3\" y=\"7\" width=\"18\" height=\"10\" rx=\"3\"/><path d=\"M9.5 12h5\"/></symbol>\n  <symbol id=\"i-form\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M7 9h10M7 13h10M7 17h6\"/></symbol>\n  <symbol id=\"i-card\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 9h18\"/></symbol>\n  <symbol id=\"i-modal\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M8 21h8M12 18v3\"/></symbol>\n  <symbol id=\"i-badge\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M12 3l2.5 2.5L18 4l-.5 3.5L21 9l-2.5 2.5L21 14l-3.5.5L18 18l-3.5-1.5L12 19l-2.5-2.5L6 18l.5-3.5L3 14l2.5-2.5L3 9l3.5-1.5L6 4l3.5 1.5L12 3Z\"/></symbol>\n  <symbol id=\"i-alert\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3 2 20h20L12 3Z\"/><path d=\"M12 9v5M12 17.5v.5\"/></symbol>\n  <symbol id=\"i-more\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"5\" cy=\"12\" r=\"1\"/><circle cx=\"12\" cy=\"12\" r=\"1\"/><circle cx=\"19\" cy=\"12\" r=\"1\"/></symbol>\n  <symbol id=\"i-check\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12 5 5L19 7\"/></symbol>\n  <symbol id=\"i-close\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6 6 18\"/></symbol>\n  <symbol id=\"i-search\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></symbol>\n  <symbol id=\"i-arrow\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></symbol>\n  <symbol id=\"i-info\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 11v5M12 8v.5\"/></symbol>\n  <symbol id=\"i-table\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 9h18M3 14h18M9 9v11\"/></symbol>\n  <symbol id=\"i-filter\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 5h18l-7 8v6l-4 2v-8L3 5Z\"/></symbol>\n  <symbol id=\"i-panel\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M15 4v16\"/></symbol>\n  <symbol id=\"i-chevron\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m6 9 6 6 6-6\"/></symbol>\n  <symbol id=\"i-pin\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 17v5M9 3h6l-1 6 3 3v2H7v-2l3-3-1-6Z\"/></symbol>\n  <symbol id=\"i-calendar\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"16\" rx=\"2\"/><path d=\"M3 10h18M8 3v4M16 3v4\"/></symbol>\n  <symbol id=\"i-clock\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3 2\"/></symbol>\n  <symbol id=\"i-upload\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 16V4m0 0L7 9m5-5 5 5\"/><path d=\"M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3\"/></symbol>\n  <symbol id=\"i-file\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><path d=\"M6 3h8l4 4v14H6z\"/><path d=\"M14 3v4h4\"/></symbol>\n  <symbol id=\"i-edit\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"/><path d=\"M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z\"/></symbol>\n  <symbol id=\"i-copy\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><rect x=\"8\" y=\"8\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3\"/></symbol>\n  <symbol id=\"i-download\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 4v12m0 0 5-5m-5 5-5-5\"/><path d=\"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2\"/></symbol>\n  <symbol id=\"i-trash\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13\"/></symbol>\n</svg>\n<svg width=\"0\" height=\"0\" style=\"position:absolute\" aria-hidden=\"true\">\n  <symbol id=\"i-plus\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></symbol>\n</svg>";
   function inject() {
@@ -11,10 +11,11 @@ Object.assign(window, { openOverlay, closeOverlay, setFieldError, showToast, cre
   if (document.body) inject(); else document.addEventListener('DOMContentLoaded', inject);
 })();
 
-// Declared before any auto-init: a throw in one block must not leave these in the TDZ for closeOverlay/createGrid/showToast.
-let cmdkOverlay = null, cmdkInput = null; // assigned in the command palette block
+// Declared before any auto-init: a throw in one block must not leave these in the TDZ for createGrid/showToast.
 const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
 let activeGrid = null;
+// Set by the demo's blocks below; web-checks calls these by name, so they stay page globals.
+let openCmdk = () => {}, closeCmdk = () => {}, setProgress = () => {};
 /* Overlays */
 const overlays = [...document.querySelectorAll('.overlay')];
 const lastFocusByOverlay = new Map();
@@ -26,7 +27,7 @@ function openOverlay(el, focusEl){
 }
 function closeOverlay(el){
   el.classList.remove('open');
-  if(el === cmdkOverlay){ cmdkInput?.setAttribute('aria-expanded', 'false'); cmdkInput?.removeAttribute('aria-activedescendant'); }
+  el._onClose?.(); // a component that resets on close (the command palette) registers this on its overlay
   if(!overlays.some(o => o.classList.contains('open'))) document.body.style.overflow = '';
   const previous = lastFocusByOverlay.get(el);
   lastFocusByOverlay.delete(el);
@@ -64,16 +65,21 @@ document.addEventListener('keydown', e => {
 
 /* Confirmation modal */
 const hasIds = (...ids) => ids.every(id => document.getElementById(id));
+// Each auto-init runs alone: a throw is logged with its block name and the next block still runs.
+function safe(name, fn){ try { fn(); } catch(err){ console.error('ui.js: ' + name + ' failed', err); } }
 const overlay = document.getElementById('overlay');
+safe('confirm modal', () => {
 if(hasIds('overlay','openModal','closeModal','cancelModal','confirmModal')){ // demo-only wiring: skipped when the demo markup is absent
   document.getElementById('openModal').addEventListener('click', () => openOverlay(overlay, document.getElementById('closeModal')));
   document.getElementById('closeModal').addEventListener('click', () => closeOverlay(overlay));
   document.getElementById('cancelModal').addEventListener('click', () => closeOverlay(overlay));
   document.getElementById('confirmModal').addEventListener('click', () => { closeOverlay(overlay); showToast('success','Deleted','The project was removed.'); });
 }
+});
 
 /* Loading modal */
 const loadingOverlay = document.getElementById('loadingOverlay');
+safe('loading modal', () => {
 if(hasIds('loadingOverlay','openLoading')){ // demo-only wiring
   document.getElementById('openLoading').addEventListener('click', () => {
     openOverlay(loadingOverlay, loadingOverlay.querySelector('.loading-modal'));
@@ -83,6 +89,7 @@ if(hasIds('loadingOverlay','openLoading')){ // demo-only wiring
     }, 3000);
   });
 }
+});
 
 /* Modal form */
 const formOverlay = document.getElementById('formOverlay');
@@ -95,6 +102,7 @@ function setFieldError(field, on){
   if(control && error) on ? control.setAttribute('aria-describedby', error.id) : control.removeAttribute('aria-describedby');
 }
 function resetForm(form){ form.reset(); form.querySelectorAll('.field.has-error').forEach(f => setFieldError(f, false)); }
+safe('modal form', () => {
 if(hasIds('formOverlay','openFormModal','closeFormModal','cancelFormModal','projectForm','fm-name','fm-email')){ // demo-only wiring
 document.getElementById('openFormModal').addEventListener('click', () => { resetForm(document.getElementById('projectForm')); openOverlay(formOverlay, document.getElementById('fm-name')); });
 document.getElementById('closeFormModal').addEventListener('click', () => closeOverlay(formOverlay));
@@ -114,9 +122,11 @@ document.getElementById('projectForm').addEventListener('submit', e => {
 });
 ['fm-name','fm-email'].forEach(id => document.getElementById(id)?.addEventListener('input', e => setFieldError(e.target.closest('.field'), false)));
 }
+});
 
 /* Sidebar drawer form */
 const drawerOverlay = document.getElementById('drawerOverlay');
+safe('drawer form', () => {
 if(hasIds('drawerOverlay','openDrawer','closeDrawer','cancelDrawer','inviteForm','dr-email')){ // demo-only wiring
 document.getElementById('openDrawer').addEventListener('click', () => { resetForm(document.getElementById('inviteForm')); openOverlay(drawerOverlay, document.getElementById('dr-email')); });
 document.getElementById('closeDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
@@ -133,11 +143,13 @@ document.getElementById('inviteForm').addEventListener('submit', e => {
 });
 document.getElementById('dr-email').addEventListener('input', e => setFieldError(e.target.closest('.field'), false));
 }
+});
 
 /* Update drawer */
 const editOverlay = document.getElementById('editDrawerOverlay');
 const editConfirm = document.getElementById('editConfirm');
 const editEmail = document.getElementById('ed-email');
+safe('edit drawer', () => {
 if(hasIds('editDrawerOverlay','openEditDrawer','closeEditDrawer','cancelEditDrawer','editForm','ed-name','ed-email','editConfirm','editDelete','keepMember','confirmDelete')){ // demo-only wiring
 document.getElementById('openEditDrawer').addEventListener('click', () => {
   editConfirm.hidden = true;
@@ -176,18 +188,21 @@ editOverlay.addEventListener('keydown', e => {
   }
 });
 }
+});
 
 /* Table pagination */
-document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
-  const demo = wrap.closest('.demo');
+// A .table-wrap is paginated when its parent element holds a pagination block (the parent scopes the controls; no .demo needed).
+safe('pagination', () => {
+document.querySelectorAll('.table-wrap').forEach(wrap => {
+  const scope = wrap.parentElement;
   const table = wrap.querySelector('table');
   const getRows = () => [...table.tBodies[0].rows].filter(r => !r.id);
   const emptyRow = table.querySelector('tbody tr[id]');
-  const info = demo.querySelector('[data-page-info]');
-  const pageList = demo.querySelector('[data-page-list]');
-  const prev = demo.querySelector('[data-page-prev]');
-  const next = demo.querySelector('[data-page-next]');
-  const limit = demo.querySelector('[data-page-limit]');
+  const info = scope.querySelector('[data-page-info]');
+  const pageList = scope.querySelector('[data-page-list]');
+  const prev = scope.querySelector('[data-page-prev]');
+  const next = scope.querySelector('[data-page-next]');
+  const limit = scope.querySelector('[data-page-limit]');
   if(!limit) return;
   let page = 1;
   let pageSize = Number(limit.value);
@@ -221,8 +236,9 @@ document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
   prev.addEventListener('click', () => { if(page > 1){ page--; render(); } });
   next.addEventListener('click', () => { page++; render(); });
   limit.addEventListener('change', () => { pageSize = Number(limit.value); page = 1; render(); });
-  demo._resetPage = () => { page = 1; render(); };
+  table._resetPage = () => { page = 1; render(); };
   render();
+});
 });
 
 /* Search + status filters */
@@ -243,7 +259,7 @@ function bindSimpleFilters(tableId, searchId, filterId, countId){
       if(match) shown++;
     });
     count.textContent = shown + ' of ' + rows.length + ' projects';
-    document.getElementById(tableId).closest('.demo')?._resetPage?.();
+    document.getElementById(tableId)._resetPage?.();
   }
   search.addEventListener('input', apply);
   buttons.forEach(b => b.addEventListener('click', () => {
@@ -252,39 +268,46 @@ function bindSimpleFilters(tableId, searchId, filterId, countId){
     apply();
   }));
 }
+safe('table filters', () => {
 if(document.getElementById('filterTable')) bindSimpleFilters('filterTable', 'tableSearch', 'tableFilters', 'tableCount');
-
-/* Sortable table */
-const sortTable = document.getElementById('sortTable');
-if(hasIds('sortTable','stickyToggle')){ // demo-only wiring
-const sortBody = sortTable.tBodies[0];
-const sortButtons = [...sortTable.querySelectorAll('[data-sort-key]')];
-let sortKey = '', sortDir = 1;
-sortButtons.forEach(btn => btn.addEventListener('click', () => {
-  const key = btn.dataset.sortKey;
-  if(sortKey === key) sortDir *= -1;
-  else { sortKey = key; sortDir = 1; }
-  sortButtons.forEach(b => { b.classList.remove('asc', 'desc'); b.closest('th').removeAttribute('aria-sort'); });
-  btn.classList.add(sortDir === 1 ? 'asc' : 'desc');
-  btn.closest('th').setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
-  const index = btn.closest('th').cellIndex;
-  [...sortBody.rows].filter(r => !r.id)
-    .sort((a, b) => {
-      const av = a.cells[index].dataset.sortValue || a.cells[index].textContent.trim();
-      const bv = b.cells[index].dataset.sortValue || b.cells[index].textContent.trim();
-      const na = Number(av), nb = Number(bv);
-      const cmp = !Number.isNaN(na) && !Number.isNaN(nb) ? na - nb : av.localeCompare(bv);
-      return cmp * sortDir;
-    })
-    .forEach(row => sortBody.appendChild(row));
-  sortTable.closest('.demo')?._resetPage?.();
-}));
-const stickyToggle = document.getElementById('stickyToggle');
-stickyToggle.addEventListener('click', () => {
-  const pinned = sortTable.classList.toggle('sticky-column');
-  stickyToggle.setAttribute('aria-pressed', String(pinned));
 });
+
+/* Sortable table: a [data-sort-key] header button sorts the rows; a .pin-btn toggles .sticky-column. Call once per table. */
+function bindSortable(tableEl){
+  const sortBody = tableEl.tBodies[0];
+  const sortButtons = [...tableEl.querySelectorAll('[data-sort-key]')];
+  let sortKey = '', sortDir = 1;
+  sortButtons.forEach(btn => btn.addEventListener('click', () => {
+    const key = btn.dataset.sortKey;
+    if(sortKey === key) sortDir *= -1;
+    else { sortKey = key; sortDir = 1; }
+    sortButtons.forEach(b => { b.classList.remove('asc', 'desc'); b.closest('th').removeAttribute('aria-sort'); });
+    btn.classList.add(sortDir === 1 ? 'asc' : 'desc');
+    btn.closest('th').setAttribute('aria-sort', sortDir === 1 ? 'ascending' : 'descending');
+    const index = btn.closest('th').cellIndex;
+    [...sortBody.rows].filter(r => !r.id)
+      .sort((a, b) => {
+        const av = a.cells[index].dataset.sortValue || a.cells[index].textContent.trim();
+        const bv = b.cells[index].dataset.sortValue || b.cells[index].textContent.trim();
+        const na = Number(av), nb = Number(bv);
+        const cmp = !Number.isNaN(na) && !Number.isNaN(nb) ? na - nb : av.localeCompare(bv);
+        return cmp * sortDir;
+      })
+      .forEach(row => sortBody.appendChild(row));
+    tableEl._resetPage?.();
+  }));
+  const pin = tableEl.querySelector('.pin-btn');
+  pin?.addEventListener('click', () => {
+    const pinned = tableEl.classList.toggle('sticky-column');
+    pin.setAttribute('aria-pressed', String(pinned));
+  });
 }
+const sortTable = document.getElementById('sortTable');
+safe('sortable table', () => {
+if(hasIds('sortTable','stickyToggle')){ // demo-only wiring
+  bindSortable(sortTable);
+}
+});
 
 /* Column filters */
 function bindColumnFilters(tableId, countId){
@@ -312,14 +335,19 @@ function bindColumnFilters(tableId, countId){
       if(match) shown++;
     });
     if(count) count.textContent = shown + ' of ' + rows().length + ' projects';
-    table.closest('.demo')?._resetPage?.();
+    table._resetPage?.();
   }
   controls.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', apply));
 }
+safe('column filters', () => {
 if(document.getElementById('columnTable')) bindColumnFilters('columnTable', 'colCount');
+});
+safe('sortable column filters', () => {
 if(sortTable) bindColumnFilters('sortTable');
+});
 
 /* Searchable selects */
+safe('combo', () => {
 document.querySelectorAll('.combo').forEach((combo, index) => {
   const trigger = combo.querySelector('.combo__trigger');
   const panel = combo.querySelector('.combo__panel');
@@ -391,8 +419,10 @@ document.querySelectorAll('.combo').forEach((combo, index) => {
   panel.addEventListener('mousedown', e => { if(e.target !== search) e.preventDefault(); });
   combo.addEventListener('focusout', e => { if(!combo.contains(e.relatedTarget)) close(false); });
 });
+});
 
 /* Multi-selects */
+safe('multi', () => {
 document.querySelectorAll('.multi').forEach(multi => {
   const trigger = multi.querySelector('.multi__trigger');
   const panel = multi.querySelector('.multi__panel');
@@ -467,6 +497,7 @@ document.querySelectorAll('.multi').forEach(multi => {
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && !panel.hidden) close(); });
   document.addEventListener('click', e => { if(!multi.contains(e.target) && !panel.hidden) close(false); });
   render();
+});
 });
 
 /* Date & time pickers */
@@ -626,9 +657,12 @@ function initPicker(root, index){
   });
   render();
 }
+safe('picker', () => {
 document.querySelectorAll('.picker').forEach((root, index) => initPicker(root, index));
+});
 
 /* Autocomplete */
+safe('autocomplete', () => {
 document.querySelectorAll('.ac').forEach(root => {
   const options = (root.dataset.options || '').split(',').map(s => s.trim()).filter(Boolean);
   const multiple = root.dataset.multiple === 'true';
@@ -694,8 +728,10 @@ document.querySelectorAll('.ac').forEach(root => {
   renderTags();
   updateHint();
 });
+});
 
 /* Tag inputs */
+safe('tag input', () => {
 document.querySelectorAll('.tag-input-wrap').forEach(root => {
   const container = root.querySelector('.tag-input');
   const input = root.querySelector('.tag-input__field');
@@ -739,6 +775,7 @@ document.querySelectorAll('.tag-input-wrap').forEach(root => {
   input.addEventListener('blur', () => { if(input.value.trim()){ add(input.value); input.value = ''; } });
   container.addEventListener('click', () => input.focus());
   render();
+});
 });
 
 /* Spreadsheet inputs */
@@ -1016,12 +1053,15 @@ document.addEventListener('paste', e => {
   const text = (e.clipboardData || window.clipboardData).getData('text');
   if(activeGrid._pasteData(text)) e.preventDefault();
 });
+safe('grid sheet', () => {
 if(document.getElementById('sheet')) createGrid('sheet', [
   { name: 'Width', type: 'text' }, { name: 'Height', type: 'text' },
   { name: 'Depth', type: 'text' }, { name: 'Weight', type: 'text' }
 ], [
   ['Small', '10', '20', '5'], ['Medium', '14', '24', '8'], ['Large', '18', '30', '12']
 ]);
+});
+safe('typed grid', () => {
 if(document.getElementById('typedSheet')) createGrid('typedSheet', [
   { name: 'Variant', type: 'text' },
   { name: 'Width', type: 'text' },
@@ -1033,8 +1073,10 @@ if(document.getElementById('typedSheet')) createGrid('typedSheet', [
   ['Medium', '14', '24', 'Pro', 'true'],
   ['Large', '18', '30', 'Custom', 'false']
 ], { allowAddColumn: false });
+});
 
 /* Action menus */
+safe('action menu', () => {
 document.querySelectorAll('.menu').forEach(menu => {
   const trigger = menu.querySelector('[aria-haspopup="menu"]');
   const panel = menu.querySelector('.menu__panel');
@@ -1093,8 +1135,10 @@ document.querySelectorAll('.menu').forEach(menu => {
   }));
   document.addEventListener('click', e => { if(!menu.contains(e.target) && !panel.hidden) close(false); });
 });
+});
 
 /* File inputs */
+safe('file input', () => {
 document.querySelectorAll('.file-input').forEach(box => {
   const input = box.querySelector('input[type=file]');
   const drop = box.querySelector('.file-drop');
@@ -1150,12 +1194,72 @@ document.querySelectorAll('.file-input').forEach(box => {
   drop.addEventListener('drop', e => add([...e.dataTransfer.files]));
   render();
 });
+});
 
-/* Command palette */
-cmdkOverlay = document.getElementById('cmdkOverlay');
-cmdkInput = document.getElementById('cmdkInput');
-const cmdkList = document.getElementById('cmdkList');
+/* Command palette: Ctrl/Cmd+K opens it. commands: [{ group, label, icon, shortcut, run }]. One palette per page. */
+function createCommandPalette(overlayEl, commands){
+  const input = overlayEl.querySelector('.cmdk__input');
+  const list = overlayEl.querySelector('.cmdk__list');
+  let active = 0, matches = [];
+  overlayEl._onClose = () => { input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); };
+  function render(){
+    const q = input.value.trim().toLowerCase();
+    matches = commands.filter(c => c.label.toLowerCase().includes(q));
+    active = 0;
+    if(!matches.length){ list.innerHTML = '<div class="cmdk__empty" role="presentation">No matching commands</div>'; input.removeAttribute('aria-activedescendant'); return; }
+    let html = '', lastGroup = '';
+    matches.forEach((c, i) => {
+      if(c.group !== lastGroup){ html += '<div class="cmdk__group" role="presentation">' + c.group + '</div>'; lastGroup = c.group; }
+      html += '<button type="button" role="option" id="cmdk-option-' + i + '" aria-selected="' + (i === 0) + '" class="cmdk__item' + (i === 0 ? ' is-active' : '') + '" data-i="' + i + '"><svg><use href="#' + c.icon + '"/></svg><span class="cmdk__item-label">' + c.label + '</span>' + (c.shortcut ? '<span class="cmdk__shortcut">' + c.shortcut + '</span>' : '') + '</button>';
+    });
+    list.innerHTML = html;
+    input.setAttribute('aria-activedescendant', list.querySelector('.cmdk__item').id);
+  }
+  function setActive(i){
+    const items = list.querySelectorAll('.cmdk__item');
+    if(!items.length) return;
+    active = (i + items.length) % items.length;
+    items.forEach((el, n) => { el.classList.toggle('is-active', n === active); el.setAttribute('aria-selected', String(n === active)); });
+    input.setAttribute('aria-activedescendant', items[active].id);
+    items[active].scrollIntoView({ block:'nearest' });
+  }
+  function open(){
+    openOverlay(overlayEl, input);
+    input.value = '';
+    input.setAttribute('aria-expanded', 'true');
+    render();
+  }
+  function close(){ closeOverlay(overlayEl); }
+  input.addEventListener('input', render);
+  input.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown'){ e.preventDefault(); setActive(active + 1); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); setActive(active - 1); }
+    else if(e.key === 'Enter' && matches[active]){
+      e.preventDefault();
+      const command = matches[active];
+      close();
+      command.run();
+    }
+  });
+  list.addEventListener('click', e => {
+    const item = e.target.closest('.cmdk__item');
+    if(!item) return;
+    const command = matches[+item.dataset.i];
+    close();
+    command.run();
+  });
+  document.addEventListener('keydown', e => {
+    if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
+      if(overlays.some(o => o.classList.contains('open'))){ e.preventDefault(); return; }
+      e.preventDefault();
+      open();
+    }
+  });
+  return { open, close };
+}
+safe('command palette', () => {
 if(hasIds('cmdkOverlay','cmdkInput','cmdkList','openCmdk')){ // demo-only wiring: skipped when the demo markup is absent
+function goTo(id){ document.getElementById(id)?.scrollIntoView({ behavior:'smooth', block:'start' }); }
 const cmdkCommands = [
   { group:'Actions', label:'Create a project', icon:'i-plus', shortcut:'Ctrl N', run:() => showToast('success','Create project','A new project draft was started.') },
   { group:'Actions', label:'Invite a member', icon:'i-more', shortcut:'', run:() => showToast('info','Invite member','Opening the invite form.') },
@@ -1164,78 +1268,28 @@ const cmdkCommands = [
   { group:'Navigation', label:'Go to Data table', icon:'i-table', shortcut:'', run:() => goTo('data-table') },
   { group:'Navigation', label:'Go to Grid input', icon:'i-table', shortcut:'', run:() => goTo('sheet-input') },
   { group:'Navigation', label:'Go to Date picker', icon:'i-calendar', shortcut:'', run:() => goTo('date-picker') },
-  { group:'Appearance', label:'Toggle sidebar', icon:'i-panel', shortcut:'Ctrl \\', run:() => sidebarToggle.click() }
+  { group:'Appearance', label:'Toggle sidebar', icon:'i-panel', shortcut:'Ctrl \\', run:() => sidebarToggle?.click() }
 ];
-let cmdkActive = 0, cmdkMatches = [];
-function goTo(id){ document.getElementById(id).scrollIntoView({ behavior:'smooth', block:'start' }); }
-function renderCmdk(){
-  const q = cmdkInput.value.trim().toLowerCase();
-  cmdkMatches = cmdkCommands.filter(c => c.label.toLowerCase().includes(q));
-  cmdkActive = 0;
-  if(!cmdkMatches.length){ cmdkList.innerHTML = '<div class="cmdk__empty" role="presentation">No matching commands</div>'; cmdkInput.removeAttribute('aria-activedescendant'); return; }
-  let html = '', lastGroup = '';
-  cmdkMatches.forEach((c, i) => {
-    if(c.group !== lastGroup){ html += '<div class="cmdk__group" role="presentation">' + c.group + '</div>'; lastGroup = c.group; }
-    html += '<button type="button" role="option" id="cmdk-option-' + i + '" aria-selected="' + (i === 0) + '" class="cmdk__item' + (i === 0 ? ' is-active' : '') + '" data-i="' + i + '"><svg><use href="#' + c.icon + '"/></svg><span class="cmdk__item-label">' + c.label + '</span>' + (c.shortcut ? '<span class="cmdk__shortcut">' + c.shortcut + '</span>' : '') + '</button>';
-  });
-  cmdkList.innerHTML = html;
-  cmdkInput.setAttribute('aria-activedescendant', cmdkList.querySelector('.cmdk__item').id);
+const palette = createCommandPalette(document.getElementById('cmdkOverlay'), cmdkCommands);
+openCmdk = palette.open;
+closeCmdk = palette.close;
+document.getElementById('openCmdk').addEventListener('click', palette.open);
 }
-function setCmdkActive(i){
-  const items = cmdkList.querySelectorAll('.cmdk__item');
-  if(!items.length) return;
-  cmdkActive = (i + items.length) % items.length;
-  items.forEach((el, n) => { el.classList.toggle('is-active', n === cmdkActive); el.setAttribute('aria-selected', String(n === cmdkActive)); });
-  cmdkInput.setAttribute('aria-activedescendant', items[cmdkActive].id);
-  items[cmdkActive].scrollIntoView({ block:'nearest' });
-}
-function openCmdk(){
-  openOverlay(cmdkOverlay, cmdkInput);
-  cmdkInput.value = '';
-  cmdkInput.setAttribute('aria-expanded', 'true');
-  renderCmdk();
-}
-function closeCmdk(){ closeOverlay(cmdkOverlay); }
-cmdkInput.addEventListener('input', renderCmdk);
-cmdkInput.addEventListener('keydown', e => {
-  if(e.key === 'ArrowDown'){ e.preventDefault(); setCmdkActive(cmdkActive + 1); }
-  else if(e.key === 'ArrowUp'){ e.preventDefault(); setCmdkActive(cmdkActive - 1); }
-  else if(e.key === 'Enter' && cmdkMatches[cmdkActive]){
-    e.preventDefault();
-    const command = cmdkMatches[cmdkActive];
-    closeCmdk();
-    command.run();
-  }
 });
-cmdkList.addEventListener('click', e => {
-  const item = e.target.closest('.cmdk__item');
-  if(!item) return;
-  const command = cmdkMatches[+item.dataset.i];
-  closeCmdk();
-  command.run();
-});
-document.getElementById('openCmdk').addEventListener('click', openCmdk);
-document.addEventListener('keydown', e => {
-  if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k'){
-    if(overlays.some(o => o.classList.contains('open'))){ e.preventDefault(); return; }
-    e.preventDefault();
-    openCmdk();
-  }
-});
-}
 
 /* Progress bar */
 const progressFill = document.getElementById('progressFill');
+safe('progress', () => {
 if(hasIds('progressFill','progressValue','progressLabel')){ // demo-only wiring
 
 const progressValue = document.getElementById('progressValue');
 const progressLabel = document.getElementById('progressLabel');
 let progressTimer = null;
-function setProgress(value){
+setProgress = function(value){
   progressFill.style.width = value + '%';
   progressValue.textContent = value + '%';
   progressFill.parentElement.setAttribute('aria-valuenow', value);
-}
+};
 document.getElementById('progressStart')?.addEventListener('click', () => {
   if(progressTimer) return;
   let value = 0;
@@ -1258,9 +1312,11 @@ document.getElementById('progressReset')?.addEventListener('click', () => {
   setProgress(0);
 });
 }
+});
 
 /* Stepper */
 const stepperDemo = document.getElementById('stepperDemo');
+safe('stepper', () => {
 if(hasIds('stepperDemo','stepStatus','stepPrev','stepNext')){ // demo-only wiring
 const stepEls = [...stepperDemo.querySelectorAll('.step')];
 const stepStatus = document.getElementById('stepStatus');
@@ -1288,8 +1344,10 @@ document.getElementById('stepPrev').addEventListener('click', () => { if(current
 document.getElementById('stepNext').addEventListener('click', () => { if(currentStep < stepEls.length - 1){ currentStep++; renderStepper(); } });
 renderStepper();
 }
+});
 
 /* Accordions */
+safe('accordion', () => {
 document.querySelectorAll('.accordion').forEach(accordion => {
   const single = accordion.hasAttribute('data-single');
   accordion.querySelectorAll('.accordion__trigger').forEach(trigger => {
@@ -1307,8 +1365,10 @@ document.querySelectorAll('.accordion').forEach(accordion => {
     });
   });
 });
+});
 
 /* Tabs */
+safe('tabs', () => {
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     tab.closest('[role=tablist]').querySelectorAll('.tab').forEach(t => { t.setAttribute('aria-selected','false'); t.tabIndex = -1; });
@@ -1332,8 +1392,10 @@ document.querySelectorAll('.tab').forEach(tab => {
     tabs[n].focus();
   });
 });
+});
 
 /* Tooltips */
+safe('tooltips', () => {
 document.querySelectorAll('#tooltip-demo .tip').forEach(tip => {
   const btn = tip.querySelector('button');
   btn.addEventListener('keydown', e => { if(e.key === 'Escape'){ e.preventDefault(); tip.classList.add('is-dismissed'); } });
@@ -1341,39 +1403,44 @@ document.querySelectorAll('#tooltip-demo .tip').forEach(tip => {
   btn.addEventListener('blur', () => tip.classList.remove('is-dismissed'));
   tip.addEventListener('mouseleave', () => tip.classList.remove('is-dismissed'));
 });
+});
 
 /* Row selection */
-const selectionTable = document.getElementById('selectionTable');
-if(hasIds('selectionTable','selectAll','bulkbar','bulkCount')){ // demo-only wiring
-const rowChecks = [...selectionTable.querySelectorAll('.row-check')];
-const selectAll = document.getElementById('selectAll');
-const bulkbar = document.getElementById('bulkbar');
-const bulkCount = document.getElementById('bulkCount');
-function updateBulkbar(){
-  const selected = rowChecks.filter(c => c.checked).length;
-  bulkbar.hidden = selected === 0;
-  bulkCount.textContent = selected + (selected === 1 ? ' row selected' : ' rows selected');
-  selectAll.checked = selected === rowChecks.length && selected > 0;
-  selectAll.indeterminate = selected > 0 && selected < rowChecks.length;
-}
-rowChecks.forEach(c => c.addEventListener('change', updateBulkbar));
-selectAll.addEventListener('change', () => {
-  rowChecks.forEach(c => c.checked = selectAll.checked);
-  updateBulkbar();
-});
-bulkbar.querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => {
-  const action = b.dataset.bulk;
-  const count = rowChecks.filter(c => c.checked).length;
-  if(action === 'delete'){
-    rowChecks.filter(c => c.checked).forEach(c => c.closest('tr').remove());
-    rowChecks.splice(0, rowChecks.length, ...selectionTable.querySelectorAll('.row-check'));
-    showToast('success', 'Rows deleted', count + (count === 1 ? ' row' : ' rows') + ' removed.');
-  } else {
-    showToast('info', 'Export started', 'Preparing ' + count + (count === 1 ? ' row' : ' rows') + ' for export.');
+/* Row selection: .row-check boxes in tableEl drive the bulk bar (its <strong> shows the count; its [data-bulk] buttons call onBulk(action, checkedRows)). Call once per table. */
+function bindRowSelection(tableEl, bulkbarEl, onBulk){
+  const selectAll = tableEl.querySelector('.select-all-check input');
+  const count = bulkbarEl.querySelector('strong');
+  const boxes = () => [...tableEl.querySelectorAll('.row-check')];
+  function update(){
+    const all = boxes(), selected = all.filter(c => c.checked).length;
+    bulkbarEl.hidden = selected === 0;
+    count.textContent = selected + (selected === 1 ? ' row selected' : ' rows selected');
+    selectAll.checked = selected === all.length && selected > 0;
+    selectAll.indeterminate = selected > 0 && selected < all.length;
   }
-  updateBulkbar();
-}));
+  tableEl.addEventListener('change', e => { if(e.target.classList.contains('row-check')) update(); });
+  selectAll.addEventListener('change', () => {
+    boxes().forEach(c => c.checked = selectAll.checked);
+    update();
+  });
+  bulkbarEl.querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => {
+    onBulk?.(b.dataset.bulk, boxes().filter(c => c.checked).map(c => c.closest('tr')));
+    update();
+  }));
 }
+const selectionTable = document.getElementById('selectionTable');
+safe('row selection', () => {
+if(hasIds('selectionTable','bulkbar')){ // demo-only wiring
+bindRowSelection(selectionTable, document.getElementById('bulkbar'), (action, rows) => {
+  if(action === 'delete'){
+    rows.forEach(row => row.remove());
+    showToast('success', 'Rows deleted', rows.length + (rows.length === 1 ? ' row' : ' rows') + ' removed.');
+  } else {
+    showToast('info', 'Export started', 'Preparing ' + rows.length + (rows.length === 1 ? ' row' : ' rows') + ' for export.');
+  }
+});
+}
+});
 
 /* Toasts */
 function showToast(type, title, text, options = {}){
@@ -1424,6 +1491,7 @@ function showToast(type, title, text, options = {}){
   schedule();
   return el;
 }
+safe('toast buttons', () => {
 document.querySelectorAll('[data-toast]').forEach(b => {
   b.addEventListener('click', () => {
     const t = b.dataset.toast;
@@ -1435,7 +1503,9 @@ document.querySelectorAll('[data-toast]').forEach(b => {
     showToast(t, msg[0], msg[1]);
   });
 });
+});
 
+safe('toast demo', () => {
 if(hasIds('toastDismissible','toastWithAction','toastPersistent')){ // demo-only wiring
 document.getElementById('toastDismissible').addEventListener('click', () =>
   showToast('info', 'New update available', 'Restart to apply the latest changes.', { dismissible: true }));
@@ -1444,9 +1514,11 @@ document.getElementById('toastWithAction').addEventListener('click', () =>
 document.getElementById('toastPersistent').addEventListener('click', () =>
   showToast('error', 'Connection lost', 'We could not reach the server. Check your network.', { persistent: true, dismissible: true }));
 }
+});
 
 /* Loading button demo */
 const loadingBtn = document.getElementById('loadingBtn');
+safe('loading button', () => {
 if(loadingBtn){ // demo-only wiring
 loadingBtn.addEventListener('click', () => {
   if(loadingBtn.getAttribute('aria-disabled') === 'true') return;
@@ -1456,10 +1528,12 @@ loadingBtn.addEventListener('click', () => {
   setTimeout(() => { loadingBtn.innerHTML = original; loadingBtn.removeAttribute('aria-disabled'); }, 1600);
 });
 }
+});
 
 /* Active nav highlight on scroll */
 const sections = [...document.querySelectorAll('.section[id]')];
 const navLinks = [...document.querySelectorAll('#nav a')];
+safe('active nav', () => {
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
@@ -1468,16 +1542,19 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-15% 0px -75% 0px' });
 sections.forEach(s => observer.observe(s));
+});
 
 /* Collapsible sidebar */
 const app = document.querySelector('.app');
 const sidebar = document.querySelector('.sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const brandToggle = document.getElementById('brandToggle');
+safe('sidebar nav links', () => {
 navLinks.forEach(a => {
   const label = a.textContent.trim();
   if(!a.dataset.tip) a.dataset.tip = label;
   a.setAttribute('aria-label', label);
+});
 });
 function setCollapsed(collapsed){
   app.classList.toggle('app--collapsed', collapsed);
@@ -1488,6 +1565,10 @@ function setCollapsed(collapsed){
   sidebarToggle.title = label;
   brandToggle.setAttribute('aria-label', label);
 }
+safe('sidebar toggle', () => {
 if(sidebarToggle) sidebarToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
+});
+safe('brand toggle', () => {
 if(brandToggle) brandToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
+});
 })();

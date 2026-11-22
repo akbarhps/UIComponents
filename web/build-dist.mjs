@@ -33,8 +33,8 @@ const spriteLoader = `(function () {
 })();`;
 
 // One IIFE: no page globals leak in or out. Only the factories SNIPPETS.md names are exported on window.
-// The export sits first: function declarations are hoisted, so the factories exist even if an auto-init throws.
-const exported = 'Object.assign(window, { openOverlay, closeOverlay, setFieldError, showToast, createGrid, bindSimpleFilters, bindColumnFilters });';
+// The export sits first. Function declarations are hoisted, and each auto-init runs inside safe() in index.html, so one failing init cannot stop the factories.
+const exported = 'Object.assign(window, { openOverlay, closeOverlay, setFieldError, showToast, createGrid, bindSimpleFilters, bindColumnFilters, bindRowSelection, bindSortable, createCommandPalette });';
 const js = '// GENERATED from web/index.html - run node web/build-dist.mjs\n(function () {\n' +
   '  if (document.documentElement.dataset.uiLoaded) return; // second copy: would bind every component twice\n' +
   '  document.documentElement.dataset.uiLoaded = "1";\n' +
