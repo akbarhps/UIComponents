@@ -1,16 +1,16 @@
 # Planner / reviewer playbook (WPF pixel parity)
 
-> **Resuming?** Read `plan/wpf/handoff/HANDOFF.md` first: live worker states, unsent prompts (`handoff/*-next.md`), commit plan and decisions since the last board update.
+> **Resuming?** Read the latest `plan/wpf/handoff/SESSION-*.md` (currently `SESSION-2026-11-22d.md`) first: session state, commit plan and decisions since the last board update. `HANDOFF.md` is stale.
 
-You are the **planner and reviewer**, not a worker. The user runs several worker agents in parallel, each in its own session, and relays messages between you and them by copy-paste. Your job:
+You are the **planner and reviewer**, not a worker. Work is done by `implementer` agents, one task phase at a time. Your job:
 1. Write task plans in `plan/wpf/NN-*.md`.
-2. Write the prompt the user sends to each worker.
-3. Review each worker's phase report against the web and give a verdict plus the next prompt.
+2. Write the prompt for each `implementer` run.
+3. Review each phase report against the web and give a verdict plus the next prompt.
 4. Fix shared **tooling** yourself when it blocks the workflow (build, test, capture scripts). Leave component code to the workers.
 
 Read `plan/wpf/README.md` (rules every worker follows) and the task files before doing anything.
 
-**The workers run in OpenCode Desktop, and you drive them directly:** read their reports and send prompts with `docs/oc.ps1`. See [docs/OPENCODE.md](../../docs/OPENCODE.md) for the setup, the session map and the loop. Copy-paste through the user is only the fallback.
+**The `implementer` agent runs the tasks.** Give it a task file (`plan/wpf/NN-*.md`) and one phase at a time, check its report in `plan/wpf/handoff/`, then review it with `phase-reviewer` (multi-phase plans) or `reviewer` (final). The OpenCode workers are retired.
 
 ## Goal
 
@@ -20,18 +20,19 @@ Read `plan/wpf/README.md` (rules every worker follows) and the task files before
 
 | Task | Agent | Done | Next |
 |---|---|---|---|
-| 01 grid input (`SheetGrid`) | `grid` | DONE: Phases 0-6, review fixes, web-fix port (typed paste clips per cell, copy only selected cells; both code-only: harness cannot drive paste or Ctrl-click); 119 assertions; session archived | uncommitted (shared files with other tasks): commit when the tree is stable |
-| 02 forms | `forms` | DONE: Phases 1-4 approved, focus-ring round verified (ring 4px each side, no box movement, 90 assertions) | session archived; accepted quirk: IsKeyboardFocused ring also shows after a mouse click |
-| 04 tables (fix-up of an earlier, unplanned port) | `tables` | Phases 1-2 reviewed; fix round 3 (empty state, last-row line kept in filter tables, segment gaps, avatars, line heights, SectionTitle LineHeight) + Phase 4 sent | Phase 3 (selection + bulk bar) after display's SecondaryButtonSm; delete TableSmallSecondary then |
-| 03 dropdown family (searchable select, multi-select, tag input, autocomplete) | `dropdown` | planned (03-dropdown.md); Phase 0 sent | update M8/A3/A6/S4/S5/S10/A2 once web fixes land |
-| 05 display (cards, badges, alerts, avatar, skeleton, progress, empty state) | `display` | Phase 0 approved, Phase 1 done (review pending) | Phase 2+ |
-| web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | DONE, committed f4c5faa (22/22 CDP checks, a C6 regression found in review and fixed); session archived | dropdown: autocomplete refs regenerated (hint line, card 162), port fixed behaviours; grid: C8/C9 follow-up sent |
-| 08 partial tests (split `UIAutomationTests.cs`, in-process driver, csproj wildcards) | `reviewer` | done: Phases 0-5. Full run 306 pass / 1 fail (known: toasts "auto-dismiss resumes when focus leaves") | uncommitted; commit with the rest when the user says. Worker prompts in `handoff/*-next*.md`, not sent |
-| rest (buttons, cards, badges, alerts, accordion, tabs, toasts, overlays, pickers, file input…) | — | not planned | group into similar sets, one task file each |
+| 01 grid input (`SheetGrid`) | `grid` | DONE, committed (bebf113 or earlier) | — |
+| 02 forms | `forms` | DONE, committed (bebf113 or earlier) | — |
+| 03 dropdown family (searchable select, multi-select, tag input, autocomplete) | `dropdown` | DONE, committed (bebf113 or earlier) | — |
+| 04 tables | `tables` | DONE, committed (bebf113 or earlier) | — |
+| 05 display (cards, badges, alerts, avatar, skeleton, progress, empty state) | `display` | DONE, committed (bebf113 or earlier) | — |
+| 06 navigation and buttons (buttons, action menu, accordion, stepper, breadcrumbs, tooltips, tabs) | `nav` | DONE, committed (bebf113 or earlier) | — |
+| 07 overlays, pickers, toasts (incl. file input) | `overlays`, `pickers`, `toasts` | DONE, committed (bebf113 or earlier) | — |
+| web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | DONE, committed f4c5faa | — |
+| 08 partial tests (split `UIAutomationTests.cs`, in-process driver, csproj wildcards) | `reviewer` | DONE, committed (bebf113 or earlier) | — |
+| rest (anything not in 01-08) | — | not planned | group into similar sets, one task file each |
 
 Dependencies:
-- Tables Phase 3 needs forms Phase 3 (`ClaudeCheckBox`).
-- Tables Phase 2 reuses `FieldInput` and the search overlay from task 02.
+- All satisfied.
 
 ## The loop
 
@@ -148,7 +149,7 @@ Report: files changed, build/test summary, capture paths + diffs, deviations, bl
 ## Tests: split layout, driver, open items (task 08)
 
 - **Layout.** `wpf/tests/Tests.Core.cs` has the helpers, `Drv`/`Fast*` and the `Main` runner. `Tests.<Area>.cs` (nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts) hold the checks; each is a partial method that `Core` calls. Canonical run order is that list. Areas compile with any subset: a missing one prints `FAIL  area <x> not compiled into this exe`.
-- **Running.** `run-hidden.ps1 -Agent <name> -Only a,b` (passed to the exe as `--only`). `build-tests.bat <name> <area ...>` compiles Core plus those areas. Full build and full run are the reviewer's: run both after every worker phase report that touches tests or shared files, and always before any commit. Each area must pass alone; `-Only` on an area run takes 3-40 s.
+- **Running.** `run-hidden.ps1 -Agent <name> -Only a,b` (passed to the exe as `--only`). `build-tests.bat <name> <area ...>` compiles Core plus those areas. Full build and full run are the reviewer's: run both after every worker phase report that touches tests or shared files, and always before any commit. Each area must pass alone; `-Only` on an area is fast (`-Only grid` ~15 s; see the README speed rule).
 - **Commit and worktrees.** Worktrees were considered for test isolation and deferred: the user chose partial tests. Limit: app builds still share one tree and one csproj, so a half-edit in any app file breaks every worker's `build.bat`. Per-worker branches or worktrees: revisit later. Workers never commit.
 - **Driver.** `run-hidden.ps1` sets `UITEST_DRIVE=1`; `App.xaml.cs` `DriverHook` installs an in-process WM_COPYDATA driver (`verb\tid\targ`, results 1 done / 2 not resolved, fall back to real UIA / 3 threw in app). Test actions go through `Drv`; reads stay on UIA. `UITEST_NODRIVE=1` forces real UIA. Output: `DRIVER  fast=N fallback=M` and one `fallback <verb>:<id> xN` line per fallback.
 - **Known semantic gaps.** Driver actions run inside an inter-process SendMessage (`RPC_E_CANTCALLOUT_ININPUTSYNCCALL` risk for TSF/clipboard/OLE, `driver-review.md` #5). Focus succeeds on the hidden desktop where real UIA SetFocus could not, so two toast focus tests now run instead of printing CODE-ONLY (#6).

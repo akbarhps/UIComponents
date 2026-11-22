@@ -18,7 +18,7 @@
 
     <!-- Web .card__title 17px/1.3 (22.1px) and .card__text 14px/1.6 (22.4px).
          Palatino's natural line box exceeds 22.1, so the title uses BlockLineHeight;
-         Segoe's does not, so the text uses MaxHeight. See each style's note. -->
+         Segoe's does not, so the text uses MaxHeight. -->
     <Style x:Key="DisplayCardTitle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
         <Setter Property="FontSize" Value="17"/>

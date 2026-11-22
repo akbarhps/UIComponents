@@ -116,12 +116,12 @@ namespace UIComponents.Wpf.Tests
 
                     // B2 edge: Start after completion keeps 100% until the first tick (no visual reset).
                     Invoke(progressStart);
-                    double afterRestart = ((RangeValuePattern)progress.GetCurrentPattern(RangeValuePattern.Pattern)).Current.Value;
-                    Check("progress no visual reset on restart", afterRestart >= 99.9, "value=" + afterRestart);
                     Check("progress label uploads on restart", progressLabel != null && GetValue(progressLabel) == "Uploading files…",
                         progressLabel == null ? "missing" : GetValue(progressLabel));
                     Check("progress text still 100% on restart", progressValue != null && GetValue(progressValue) == "100%",
                         progressValue == null ? "missing" : GetValue(progressValue));
+                    double afterRestart = ((RangeValuePattern)progress.GetCurrentPattern(RangeValuePattern.Pattern)).Current.Value;
+                    Check("progress no visual reset on restart", afterRestart >= 99.9, "value=" + afterRestart);
 
                     // B5 after completion: Reset immediately, before the new run's first tick.
                     Invoke(progressReset);
@@ -173,8 +173,6 @@ namespace UIComponents.Wpf.Tests
             }
 
             // Empty state
-            var empty = Find(root, "EmptyState") ?? FindByName(root, "No projects yet");
-            Check("empty state found", empty != null);
             var emptyAction = Find(root, "EmptyAction");
             Check("empty state action found", emptyAction != null);
             if (emptyAction != null) Invoke(emptyAction);

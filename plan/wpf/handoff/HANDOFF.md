@@ -1,3 +1,5 @@
+STALE: superseded by SESSION-2026-11-22d.md and git log
+
 # Handoff: planner/reviewer state (written 2026-11-21 ~21:30, before the 5h limit)
 
 Read `plan/wpf/REVIEWER.md` (playbook, status board, decisions) and `plan/wpf/README.md` first; this file is the delta. Resume with the global `opencode` skill (`~/.claude/skills/opencode/SKILL.md`).

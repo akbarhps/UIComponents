@@ -1086,8 +1086,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27">
                                         <ContentControl Style="{StaticResource IconCard}" Foreground="{StaticResource Brand}"
                                                         Width="22" Height="22" VerticalAlignment="Center"/>
-                                        <TextBlock Width="9"/>
-                                        <TextBlock Text="No projects yet" Style="{StaticResource EmptyTitle}"/>
+                                        <TextBlock Text="No projects yet" Style="{StaticResource EmptyTitle}" Margin="9,0,0,0"/>
                                     </StackPanel>
                                     <TextBlock Text="Projects you create will appear here. Start with a blank project to see how it works."
                                                Style="{StaticResource EmptyText}" Margin="0,12,0,0"/>
@@ -1103,8 +1102,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="27">
                                         <ContentControl Style="{StaticResource IconSearch}" Foreground="{StaticResource Brand}"
                                                         Width="22" Height="22" VerticalAlignment="Center"/>
-                                        <TextBlock Width="9"/>
-                                        <TextBlock Text="No results found" Style="{StaticResource EmptyTitle}"/>
+                                        <TextBlock Text="No results found" Style="{StaticResource EmptyTitle}" Margin="9,0,0,0"/>
                                     </StackPanel>
                                     <TextBlock Text="We couldn't find anything for that search. Try a different term or clear your filters."
                                                Style="{StaticResource EmptyText}" Margin="0,12,0,0"/>
@@ -1129,8 +1127,7 @@
                     </GroupBox.Template>
                     <Border Style="{StaticResource DemoCard}">
                         <StackPanel>
-                            <Border x:Name="LoadingCue" Style="{StaticResource MotionCue}"
-                                    AutomationProperties.AutomationId="LoadingCue">
+                            <Border x:Name="LoadingCue" Style="{StaticResource MotionCue}">
                                 <TextBlock Text="Loading content…" FontFamily="{StaticResource Sans}" FontSize="12"
                                            FontWeight="SemiBold" Foreground="{StaticResource Brand}"/>
                             </Border>

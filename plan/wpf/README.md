@@ -140,7 +140,7 @@ document.body.innerHTML='<pre id=o>'+out.join('\n')+'</pre>';
 Leave the WPF captures (`plan/wpf/ref/wpf-*.png`) in place after each phase so the reviewer can compare them side by side with the `web-*.png` files.
 
 ## Test speed rule (profiled 2026-11-22)
-The full suite takes ~167 s wall (incl. ~5 s app start); Find calls are ~80 s of that. Per-area runs take 3-40 s. Nobody needs the full suite except the reviewer: run your `-Only <area>`. Find each section container ONCE and search inside it; cache elements you reuse; never search from the window root for something inside a known section. Use a poll-until helper, not fixed sleeps.
+The full suite takes ~430 s wall (measured 2026-11-22, `-Agent implementer`, 534 checks, while other agents ran; the earlier ~167 s figure was from a quieter run). Per-area runs: `-Only grid` took 15 s wall (measured; other areas not measured). Nobody needs the full suite except the reviewer: run your `-Only <area>`. Find each section container ONCE and search inside it; cache elements you reuse; never search from the window root for something inside a known section. Use a poll-until helper, not fixed sleeps.
 Pattern actions go through the in-process driver (see "Writing tests"): do not add more actions than a check needs, prefer one action per state, and do not Invoke just to re-read.
 
 ## Writing tests (task 08)
@@ -164,7 +164,7 @@ Pattern actions go through the in-process driver (see "Writing tests"): do not a
 - A `UIAutomationTests.cs:NNN` reference in a task file or review now means: find the assertion by name in `Tests.<Area>.cs`.
 
 **Commands:**
-- Your phase: `cd wpf\tests`, `.\build-tests.bat <name> <area>`, `cd ..\..`, then `pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent <name> -Only <area>`. An area run takes 3-40 s, and each area must pass alone.
+- Your phase: `cd wpf\tests`, `.\build-tests.bat <name> <area>`, `cd ..\..`, then `pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent <name> -Only <area>`. Per-area timings are in the speed rule above (`-Only grid` ~15 s wall); each area must pass alone.
 - Always pass `-Only`. A partial build prints `FAIL  area <x> not compiled into this exe` for every area it does not contain.
 - Full build and full run (`build-tests.bat <name>` with no area, then `run-hidden.ps1` with no `-Only`): reviewer only.
 - Shared files (`App.xaml`, `MainWindow.xaml`, shared styles): a change there is tested by your own `-Only` runs. The reviewer runs the full suite.

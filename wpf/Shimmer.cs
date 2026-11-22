@@ -29,6 +29,7 @@ namespace UIComponents.Wpf
         // shared transform keeps every band in phase.
         private static readonly LinearGradientBrush OverlayBrush = CreateBrush();
         private static readonly bool IsCapture = IsCaptureMode();
+        private static bool animationStarted;   // the shared transform is animated once, not once per band
 
         private static bool IsCaptureMode()
         {
@@ -76,8 +77,9 @@ namespace UIComponents.Wpf
             {
                 overlay.Visibility = Visibility.Collapsed;
             }
-            else
+            else if (!animationStarted)
             {
+                animationStarted = true;
                 TranslateTransform transform = (TranslateTransform)OverlayBrush.RelativeTransform;
                 transform.X = -1;
                 DoubleAnimationUsingKeyFrames animation = new DoubleAnimationUsingKeyFrames();

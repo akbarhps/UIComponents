@@ -185,12 +185,6 @@
     <Style x:Key="BadgeSuccess" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
         <Setter Property="Background" Value="{StaticResource SuccessSoft}"/>
     </Style>
-    <Style x:Key="BadgeBrand" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-    </Style>
-    <Style x:Key="BadgeNeutral" TargetType="Border" BasedOn="{StaticResource BadgeBase}">
-        <Setter Property="Background" Value="{StaticResource BgDeep}"/>
-    </Style>
 
     <Style x:Key="BadgeText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
