@@ -1,0 +1,69 @@
+app PID 17404 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  dropdown
+PASS  tag input found
+PASS  tag count found
+PASS  PostMessage Enter adds tag
+PASS  autocomplete input found
+PASS  combo trigger found
+PASS  combo search absent when closed
+PASS  S1 search reachable from UIA root and focused
+PASS  S1 six options visible
+PASS  S1 search found
+PASS  S4 filter eng leaves 1
+PASS  S4 filter design leaves 2
+PASS  S4 an option is active before filter
+PASS  S4 filter xyz leaves 0
+PASS  S4 empty row shown
+PASS  S4 highlight cleared by filter
+PASS  S4 empty row hidden again
+PASS  S5 Up from none lands on Priya Shah
+PASS  S5 Down wraps to Ada Lovelace
+PASS  S5 Up from first wraps to Priya Shah
+PASS  S6 Enter with no active does nothing
+PASS  S6 Enter chooses active option
+PASS  S6 panel closed after Enter
+PASS  S6 trigger focused after Enter
+PASS  S3 Down opens combo
+PASS  S3 first option highlighted
+PASS  S7 Escape closes panel
+PASS  S7 trigger focused after Escape
+PASS  S3 Enter opens combo
+PASS  S3 Space opens combo
+PASS  S10 Tab closes panel
+PASS  S2 toggle close removes panel
+PASS  S2 trigger focused after toggle close
+PASS  S8 choose sets value text
+PASS  S8 choose marks value selected
+PASS  S8 search gone after choose
+PASS  M1 multi trigger found
+PASS  M1 multi search absent when closed
+PASS  M1 multi search focused on open
+PASS  M1 multi placeholder visible
+PASS  M1 six options shown
+PASS  M2 design leaves 2
+PASS  M5 select all checks visible only
+PASS  M5 clear all unchecks everything
+PASS  M3 placeholder returns at zero
+PASS  M3 two checked gives 2 selected
+PASS  M3 chips in option order
+PASS  M4 chip remove unchecks option
+PASS  M4 chip remove keeps panel open
+PASS  M6 Done closes panel
+PASS  M6 trigger focused after Done
+PASS  M6 selection persists after Done
+PASS  M1 selection survives reopen
+PASS  M1 chips survive reopen
+PASS  M1 checkbox state survives reopen
+PASS  M4 chip removable while closed
+PASS  M7 Escape closes multi
+AREA  dropdown done in 37,3 s
+
+PROFILE finds=52 findMs=20882
+DRIVER  fast=34 fallback=0
+RESULT  passed=57  failed=0

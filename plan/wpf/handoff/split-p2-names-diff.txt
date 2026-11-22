@@ -1,0 +1,5 @@
+Names compare: split-phase1-full.txt vs split-p2-full.txt (PASS/FAIL prefix + name, detail after ' — ' stripped, sorted)
+ref=307 new=307
+IDENTICAL
+RESULT ref: passed=306 failed=1 ; new: passed=306 failed=1
+Single known failure in both: FAIL  auto-dismiss resumes when focus leaves

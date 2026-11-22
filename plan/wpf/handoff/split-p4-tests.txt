@@ -1,0 +1,5 @@
+Phase 4 full suite (agent split3, full build after Tests.Core.cs edits): RESULT passed=306 failed=1; only FAIL = 'auto-dismiss resumes when focus leaves' (known).
+Check names vs split-phase1-full.txt: IDENTICAL (307 lines). DRIVER in-process actions enabled; fast=126 fallback=6 (unchanged).
+Build: build-tests.bat split3 (all) exit 0; build-tests.bat split3 grid exit 0; build-tests.bat split3 dropdown exit 0.
+Full log: plan/wpf/handoff/split-p4-full.txt
+Negative checks: plan/wpf/handoff/split-p4-only-negative.txt

@@ -1,0 +1,336 @@
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  nav
+PASS  buttons card found
+PASS  buttons 13 ids found
+PASS  primary button invokes
+PASS  loading button found
+PASS  B1 loading disabled + Working.
+PASS  B1 loading restored
+PASS  slider found
+PASS  slider value set
+PASS  tabs found
+PASS  tabs have items
+PASS  tab selection
+PASS  expander found
+PASS  expander collapses
+PASS  multi-select list found
+PASS  multi-select has items
+PASS  multi-select item selected
+PASS  breadcrumbs found
+PASS  stepper found
+PASS  tooltip button found
+PASS  action menu button found
+AREA  nav done in 9,9 s
+AREA  forms
+PASS  name field found
+PASS  name field value set
+PASS  email field found
+PASS  email field value set
+PASS  O0 probe Tab moves FieldName -> FieldEmail
+PASS  search field found
+PASS  search field value set
+PASS  message field found
+PASS  message field multiline value
+PASS  username field found
+PASS  username value is ada#
+PASS  username error found
+PASS  checkbox found
+PASS  checkbox toggles
+PASS  unavailable checkbox found
+PASS  unavailable checkbox disabled
+PASS  radio buttons found
+PASS  starter selected initially
+PASS  radio selection moves
+PASS  switch found
+PASS  switch toggles on
+PASS  switch toggles off
+PASS  combobox found
+PASS  combobox expands
+PASS  role item Engineer found
+PASS  role selection changes value
+AREA  forms done in 3,1 s
+AREA  tables
+PASS  data grid found
+PASS  data grid has rows
+PASS  filter table search found
+PASS  filter table grid found
+PASS  selection table found
+PASS  bulk bar hidden initially
+PASS  row checkbox found
+PASS  bulk bar reads 1 row selected
+PASS  bulk bar hidden after untick
+PASS  select-all checkbox found
+PASS  bulk bar appears on selection
+PASS  bulk bar hidden after select-all off
+PASS  column filter found
+PASS  column count found
+PASS  column filter reduces count
+PASS  column info text from matched count
+PASS  column filter grid found
+PASS  column empty state appears
+PASS  column empty state clears
+PASS  sortable scroller found
+PASS  pin column button found
+PASS  sortable grid found
+PASS  pin column toggles
+PASS  scroller actually moved
+PASS  unpinned column scrolls away
+PASS  pinned first cell stays put while scrolling
+PASS  project sort header found
+PASS  budget sort header found
+PASS  project asc first row
+PASS  project desc first row
+PASS  budget asc first row
+PASS  sortable filter found
+PASS  sort persists through filter
+PASS  sortable info text from matched count
+PASS  sortable empty state appears
+PASS  sortable empty state clears
+AREA  tables done in 22,7 s
+AREA  display
+PASS  DisplayCards found
+PASS  DisplayBadges found
+PASS  card title Workspace settings found
+PASS  card title Your plan found
+PASS  card button Open settings found
+PASS  card button Upgrade plan found
+PASS  badge Draft found
+PASS  badge In review found
+PASS  badge Active found
+PASS  badge Pending found
+PASS  badge Overdue found
+PASS  badge v1.0 found
+PASS  DisplayAlerts found
+PASS  EmptyState found by id
+PASS  alert Good to know found
+PASS  alert Saved found
+PASS  alert Check your input found
+PASS  alert Something went wrong found
+PASS  EmptyGuide found
+PASS  EmptyClear found
+PASS  No results found
+PASS  progress bar found
+PASS  progress label found
+PASS  progress value found
+PASS  progress start found
+PASS  progress reset found
+PASS  progress initial value 0
+PASS  progress initial label
+PASS  progress initial value text 0%
+PASS  progress first tick > 0
+PASS  progress label after second start
+PASS  progress reaches 100
+PASS  progress non-decreasing
+PASS  progress complete label
+PASS  progress complete value text
+PASS  progress no visual reset on restart
+PASS  progress label uploads on restart
+PASS  progress text still 100% on restart
+PASS  progress reset to 0 after completion
+PASS  progress reset label after completion
+PASS  progress reset text after completion
+PASS  progress mid-run tick > 0
+PASS  progress reset to 0 mid-run
+PASS  progress reset label mid-run
+PASS  progress reset text mid-run
+PASS  DisplayAvatars found
+PASS  AL avatars found at least 4
+PASS  avatar JS found
+PASS  avatar MK found
+PASS  avatar name Ada Lovelace found
+PASS  empty state found
+PASS  empty state action found
+PASS  skeleton found by id
+PASS  Table rows found
+PASS  motion cue hidden
+AREA  display done in 6,7 s
+AREA  overlays
+PASS  open modal button found
+PASS  modal dialog root shown
+PASS  modal close found from window root
+PASS  modal close focused on open
+PASS  Tab close -> cancel
+PASS  Tab cancel -> confirm
+PASS  Tab wraps confirm -> close
+PASS  Escape closes modal
+PASS  Escape restores opener focus
+PASS  Cancel closes modal
+PASS  X closes modal
+PASS  backdrop click closes modal
+PASS  Delete closes modal
+PASS  Delete raises Deleted toast
+PASS  OpenLoading found
+PASS  loading dialog shown
+PASS  loading card focused
+PASS  L1 Escape does not close loading
+PASS  L2 loading closes within 4s
+PASS  L2 Ready toast shown
+PASS  command palette button found
+PASS  drawer button found
+AREA  overlays done in 17,4 s
+AREA  dropdown
+PASS  tag input found
+PASS  tag count found
+PASS  PostMessage Enter adds tag
+PASS  autocomplete input found
+PASS  combo trigger found
+PASS  combo search absent when closed
+PASS  S1 search reachable from UIA root and focused
+PASS  S1 six options visible
+PASS  S1 search found
+PASS  S4 filter eng leaves 1
+PASS  S4 filter design leaves 2
+PASS  S4 an option is active before filter
+PASS  S4 filter xyz leaves 0
+PASS  S4 empty row shown
+PASS  S4 highlight cleared by filter
+PASS  S4 empty row hidden again
+PASS  S5 Up from none lands on Priya Shah
+PASS  S5 Down wraps to Ada Lovelace
+PASS  S5 Up from first wraps to Priya Shah
+PASS  S6 Enter with no active does nothing
+PASS  S6 Enter chooses active option
+PASS  S6 panel closed after Enter
+PASS  S6 trigger focused after Enter
+PASS  S3 Down opens combo
+PASS  S3 first option highlighted
+PASS  S7 Escape closes panel
+PASS  S7 trigger focused after Escape
+PASS  S3 Enter opens combo
+PASS  S3 Space opens combo
+PASS  S10 Tab closes panel
+PASS  S2 toggle close removes panel
+PASS  S2 trigger focused after toggle close
+PASS  S8 choose sets value text
+PASS  S8 choose marks value selected
+PASS  S8 search gone after choose
+PASS  M1 multi trigger found
+PASS  M1 multi search absent when closed
+PASS  M1 multi search focused on open
+PASS  M1 multi placeholder visible
+PASS  M1 six options shown
+PASS  M2 design leaves 2
+PASS  M5 select all checks visible only
+PASS  M5 clear all unchecks everything
+PASS  M3 placeholder returns at zero
+PASS  M3 two checked gives 2 selected
+PASS  M3 chips in option order
+PASS  M4 chip remove unchecks option
+PASS  M4 chip remove keeps panel open
+PASS  M6 Done closes panel
+PASS  M6 trigger focused after Done
+PASS  M6 selection persists after Done
+PASS  M1 selection survives reopen
+PASS  M1 chips survive reopen
+PASS  M1 checkbox state survives reopen
+PASS  M4 chip removable while closed
+PASS  M7 Escape closes multi
+AREA  dropdown done in 36,5 s
+AREA  pickers
+PASS  file browse button found
+PASS  file list found
+PASS  P date section found
+PASS  P1 trigger found
+PASS  P1 placeholder
+PASS  P1 panel absent when closed
+PASS  P2 open shows panel
+PASS  W7 panel name
+PASS  P5 initial title
+PASS  W7 today name and marker
+PASS  P5 prev month
+PASS  P5 next month
+PASS  P4 day cell found
+PASS  W7 full-date cell name
+PASS  P4 date pick closes panel
+PASS  P3 date format
+PASS  P7 reopened
+PASS  P2 selected cell focused on reopen
+PASS  P11 selection survives reopen
+PASS  P11 view month survives reopen
+PASS  finding-1 Next keeps panel open
+PASS  P7 Today commits
+PASS  P8 Clear resets to placeholder
+PASS  P9 Escape closes and keeps focus
+PASS  P10 outside click closes
+PASS  P2 month trigger found
+PASS  P2 month panel opens
+PASS  W7 month panel name
+PASS  P5 month title
+PASS  P4 month commits
+PASS  P2 year trigger found
+PASS  P2 year panel opens
+PASS  W7 year panel name
+PASS  P5 year title
+PASS  P4 year commits
+AREA  pickers done in 14,9 s
+AREA  grid
+PASS  grid input found
+PASS  grid cell r0c0 value
+PASS  grid cell r2c3 value
+PASS  grid row header selects 4
+PASS  grid typing propagates
+PASS  grid clear selected
+PASS  grid copy column TSV
+PASS  grid add row
+PASS  grid add column
+PASS  typed grid found
+PASS  typed grid has no add column
+PASS  typed checkbox initially on
+PASS  typed checkbox toggles off
+PASS  typed select chooses Custom
+AREA  grid done in 7,3 s
+AREA  toasts
+PASS  toast success button found
+PASS  toast info button found
+PASS  toast error button found
+PASS  success toast shown
+PASS  toast id numbered
+PASS  toast width 360
+PASS  toast height 73.5
+PASS  toast right inset 24
+PASS  plain toast auto-dismisses by 4.5s
+PASS  info toast shown
+PASS  plain toast still present at 3.0s
+PASS  info toast auto-dismisses by 4.5s
+PASS  error toast shown
+PASS  toast bottom inset 24
+PASS  error toast auto-dismisses by 4.5s
+PASS  dismissible button found
+PASS  with-action button found
+PASS  persistent button found
+PASS  persistent toast shown
+PASS  persistent height 97.5
+PASS  persistent close found
+PASS  close at (325,15)
+PASS  persistent toast survives 4.5s
+PASS  _Close removes toast
+PASS  action toast shown
+PASS  action height 100.5
+PASS  body width 262
+PASS  action button found
+PASS  action at (52,64.5)
+PASS  action toast survives 4.5s (W10)
+PASS  _Action raises Done toast
+PASS  _Action removes original toast
+PASS  dismissible toast shown
+PASS  dismissible height 73.5
+PASS  dismissible auto-dismisses by 4.5s
+PASS  focus pause toast shown
+PASS  keyboard focus pauses auto-dismiss
+FAIL  auto-dismiss resumes when focus leaves
+PASS  two toasts for focus restore
+PASS  newest toast at bottom
+PASS  toasts 10 apart
+PASS  focus restore to next close
+AREA  toasts done in 41,3 s
+
+PROFILE finds=315 findMs=79205
+DRIVER  fast=126 fallback=6
+DRIVER  fallback select:<no id> x4
+DRIVER  fallback toggle:RowCheck x2
+RESULT  passed=306  failed=1

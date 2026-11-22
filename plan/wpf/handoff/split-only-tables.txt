@@ -1,0 +1,50 @@
+app PID 28388 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  tables
+PASS  data grid found
+PASS  data grid has rows
+PASS  filter table search found
+PASS  filter table grid found
+PASS  selection table found
+PASS  bulk bar hidden initially
+PASS  row checkbox found
+PASS  bulk bar reads 1 row selected
+PASS  bulk bar hidden after untick
+PASS  select-all checkbox found
+PASS  bulk bar appears on selection
+PASS  bulk bar hidden after select-all off
+PASS  column filter found
+PASS  column count found
+PASS  column filter reduces count
+PASS  column info text from matched count
+PASS  column filter grid found
+PASS  column empty state appears
+PASS  column empty state clears
+PASS  sortable scroller found
+PASS  pin column button found
+PASS  sortable grid found
+PASS  pin column toggles
+PASS  scroller actually moved
+PASS  unpinned column scrolls away
+PASS  pinned first cell stays put while scrolling
+PASS  project sort header found
+PASS  budget sort header found
+PASS  project asc first row
+PASS  project desc first row
+PASS  budget asc first row
+PASS  sortable filter found
+PASS  sort persists through filter
+PASS  sortable info text from matched count
+PASS  sortable empty state appears
+PASS  sortable empty state clears
+AREA  tables done in 22,2 s
+
+PROFILE finds=40 findMs=13338
+DRIVER  fast=14 fallback=2
+DRIVER  fallback toggle:RowCheck x2
+RESULT  passed=37  failed=0

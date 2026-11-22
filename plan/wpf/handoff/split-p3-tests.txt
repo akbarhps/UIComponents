@@ -1,0 +1,4 @@
+Phase 3 full suite (agent split3, split3 full build, PickerControls extracted): RESULT passed=306 failed=1; only FAIL = 'auto-dismiss resumes when focus leaves' (known).
+Check names vs split-phase1-full.txt (after ^(PASS|FAIL) prefix, detail stripped, sorted): IDENTICAL (307 lines).
+DRIVER fast=126 fallback=6 (matches phase 1).
+Full log: plan/wpf/handoff/split-p3-full.txt

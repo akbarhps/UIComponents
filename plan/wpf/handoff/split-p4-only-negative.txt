@@ -1,0 +1,15 @@
+== split3 exe built with: Core + Dropdown only
+run-hidden -Only nav  (exit 1)
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+PASS  window found
+AREAS compiled: dropdown
+AREA  nav
+FAIL  area nav not compiled into this exe
+AREA  nav done in 0,0 s
+RESULT  passed=1  failed=1
+run-hidden -Only nope  (exit 1)
+AREAS compiled: dropdown
+FAIL  unknown area nope
+== trailing --only (no app needed; the check runs before the window lookup)
+UIAutomationTests.exe --only  (exit 1)
+FAIL  --only needs an area list, e.g. --only nav,grid

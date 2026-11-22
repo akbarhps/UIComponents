@@ -1,0 +1,35 @@
+app PID 35468 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  overlays
+PASS  open modal button found
+PASS  modal dialog root shown
+PASS  modal close found from window root
+PASS  modal close focused on open
+PASS  Tab close -> cancel
+PASS  Tab cancel -> confirm
+PASS  Tab wraps confirm -> close
+PASS  Escape closes modal
+PASS  Escape restores opener focus
+PASS  Cancel closes modal
+PASS  X closes modal
+PASS  backdrop click closes modal
+PASS  Delete closes modal
+PASS  Delete raises Deleted toast
+PASS  OpenLoading found
+PASS  loading dialog shown
+PASS  loading card focused
+PASS  L1 Escape does not close loading
+PASS  L2 loading closes within 4s
+PASS  L2 Ready toast shown
+PASS  command palette button found
+PASS  drawer button found
+AREA  overlays done in 17,4 s
+
+PROFILE finds=23 findMs=12276
+DRIVER  fast=11 fallback=0
+RESULT  passed=23  failed=0

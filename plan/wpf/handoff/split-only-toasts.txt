@@ -1,0 +1,55 @@
+app PID 28248 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  toasts
+PASS  toast success button found
+PASS  toast info button found
+PASS  toast error button found
+PASS  success toast shown
+PASS  toast id numbered
+PASS  toast width 360
+PASS  toast height 73.5
+PASS  toast right inset 24
+PASS  plain toast auto-dismisses by 4.5s
+PASS  info toast shown
+PASS  plain toast still present at 3.0s
+PASS  info toast auto-dismisses by 4.5s
+PASS  error toast shown
+PASS  toast bottom inset 24
+PASS  error toast auto-dismisses by 4.5s
+PASS  dismissible button found
+PASS  with-action button found
+PASS  persistent button found
+PASS  persistent toast shown
+PASS  persistent height 97.5
+PASS  persistent close found
+PASS  close at (325,15)
+PASS  persistent toast survives 4.5s
+PASS  _Close removes toast
+PASS  action toast shown
+PASS  action height 100.5
+PASS  body width 262
+PASS  action button found
+PASS  action at (52,64.5)
+PASS  action toast survives 4.5s (W10)
+PASS  _Action raises Done toast
+PASS  _Action removes original toast
+PASS  dismissible toast shown
+PASS  dismissible height 73.5
+PASS  dismissible auto-dismisses by 4.5s
+PASS  focus pause toast shown
+PASS  keyboard focus pauses auto-dismiss
+FAIL  auto-dismiss resumes when focus leaves
+PASS  two toasts for focus restore
+PASS  newest toast at bottom
+PASS  toasts 10 apart
+PASS  focus restore to next close
+AREA  toasts done in 41,5 s
+
+PROFILE finds=10 findMs=5227
+DRIVER  fast=15 fallback=0
+RESULT  passed=42  failed=1

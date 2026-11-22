@@ -1,0 +1,40 @@
+app PID 37936 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  forms
+PASS  name field found
+PASS  name field value set
+PASS  email field found
+PASS  email field value set
+PASS  O0 probe Tab moves FieldName -> FieldEmail
+PASS  search field found
+PASS  search field value set
+PASS  message field found
+PASS  message field multiline value
+PASS  username field found
+PASS  username value is ada#
+PASS  username error found
+PASS  checkbox found
+PASS  checkbox toggles
+PASS  unavailable checkbox found
+PASS  unavailable checkbox disabled
+PASS  radio buttons found
+PASS  starter selected initially
+PASS  radio selection moves
+PASS  switch found
+PASS  switch toggles on
+PASS  switch toggles off
+PASS  combobox found
+PASS  combobox expands
+PASS  role item Engineer found
+PASS  role selection changes value
+AREA  forms done in 3,1 s
+
+PROFILE finds=14 findMs=497
+DRIVER  fast=15 fallback=1
+DRIVER  fallback select:<no id> x1
+RESULT  passed=27  failed=0

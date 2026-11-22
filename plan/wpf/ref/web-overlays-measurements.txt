@@ -1,0 +1,400 @@
+# 07 overlays and pickers: web geometry (generated 2026-11-22 by web-overlays-measure.js, Edge --dump-dom, --hide-scrollbars)
+# viewport of THIS dump: 1376x1008 (the PNG refs are 1400x1100). 'vp' = viewport-absolute (valid only for this viewport); 'rel' = relative to the dialog box / toast / picker panel / .demo card.
+# Colours, fonts and shadows are raw Edge computed values (rgb(...), full font family, full box-shadow); older refs used hex/token shorthand.
+# Picker numbers depend on today's date (dump taken 2026-11-22: November 2026, today ring on 22).
+ viewport 1376x1008
+== modal section 314.5,13737.3,984,268.4 demo 314.5,13893.7,984,104
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Modal dialog"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Focused confirmation that interrupts the"
+ btn[0] rel 31,31,114.3,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Open dialog"
+-- modal open (focus=closeModal)
+ .overlay vp 0,0,1365,1008 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(30, 26, 20, 0.42) bd=0px none rgb(38, 36, 31) rad=0px pad=20px shadow=none
+ .modal vp 452.5,400.6,460,206.8 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=26px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .modal__head rel 27,27,406,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .modal__title rel 27,27,185.4,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Delete this project?"
+ .icon-btn rel 401,27,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ icon svg rel 408,34,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .modal__body rel 27,69,406,44.8 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="This will permanently remove the project"
+ .modal__foot rel 27,137.8,406,42 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ #cancelModal rel 219.7,137.8,77.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Cancel"
+ #confirmModal rel 307.6,137.8,125.4,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(176, 67, 58) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=none text="Delete project"
+ overlay backdrop-filter=blur(3px)
+== form-modal section 314.5,4282,984,268.4 demo 314.5,4438.4,984,104
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Modal form"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="A focused form in a dialog. Fields keep "
+ btn[0] rel 31,31,125.4,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Create project"
+-- form modal open (focus=fm-name)
+ .modal--form vp 412.5,246.1,540,515.8 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=26px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .modal__title rel 27,27,149.3,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Create a project"
+ .icon-btn rel 481,27,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .modal__body rel 27,69,486,22.4 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Give the project a name and an owner. Yo"
+ .form-grid rel 27,113.4,486,161.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .field__label[0] rel 27,113.4,235,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Project name"
+ .field__label[1] rel 278,113.4,235,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Owner email"
+ .field__label[2] rel 27,202.2,486,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Team"
+ .field__label[3] rel 27,291,486,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Description"
+ .input[0] rel 27,141.2,235,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Website refresh"
+ .input[1] rel 278,141.2,235,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="you@example.com"
+ .select rel 27,230,486,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 38px 11px 13px shadow=none
+ .textarea rel 27,318.8,486,104 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="What is this project for?"
+ .modal__foot rel 27,446.8,486,42 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ #cancelFormModal rel 299.8,446.8,77.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Cancel"
+ submit rel 387.6,446.8,125.4,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Create project"
+-- form modal errors (empty submit)
+ .modal--form(errors) vp 412.5,233,540,542 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=26px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .field__error[0] rel 27,193.2,235,19.2 font=400 12px/19.2px -apple-system color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none
+ .field__error[1] rel 278,193.2,235,19.2 font=400 12px/19.2px -apple-system color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none
+ .input(error)[0] rel 27,141.2,235,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(176, 67, 58) rad=8px pad=11px 13px shadow=none text="Website refresh"
+ .input(error)[1] rel 278,141.2,235,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(176, 67, 58) rad=8px pad=11px 13px shadow=none text="you@example.com"
+ .textarea(errors) rel 27,345,486,104 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="What is this project for?"
+ submit(errors) rel 387.6,473,125.4,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Create project"
+== drawer section 314.5,13469,984,268.4 demo 314.5,13625.3,984,104
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Sidebar modal form"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Slide-out panels for longer forms. Creat"
+ btn[0] rel 31,31,139.7,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Invite a member"
+ btn[1] rel 182.7,31,117.5,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Edit member"
+-- drawer invite (focus=dr-email)
+ .drawer vp 925,0,440,1008 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .drawer__head rel 1,0,439,77 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=24px 26px 20px shadow=none
+ .modal__title rel 27,24,157.5,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Invite a member"
+ .icon-btn rel 382,24,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .drawer__body rel 1,77,439,500.4 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=24px 26px shadow=none
+ .drawer__intro rel 27,101,387,44.8 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Add someone to this workspace. They'll g"
+ .field[0] rel 27,165.8,387,99 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .field[1] rel 27,284.8,387,72.8 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .field[2] rel 27,377.6,387,131.8 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .field__label[0] rel 27,165.8,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Email address"
+ .field__label[1] rel 27,284.8,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Role"
+ .field__label[2] rel 27,377.6,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Personal note"
+ .input rel 27,193.6,387,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="teammate@example.com"
+ .field__hint rel 27,245.6,387,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Use their work email so we can find thei"
+ .select rel 27,312.6,387,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 38px 11px 13px shadow=none
+ .textarea rel 27,405.4,387,104 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Add a short message…"
+ .switch rel 27,529.4,387,24 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .switch__track rel 27,529.4,42,24 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgb(166, 78, 42) bd=0px none rgb(38, 36, 31) rad=99px pad=0px shadow=none text=""
+ .drawer__foot rel 1,929,439,79 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=18px 26px shadow=none
+ #cancelDrawer rel 219.6,948,77.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Cancel"
+ submit rel 307.5,948,106.5,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Send invite"
+-- drawer invite errors
+ .field__error rel 27,271.8,387,19.2 font=400 12px/19.2px -apple-system color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none
+ .field__hint(err) rel 27,245.6,387,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Use their work email so we can find thei"
+ .textarea(err) rel 27,431.5,387,104 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Add a short message…"
+ .switch(err) rel 27,555.5,387,24 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+-- drawer edit (focus=ed-name)
+ .drawer vp 925,0,440,1008 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .modal__title rel 27,24,124.1,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Edit member"
+ .drawer__intro rel 27,101,387,22.4 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Update this member's details and workspa"
+ .field__label[0] rel 27,143.4,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Full name"
+ .field__label[1] rel 27,236.2,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Email address"
+ .field__label[2] rel 27,329,387,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Role"
+ .input[0] rel 27,171.2,387,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Jamie Rivera"
+ .input[1] rel 27,264,387,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="jamie@example.com"
+ .select rel 27,356.8,387,45 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 38px 11px 13px shadow=none
+ .switch rel 27,421.8,387,24 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .drawer__foot--update rel 1,929,439,79 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=18px 26px shadow=none
+ #editDelete rel 27,948,64.1,42 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(176, 67, 58) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Delete"
+ #cancelEditDrawer rel 204.8,948,77.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Cancel"
+ save rel 292.7,948,121.3,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Save changes"
+-- drawer edit confirm
+ .drawer__confirm rel 1,0,439,1008 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=0px none rgb(38, 36, 31) rad=0px pad=26px shadow=none
+ .drawer__confirm-card rel 60.5,407.5,320,193 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .confirm-icon rel 199.5,407.5,42,42 font=400 15px/24px -apple-system color=rgb(176, 67, 58) bg=rgb(249, 234, 231) bd=0px none rgb(176, 67, 58) rad=50% pad=0px shadow=none
+ confirm svg rel 210.5,418.5,20,20 font=400 15px/24px -apple-system color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none
+ h4 rel 60.5,465.5,320,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Delete this member?"
+ confirm intro rel 60.5,491.7,320,44.8 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Jamie will lose access to this workspace"
+ #keepMember rel 86,558.5,124.8,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Keep member"
+ #confirmDelete rel 220.8,558.5,134.1,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(176, 67, 58) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=none text="Delete member"
+ focus=keepMember
+== loading section 314.5,14005.7,984,292.4 demo 314.5,14186.1,984,104
+ h2 rel 0,-134.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Loading modal"
+ p rel 0,-94,501.3,72 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Blocks every action while work is in pro"
+ btn[0] rel 31,31,117.9,42 font=600 14px/14px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=8px pad=11px 17px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Start loading"
+-- loading open (focus=modal loading-modal)
+ .loading-modal vp 492.5,397,380,214 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=26px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .loading-modal__spinner rel 172,27,36,36 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=3px solid rgb(166, 78, 42) rad=50% pad=0px shadow=none text=""
+ .loading-modal__title rel 27,81,326,26.3 font=600 21px/26.25px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Preparing your workspace"
+ .loading-modal__text rel 27,116.3,326,44.8 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Please wait a moment while we set things"
+ .loading-bar rel 27,183,326,4 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(238, 234, 224) bd=0px none rgb(38, 36, 31) rad=99px pad=0px shadow=none text=""
+ loading-bar::after width=114.094px bg=rgb(166, 78, 42)
+ loading-modal outline when focused=none 3px
+== command-palette section 314.5,15185.9,984,273.4 demo 314.5,15342.3,984,109
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Command palette"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="A search-driven action menu. Press Ctrl+"
+ btn[0] rel 31,31,234.5,47 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Open command palette Ctrl K"
+ kbd in button rel 207.1,43,40.4,23 font=400 11px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=5px pad=3px 6px shadow=none text="Ctrl K"
+-- cmdk open (focus=cmdkInput)
+ .cmdk vp 402.5,121,560,436.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .cmdk__search rel 1,1,558,56 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=16px 18px shadow=none
+ search svg rel 19,19.5,18,18 font=400 15px/24px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .cmdk__input rel 48,17,449.8,23 font=400 16px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=1px 2px shadow=none text="Search for an action…"
+ .cmdk__esc rel 508.8,17,32.2,23 font=400 11px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=5px pad=3px 6px shadow=none text="ESC"
+ .cmdk__list rel 1,57,558,340 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=8px shadow=none
+  list scrollHeight=421 clientHeight=340
+ .cmdk__group[0] rel 9,65,542,29.6 font=600 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=8px 10px 4px shadow=none text="Actions"
+ .cmdk__group[1] rel 9,213.6,542,29.6 font=600 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=8px 10px 4px shadow=none text="Navigation"
+ .cmdk__group[2] rel 9,399.2,542,29.6 font=600 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=8px 10px 4px shadow=none text="Appearance"
+ .cmdk__item[0] rel 9,94.6,542,41 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgb(238, 234, 224) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Create a projectCtrl N"
+ .cmdk__item[1] rel 9,135.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Invite a member"
+ .cmdk__item[2] rel 9,174.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Export workspace"
+ .cmdk__item[3] rel 9,243.2,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Buttons"
+ .cmdk__item[4] rel 9,282.2,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Data table"
+ .cmdk__item[5] rel 9,321.2,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Grid input"
+ .cmdk__item[6] rel 9,360.2,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Date picker"
+ .cmdk__item[7] rel 9,428.8,542,41 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Toggle sidebarCtrl \"
+ item svg[0] rel 20,107.1,16,16 font=400 14px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ item svg[1] rel 20,147.1,16,16 font=400 14px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .cmdk__item-label[0] rel 47,105.6,439.7,19 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Create a project"
+ .cmdk__item-label[1] rel 47,145.6,493,19 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Invite a member"
+ .cmdk__shortcut[0] rel 497.7,104.6,42.3,21 font=400 11px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=5px pad=2px 6px shadow=none text="Ctrl N"
+ .cmdk__shortcut[1] rel 501.8,438.8,38.2,21 font=400 11px/normal -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=5px pad=2px 6px shadow=none text="Ctrl \"
+ .cmdk__foot rel 1,397,558,38.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=10px 16px shadow=none
+ foot span[0] rel 17,408,67.9,17.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ foot span[1] rel 100.9,408,50.3,17.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ foot span[2] rel 167.2,408,56.6,17.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ foot b[0] rel 17,409,10.4,15 font=600 11px/17.6px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="↑↓"
+ foot b[1] rel 100.9,409,6.5,15 font=600 11px/17.6px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="↵"
+ foot b[2] rel 167.2,409,15.8,15 font=600 11px/17.6px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="esc"
+-- ArrowUp from 0 -> active 7 scrollTop=73
+-- typed go
+ .cmdk(go) vp 402.5,121,560,298.2 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .cmdk__item(go)[0] rel 9,94.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgb(238, 234, 224) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Buttons"
+ .cmdk__item(go)[1] rel 9,133.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Data table"
+ .cmdk__item(go)[2] rel 9,172.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Grid input"
+ .cmdk__item(go)[3] rel 9,211.6,542,39 font=400 14px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=8px pad=10px 11px shadow=none text="Go to Date picker"
+ .cmdk__group(go)[0] rel 9,65,542,29.6 font=600 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=8px 10px 4px shadow=none text="Navigation"
+-- typed zzz
+ .cmdk(empty) vp 402.5,121,560,191 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=16px pad=0px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .cmdk__empty rel 9,65,542,78.4 font=400 14px/22.4px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=28px 16px shadow=none text="No matching commands"
+== toasts section 314.5,15727.7,984,244.4 demo 314.5,15860.1,984,104
+ h2 rel 0,-86.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Toasts"
+ p rel 0,-46,501.3,24 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Brief, non-blocking feedback that appear"
+ btn[0] rel 31,31,119.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Success toast"
+ btn[1] rel 162.9,31,96.9,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Info toast"
+ btn[2] rel 271.8,31,102.5,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Error toast"
+-- toasts: success, info, error
+ .toast-stack vp 981,743.5,360,240.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .toast[0] vp 981,743.5,360,73.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(232, 242, 236) bd=1px solid rgb(215, 231, 221) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .toast[1] vp 981,827,360,73.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(234, 240, 246) bd=1px solid rgb(217, 228, 238) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .toast[2] vp 981,910.5,360,73.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(249, 234, 231) bd=1px solid rgb(240, 220, 216) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+  t0 icon rel 17,15,24,24 font=400 15px/24px -apple-system color=rgb(53, 107, 76) bg=rgba(255, 255, 255, 0.75) bd=0px none rgb(53, 107, 76) rad=50% pad=0px shadow=none
+  t0 icon svg rel 22,20,14,14 font=400 15px/24px -apple-system color=rgb(53, 107, 76) bg=rgba(0, 0, 0, 0) bd=0px none rgb(53, 107, 76) rad=0px pad=0px shadow=none
+  t0 strong rel 52,15,291,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(53, 107, 76) bg=rgba(0, 0, 0, 0) bd=0px none rgb(53, 107, 76) rad=0px pad=0px shadow=none text="Saved"
+  t0 span rel 52,38.5,178.3,17 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Your changes have been saved."
+  t1 icon rel 17,15,24,24 font=400 15px/24px -apple-system color=rgb(63, 100, 133) bg=rgba(255, 255, 255, 0.75) bd=0px none rgb(63, 100, 133) rad=50% pad=0px shadow=none
+  t1 icon svg rel 22,20,14,14 font=400 15px/24px -apple-system color=rgb(63, 100, 133) bg=rgba(0, 0, 0, 0) bd=0px none rgb(63, 100, 133) rad=0px pad=0px shadow=none
+  t1 strong rel 52,15,291,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(63, 100, 133) bg=rgba(0, 0, 0, 0) bd=0px none rgb(63, 100, 133) rad=0px pad=0px shadow=none text="Heads up"
+  t1 span rel 52,38.5,148.8,17 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="A new version is available."
+  t2 icon rel 17,15,24,24 font=400 15px/24px -apple-system color=rgb(176, 67, 58) bg=rgba(255, 255, 255, 0.75) bd=0px none rgb(176, 67, 58) rad=50% pad=0px shadow=none
+  t2 icon svg rel 22,20,14,14 font=400 15px/24px -apple-system color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none
+  t2 strong rel 52,15,291,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none text="Upload failed"
+  t2 span rel 52,38.5,178.9,17 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="The file could not be uploaded."
+== toast-variants section 314.5,15459.3,984,268.4 demo 314.5,15615.7,984,104
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Toast variants"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Toasts with a manual close button, an in"
+ btn[0] rel 31,31,107.1,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Dismissible"
+ btn[1] rel 150.1,31,109.4,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="With action"
+ btn[2] rel 271.4,31,97.8,42 font=600 14px/14px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 17px shadow=none text="Persistent"
+-- toast variants: dismissible, with action, persistent
+ .toast[0] vp 981,692.5,360,73.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(234, 240, 246) bd=1px solid rgb(217, 228, 238) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .toast[1] vp 981,776,360,100.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(232, 242, 236) bd=1px solid rgb(215, 231, 221) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .toast[2] vp 981,886.5,360,97.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(249, 234, 231) bd=1px solid rgb(240, 220, 216) rad=12px pad=14px 16px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+  t0 body rel 52,15,262,43.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+  t0 strong rel 52,15,262,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(63, 100, 133) bg=rgba(0, 0, 0, 0) bd=0px none rgb(63, 100, 133) rad=0px pad=0px shadow=none text="New update available"
+  t0 span rel 52,38.5,200.4,17 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Restart to apply the latest changes."
+  t0 close rel 325,15,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=5px pad=2px shadow=none text=""
+  t0 close svg rel 327,17,14,14 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+  t0 action MISSING
+  t1 body rel 52,15,262,70.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+  t1 strong rel 52,15,262,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(53, 107, 76) bg=rgba(0, 0, 0, 0) bd=0px none rgb(53, 107, 76) rad=0px pad=0px shadow=none text="Message sent"
+  t1 span rel 52,38.5,127.3,17 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Delivered to the team."
+  t1 close rel 325,15,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=5px pad=2px shadow=none text=""
+  t1 close svg rel 327,17,14,14 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+  t1 action rel 52,64.5,32.3,21 font=600 13px/normal -apple-system color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px none rgb(166, 78, 42) rad=0px pad=2px 0px shadow=none text="Undo"
+  t2 body rel 52,15,262,67.5 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+  t2 strong rel 52,15,262,19.5 font=600 15px/19.5px "Palatino Linotype" color=rgb(176, 67, 58) bg=rgba(0, 0, 0, 0) bd=0px none rgb(176, 67, 58) rad=0px pad=0px shadow=none text="Connection lost"
+  t2 span rel 52,38.5,242,41 font=400 13px/20.8px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="We could not reach the server. Check you"
+  t2 close rel 325,15,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=5px pad=2px shadow=none text=""
+  t2 close svg rel 327,17,14,14 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+  t2 action MISSING
+== date-picker section 314.5,14298.1,984,396 demo 314.5,14454.5,984,231.6
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Date picker"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="One component, three granularities. Pick"
+ btn[0] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[1] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ btn[2] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[3] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ btn[4] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[5] rel -314.5,-14454.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Full date"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Month and year"
+ .field__label[2] rel 31,126.8,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Year only"
+ .picker__trigger[0] rel 31,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a date…"
+ .picker__trigger[1] rel 503,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a month…"
+ .picker__trigger[2] rel 31,154.6,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a year…"
+ trigger svg[0] rel 45,73.8,16,16 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ trigger svg[1] rel 517,73.8,16,16 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ trigger svg[2] rel 45,169.6,16,16 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__value[0] rel 70,71.3,82.7,21 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Pick a date…"
+ .picker__value[1] rel 542,71.3,97,21 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Pick a month…"
+ .picker__value[2] rel 70,167.1,81.2,21 font=400 15px/21px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="Pick a year…"
+-- date open (focus=cmdk__input)
+ .picker__trigger(open) rel 31,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Pick a date…"
+ .picker__panel rel 31,110.8,300,316.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 100.5,19.5,98.9,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="November 2026"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,197.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .picker__dow[0] rel 13,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="S"
+ .picker__dow[1] rel 52.4,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="M"
+ .picker__dow[2] rel 91.8,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="T"
+ .picker__dow[3] rel 131.3,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="W"
+ .picker__dow[4] rel 170.7,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="T"
+ .picker__dow[5] rel 210.1,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="F"
+ .picker__dow[6] rel 249.6,53,37.4,27.6 font=400 11px/17.6px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=5px 0px shadow=none text="S"
+ .picker__cell[0] rel 13,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="1"
+ .picker__cell[1] rel 52.4,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2"
+ .picker__cell[2] rel 91.8,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="3"
+ .picker__cell[3] rel 131.3,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="4"
+ .picker__cell[4] rel 170.7,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="5"
+ .picker__cell[5] rel 210.1,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="6"
+ .picker__cell[6] rel 249.6,82.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="7"
+ .picker__cell[7] rel 13,116.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="8"
+ cell.today rel 13,184.6,37.4,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=rgb(213, 207, 192) 0px 0px 0px 1px inset text="22"
+ last cell 52.4,218.6,37.4,32 count=30
+ .picker__foot rel 13,260.6,274,43 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=10px 0px 0px shadow=none
+ [data-clear] rel 13,271.6,56,32 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ [data-today] rel 226.1,271.6,60.9,32 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+-- picked day 14: value="Nov 14, 2026"
+ .picker__value(set) rel 70,71.3,87.2,21 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Nov 14, 2026"
+-- date reopen with selection (focus=picker__cell selected)
+ .picker__trigger(open) rel 31,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Nov 14, 2026"
+ .picker__panel rel 31,110.8,300,316.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 100.5,19.5,98.9,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="November 2026"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,197.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ cell.selected rel 249.6,116.6,37.4,32 font=600 13px/normal -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=0px none rgb(255, 255, 255) rad=7px pad=1px 6px shadow=none text="14"
+-- month open (focus=picker__cell selected)
+ .picker__trigger(open) rel 503,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Pick a month…"
+ .picker__panel rel 503,110.8,300,262 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 136,19.5,28,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="2026"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,143 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .picker__months cell[0] rel 13,53,88,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="Jan"
+ .picker__months cell[1] rel 106,53,88,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="Feb"
+ .picker__months cell[2] rel 199,53,88,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="Mar"
+ .picker__months cell[3] rel 13,90,88,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="Apr"
+ .picker__months rel 13,53,274,143 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .picker__foot rel 13,206,274,43 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=10px 0px 0px shadow=none
+-- year open (focus=picker__cell selected)
+ .picker__trigger(open) rel 31,154.6,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Pick a year…"
+ .picker__panel rel 31,206.6,300,299 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 118.5,19.5,63,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="2018–2037"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,180 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .picker__years rel 13,53,274,180 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+  years scrollHeight=180 clientHeight=180
+ year cell[0] rel 13,53,64.8,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2018"
+ year cell[1] rel 82.8,53,64.8,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2019"
+ year cell[2] rel 152.5,53,64.8,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2020"
+ year cell[3] rel 222.3,53,64.8,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2021"
+ year cell[4] rel 13,90,64.8,32 font=500 13px/normal -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=7px pad=1px 6px shadow=none text="2022"
+ .picker__foot rel 13,243,274,43 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=10px 0px 0px shadow=none
+== datetime-picker section 314.5,14694.1,984,491.8 demo 314.5,14850.5,984,327.4
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Date & time picker"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="The same picker with an hour and minute "
+ btn[0] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[1] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Apply"
+ btn[2] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[3] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Apply"
+ btn[4] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[5] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ btn[6] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[7] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ btn[8] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=none text="Clear"
+ btn[9] rel -314.5,-14850.5,0,0 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Today"
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Full date and time"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Full date and time with seconds"
+ .field__label[2] rel 31,126.8,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Full date only"
+ .field__label[3] rel 503,126.8,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Month and year"
+ .field__label[4] rel 31,222.6,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Year only"
+ .picker__trigger[0] rel 31,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a date and time…"
+ .picker__trigger[1] rel 503,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a date and time…"
+ .picker__trigger[2] rel 31,154.6,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a date…"
+ .picker__trigger[3] rel 503,154.6,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a month…"
+ .picker__trigger[4] rel 31,250.4,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=11px 13px shadow=none text="Pick a year…"
+-- datetime open (focus=picker__cell selected)
+ .picker__trigger(open) rel 31,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Pick a date and time…"
+ .picker__panel rel 31,110.8,300,398 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 100.5,19.5,98.9,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="November 2026"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,197.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .picker__time rel 13,260.6,274,71.4 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=12px 0px 0px shadow=none
+ time label[0] rel 13,273.6,132,58.4 font=400 12px/19.2px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none
+ time label[1] rel 155,273.6,132,58.4 font=400 12px/19.2px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none
+ time input[0] rel 13,297.8,132,34.2 font=400 13px/18.2px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=7px 9px shadow=none text="09"
+ time input[1] rel 155,297.8,132,34.2 font=400 13px/18.2px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=7px 9px shadow=none text="30"
+ .picker__foot rel 13,342,274,43 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=1px solid rgb(230, 226, 215) rad=0px pad=10px 0px 0px shadow=none
+ [data-apply] rel 226.6,353,60.4,32 font=600 13px/13px -apple-system color=rgb(255, 255, 255) bg=rgb(166, 78, 42) bd=1px solid rgba(0, 0, 0, 0) rad=7px pad=7px 12px shadow=rgba(40, 33, 22, 0.05) 0px 1px 2px 0px, rgba(40, 33, 22, 0.06) 0px 4px 14px 0px text="Apply"
+ after day click (time mode) panel hidden=false value="Pick a date and time…"
+ after Apply value="Nov 14, 2026, 09:30"
+ .picker__value(set) rel 70,71.3,130.1,21 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Nov 14, 2026, 09:30"
+-- datetime seconds open (focus=picker__cell selected)
+ .picker__trigger(open) rel 503,58.8,450,46 font=400 15px/21px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(166, 78, 42) rad=8px pad=11px 13px shadow=rgb(248, 236, 228) 0px 0px 0px 3px text="Pick a date and time…"
+ .picker__panel rel 503,110.8,300,398 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+ .picker__head rel 13,13,274,32 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ [data-prev] rel 13,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ prev svg rel 20,20,18,18 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .picker__title rel 100.5,19.5,98.9,19 font=600 14px/normal "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="November 2026"
+ [data-next] rel 255,13,32,32 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ .picker__body rel 13,53,274,197.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ time input[0] rel 13,297.8,84.7,34.2 font=400 13px/18.2px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=7px 9px shadow=none text="09"
+ time input[1] rel 107.7,297.8,84.7,34.2 font=400 13px/18.2px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=7px 9px shadow=none text="30"
+ time input[2] rel 202.3,297.8,84.7,34.2 font=400 13px/18.2px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(213, 207, 192) rad=8px pad=7px 9px shadow=none text="00"
+ .picker__panel rel 503,110.8,300,398 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=12px pad=12px shadow=rgba(40, 33, 22, 0.16) 0px 8px 30px 0px, rgba(40, 33, 22, 0.08) 0px 2px 8px 0px
+== file-input section 314.5,2869.1,984,401.8 demo 314.5,3025.5,984,237.4
+ h2 rel 0,-110.4,984,32.4 font=500 27px/32.4px "Palatino Linotype" color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="File input"
+ p rel 0,-70,501.3,48 font=400 15px/24px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="Drop files onto the area or click to bro"
+ .field__label[0] rel 31,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Single file"
+ .field__label[1] rel 503,31,450,20.8 font=600 13px/20.8px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Multiple images"
+ .file-drop[0] rel 31,58.8,450,135.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(250, 249, 245) bd=1px dashed rgb(213, 207, 192) rad=12px pad=26px 20px shadow=none
+ .file-drop[1] rel 503,58.8,450,135.6 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgb(250, 249, 245) bd=1px dashed rgb(213, 207, 192) rad=12px pad=26px 20px shadow=none
+ drop svg[0] rel 244,85.8,24,24 font=400 15px/24px -apple-system color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px none rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ drop svg[1] rel 716,85.8,24,24 font=400 15px/24px -apple-system color=rgb(166, 78, 42) bg=rgba(0, 0, 0, 0) bd=0px none rgb(166, 78, 42) rad=0px pad=0px shadow=none
+ drop strong[0] rel 204.9,117.8,102.2,22.4 font=700 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Drop a file here"
+ drop strong[1] rel 669.7,117.8,116.6,22.4 font=700 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="Drop images here"
+ drop span[0] rel 209.3,148.2,93.3,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="or click to browse"
+ drop span[1] rel 644.9,148.2,166.1,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="or click to browse · images only"
+-- with files
+ demo 314.5,3025.5,984,428.6
+ .file-list[0] rel 31,206.4,450,48 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none
+ .file-list[1] rel 503,206.4,450,160 font=400 15px/24px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px 4px 0px 0px shadow=none
+ .file-item[0] rel 31,206.4,450,48 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=8px pad=10px 12px shadow=none
+ .file-item[1] rel 503,206.4,446,48 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=8px pad=10px 12px shadow=none
+ .file-item[2] rel 503,262.4,446,48 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=8px pad=10px 12px shadow=none
+ .file-item[3] rel 503,318.4,446,48 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgb(255, 255, 255) bd=1px solid rgb(230, 226, 215) rad=8px pad=10px 12px shadow=none
+ item svg[0] rel 44,222.4,16,16 font=400 14px/22.4px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .file-item__name[0] rel 70,219.2,315.5,22.4 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="quarterly-report.pdf"
+ .file-item__name[1] rel 542,219.2,311.5,22.4 font=400 14px/22.4px -apple-system color=rgb(38, 36, 31) bg=rgba(0, 0, 0, 0) bd=0px none rgb(38, 36, 31) rad=0px pad=0px shadow=none text="cover.png"
+ .file-item__size[0] rel 395.5,220.8,36.5,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="2.3 MB"
+ .file-item__size[1] rel 863.5,220.8,36.5,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="340 KB"
+ .file-item__size[2] rel 863.5,276.8,36.5,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="1.8 MB"
+ .file-item__size[3] rel 870.4,332.8,29.6,19.2 font=400 12px/19.2px -apple-system color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none text="812 B"
+ item .icon-btn[0] rel 442,217.4,26,26 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ item .icon-btn[1] rel 910,217.4,26,26 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=7px pad=1px 6px shadow=none text=""
+ btn svg[0] rel 448,222.9,15,15 font=400 13.3333px/normal Arial color=rgb(107, 102, 89) bg=rgba(0, 0, 0, 0) bd=0px none rgb(107, 102, 89) rad=0px pad=0px shadow=none
+ .file-count[0] rel 31,266.4,450,19.2 font=400 12px/19.2px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="1 file selected"
+ .file-count[1] rel 503,378.4,450,19.2 font=400 12px/19.2px -apple-system color=rgb(91, 85, 74) bg=rgba(0, 0, 0, 0) bd=0px none rgb(91, 85, 74) rad=0px pad=0px shadow=none text="3 files selected"

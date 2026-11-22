@@ -62,7 +62,7 @@ These four are the "pick values" components. The web builds them from one visual
 | `wpf/DropdownPrimitives.cs` | **new**: `DropdownAdorner` (hosts a panel under an anchor, plus an outside-click hook) and `ChipWrapPanel` |
 | `wpf/SearchableSelect.cs`, `wpf/MultiSelect.cs`, `wpf/TagInput.cs`, `wpf/Autocomplete.cs` | **new**, one control each |
 | `wpf/App.xaml` (**shared**) | merge `Themes/Dropdown.xaml` **after** `Forms.xaml` (it uses `FieldInputSearch`, `SearchIcon`, `ClaudeCheckBox`, `GhostButtonSm`) |
-| `wpf/UIComponents.Wpf.csproj` (**shared**) | one `<Page>` and five `<Compile>` entries |
+| `wpf/UIComponents.Wpf.csproj` | none: wildcards pick up the new files (no entries, README hard constraint 2) |
 | `wpf/InputControls.xaml(.cs)` | **only** the `Tag input` and `Autocomplete` sections, plus two new sections `Searchable select` and `Multi-select with filter` inserted after Autocomplete. Delete the old tag/auto code (`_tags`, `_options`, `TagInput_KeyDown`, `RemoveTag_Click`, `AutoInput_*`). **Don't touch** `File input`, `Date & time`, `Browse_Click` or `ClaudeInput` (`DtTime` uses it) |
 | `wpf/tests/UIAutomationTests.cs` | your own assertions, plus one `PostKey` helper (Phase 0). `Main()`'s harness belongs to the reviewer |
 | `wpf/README.md` | Phase 6: the covered list and the assertion count |
@@ -75,7 +75,7 @@ Reuse without editing:
 
 **Never edit `Forms.xaml`, `Sheet.xaml`, `Controls.xaml` or `MainWindow.xaml`.** If something there blocks you, ask.
 
-**Shared files** (`App.xaml`, the csproj, `UIAutomationTests.cs`): other workers (display, tables) edit them right now. Re-read each one immediately before editing, add only your own lines, and never reorder or reformat other people's entries.
+**Shared files** (`App.xaml`, `MainWindow.xaml`, shared styles): other workers (display, tables) edit them right now. Re-read each one immediately before editing, add only your own lines, and never reorder or reformat other people's entries.
 
 `PrimaryButtonSm` doesn't exist yet. First grep `wpf/Themes` for it, because the tables plan adds `*ButtonSm` styles to `Controls.xaml`; reuse it if it has appeared. Otherwise define it in `Dropdown.xaml`, modelled on `GhostButtonSm`: `Brand` background, white text, `Shadow1`, hover `BrandHover`.
 
@@ -192,7 +192,7 @@ Text is entered with `ValuePattern.SetValue`, which raises `TextChanged`, the WP
 | S2 | **Close:** hide the panel. Focus returns to the trigger, except on an outside click | U |
 | S3 | Trigger key **Down, Enter or Space while closed** → open + highlight the first option. Mark it Handled so the ToggleButton doesn't toggle twice | K, P |
 | S4 | Filter on the search `input`: `query.Trim().ToLower()` is a **substring of (label + meta) lowercased, with no separator** (`textContent`). For example "eng" → only Jonas (Engineering); "design" → Ada and Mia. Empty row when nothing matches. **Active index → -1 but the old highlight stays painted** (quirk) | U ("eng" → 1, "design" → 2, "xyz" → `_Empty` + 0) |
-| S5 | Search **Down/Up**: `active = (i + n) % n` over the visible options, so it **wraps**. **Up with nothing active lands on n-2** (quirk: `setActive(-1 - 1)`). Scroll the active option into view (`BringIntoView`, nearest) | K, P |
+| S5 | Search **Down/Up**: `active = (i + n) % n` over the visible options, so it **wraps**. **Up with nothing active lands on the LAST visible option** (web fixed; the old n-2 quirk is gone). Scroll the active option into view (`BringIntoView`, nearest) | K, P |
 | S6 | Search **Enter** with an active option → choose it. With no active option, nothing happens | K |
 | S7 | Search **Escape** → close, and focus the trigger | K |
 | S8 | **Choose:** a single selection. Set the value text, the label colour and the check, then close and focus the trigger | U (Invoke `_Option1` → `_Value` Name "Jonas Silva", `ItemStatus` "selected", `_Search` gone, trigger focused) |
@@ -300,7 +300,7 @@ pwsh wpf/tests/run-hidden.ps1 -Agent dropdown -NoTests -Section "Searchable sele
 
 ### Phase 1: primitives plus the Searchable select shell
 
-- Create `Dropdown.xaml` (all the primitive styles), `DropdownPrimitives.cs` (`DropdownAdorner`, `ChipWrapPanel`), and the App/csproj entries.
+- Create `Dropdown.xaml` (all the primitive styles), `DropdownPrimitives.cs` (`DropdownAdorner`, `ChipWrapPanel`), and the App entry (no csproj entries: wildcards).
 - Add the "Searchable select" section with both `SearchableSelect`s. Phase 1 only needs: open/close by trigger (S1/S2), click-to-choose (S8) and the outside-click hook (S9). Filter and keys come in Phase 2.
 - **Prove the hosting decision:**
   - `ContentScroll!ComboAssignee_Trigger` renders the panel.
@@ -332,7 +332,7 @@ Acceptance (vs `web-dropdown-combobox.png`, `-open-scrollbar.png` and the measur
   1. All S assertions pass.
   2. The empty panel is 128 ±1; "No matches" is 13px `#5B554A`, centred.
   3. Filtering "eng" leaves 1 option and "design" 2.
-  4. Up from no-active lands on "Alex Rivera" (n-2).
+  4. Up from no-active lands on the LAST visible option ("Priya Shah"): the web was fixed (`setActive(activeIndex < 0 ? -1 : activeIndex - 1)` wraps).
 
 ### Phase 3: Multi-select
 
@@ -412,7 +412,7 @@ Acceptance (vs `web-dropdown-combobox.png`, `-open-scrollbar.png` and the measur
 ## Reviewer checklist
 
 - [ ] Only the listed files changed. `File input`, `Date & time`, `ClaudeInput`, `Forms.xaml`, `Sheet.xaml`, `Controls.xaml` and `MainWindow.xaml` are untouched.
-- [ ] C# 5 throughout (no `$""`, `?.`, `=>` members or auto-property initialisers); the csproj and App entries are present; Dropdown.xaml is merged after Forms.xaml.
+- [ ] C# 5 throughout (no `$""`, `?.`, `=>` members or auto-property initialisers); the App entry is present (no csproj entries: wildcards); Dropdown.xaml is merged after Forms.xaml.
 - [ ] No `Popup`, no `ComboBox` base, no animations, and no implicit app-wide styles (the scroll bar is keyed and scoped).
 - [ ] Every branch in the S, M, T and A tables is implemented as written, quirks included. U/K assertions exist where the table says so.
 - [ ] I captured the states myself, hidden, and checked them against the `web-dropdown-*` refs (`-scrollbar` for scrolling lists): ±1px, exact hex.

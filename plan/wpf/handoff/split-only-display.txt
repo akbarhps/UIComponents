@@ -1,0 +1,68 @@
+app PID 15440 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  display
+PASS  DisplayCards found
+PASS  DisplayBadges found
+PASS  card title Workspace settings found
+PASS  card title Your plan found
+PASS  card button Open settings found
+PASS  card button Upgrade plan found
+PASS  badge Draft found
+PASS  badge In review found
+PASS  badge Active found
+PASS  badge Pending found
+PASS  badge Overdue found
+PASS  badge v1.0 found
+PASS  DisplayAlerts found
+PASS  EmptyState found by id
+PASS  alert Good to know found
+PASS  alert Saved found
+PASS  alert Check your input found
+PASS  alert Something went wrong found
+PASS  EmptyGuide found
+PASS  EmptyClear found
+PASS  No results found
+PASS  progress bar found
+PASS  progress label found
+PASS  progress value found
+PASS  progress start found
+PASS  progress reset found
+PASS  progress initial value 0
+PASS  progress initial label
+PASS  progress initial value text 0%
+PASS  progress first tick > 0
+PASS  progress label after second start
+PASS  progress reaches 100
+PASS  progress non-decreasing
+PASS  progress complete label
+PASS  progress complete value text
+PASS  progress no visual reset on restart
+PASS  progress label uploads on restart
+PASS  progress text still 100% on restart
+PASS  progress reset to 0 after completion
+PASS  progress reset label after completion
+PASS  progress reset text after completion
+PASS  progress mid-run tick > 0
+PASS  progress reset to 0 mid-run
+PASS  progress reset label mid-run
+PASS  progress reset text mid-run
+PASS  DisplayAvatars found
+PASS  AL avatars found at least 4
+PASS  avatar JS found
+PASS  avatar MK found
+PASS  avatar name Ada Lovelace found
+PASS  empty state found
+PASS  empty state action found
+PASS  skeleton found by id
+PASS  Table rows found
+PASS  motion cue hidden
+AREA  display done in 6,9 s
+
+PROFILE finds=58 findMs=4106
+DRIVER  fast=7 fallback=0
+RESULT  passed=56  failed=0

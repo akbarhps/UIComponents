@@ -1,5 +1,7 @@
 # Planner / reviewer playbook (WPF pixel parity)
 
+> **Resuming?** Read `plan/wpf/handoff/HANDOFF.md` first: live worker states, unsent prompts (`handoff/*-next.md`), commit plan and decisions since the last board update.
+
 You are the **planner and reviewer**, not a worker. The user runs several worker agents in parallel, each in its own session, and relays messages between you and them by copy-paste. Your job:
 1. Write task plans in `plan/wpf/NN-*.md`.
 2. Write the prompt the user sends to each worker.
@@ -18,12 +20,13 @@ Read `plan/wpf/README.md` (rules every worker follows) and the task files before
 
 | Task | Agent | Done | Next |
 |---|---|---|---|
-| 01 grid input (`SheetGrid`) | `grid` | DONE: Phases 0-6 approved, review fixes in (popup-click guard, clipboard-safe tests, select text/focus ring); 100 assertions | follow-up after web fixes: paste respects allowAddColumn:false (C8), copy only selected cells (C9); open-dropdown visuals and popup-click are code-only |
+| 01 grid input (`SheetGrid`) | `grid` | DONE: Phases 0-6, review fixes, web-fix port (typed paste clips per cell, copy only selected cells; both code-only: harness cannot drive paste or Ctrl-click); 119 assertions; session archived | uncommitted (shared files with other tasks): commit when the tree is stable |
 | 02 forms | `forms` | DONE: Phases 1-4 approved, focus-ring round verified (ring 4px each side, no box movement, 90 assertions) | session archived; accepted quirk: IsKeyboardFocused ring also shows after a mouse click |
 | 04 tables (fix-up of an earlier, unplanned port) | `tables` | Phases 1-2 reviewed; fix round 3 (empty state, last-row line kept in filter tables, segment gaps, avatars, line heights, SectionTitle LineHeight) + Phase 4 sent | Phase 3 (selection + bulk bar) after display's SecondaryButtonSm; delete TableSmallSecondary then |
 | 03 dropdown family (searchable select, multi-select, tag input, autocomplete) | `dropdown` | planned (03-dropdown.md); Phase 0 sent | update M8/A3/A6/S4/S5/S10/A2 once web fixes land |
 | 05 display (cards, badges, alerts, avatar, skeleton, progress, empty state) | `display` | Phase 0 approved, Phase 1 done (review pending) | Phase 2+ |
-| web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | sent | then tell dropdown/grid, refresh autocomplete refs |
+| web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | DONE, committed f4c5faa (22/22 CDP checks, a C6 regression found in review and fixed); session archived | dropdown: autocomplete refs regenerated (hint line, card 162), port fixed behaviours; grid: C8/C9 follow-up sent |
+| 08 partial tests (split `UIAutomationTests.cs`, in-process driver, csproj wildcards) | `reviewer` | done: Phases 0-5. Full run 306 pass / 1 fail (known: toasts "auto-dismiss resumes when focus leaves") | uncommitted; commit with the rest when the user says. Worker prompts in `handoff/*-next*.md`, not sent |
 | rest (buttons, cards, badges, alerts, accordion, tabs, toasts, overlays, pickers, file input…) | — | not planned | group into similar sets, one task file each |
 
 Dependencies:
@@ -57,13 +60,28 @@ Dependencies:
 
 Ask the user only for decisions that are really theirs to make: touching another agent's file, a web quirk to replicate or fix, scope changes. Use `AskUserQuestion` and recommend an option.
 
+## Which agent reviews what (don't mix these up)
+
+- **After each worker phase:** `phase-reviewer` (Sonnet 5.5). Never `reviewer` here.
+- **Once, after all phases of a task are done:** `reviewer` (Opus 5.5).
+- Planning: `planner`. Lookups: `reader`. Never `general-purpose` as a stand-in.
+- "reviewer build" below is the build folder name `wpf\bin\reviewer\`, unrelated to the agent.
+
 ## Commands you use (reviewer build is `reviewer`)
 
 ```powershell
 # build and run the tests hidden (nothing on the user's screen)
 cmd /c "wpf\build.bat reviewer"
-cd wpf\tests; cmd /c ".\build-tests.bat"; cd ..\..
+cd wpf\tests; cmd /c ".\build-tests.bat reviewer"; cd ..\..
 pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer
+
+# partial areas (workers' loop; Core + the listed areas only). Build and run the same list. Unlisted areas print "not compiled" when run without -Only
+cd wpf\tests; cmd /c ".\build-tests.bat reviewer nav grid"; cd ..\..
+pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer -Only nav,grid
+
+# test acceptance after a refactor: names of two logs (base = before, new = after), status prefix kept, detail stripped
+function Names($f) { Get-Content $f | Where-Object { $_ -match '^(PASS|FAIL)  ' } | ForEach-Object { $_ -replace ' — .*$','' } | Sort-Object }
+Compare-Object (Names base1.log) (Names new.log)   # empty = same checks; flaky toast timing excepted
 
 # WPF capture, hidden: Id or x:Name; !Click chains; @Focus. Several captures = ONE comma-joined string
 pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer -NoTests -Section "Grid input" -Capture "InputGrid!InputGrid_row1=$env:TEMP\rv\sel.png"
@@ -127,9 +145,23 @@ Report: files changed, build/test summary, capture paths + diffs, deviations, bl
 - **Serif token:** `Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif`.
 - **Workers never commit.** The user commits at stable points. (`eba14b6` swept other agents' files in with `git add -A`. Don't let that happen again.)
 
+## Tests: split layout, driver, open items (task 08)
+
+- **Layout.** `wpf/tests/Tests.Core.cs` has the helpers, `Drv`/`Fast*` and the `Main` runner. `Tests.<Area>.cs` (nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts) hold the checks; each is a partial method that `Core` calls. Canonical run order is that list. Areas compile with any subset: a missing one prints `FAIL  area <x> not compiled into this exe`.
+- **Running.** `run-hidden.ps1 -Agent <name> -Only a,b` (passed to the exe as `--only`). `build-tests.bat <name> <area ...>` compiles Core plus those areas. Full build and full run are the reviewer's: run both after every worker phase report that touches tests or shared files, and always before any commit. Each area must pass alone; `-Only` on an area run takes 3-40 s.
+- **Commit and worktrees.** Worktrees were considered for test isolation and deferred: the user chose partial tests. Limit: app builds still share one tree and one csproj, so a half-edit in any app file breaks every worker's `build.bat`. Per-worker branches or worktrees: revisit later. Workers never commit.
+- **Driver.** `run-hidden.ps1` sets `UITEST_DRIVE=1`; `App.xaml.cs` `DriverHook` installs an in-process WM_COPYDATA driver (`verb\tid\targ`, results 1 done / 2 not resolved, fall back to real UIA / 3 threw in app). Test actions go through `Drv`; reads stay on UIA. `UITEST_NODRIVE=1` forces real UIA. Output: `DRIVER  fast=N fallback=M` and one `fallback <verb>:<id> xN` line per fallback.
+- **Known semantic gaps.** Driver actions run inside an inter-process SendMessage (`RPC_E_CANTCALLOUT_ININPUTSYNCCALL` risk for TSF/clipboard/OLE, `driver-review.md` #5). Focus succeeds on the hidden desktop where real UIA SetFocus could not, so two toast focus tests now run instead of printing CODE-ONLY (#6).
+- **Open driver items** (`handoff/driver-review.md`; client half of #1 and #2 and #14 done; app side not done, separate reviewer task):
+  - fallbacks: `select:<no id>` x4 (item-peer mapping, #4) and `toggle:RowCheck` x2 (identity check and rect, #3). Still fall back to the slow path.
+  - `Find` calls cost ~80 s of a ~174 s suite (PROFILE `finds`/`findMs`). Unprofiled walks (#16) are not counted.
+  - optional verbs: `setrange` (slider), `scroll` (grid scroll); item-peer mapping for #4.
+- **Known failing checks.** `toasts`: "auto-dismiss resumes when focus leaves" fails in every full run (`handoff/toasts-next.md`). `pickers`: "P10 outside click closes" fails with `-Only pickers` alone (`handoff/pickers-next.md`); it passes in the full run only because of earlier areas' state.
+- **Acceptance after a refactor.** Compare check names before and after with the Names snippet in the command block (Phase 0 of `08-partial-tests.md`); `-Only` runs union to the full run's list, except the known failures above.
+
 ## Ownership map
 
-The map lives in `README.md` under "Who owns what", so there's only one copy. Update it there when a new agent or area appears. Your own area is `wpf/build.bat`, `wpf/tests/run-hidden.ps1`, `App.xaml.cs` (`--capture`), `plan/wpf/*`, and `Main()` in the tests.
+The map lives in `README.md` under "Who owns what", so there's only one copy. Update it there when a new agent or area appears. Your own area is `wpf/build.bat`, `wpf/tests/run-hidden.ps1`, `App.xaml.cs` (driver and `--capture`), `plan/wpf/*`, and `wpf/tests/Tests.Core.cs` (`Main` runner, `Drv`).
 
 ## Tooling facts and gotchas (learned the hard way)
 
@@ -147,7 +179,7 @@ The map lives in `README.md` under "Who owns what", so there's only one copy. Up
   - `Border.CornerRadius` doesn't clip children.
 - **Edge headless:** `--screenshot` ignores `#anchor`. `capture-web.ps1` hides the other sections instead. For geometry, use `--dump-dom` with an injected `getBoundingClientRect` script (README).
 - **Displays:** 1920×1080 at 100% (96 DPI), so 1 CSS px = 1 DIP. The user has an always-on-top game window, which is another reason captures must not be screen grabs.
-- **Old csproj:** every new `.xaml` or `.cs` file needs a `Page` or `Compile` entry. C# 5 means no `$""`, `?.`, `nameof`, `=>` members or auto-property initialisers.
+- **Wildcard csproj:** new `.xaml` and `.cs` files in `wpf\` and `wpf\Themes\` are picked up automatically. Do not add entries: a duplicate Page can break the markup compile. C# 5 means no `$""`, `?.`, `nameof`, `=>` members or auto-property initialisers.
 
 ## Planning the next groups
 

@@ -1,0 +1,13 @@
+Phase 3 capture check (agent split3). before = Phase 0 captures (%TEMP%\split\*-before.png); after = this tree (PickerControls extracted).
+all-before.png       before=FAC71B50327343A5 after=FAC71B50327343A5 IDENTICAL
+colfilter-before.png before=BD7CC1E64B20B50A after=BD7CC1E64B20B50A IDENTICAL
+date-before.png      before=C2B9B310B55B6CE3 after=C2B9B310B55B6CE3 IDENTICAL
+datesec-before.png   before=D2B1529376D28C7A after=D2B1529376D28C7A IDENTICAL
+file-before.png      before=C4D7E686C20DDD2F after=C4D7E686C20DDD2F IDENTICAL
+forms-before.png     before=D7BD2EDB0CD1B742 after=D7BD2EDB0CD1B742 IDENTICAL
+gridin-before.png    before=9A1B7E54EB60A513 after=9A1B7E54EB60A513 IDENTICAL
+modal-before.png     before=713E9FE949F0AB62 after=713E9FE949F0AB62 IDENTICAL
+tagin-before.png     before=A676B37F9FD82B40 after=A676B37F9FD82B40 IDENTICAL
+toasts-before.png    before=1A8F7E170059144C after=1A8F7E170059144C IDENTICAL
+standalone -Section 'Date picker' -Capture DatePickerCard: no Phase 0 baseline exists for this capture. It is 984x232 like date-before.png but differs from it (about 15k px, max channel diff 166, visible as a ~1px sub-pixel shift of the card in standalone layout; repeat runs identical). This is a crop of a different layout, not a before/after change: the standalone column capture datesec-after.png (which contains the same card at its standalone position) is byte-identical to its baseline, so the card pixels are unchanged.
+Found (no CAPTURE FAIL, no .error.txt): Toast variants -> toastvar-after.png, Modal dialog -> modal2-after.png, standalone Date picker card -> standalone-datecard-after.png

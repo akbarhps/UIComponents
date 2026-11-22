@@ -1,0 +1,28 @@
+app PID 41588 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  grid
+PASS  grid input found
+PASS  grid cell r0c0 value
+PASS  grid cell r2c3 value
+PASS  grid row header selects 4
+PASS  grid typing propagates
+PASS  grid clear selected
+PASS  grid copy column TSV
+PASS  grid add row
+PASS  grid add column
+PASS  typed grid found
+PASS  typed grid has no add column
+PASS  typed checkbox initially on
+PASS  typed checkbox toggles off
+PASS  typed select chooses Custom
+AREA  grid done in 7,3 s
+
+PROFILE finds=22 findMs=4941
+DRIVER  fast=10 fallback=1
+DRIVER  fallback select:<no id> x1
+RESULT  passed=15  failed=0

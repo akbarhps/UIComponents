@@ -44,7 +44,7 @@ Bending `DataGrid` into that shape (edit mode vs. view mode, cell templates, cor
 | `wpf/SheetGrid.cs` | **new.** A code-only `UserControl` that ports `createGrid` |
 | `wpf/Themes/Sheet.xaml` | **new.** All `Sheet*` styles and the `DemoCard` and `GhostButtonSm` styles |
 | `wpf/App.xaml` | merge `Themes/Sheet.xaml` |
-| `wpf/UIComponents.Wpf.csproj` | `<Compile Include="SheetGrid.cs"/>` and `<Page Include="Themes\Sheet.xaml">` |
+| `wpf/UIComponents.Wpf.csproj` | none: wildcards pick up `SheetGrid.cs` and `Themes\Sheet.xaml` (no entries) |
 | `wpf/DataControls.xaml` / `.cs` | replace the two `DataGrid` sections with two `SheetGrid` sections; leave the filter and selection tables alone |
 | `wpf/Themes/Tokens.xaml` | Phase 0 only: serif font order and the new `BrandSoftHover` brush |
 | `wpf/tests/UIAutomationTests.cs` | Phase 6: replace the grid tests |
@@ -271,7 +271,7 @@ Each phase must build, the existing tests must still pass (except the grid tests
 
 - `Tokens.xaml`: change `Serif` to `Palatino Linotype, Book Antiqua, Georgia, serif`. The web lists Palatino first and Windows has it.
 - `Tokens.xaml`: add `<SolidColorBrush x:Key="BrandSoftHover" Color="#FFF0D9CD"/>`.
-- Create `Themes/Sheet.xaml` with `DemoCard` and `GhostButtonSm`, merge it in `App.xaml` and add it to the csproj.
+- Create `Themes/Sheet.xaml` with `DemoCard` and `GhostButtonSm`, merge it in `App.xaml` (no csproj entry: wildcards).
 - **Open item for the user/reviewer.** The web content column is 984px (max 1080 minus 2×48 padding). WPF's `MainWindow.xaml` content `StackPanel` has `MaxWidth="1000"`. Until that one line becomes `984`, text columns will be about 4px wider than the web. That doesn't fail review. **Don't edit `MainWindow.xaml`** while it has someone else's uncommitted changes.
 
 Acceptance: it builds, and section titles across the app render in Palatino.

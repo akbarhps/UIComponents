@@ -1,0 +1,48 @@
+app PID 39352 on hidden desktop 'uitest-split'
+WPF UI Automation tests
+Start UIComponents.Wpf.exe first, then run this. Pass its PID to target your own instance.
+
+PASS  window found
+DRIVER  in-process actions enabled
+AREAS compiled: nav, forms, tables, display, overlays, dropdown, pickers, grid, toasts
+AREA  pickers
+PASS  file browse button found
+PASS  file list found
+PASS  P date section found
+PASS  P1 trigger found
+PASS  P1 placeholder
+PASS  P1 panel absent when closed
+PASS  P2 open shows panel
+PASS  W7 panel name
+PASS  P5 initial title
+PASS  W7 today name and marker
+PASS  P5 prev month
+PASS  P5 next month
+PASS  P4 day cell found
+PASS  W7 full-date cell name
+PASS  P4 date pick closes panel
+PASS  P3 date format
+PASS  P7 reopened
+PASS  P2 selected cell focused on reopen
+PASS  P11 selection survives reopen
+PASS  P11 view month survives reopen
+PASS  finding-1 Next keeps panel open
+PASS  P7 Today commits
+PASS  P8 Clear resets to placeholder
+PASS  P9 Escape closes and keeps focus
+FAIL  P10 outside click closes
+PASS  P2 month trigger found
+PASS  P2 month panel opens
+PASS  W7 month panel name
+PASS  P5 month title
+PASS  P4 month commits
+PASS  P2 year trigger found
+PASS  P2 year panel opens
+PASS  W7 year panel name
+PASS  P5 year title
+PASS  P4 year commits
+AREA  pickers done in 16,2 s
+
+PROFILE finds=54 findMs=16046
+DRIVER  fast=16 fallback=0
+RESULT  passed=35  failed=1

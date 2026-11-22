@@ -45,7 +45,7 @@ Read `plan/wpf/README.md` first. Rules 4 (hidden desktop, agent name `display`) 
 |---|---|
 | `wpf/Themes/Display.xaml` (**new**) | All new display styles. Owned by `display` |
 | `wpf/Shimmer.cs` (**new**) | The shimmer attached property (Phase 4). Owned by `display` |
-| `wpf/UIComponents.Wpf.csproj` | Add `<Page Include="Themes\Display.xaml">` (copy the `Themes\Forms.xaml` entry) and `<Compile Include="Shimmer.cs" />` (like `TableClip.cs`). Nothing else |
+| `wpf/UIComponents.Wpf.csproj` | Nothing: wildcards pick up `Themes\Display.xaml` and `Shimmer.cs` (no entries) |
 | `wpf/App.xaml` | Add `<ResourceDictionary Source="Themes/Display.xaml"/>` as the **last** merged dictionary. Nothing else |
 | `wpf/MainWindow.xaml` | **Only** the blocks `<!-- Cards & badges -->`, `<!-- Alerts -->`, `<!-- Progress -->` (the "Progress & tabs" title), `<!-- Avatars -->`, `<!-- Empty state -->` and `<!-- Skeleton -->`. Find them by comment or title; the line numbers drift. Forms belongs to `forms`, Data table to `tables` |
 | `wpf/MainWindow.xaml.cs` | Add the progress handlers in their own `// Progress bar (05-display)` block. Don't touch the grip handler or `StandaloneHelper` |
@@ -59,7 +59,7 @@ Read `plan/wpf/README.md` first. Rules 4 (hidden desktop, agent name `display`) 
 
 **Reuse, don't copy:** `SheetSectionDesc` and `DemoCard` (Sheet.xaml), `Divider` and `DemoLabel` (Forms.xaml), and `PrimaryButton` / `SecondaryButton` for the 42px buttons.
 
-**Other agents edit MainWindow.xaml, the csproj and App.xaml right now.** Re-read each one immediately before every edit, and make small `Edit`s. Never rewrite a whole file.
+**Other agents edit MainWindow.xaml and App.xaml right now.** Re-read each one immediately before every edit, and make small `Edit`s. Never rewrite a whole file.
 
 **Section titles.** Keep each WPF block where it is; don't reorder, because the blocks in between are other agents'. Titles become the web `h2`: "Cards", "Badges", "Alerts", "Skeleton loader", "Progress bar", "Empty state", "Avatars".
 - "Cards & badges" splits into "Cards" and "Badges".
@@ -310,7 +310,7 @@ Phase 0 runs first. Phase 1 creates `Display.xaml`, which everything else needs.
 
 **Infrastructure:**
 - `Themes/Display.xaml`, with the same header as Forms.xaml.
-- The csproj `Page` entry, and the App.xaml merge (last).
+- The App.xaml merge (last). No csproj entry.
 - The brushes `AvatarBorder` #ECD4C8, `SageBg` #E6EEE7 and `SageBorder` #D3E3D6.
 
 **Styles:** `DisplayCard`, `SecondaryButtonSm`, `PrimaryButtonSm`, `Badge` and the 5 variants.
@@ -382,7 +382,7 @@ Phase 0 runs first. Phase 1 creates `Display.xaml`, which everything else needs.
 
 **Styles:**
 - `SkLine` and `SkCircle`.
-- `Shimmer.cs` (B6, B7), with its csproj `Compile` entry.
+- `Shimmer.cs` (B6, B7). No csproj entry (wildcard).
 - Delete `ShimmerBrush` from ExtraControls.
 
 **Block:**
@@ -425,7 +425,7 @@ Phase 0 runs first. Phase 1 creates `Display.xaml`, which everything else needs.
   - no `$""`, `?.`, `nameof`, `=>` members, auto-property initialisers, `out var` or tuples
   - use `string.Format`
   - `Random` is a field, not created per tick
-- **Project entries:** every new `.cs` needs a `<Compile Include>`; every new `.xaml` needs a `<Page Include>`, plus the App.xaml merge.
+- **Project entries:** none (wildcards, README hard constraint 2). Only the App.xaml merge for a new resource dictionary.
 - **WPF quirks:**
   - `ClipToBounds` on a rounded Border clips to a rectangle. If a real rounded clip is ever needed, use a `RectangleGeometry` updated on `SizeChanged`; `TableClip.cs` shows the pattern (it's `tables`', so don't edit it). The rounded-overlay approach (B7) avoids the clip.
   - `Effect` forces software rendering of its subtree. Keep it off the skeleton and the alerts.
@@ -458,7 +458,7 @@ Read plan/wpf/README.md fully (rules, worker workflow, ownership, gotchas), then
 and the web lines it cites (CSS 142-157, 160-184, 215-221, 357-399, 496-515, 868-873; markup 1344-1453, 1575-1591; JS 3234-3263).
 Rules: build only with wpf\build.bat display; test and capture only via pwsh wpf/tests/run-hidden.ps1 -Agent display;
 never launch the exe on the user's desktop, never kill processes by name, never git commit.
-Edit only the files and MainWindow blocks in the 05 ownership table; re-read MainWindow.xaml, the csproj and App.xaml
+Edit only the files and MainWindow blocks in the 05 ownership table; re-read MainWindow.xaml and App.xaml
 right before each edit (other agents are editing them).
 Do Phase 0 only (audit and measure, NO code changes), then stop and report in the README format, including:
 test pass/fail counts and wall time, measurement drift (or none), and the `ButtonSm` grep result.

@@ -43,7 +43,7 @@ A separate `Selection controls` **section** (~line 203) holds two checkboxes, an
 |---|---|
 | `wpf/Themes/Forms.xaml` | **new.** `FieldInput`, `FieldInputError`, `FieldSelect`, `FieldTextArea`, `ClaudeRadio`, `ClaudeSwitch`, `DemoLabel`, `Divider` |
 | `wpf/Themes/Controls.xaml` | fix `FieldLabel`, `FieldHint` and `ClaudeCheckBox` **in place**. They mirror `.field__label`, `.field__hint` and `.check` exactly, and `ClaudeCheckBox` is only used in Forms |
-| `wpf/App.xaml` and `wpf/UIComponents.Wpf.csproj` | merge and register `Themes/Forms.xaml` |
+| `wpf/App.xaml` | merge `Themes/Forms.xaml` (no csproj entry: wildcards) |
 | `wpf/MainWindow.xaml` | rewrite the `Forms` section; **delete** the `Selection controls` section, DatePicker included |
 | `wpf/tests/UIAutomationTests.cs` | Phase 4 |
 | `wpf/README.md` | Phase 4: update the covered list and the assertion count |
