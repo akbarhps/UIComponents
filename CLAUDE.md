@@ -10,3 +10,5 @@ WPF parity work is coordinated through `plan/wpf/`:
 - Never `Read` a file over ~150 lines in the main session, and never `cat` handoff/report/review files. Send a `reader` (lookup/summary) or a `reviewer`/`phase-reviewer` (point it at the file) and take its 5-line answer. Exception: `plan/wpf/handoff/SESSION-*.md` at session start.
 
 When you add or change a WPF component, also update `wpf/COMPONENTS.md` (index of components, style keys, files). Same for `web/COMPONENTS.md` on web changes.
+
+After editing `web/index.html`, run `node web/build-dist.mjs`, commit `web/dist/`, and keep `web/SNIPPETS.md` in sync (`node web/build-dist.mjs --check` must pass).

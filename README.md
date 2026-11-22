@@ -29,7 +29,8 @@ Ground rules (details in `plan/wpf/README.md`):
 2. Symlink or copy `skills/ui-components` to the hub's `.claude/skills/ui-components`.
 3. Fill in the scope table in that `SKILL.md` (replace the `<...>` placeholders).
 4. Projects marked NO need a line in their `CLAUDE.md` saying not to use ui-design.
-5. Agents then use the small indexes (`web/COMPONENTS.md` Quick picker, `wpf/COMPONENTS.md`) and never read `index.html` or `MainWindow.xaml` whole.
+5. Web agents link `web/dist/ui.css` and `web/dist/ui.js` (generated from `web/index.html` by `node web/build-dist.mjs`; committed, never edited by hand) and take markup from `web/SNIPPETS.md`. They never copy CSS or JS.
+6. Agents then use the small indexes (`web/COMPONENTS.md` Quick picker, `web/SNIPPETS.md`, `wpf/COMPONENTS.md`) and never read `index.html` or `MainWindow.xaml` whole.
 
 ## Status
 

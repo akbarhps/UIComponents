@@ -1,6 +1,6 @@
 ---
 name: ui-components
-description: Use when building NEW UI (forms, tables, dropdowns, pickers, dialogs, nav, toasts, cards) in a hub project marked 'yes' in the scope table, using the ui-design library (web = HTML/CSS/JS, desktop = WPF). Not for CLI projects, not for projects marked NO.
+description: Use when building NEW UI (forms, tables, dropdowns, pickers, dialogs, nav, toasts, cards) in a hub project marked 'yes' in the scope table, using the ui-design library (web = HTML/CSS/JS, desktop = WPF). Not for CLI projects, not for Manual Logger, not for any project marked NO.
 ---
 
 If the task is in a project marked NO, stop: do not use this library.
@@ -31,8 +31,10 @@ Maintainer: replace each `<...>` placeholder with the hub's real project name be
 Never read `ui-design/web/index.html` (212 KB) or `ui-design/wpf/MainWindow.xaml` (103 KB) whole.
 
 **Web**
-1. `grep -n "## Quick picker" ui-design/web/COMPONENTS.md`, then read about 60 lines from that line. Read only this section.
-2. Find the CSS class, or the section comment (`/* ── Name ── */`), with `grep -n "<name>" ui-design/web/index.html`. Read about 40 lines around the match.
+1. `grep -n "## Quick picker" ui-design/web/COMPONENTS.md`, then read about 60 lines from that line.
+2. `grep -n "### <name>" ui-design/web/SNIPPETS.md`, then read that section (markup, plus the `init` line).
+3. Link the library, never copy it: `ui-design/web/dist/ui.css` in `<head>` and `ui-design/web/dist/ui.js` at the end of `<body>`. These paths are relative to the consumer page (for example `../ui-design/web/dist/ui.css`); state the path you used. Copying tokens, CSS or JS into the consumer is NEVER allowed. Icons: ui.js injects the sprite; use `<svg><use href="#i-name"/></svg>`; never inline `<symbol>`s.
+4. Only if a component has no snippet: `grep -n "<name>" ui-design/web/index.html`, read about 40 lines around the match.
 
 **WPF**
 1. Read `ui-design/wpf/COMPONENTS.md`. Find the component row.

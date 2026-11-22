@@ -1,0 +1,32 @@
+# dist / snippets final review 2 (fixes after dist-final-review.md)
+
+Verdict: READY after one cheap fix (must-fix 1). The original must-fix items all hold. Must-fix 2-3 are small doc corrections. The rest are nits.
+
+## Commands (verbatim tails)
+- `node web/build-dist.mjs --check` prints `OK: dist is up to date; all SNIPPETS.md classes exist in ui.css or are JS hooks in ui.js (285 CSS selectors)` and exits 0.
+- `node plan/wpf/web-checks.mjs` prints `--- console errors on load (0) ---` and `RESULT: 43/43 checks passed, 0 failed`, and exits 0.
+- `git check-attr -a web/dist/ui.js` prints `text: set`, `eol: lf`.
+- The consumer harness (previous session scratchpad `snip-check.mjs`) passed all 27 sections solo (18 of them interactive), all 18 checks on one page, a page with `const app/overlay`, a page that keeps showcase ids, ui.js loaded twice, and the index.html load. The broken-combo case threw `Cannot access 'toastIcons' before initialization`.
+
+## (1) Original must-fix items
+All of them hold. Multi `.multi__empty` is SNIPPETS.md:75. The IIFE and exports are in build-dist.mjs:37-41. Each `hasIds()` guard covers every id its block dereferences (overlay, loading, form, drawer, edit, sort, cmdk, progress, stepper, selection, toast, loadingBtn, and the sidebar `if`). The neutral ids are checked: no SNIPPETS id is looked up by name in ui.js, except `toastStack`, which is required. The line-3 wording is fixed. `?._resetPage?.()` is in all 3 call sites. The modal form has `#newProjectEmail`, and the neutral ids mean the demo submit handler no longer binds. The CRLF fixes are `lf()` on both sides plus `web/.gitattributes`. `Buffer.byteLength` is fixed too.
+
+## (2) Behaviour changes beyond the brief
+- `row.hidden = !match`: no change on the showcase. `_resetPage()` → `render()` runs synchronously right after and overwrites `hidden` from `dataset.match` (index.html:2288). Without pagination it is the actual fix, and the harness verifies the rows hide and unhide.
+- Double-load guard: the showcase does not run it, because index.html's inline script has no guard. A consumer cannot legitimately init anything before ui.js loads, because the factories only exist after it runs, so no legitimate case breaks. Side effect: `<html data-ui-loaded="1">`, which is harmless. Accepted limitation: an SPA that swaps `<body>` and re-runs ui.js gets no re-init.
+
+## (3) Exports
+Every function that SNIPPETS.md init lines name is on window: openOverlay, closeOverlay, setFieldError, showToast, createGrid, bindSimpleFilters, bindColumnFilters. The Date picker snippet (which covers time too) is auto at load, so a missing `initPicker` is not a gap for SNIPPETS. It is a gap for COMPONENTS.md:11, which tells agents to call `initPicker` for pickers added later. See must-fix 2.
+
+## Findings
+web/index.html:2113: bug (must-fix 1): the TDZ goes further than the reported toastIcons case. `closeOverlay` reads `cmdkOverlay` (const at 3242), `showToast` reads `toastIcons` (const at 3466), and `createGrid` reads `activeGrid` (let at 2831). If any auto-init between 2113 and 3242 throws (combo 2409, multi 2487, picker 2715, ac, tag, file-input), then closing modals (the buttons, Esc and backdrop) and toasts throw a ReferenceError. If the throw comes before 2831, createGrid throws too, and every later auto-init is dead. SNIPPETS.md says repeated rows were trimmed, so agents trim markup, and the previous round found exactly such a missing hook (`.multi__empty`). Likelihood is low when SNIPPETS is followed exactly and real once an agent edits markup. Fix (cheap): move `const cmdkOverlay`, `const cmdkInput`, `const toastIcons` and `let activeGrid` to the top of the script, before index.html:2105. This is a 4-line move with no behaviour change, after which the exports never TDZ. Optional: a try/catch per element inside each auto-init `forEach`, so one bad component does not kill the rest. Not needed now.
+web/build-dist.mjs:36: nit: the comment "factories exist even if an auto-init throws" is true for existence, but they still throw TDZ (above). Fix: correct the comment after must-fix 1.
+web/COMPONENTS.md:11: missed-step (must-fix 2): this line tells consumers to use the factories "`createGrid`, `initPicker`", but initPicker is not exported. Line 10 says "Copy the component's CSS block ... and any JS that references it", which contradicts the new link-never-copy rule (line 5, SKILL.md step 3). Fix: add `initPicker` to the build-dist.mjs:37 export. Note that `initPicker(root, index)` uses `index` for `picker-panel-<index>`, so tell callers to pass a unique number, or drop initPicker from line 11. Reword line 10 to "link dist/ui.css + dist/ui.js; take markup from SNIPPETS.md".
+web/COMPONENTS.md:137: bug (must-fix 3): an agent that reaches this section (the skill reads about 60 lines from Quick picker, so not by default, but it can grep for it) is told `createGrid('sheet', ...)` and `.sheet#sheet`. `#sheet` is auto-wired by ui.js with demo data, so the consumer gets demo rows and the toolbar bound twice. This contradicts SNIPPETS.md:3. Fix: use `mySheet` (as the appendix at line 304 already does) and drop `#sheet` from the markup text.
+web/SNIPPETS.md:3: nit: "ids below are neutral and not wired by ui.js", but `#toastStack` (line 174) is required by name. Fix: add "except #toastStack".
+web/SNIPPETS.md:377: nit (carried over from round 1): Data table pagination still needs the `.demo` showcase-card wrapper (30px padding plus a border). Fix later: give pagination a non-`.demo` hook.
+web/COMPONENTS.md:23: nit: the Quick picker says "Native `.select`", but the section is `### Native select`. SKILL.md step 2 (`grep -n "### <name>"`) misses it. Fix: rename one to match the other.
+web/index.html:3244: nit: on a page that keeps the cmdk ids, the "Toggle sidebar" command calls `sidebarToggle.click()` on null, and `goTo()` does `scrollIntoView` on null. This is demo-only and unlikely now that SNIPPETS dropped Command palette. Fix: `sidebarToggle?.click()`, `?.scrollIntoView`.
+
+## (5) Dangling references
+README.md, CLAUDE.md and SKILL.md have no mention of Row selection, Sortable table, Command palette or old demo ids. The 3 dropped rows are gone from the Quick picker. The COMPONENTS.md library sections for them (196, 259) remain, which is fine because they are maintainer docs. Every remaining Quick picker row has a `###` section in SNIPPETS.md (Native select naming nit above). COMPONENTS.md:12 lists `#sheet`/`#sortTable` as demo ids to change, which is correct.

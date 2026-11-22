@@ -2101,6 +2101,10 @@ svg{ display: block; }
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <script>
+// Declared before any auto-init: a throw in one block must not leave these in the TDZ for closeOverlay/createGrid/showToast.
+let cmdkOverlay = null, cmdkInput = null; // assigned in the command palette block
+const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
+let activeGrid = null;
 /* Overlays */
 const overlays = [...document.querySelectorAll('.overlay')];
 const lastFocusByOverlay = new Map();
@@ -2112,7 +2116,7 @@ function openOverlay(el, focusEl){
 }
 function closeOverlay(el){
   el.classList.remove('open');
-  if(el === cmdkOverlay){ cmdkInput.setAttribute('aria-expanded', 'false'); cmdkInput.removeAttribute('aria-activedescendant'); }
+  if(el === cmdkOverlay){ cmdkInput?.setAttribute('aria-expanded', 'false'); cmdkInput?.removeAttribute('aria-activedescendant'); }
   if(!overlays.some(o => o.classList.contains('open'))) document.body.style.overflow = '';
   const previous = lastFocusByOverlay.get(el);
   lastFocusByOverlay.delete(el);
@@ -2149,21 +2153,26 @@ document.addEventListener('keydown', e => {
 });
 
 /* Confirmation modal */
+const hasIds = (...ids) => ids.every(id => document.getElementById(id));
 const overlay = document.getElementById('overlay');
-document.getElementById('openModal').addEventListener('click', () => openOverlay(overlay, document.getElementById('closeModal')));
-document.getElementById('closeModal').addEventListener('click', () => closeOverlay(overlay));
-document.getElementById('cancelModal').addEventListener('click', () => closeOverlay(overlay));
-document.getElementById('confirmModal').addEventListener('click', () => { closeOverlay(overlay); showToast('success','Deleted','The project was removed.'); });
+if(hasIds('overlay','openModal','closeModal','cancelModal','confirmModal')){ // demo-only wiring: skipped when the demo markup is absent
+  document.getElementById('openModal').addEventListener('click', () => openOverlay(overlay, document.getElementById('closeModal')));
+  document.getElementById('closeModal').addEventListener('click', () => closeOverlay(overlay));
+  document.getElementById('cancelModal').addEventListener('click', () => closeOverlay(overlay));
+  document.getElementById('confirmModal').addEventListener('click', () => { closeOverlay(overlay); showToast('success','Deleted','The project was removed.'); });
+}
 
 /* Loading modal */
 const loadingOverlay = document.getElementById('loadingOverlay');
-document.getElementById('openLoading').addEventListener('click', () => {
-  openOverlay(loadingOverlay, loadingOverlay.querySelector('.loading-modal'));
-  setTimeout(() => {
-    closeOverlay(loadingOverlay);
-    showToast('success', 'Ready', 'Your workspace is ready.');
-  }, 3000);
-});
+if(hasIds('loadingOverlay','openLoading')){ // demo-only wiring
+  document.getElementById('openLoading').addEventListener('click', () => {
+    openOverlay(loadingOverlay, loadingOverlay.querySelector('.loading-modal'));
+    setTimeout(() => {
+      closeOverlay(loadingOverlay);
+      showToast('success', 'Ready', 'Your workspace is ready.');
+    }, 3000);
+  });
+}
 
 /* Modal form */
 const formOverlay = document.getElementById('formOverlay');
@@ -2176,6 +2185,7 @@ function setFieldError(field, on){
   if(control && error) on ? control.setAttribute('aria-describedby', error.id) : control.removeAttribute('aria-describedby');
 }
 function resetForm(form){ form.reset(); form.querySelectorAll('.field.has-error').forEach(f => setFieldError(f, false)); }
+if(hasIds('formOverlay','openFormModal','closeFormModal','cancelFormModal','projectForm','fm-name','fm-email')){ // demo-only wiring
 document.getElementById('openFormModal').addEventListener('click', () => { resetForm(document.getElementById('projectForm')); openOverlay(formOverlay, document.getElementById('fm-name')); });
 document.getElementById('closeFormModal').addEventListener('click', () => closeOverlay(formOverlay));
 document.getElementById('cancelFormModal').addEventListener('click', () => closeOverlay(formOverlay));
@@ -2192,10 +2202,12 @@ document.getElementById('projectForm').addEventListener('submit', e => {
   showToast('success','Project created','“' + name.value.trim() + '” is ready.');
   e.target.reset();
 });
-['fm-name','fm-email'].forEach(id => document.getElementById(id).addEventListener('input', e => setFieldError(e.target.closest('.field'), false)));
+['fm-name','fm-email'].forEach(id => document.getElementById(id)?.addEventListener('input', e => setFieldError(e.target.closest('.field'), false)));
+}
 
 /* Sidebar drawer form */
 const drawerOverlay = document.getElementById('drawerOverlay');
+if(hasIds('drawerOverlay','openDrawer','closeDrawer','cancelDrawer','inviteForm','dr-email')){ // demo-only wiring
 document.getElementById('openDrawer').addEventListener('click', () => { resetForm(document.getElementById('inviteForm')); openOverlay(drawerOverlay, document.getElementById('dr-email')); });
 document.getElementById('closeDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
 document.getElementById('cancelDrawer').addEventListener('click', () => closeOverlay(drawerOverlay));
@@ -2210,11 +2222,13 @@ document.getElementById('inviteForm').addEventListener('submit', e => {
   e.target.reset();
 });
 document.getElementById('dr-email').addEventListener('input', e => setFieldError(e.target.closest('.field'), false));
+}
 
 /* Update drawer */
 const editOverlay = document.getElementById('editDrawerOverlay');
 const editConfirm = document.getElementById('editConfirm');
 const editEmail = document.getElementById('ed-email');
+if(hasIds('editDrawerOverlay','openEditDrawer','closeEditDrawer','cancelEditDrawer','editForm','ed-name','ed-email','editConfirm','editDelete','keepMember','confirmDelete')){ // demo-only wiring
 document.getElementById('openEditDrawer').addEventListener('click', () => {
   editConfirm.hidden = true;
   resetForm(document.getElementById('editForm'));
@@ -2251,6 +2265,7 @@ editOverlay.addEventListener('keydown', e => {
     document.getElementById('editDelete').focus();
   }
 });
+}
 
 /* Table pagination */
 document.querySelectorAll('.demo > .table-wrap').forEach(wrap => {
@@ -2314,10 +2329,11 @@ function bindSimpleFilters(tableId, searchId, filterId, countId){
       const match = row.textContent.toLowerCase().includes(query) &&
         (status === 'all' || row.dataset.status === status);
       row.dataset.match = String(match);
+      row.hidden = !match;
       if(match) shown++;
     });
     count.textContent = shown + ' of ' + rows.length + ' projects';
-    document.getElementById(tableId).closest('.demo')._resetPage();
+    document.getElementById(tableId).closest('.demo')?._resetPage?.();
   }
   search.addEventListener('input', apply);
   buttons.forEach(b => b.addEventListener('click', () => {
@@ -2326,10 +2342,11 @@ function bindSimpleFilters(tableId, searchId, filterId, countId){
     apply();
   }));
 }
-bindSimpleFilters('filterTable', 'tableSearch', 'tableFilters', 'tableCount');
+if(document.getElementById('filterTable')) bindSimpleFilters('filterTable', 'tableSearch', 'tableFilters', 'tableCount');
 
 /* Sortable table */
 const sortTable = document.getElementById('sortTable');
+if(hasIds('sortTable','stickyToggle')){ // demo-only wiring
 const sortBody = sortTable.tBodies[0];
 const sortButtons = [...sortTable.querySelectorAll('[data-sort-key]')];
 let sortKey = '', sortDir = 1;
@@ -2350,13 +2367,14 @@ sortButtons.forEach(btn => btn.addEventListener('click', () => {
       return cmp * sortDir;
     })
     .forEach(row => sortBody.appendChild(row));
-  sortTable.closest('.demo')._resetPage();
+  sortTable.closest('.demo')?._resetPage?.();
 }));
 const stickyToggle = document.getElementById('stickyToggle');
 stickyToggle.addEventListener('click', () => {
   const pinned = sortTable.classList.toggle('sticky-column');
   stickyToggle.setAttribute('aria-pressed', String(pinned));
 });
+}
 
 /* Column filters */
 function bindColumnFilters(tableId, countId){
@@ -2380,15 +2398,16 @@ function bindColumnFilters(tableId, countId){
         return el.tagName === 'SELECT' ? text === value : text.includes(value);
       });
       row.dataset.match = String(match);
+      row.hidden = !match;
       if(match) shown++;
     });
     if(count) count.textContent = shown + ' of ' + rows().length + ' projects';
-    table.closest('.demo')._resetPage();
+    table.closest('.demo')?._resetPage?.();
   }
   controls.forEach(el => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', apply));
 }
-bindColumnFilters('columnTable', 'colCount');
-bindColumnFilters('sortTable');
+if(document.getElementById('columnTable')) bindColumnFilters('columnTable', 'colCount');
+if(sortTable) bindColumnFilters('sortTable');
 
 /* Searchable selects */
 document.querySelectorAll('.combo').forEach((combo, index) => {
@@ -2813,7 +2832,6 @@ document.querySelectorAll('.tag-input-wrap').forEach(root => {
 });
 
 /* Spreadsheet inputs */
-let activeGrid = null;
 function createGrid(rootId, initialColumns, initialData, options = {}){
   const allowAddColumn = options.allowAddColumn !== false;
   const root = document.getElementById(rootId);
@@ -3088,13 +3106,13 @@ document.addEventListener('paste', e => {
   const text = (e.clipboardData || window.clipboardData).getData('text');
   if(activeGrid._pasteData(text)) e.preventDefault();
 });
-createGrid('sheet', [
+if(document.getElementById('sheet')) createGrid('sheet', [
   { name: 'Width', type: 'text' }, { name: 'Height', type: 'text' },
   { name: 'Depth', type: 'text' }, { name: 'Weight', type: 'text' }
 ], [
   ['Small', '10', '20', '5'], ['Medium', '14', '24', '8'], ['Large', '18', '30', '12']
 ]);
-createGrid('typedSheet', [
+if(document.getElementById('typedSheet')) createGrid('typedSheet', [
   { name: 'Variant', type: 'text' },
   { name: 'Width', type: 'text' },
   { name: 'Height', type: 'text' },
@@ -3224,9 +3242,10 @@ document.querySelectorAll('.file-input').forEach(box => {
 });
 
 /* Command palette */
-const cmdkOverlay = document.getElementById('cmdkOverlay');
-const cmdkInput = document.getElementById('cmdkInput');
+cmdkOverlay = document.getElementById('cmdkOverlay');
+cmdkInput = document.getElementById('cmdkInput');
 const cmdkList = document.getElementById('cmdkList');
+if(hasIds('cmdkOverlay','cmdkInput','cmdkList','openCmdk')){ // demo-only wiring: skipped when the demo markup is absent
 const cmdkCommands = [
   { group:'Actions', label:'Create a project', icon:'i-plus', shortcut:'Ctrl N', run:() => showToast('success','Create project','A new project draft was started.') },
   { group:'Actions', label:'Invite a member', icon:'i-more', shortcut:'', run:() => showToast('info','Invite member','Opening the invite form.') },
@@ -3293,9 +3312,12 @@ document.addEventListener('keydown', e => {
     openCmdk();
   }
 });
+}
 
 /* Progress bar */
 const progressFill = document.getElementById('progressFill');
+if(hasIds('progressFill','progressValue','progressLabel')){ // demo-only wiring
+
 const progressValue = document.getElementById('progressValue');
 const progressLabel = document.getElementById('progressLabel');
 let progressTimer = null;
@@ -3304,7 +3326,7 @@ function setProgress(value){
   progressValue.textContent = value + '%';
   progressFill.parentElement.setAttribute('aria-valuenow', value);
 }
-document.getElementById('progressStart').addEventListener('click', () => {
+document.getElementById('progressStart')?.addEventListener('click', () => {
   if(progressTimer) return;
   let value = 0;
   progressLabel.textContent = 'Uploading files…';
@@ -3319,15 +3341,17 @@ document.getElementById('progressStart').addEventListener('click', () => {
     }
   }, 350);
 });
-document.getElementById('progressReset').addEventListener('click', () => {
+document.getElementById('progressReset')?.addEventListener('click', () => {
   clearInterval(progressTimer);
   progressTimer = null;
   progressLabel.textContent = 'Uploading files…';
   setProgress(0);
 });
+}
 
 /* Stepper */
 const stepperDemo = document.getElementById('stepperDemo');
+if(hasIds('stepperDemo','stepStatus','stepPrev','stepNext')){ // demo-only wiring
 const stepEls = [...stepperDemo.querySelectorAll('.step')];
 const stepStatus = document.getElementById('stepStatus');
 let currentStep = 0;
@@ -3353,6 +3377,7 @@ function renderStepper(){
 document.getElementById('stepPrev').addEventListener('click', () => { if(currentStep > 0){ currentStep--; renderStepper(); } });
 document.getElementById('stepNext').addEventListener('click', () => { if(currentStep < stepEls.length - 1){ currentStep++; renderStepper(); } });
 renderStepper();
+}
 
 /* Accordions */
 document.querySelectorAll('.accordion').forEach(accordion => {
@@ -3409,6 +3434,7 @@ document.querySelectorAll('#tooltip-demo .tip').forEach(tip => {
 
 /* Row selection */
 const selectionTable = document.getElementById('selectionTable');
+if(hasIds('selectionTable','selectAll','bulkbar','bulkCount')){ // demo-only wiring
 const rowChecks = [...selectionTable.querySelectorAll('.row-check')];
 const selectAll = document.getElementById('selectAll');
 const bulkbar = document.getElementById('bulkbar');
@@ -3437,9 +3463,9 @@ bulkbar.querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click',
   }
   updateBulkbar();
 }));
+}
 
 /* Toasts */
-const toastIcons = { success:'i-check', info:'i-info', error:'i-close' };
 function showToast(type, title, text, options = {}){
   const el = document.createElement('div');
   el.className = 'toast' + (type !== 'success' ? ' toast--' + type : '');
@@ -3500,15 +3526,18 @@ document.querySelectorAll('[data-toast]').forEach(b => {
   });
 });
 
+if(hasIds('toastDismissible','toastWithAction','toastPersistent')){ // demo-only wiring
 document.getElementById('toastDismissible').addEventListener('click', () =>
   showToast('info', 'New update available', 'Restart to apply the latest changes.', { dismissible: true }));
 document.getElementById('toastWithAction').addEventListener('click', () =>
   showToast('success', 'Message sent', 'Delivered to the team.', { action: 'Undo', dismissible: true }));
 document.getElementById('toastPersistent').addEventListener('click', () =>
   showToast('error', 'Connection lost', 'We could not reach the server. Check your network.', { persistent: true, dismissible: true }));
+}
 
 /* Loading button demo */
 const loadingBtn = document.getElementById('loadingBtn');
+if(loadingBtn){ // demo-only wiring
 loadingBtn.addEventListener('click', () => {
   if(loadingBtn.getAttribute('aria-disabled') === 'true') return;
   loadingBtn.setAttribute('aria-disabled', 'true');
@@ -3516,6 +3545,7 @@ loadingBtn.addEventListener('click', () => {
   loadingBtn.innerHTML = '<span class="spinner"></span>Working…';
   setTimeout(() => { loadingBtn.innerHTML = original; loadingBtn.removeAttribute('aria-disabled'); }, 1600);
 });
+}
 
 /* Active nav highlight on scroll */
 const sections = [...document.querySelectorAll('.section[id]')];
@@ -3548,8 +3578,8 @@ function setCollapsed(collapsed){
   sidebarToggle.title = label;
   brandToggle.setAttribute('aria-label', label);
 }
-sidebarToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
-brandToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
+if(sidebarToggle) sidebarToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
+if(brandToggle) brandToggle.addEventListener('click', () => setCollapsed(!app.classList.contains('app--collapsed')));
 </script>
 
 <!-- icon used above but defined here for reuse -->

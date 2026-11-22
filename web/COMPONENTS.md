@@ -2,11 +2,13 @@
 
 This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript are all inline, there are no dependencies, and the file can be opened directly or sent around. This document tells an agent **which component to pick, when not to pick it, and exactly what to wire**.
 
+> For consumers: link the generated `dist/ui.css` and `dist/ui.js` (never copy them) and take each component's markup from `SNIPPETS.md` (`### <name>` per row below).
+
 ## How the library is put together
 
 - All colours, radii, shadows and fonts are CSS custom properties in `:root`. Change a token there, not individual rules.
-- Components are scoped classes (`.btn`, `.input`, `.card`, `.modal`, `.picker`, …). Copy the component's CSS block, its markup, and any JS that references it.
-- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.sheet__table` pagination). Anything added to the DOM **after** that script runs must be initialised with its factory function (`createGrid`, `initPicker`, etc.) or re-initialised manually.
+- Components are scoped classes (`.btn`, `.input`, `.card`, `.modal`, `.picker`, …). Link `web/dist/ui.css` and `web/dist/ui.js` (generated; never copy them) and take each component's markup from `SNIPPETS.md`.
+- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.sheet__table` pagination). Anything added to the DOM **after** that script runs must be initialised with one of the exported functions (`openOverlay`, `closeOverlay`, `setFieldError`, `showToast`, `createGrid`, `bindSimpleFilters`, `bindColumnFilters`) or re-initialised manually. Everything else auto-inits by class at load.
 - IDs in the demo (`#sheet`, `#filterTable`, `#sortTable`, `#modal`, …) exist for the showcase. In your app, keep the class hooks and change the IDs — but update any JS that references them.
 - **`index.html` is the reference implementation.** For exact markup, class names and CSS, copy from the matching section there. This doc explains the decisions and wiring; the HTML is the working example.
 
@@ -41,11 +43,8 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 | Reveal extra detail in place | Accordion | Modal |
 | Show a wizard's position | Stepper | Progress bar (it's for time-based work) |
 | Show tabular data | Data table | Grid input (it's for editing) |
-| Select several rows and act on them | Row selection table | Data table |
 | Narrow rows by search/status | Table with filters | Column-filters table (use when each field has its own rule) |
 | Filter each column independently | Column-filters table | Table with filters |
-| Sort and pin columns | Sortable table | Data table |
-| Run a command by search | Command palette | Action menu |
 
 ---
 
@@ -135,7 +134,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 - **Use for:** entering many rows/columns of values, Excel-style pasting, selecting ranges.
 - **Don't use for:** read-only data — use a data table.
-- **Wire:** call `createGrid('sheet', columns, rows)`. Columns are objects: `{ name:'Width', type:'text' }`, `{ name:'Category', type:'select', options:['Standard','Pro'] }`, `{ name:'IsActive', type:'checkbox' }`. Markup: `.sheet#sheet` with `.sheet__toolbar` containing `[data-sheet-copy]`, `[data-sheet-clear]` and `[data-sheet-info]`, then `.sheet__scroll > table > thead/tbody`. Add rows/columns from in-table `+` controls. To disable adding columns, pass `{ allowAddColumn: false }`.
+- **Wire:** call `createGrid('mySheet', columns, rows)`. Columns are objects: `{ name:'Width', type:'text' }`, `{ name:'Category', type:'select', options:['Standard','Pro'] }`, `{ name:'IsActive', type:'checkbox' }`. Markup: `.sheet#mySheet` (not `#sheet`, which the demo auto-wires) with `.sheet__toolbar` containing `[data-sheet-copy]`, `[data-sheet-clear]` and `[data-sheet-info]`, then `.sheet__scroll > table > thead/tbody`. Add rows/columns from in-table `+` controls. To disable adding columns, pass `{ allowAddColumn: false }`.
 - **Keyboard:** click / Shift-click / Ctrl-click / drag select, Enter moves down, Delete or Clear wipes the selection. Copy (Ctrl+C) and paste (Ctrl+V) are handled globally for the last-used grid, including selections made from row/column headers. Paste expects tab/newline text.
 
 ### Typed grid — `#typed-sheet`
