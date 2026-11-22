@@ -113,11 +113,130 @@
                                         VerticalAlignment="Center" Click="BtnLoading_Click"
                                         AutomationProperties.AutomationId="BtnLoading" AutomationProperties.Name="Loading">
                                     <StackPanel Orientation="Horizontal">
-                                        <ContentControl Style="{StaticResource ButtonSpinner}" Width="15" Height="15"/>
+                                        <ContentControl x:Name="BtnLoadingSpinner" Style="{StaticResource ButtonSpinner}" Width="15" Height="15"
+                                                        Loaded="LoadingSpinner_Loaded"/>
                                         <TextBlock Text="Loading" Margin="8,0,0,0"/>
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
+
+                <!-- Action menu -->
+                <TextBlock Text="Action menu" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="A popover of actions anchored to a button. Navigate with the arrow keys, activate with Enter, and close with Escape or an outside click."/>
+                <GroupBox AutomationProperties.AutomationId="MenuCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="42">
+                                <Button x:Name="MenuActions" Style="{StaticResource SecondaryButton}"
+                                        Click="MenuActions_Click" KeyDown="MenuTrigger_KeyDown"
+                                        AutomationProperties.AutomationId="MenuActions">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Actions"/>
+                                        <ContentControl x:Name="MenuChevron" Style="{StaticResource IconChevron}"
+                                                        Width="16" Height="16" Margin="8,0,0,0"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="MenuMore" Style="{StaticResource IconButton}"
+                                        VerticalAlignment="Center" Margin="12,0,0,0" Click="MenuMore_Click"
+                                        KeyDown="MenuTrigger_KeyDown"
+                                        AutomationProperties.AutomationId="MenuMore" AutomationProperties.Name="More actions">
+                                    <ContentControl Style="{StaticResource IconMore}" Width="18" Height="18"/>
+                                </Button>
+                                <TextBlock x:Name="MenuResult" Style="{StaticResource FieldHint}" Margin="12,0,0,0"
+                                           VerticalAlignment="Center" Text="Choose an action…"
+                                           AutomationProperties.AutomationId="MenuResult"/>
+                            </StackPanel>
+
+                            <!-- Panels are moved to PopoverLayer on first open. -->
+                            <GroupBox x:Name="ProjectMenuPanel" Style="{StaticResource MenuPanel}" Visibility="Collapsed"
+                                      KeyDown="MenuPanel_KeyDown"
+                                      AutomationProperties.AutomationId="ProjectMenu" AutomationProperties.Name="Actions">
+                                <StackPanel Width="196">
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Edit project"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item0" AutomationProperties.Name="Edit project">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconEdit}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Edit project" Margin="10,0,0,0"/>
+                                            <TextBlock Grid.Column="2" Text="Ctrl E" Style="{StaticResource MenuShortcut}" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Duplicate"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item1" AutomationProperties.Name="Duplicate">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconCopy}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Duplicate" Margin="10,0,0,0"/>
+                                            <TextBlock Grid.Column="2" Text="Ctrl D" Style="{StaticResource MenuShortcut}" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Export as CSV"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item2" AutomationProperties.Name="Export as CSV">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconDownload}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Export as CSV" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Border Style="{StaticResource MenuDivider}"/>
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Pin to top"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item3" AutomationProperties.Name="Pin to top">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconPin}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Pin to top" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Style="{StaticResource MenuItem}" IsEnabled="False" IsTabStop="False"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item4" AutomationProperties.Name="Archive">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconInfo}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Archive" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Border Style="{StaticResource MenuDivider}"/>
+                                    <Button Style="{StaticResource MenuItemDanger}" Click="MenuItem_Click" Tag="Delete project"
+                                            AutomationProperties.AutomationId="ProjectMenu_Item5" AutomationProperties.Name="Delete project">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconTrash}" Width="16" Height="16"/>
+                                            <TextBlock Grid.Column="1" Text="Delete project" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <GroupBox x:Name="CompactMenuPanel" Style="{StaticResource MenuPanel}" Height="136"
+                                      Visibility="Collapsed" KeyDown="MenuPanel_KeyDown"
+                                      AutomationProperties.AutomationId="CompactMenu"
+                                      AutomationProperties.Name="More actions">
+                                <StackPanel Width="196">
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Rename"
+                                            AutomationProperties.AutomationId="CompactMenu_Item0" AutomationProperties.Name="Rename">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconEdit}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Rename" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Button Style="{StaticResource MenuItem}" Click="MenuItem_Click" Tag="Make a copy"
+                                            AutomationProperties.AutomationId="CompactMenu_Item1" AutomationProperties.Name="Make a copy">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconCopy}" Width="16" Height="16" Foreground="{StaticResource Ink3}"/>
+                                            <TextBlock Grid.Column="1" Text="Make a copy" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                    <Border Style="{StaticResource MenuDivider}"/>
+                                    <Button Style="{StaticResource MenuItemDanger}" Click="MenuItem_Click" Tag="Remove"
+                                            AutomationProperties.AutomationId="CompactMenu_Item2" AutomationProperties.Name="Remove">
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                            <ContentControl Style="{StaticResource IconTrash}" Width="16" Height="16"/>
+                                            <TextBlock Grid.Column="1" Text="Remove" Margin="10,0,0,0"/>
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </GroupBox>
                         </StackPanel>
                     </Border>
                 </GroupBox>
@@ -401,7 +520,7 @@
                     </Grid>
                     </Border>
 
-                    <local:TablePagination AutomationProperties.AutomationId="TablePagination"/>
+                    <local:TablePagination PagerId="DataPageSize" AutomationProperties.AutomationId="TablePagination"/>
                     </StackPanel>
                 </Border>
 
@@ -533,40 +652,130 @@
 
                 <!-- Tabs -->
                 <TextBlock Text="Tabs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <Slider Width="300" HorizontalAlignment="Left" Value="40" Margin="0,20,0,0" AutomationProperties.AutomationId="Slider"/>
-                        <TabControl Margin="0,20,0,0" Height="140" AutomationProperties.AutomationId="Tabs">
-                            <TabItem Header="Profile">
-                                <TextBlock Text="Update your name, photo and public profile details." Margin="12" Foreground="{StaticResource Ink2}"/>
-                            </TabItem>
-                            <TabItem Header="Security">
-                                <TextBlock Text="Manage your password and two-factor authentication." Margin="12" Foreground="{StaticResource Ink2}"/>
-                            </TabItem>
-                            <TabItem Header="Billing">
-                                <TextBlock Text="View invoices and update your payment method." Margin="12" Foreground="{StaticResource Ink2}"/>
-                            </TabItem>
-                        </TabControl>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Switch between related views without leaving the page."/>
+                <GroupBox AutomationProperties.AutomationId="TabsCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Height="41" AutomationProperties.AutomationId="Tabs">
+                                <RadioButton x:Name="TabProfile" Content="Profile" Style="{StaticResource TabButton}"
+                                             IsChecked="True" Checked="Tab_Checked" KeyDown="Tab_KeyDown"
+                                             AutomationProperties.AutomationId="TabProfile"/>
+                                <RadioButton x:Name="TabSecurity" Content="Security" Style="{StaticResource TabButton}"
+                                             IsTabStop="False" Margin="4,0,0,0" Checked="Tab_Checked" KeyDown="Tab_KeyDown"
+                                             AutomationProperties.AutomationId="TabSecurity"/>
+                                <RadioButton x:Name="TabBilling" Content="Billing" Style="{StaticResource TabButton}"
+                                             IsTabStop="False" Margin="4,0,0,0" Checked="Tab_Checked" KeyDown="Tab_KeyDown"
+                                             AutomationProperties.AutomationId="TabBilling"/>
+                            </StackPanel>
+                            <Border Height="1" Background="{StaticResource Line}" Margin="0,-1,0,0"/>
+                            <TextBlock x:Name="TabPanel" Style="{StaticResource TabPanelText}" Margin="0,18,0,0"
+                                       Text="Update your name, photo and public profile details."
+                                       AutomationProperties.AutomationId="TabPanel"/>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
-                <!-- Accordion / list -->
-                <TextBlock Text="Accordion &amp; list" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel>
-                        <Expander Header="Project overview" IsExpanded="True" AutomationProperties.AutomationId="Expander">
-                            <TextBlock Text="Track scope, timeline and ownership in one place." Margin="12,6" Foreground="{StaticResource Ink2}"/>
-                        </Expander>
-                        <Expander Header="Team members" Margin="0,10,0,0">
-                            <TextBlock Text="Invite people and manage their access." Margin="12,6" Foreground="{StaticResource Ink2}"/>
-                        </Expander>
-                        <ListBox Width="300" HorizontalAlignment="Left" Margin="0,18,0,0" SelectionMode="Multiple" AutomationProperties.AutomationId="MultiList">
-                            <ListBoxItem Content="React" IsSelected="True"/>
-                            <ListBoxItem Content="TypeScript"/>
-                            <ListBoxItem Content="Design systems" IsSelected="True"/>
-                        </ListBox>
-                    </StackPanel>
-                </Border>
+                <!-- Accordion -->
+                <TextBlock Text="Accordion" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Collapsible sections. Click a title to open or close it; several can stay open at once."/>
+                <GroupBox AutomationProperties.AutomationId="AccordionCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="450"/><ColumnDefinition Width="22"/><ColumnDefinition Width="450"/></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Multiple open" Style="{StaticResource DemoLabel}"/>
+                                <Border Style="{StaticResource Accordion}" Width="450">
+                                    <StackPanel Width="440">
+                                        <ToggleButton x:Name="AccMulti_0" Content="Project overview" Style="{StaticResource AccordionTrigger}"
+                                                      IsChecked="True" Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccMulti_0" AutomationProperties.Name="Project overview"/>
+                                        <GroupBox x:Name="AccMulti_Panel0" Height="40.4" AutomationProperties.AutomationId="AccMulti_Panel0">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Track scope, timeline and ownership for this project in one place."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                        <Border Height="1" Background="{StaticResource Line}"/>
+                                        <ToggleButton x:Name="AccMulti_1" Content="Team members" Style="{StaticResource AccordionTrigger}"
+                                                      Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccMulti_1" AutomationProperties.Name="Team members"/>
+                                        <GroupBox x:Name="AccMulti_Panel1" Height="62.8" Visibility="Collapsed"
+                                                    AutomationProperties.AutomationId="AccMulti_Panel1">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Invite people, assign roles and manage their access to the workspace."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                        <Border Height="1" Background="{StaticResource Line}"/>
+                                        <ToggleButton x:Name="AccMulti_2" Content="Billing and plan" Style="{StaticResource AccordionTrigger}"
+                                                      Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccMulti_2" AutomationProperties.Name="Billing and plan"/>
+                                        <GroupBox x:Name="AccMulti_Panel2" Height="40.4" Visibility="Collapsed"
+                                                    AutomationProperties.AutomationId="AccMulti_Panel2">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Review your current plan, payment method and past invoices."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="One at a time" Style="{StaticResource DemoLabel}"/>
+                                <Border Style="{StaticResource Accordion}" Width="450">
+                                    <StackPanel Width="440">
+                                        <ToggleButton x:Name="AccSingle_0" Content="Account" Style="{StaticResource AccordionTrigger}"
+                                                      IsChecked="True" Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccSingle_0" AutomationProperties.Name="Account"/>
+                                        <GroupBox x:Name="AccSingle_Panel0" Height="40.4"
+                                                    AutomationProperties.AutomationId="AccSingle_Panel0">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Update your name, email and profile photo."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                        <Border Height="1" Background="{StaticResource Line}"/>
+                                        <ToggleButton x:Name="AccSingle_1" Content="Notifications" Style="{StaticResource AccordionTrigger}"
+                                                      Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccSingle_1" AutomationProperties.Name="Notifications"/>
+                                        <GroupBox x:Name="AccSingle_Panel1" Height="40.4" Visibility="Collapsed"
+                                                    AutomationProperties.AutomationId="AccSingle_Panel1">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Choose which updates you receive and how."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                        <Border Height="1" Background="{StaticResource Line}"/>
+                                        <ToggleButton x:Name="AccSingle_2" Content="Privacy" Style="{StaticResource AccordionTrigger}"
+                                                      Checked="Accordion_Changed" Unchecked="Accordion_Changed"
+                                                      AutomationProperties.AutomationId="AccSingle_2" AutomationProperties.Name="Privacy"/>
+                                        <GroupBox x:Name="AccSingle_Panel2" Height="40.4" Visibility="Collapsed"
+                                                    AutomationProperties.AutomationId="AccSingle_Panel2">
+                                            <GroupBox.Template>
+                                                <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                            </GroupBox.Template>
+                                            <TextBlock Text="Control who can see your activity and data."
+                                                       Style="{StaticResource AccordionPanelText}" Margin="18,0,18,0"/>
+                                        </GroupBox>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </GroupBox>
 
                 <!-- Avatars -->
                 <TextBlock Text="Avatars" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
@@ -619,45 +828,241 @@
 
                 <!-- Breadcrumbs -->
                 <TextBlock Text="Breadcrumbs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel Orientation="Horizontal" AutomationProperties.AutomationId="Breadcrumbs">
-                        <TextBlock Text="Workspace" Style="{StaticResource CrumbLink}"/>
-                        <TextBlock Text="›" Style="{StaticResource CrumbSep}"/>
-                        <TextBlock Text="Projects" Style="{StaticResource CrumbLink}"/>
-                        <TextBlock Text="›" Style="{StaticResource CrumbSep}"/>
-                        <TextBlock Text="Website refresh" Style="{StaticResource CrumbCurrent}"/>
-                    </StackPanel>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Path navigation with the current page marked as the final crumb."/>
+                <GroupBox AutomationProperties.AutomationId="CrumbsCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <Grid Height="20.8">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="450"/><ColumnDefinition Width="22"/><ColumnDefinition Width="450"/></Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" AutomationProperties.AutomationId="Crumbs1"
+                                        AutomationProperties.Name="Breadcrumb">
+                                <Button Content="Workspace" Style="{StaticResource CrumbLink}" Tag="Buttons"
+                                        Click="Crumb_Click" AutomationProperties.AutomationId="CrumbWorkspace"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <Button Content="Projects" Style="{StaticResource CrumbLink}" Tag="Cards"
+                                        Click="Crumb_Click" AutomationProperties.AutomationId="CrumbProjects"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <Button Content="Website refresh" Style="{StaticResource CrumbLink}" Tag="Data table"
+                                        Click="Crumb_Click" AutomationProperties.AutomationId="CrumbRefresh"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <TextBlock Text="Settings" Style="{StaticResource CrumbCurrent}"
+                                           AutomationProperties.AutomationId="CrumbCurrent"
+                                           AutomationProperties.ItemStatus="current"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" AutomationProperties.AutomationId="Crumbs2"
+                                        AutomationProperties.Name="Breadcrumb with collapsed path">
+                                <Button Content="Workspace" Style="{StaticResource CrumbLink}" Tag="Buttons"
+                                        Click="Crumb_Click" AutomationProperties.AutomationId="Crumb2Workspace"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <TextBlock Text="…" Style="{StaticResource CrumbEllipsis}"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <Button Content="Website refresh" Style="{StaticResource CrumbLink}" Tag="Data table"
+                                        Click="Crumb_Click" AutomationProperties.AutomationId="Crumb2Refresh"/>
+                                <ContentControl Style="{StaticResource CrumbSep}" Margin="8,3.9,8,0"/>
+                                <TextBlock Text="Settings" Style="{StaticResource CrumbCurrent}"
+                                           AutomationProperties.AutomationId="Crumb2Current"
+                                           AutomationProperties.ItemStatus="current"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </GroupBox>
 
                 <!-- Stepper -->
                 <TextBlock Text="Stepper" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <Grid AutomationProperties.AutomationId="Stepper">
-                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
-                        <Border Grid.ColumnSpan="4" Height="2" Background="{StaticResource LineStrong}" VerticalAlignment="Top" Margin="18,14"/>
-                        <StackPanel Grid.Column="0"><Ellipse Width="30" Height="30" Fill="{StaticResource Brand}" HorizontalAlignment="Center"/><TextBlock Text="1 Account" HorizontalAlignment="Center" Margin="0,6,0,0" FontSize="12"/></StackPanel>
-                        <StackPanel Grid.Column="1"><Ellipse Width="30" Height="30" Fill="{StaticResource BrandSoft}" Stroke="{StaticResource Brand}" StrokeThickness="1" HorizontalAlignment="Center"/><TextBlock Text="2 Workspace" HorizontalAlignment="Center" Margin="0,6,0,0" FontSize="12"/></StackPanel>
-                        <StackPanel Grid.Column="2"><Ellipse Width="30" Height="30" Fill="{StaticResource Surface}" Stroke="{StaticResource LineStrong}" StrokeThickness="1" HorizontalAlignment="Center"/><TextBlock Text="3 Review" HorizontalAlignment="Center" Margin="0,6,0,0" FontSize="12"/></StackPanel>
-                        <StackPanel Grid.Column="3"><Ellipse Width="30" Height="30" Fill="{StaticResource Surface}" Stroke="{StaticResource LineStrong}" StrokeThickness="1" HorizontalAlignment="Center"/><TextBlock Text="4 Done" HorizontalAlignment="Center" Margin="0,6,0,0" FontSize="12"/></StackPanel>
-                    </Grid>
-                </Border>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Progress through a multi-step flow. Completed steps show a check, the current step is highlighted, and the controls below move between them."/>
+                <GroupBox AutomationProperties.AutomationId="StepperCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel>
+                            <Grid x:Name="StepperDemo" Height="82.6" AutomationProperties.AutomationId="StepperDemo">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="290.7"/><ColumnDefinition Width="290.7"/>
+                                    <ColumnDefinition Width="290.7"/><ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Border x:Name="Step0_Line" Height="2" Background="{StaticResource Line}"
+                                            Margin="30,14,10,0" VerticalAlignment="Top"/>
+                                    <Border x:Name="Step0_Marker" Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource BrandSoft}" BorderBrush="{StaticResource Brand}"
+                                            BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <Grid>
+                                            <TextBlock x:Name="Step0_Num" Text="1" Style="{StaticResource StepMarkerText}"
+                                                       Foreground="{StaticResource Brand}" AutomationProperties.AutomationId="Step0_Num"
+                                                        AutomationProperties.ItemStatus="current"/>
+                                            <GroupBox x:Name="Step0_Check" Visibility="Collapsed" AutomationProperties.AutomationId="Step0_Check">
+                                                <GroupBox.Template>
+                                                    <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                                </GroupBox.Template>
+                                                <ContentControl Style="{StaticResource IconCheck}" Width="15" Height="15" Foreground="White"/>
+                                            </GroupBox>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="0,39,16,0">
+                                        <TextBlock x:Name="Step0_Title" Text="Account" Style="{StaticResource StepTitle}"/>
+                                        <TextBlock Text="Your details" Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Border x:Name="Step1_Line" Height="2" Background="{StaticResource Line}"
+                                            Margin="30,14,10,0" VerticalAlignment="Top"/>
+                                    <Border x:Name="Step1_Marker" Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
+                                            BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <Grid>
+                                            <TextBlock x:Name="Step1_Num" Text="2" Style="{StaticResource StepMarkerText}"
+                                                       Foreground="{StaticResource Ink3}" AutomationProperties.AutomationId="Step1_Num"
+                                                        AutomationProperties.ItemStatus="todo"/>
+                                            <GroupBox x:Name="Step1_Check" Visibility="Collapsed" AutomationProperties.AutomationId="Step1_Check">
+                                                <GroupBox.Template>
+                                                    <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                                </GroupBox.Template>
+                                                <ContentControl Style="{StaticResource IconCheck}" Width="15" Height="15" Foreground="White"/>
+                                            </GroupBox>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="0,39,16,0">
+                                        <TextBlock x:Name="Step1_Title" Text="Workspace" Style="{StaticResource StepTitle}"
+                                                   Foreground="{StaticResource Ink3}"/>
+                                        <TextBlock Text="Set it up" Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="2">
+                                    <Border x:Name="Step2_Line" Height="2" Background="{StaticResource Line}"
+                                            Margin="30,14,10,0" VerticalAlignment="Top"/>
+                                    <Border x:Name="Step2_Marker" Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
+                                            BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <Grid>
+                                            <TextBlock x:Name="Step2_Num" Text="3" Style="{StaticResource StepMarkerText}"
+                                                       Foreground="{StaticResource Ink3}" AutomationProperties.AutomationId="Step2_Num"
+                                                        AutomationProperties.ItemStatus="todo"/>
+                                            <GroupBox x:Name="Step2_Check" Visibility="Collapsed" AutomationProperties.AutomationId="Step2_Check">
+                                                <GroupBox.Template>
+                                                    <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                                </GroupBox.Template>
+                                                <ContentControl Style="{StaticResource IconCheck}" Width="15" Height="15" Foreground="White"/>
+                                            </GroupBox>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="0,39,16,0">
+                                        <TextBlock x:Name="Step2_Title" Text="Review" Style="{StaticResource StepTitle}"
+                                                   Foreground="{StaticResource Ink3}"/>
+                                        <TextBlock Text="Confirm" Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="3">
+                                    <Border x:Name="Step3_Marker" Width="30" Height="30" CornerRadius="15"
+                                            Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
+                                            BorderThickness="1" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <Grid>
+                                            <TextBlock x:Name="Step3_Num" Text="4" Style="{StaticResource StepMarkerText}"
+                                                       Foreground="{StaticResource Ink3}" AutomationProperties.AutomationId="Step3_Num"
+                                                        AutomationProperties.ItemStatus="todo"/>
+                                            <GroupBox x:Name="Step3_Check" Visibility="Collapsed" AutomationProperties.AutomationId="Step3_Check">
+                                                <GroupBox.Template>
+                                                    <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                                                </GroupBox.Template>
+                                                <ContentControl Style="{StaticResource IconCheck}" Width="15" Height="15" Foreground="White"/>
+                                            </GroupBox>
+                                        </Grid>
+                                    </Border>
+                                    <StackPanel Margin="0,39,16,0">
+                                        <TextBlock x:Name="Step3_Title" Text="Done" Style="{StaticResource StepTitle}"
+                                                   Foreground="{StaticResource Ink3}"/>
+                                        <TextBlock Text="All set" Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Border Style="{StaticResource Divider}"/>
+                            <StackPanel Orientation="Horizontal" Height="50">
+                                <Button x:Name="StepPrev" Content="Previous" Style="{StaticResource SecondaryButtonSm}"
+                                        VerticalAlignment="Center" IsEnabled="False" Click="StepPrev_Click"
+                                        AutomationProperties.AutomationId="StepPrev"/>
+                                <Button x:Name="StepNext" Content="Next step" Style="{StaticResource PrimaryButtonSm}"
+                                        VerticalAlignment="Center" Margin="12,0,0,0" Click="StepNext_Click"
+                                        AutomationProperties.AutomationId="StepNext"/>
+                                <TextBlock x:Name="StepStatus" Text="Step 1 of 4" Style="{StaticResource FieldHint}" Margin="12,0,0,0"
+                                           VerticalAlignment="Center" AutomationProperties.AutomationId="StepStatus"/>
+                            </StackPanel>
+                            <Border Style="{StaticResource Divider}" Margin="0,8,0,26"/>
+                            <TextBlock Text="Vertical" Style="{StaticResource DemoLabel}"/>
+                            <StackPanel Height="186.7" AutomationProperties.AutomationId="VerticalStepper">
+                                <Grid Height="69.6">
+                                    <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource Brand}"
+                                            BorderBrush="{StaticResource Brand}" BorderThickness="1" HorizontalAlignment="Left"
+                                            VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <ContentControl Style="{StaticResource IconCheck}" Width="15" Height="15" Foreground="White"/>
+                                    </Border>
+                                    <Border Width="2" Height="47.6" Background="{StaticResource Brand}" Margin="14,30,0,0"
+                                            HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <StackPanel Margin="44,4,0,0">
+                                        <TextBlock Text="Account created" Style="{StaticResource StepTitle}"/>
+                                        <TextBlock Text="Your details are saved." Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Height="69.6">
+                                    <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource BrandSoft}"
+                                            BorderBrush="{StaticResource Brand}" BorderThickness="1" HorizontalAlignment="Left"
+                                            VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <TextBlock Text="2" Style="{StaticResource StepMarkerText}" Foreground="{StaticResource Brand}"/>
+                                    </Border>
+                                    <Border Width="2" Height="47.6" Background="{StaticResource Line}" Margin="14,30,0,0"
+                                            HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <StackPanel Margin="44,4,0,0">
+                                        <TextBlock Text="Set up workspace" Style="{StaticResource StepTitle}"/>
+                                        <TextBlock Text="Invite your team and pick a plan." Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Height="47.6">
+                                    <Border Width="30" Height="30" CornerRadius="15" Background="{StaticResource Surface}"
+                                            BorderBrush="{StaticResource LineStrong}" BorderThickness="1" HorizontalAlignment="Left"
+                                            VerticalAlignment="Top" Panel.ZIndex="1">
+                                        <TextBlock Text="3" Style="{StaticResource StepMarkerText}" Foreground="{StaticResource Ink3}"/>
+                                    </Border>
+                                    <StackPanel Margin="44,4,0,0">
+                                        <TextBlock Text="Review and finish" Style="{StaticResource StepTitle}" Foreground="{StaticResource Ink3}"/>
+                                        <TextBlock Text="Confirm everything looks right." Style="{StaticResource StepDesc}" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
-                <!-- Tooltips & action menu -->
-                <TextBlock Text="Tooltips &amp; action menu" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-                <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Button Content="Hover me" Style="{StaticResource SecondaryButton}" ToolTip="Helpful text" AutomationProperties.AutomationId="BtnTooltip"/>
-                        <Button Content="More actions" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" AutomationProperties.AutomationId="BtnMenu">
-                            <Button.ContextMenu>
-                                <ContextMenu AutomationProperties.AutomationId="ActionMenu">
-                                    <MenuItem Header="Edit project"/>
-                                    <MenuItem Header="Duplicate"/>
-                                    <MenuItem Header="Delete project"/>
-                                </ContextMenu>
-                            </Button.ContextMenu>
-                        </Button>
-                    </StackPanel>
-                </Border>
+                <!-- Tooltips -->
+                <TextBlock Text="Tooltips" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+                <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                           Text="Hover or focus a control to reveal its label. Tooltips appear on all four sides."/>
+                <GroupBox AutomationProperties.AutomationId="TipsCard" Margin="0,22,0,0">
+                    <GroupBox.Template>
+                        <ControlTemplate TargetType="GroupBox"><ContentPresenter/></ControlTemplate>
+                    </GroupBox.Template>
+                    <Border Style="{StaticResource DemoCard}">
+                        <StackPanel Orientation="Horizontal" Height="42">
+                            <Button Content="Top" Style="{StaticResource SecondaryButton}"
+                                    local:Popover.Text="Top tooltip" local:Popover.Side="Top"
+                                    AutomationProperties.AutomationId="TipTop" AutomationProperties.HelpText="Top tooltip"/>
+                            <Button Content="Bottom" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0"
+                                    local:Popover.Text="Bottom tooltip" local:Popover.Side="Bottom"
+                                    AutomationProperties.AutomationId="TipBottom" AutomationProperties.HelpText="Bottom tooltip"/>
+                            <Button Content="Left" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0"
+                                    local:Popover.Text="Left tooltip" local:Popover.Side="Left"
+                                    AutomationProperties.AutomationId="TipLeft" AutomationProperties.HelpText="Left tooltip"/>
+                            <Button Content="Right" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0"
+                                    local:Popover.Text="Right tooltip" local:Popover.Side="Right"
+                                    AutomationProperties.AutomationId="TipRight" AutomationProperties.HelpText="Right tooltip"/>
+                            <Button Content="Save" Style="{StaticResource PrimaryButton}" Margin="12,0,0,0"
+                                    local:Popover.Text="Save your changes" local:Popover.Side="Top"
+                                    AutomationProperties.AutomationId="TipSave" AutomationProperties.HelpText="Save your changes"/>
+                        </StackPanel>
+                    </Border>
+                </GroupBox>
 
                 <!-- Empty state -->
                 <TextBlock Text="Empty state" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>

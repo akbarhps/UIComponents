@@ -11,7 +11,7 @@
             <TextBlock Text="Show" FontSize="13" Foreground="{StaticResource Ink2}" VerticalAlignment="Center"/>
             <ComboBox Style="{StaticResource WebSelect}" Width="70" Margin="7,0"
                       ItemContainerStyle="{StaticResource FieldSelectItem}"
-                      SelectedIndex="1" AutomationProperties.AutomationId="PageSize">
+                      SelectedIndex="1" AutomationProperties.AutomationId="{Binding PagerId, RelativeSource={RelativeSource AncestorType=UserControl}}">
                 <ComboBoxItem Content="10"/><ComboBoxItem Content="25"/>
                 <ComboBoxItem Content="50"/><ComboBoxItem Content="100"/>
             </ComboBox>

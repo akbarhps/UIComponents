@@ -2,6 +2,44 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel x:Name="SectionList" MaxWidth="984">
+        <TextBlock Text="Modal form" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="A focused form in a dialog. Fields keep the same labels, hints and error states as inline forms."/>
+
+        <GroupBox AutomationProperties.AutomationId="FormModalCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Create project" Style="{StaticResource PrimaryButton}" Width="125.4"
+                            Click="OpenFormModal_Click" AutomationProperties.AutomationId="OpenFormModal"/>
+                </StackPanel>
+            </Border>
+        </GroupBox>
+
+        <TextBlock Text="Sidebar modal form" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Slide-out panels for longer forms. Create a member, or edit one with a delete step that asks for confirmation first."/>
+
+        <GroupBox AutomationProperties.AutomationId="DrawerCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Invite a member" Style="{StaticResource SecondaryButton}" Width="139.7"
+                            Click="OpenDrawer_Click" AutomationProperties.AutomationId="OpenDrawer"/>
+                    <Button Content="Edit member" Style="{StaticResource SecondaryButton}" Width="117.5"
+                            Margin="12,0,0,0" Click="OpenEditDrawer_Click" AutomationProperties.AutomationId="OpenEditDrawer"/>
+                </StackPanel>
+            </Border>
+        </GroupBox>
+
         <TextBlock Text="Modal dialog" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
                    Text="Focused confirmation that interrupts the task. Opens from this button; closes via the button, the backdrop, or Escape."/>
@@ -38,10 +76,381 @@
             </Border>
         </GroupBox>
 
+        <TextBlock Text="Command palette" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="A search-driven action menu. Press Ctrl+K (or Cmd+K) anywhere, or use the button below, to jump to an action."/>
+
+        <GroupBox AutomationProperties.AutomationId="CmdkCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource SecondaryButton}" Width="234.5" Height="47"
+                            Click="OpenCmdk_Click" AutomationProperties.AutomationId="OpenCmdk">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Open command palette" VerticalAlignment="Center"/>
+                            <Border Style="{StaticResource CmdkChip}" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="Ctrl K" FontSize="11" Foreground="{StaticResource Ink3}"/>
+                            </Border>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </GroupBox>
+
         <!-- Moved into OverlayLayer by OverlayHost.Install; only app-level StaticResources here. -->
         <Grid x:Name="DialogStore" Visibility="Collapsed">
+            <GroupBox x:Name="CmdkDialog" Visibility="Collapsed" Focusable="True"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
+                      AutomationProperties.AutomationId="CmdkDialog" AutomationProperties.Name="Command palette">
+                <GroupBox.Template>
+                    <ControlTemplate TargetType="GroupBox">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </GroupBox.Template>
+                <Grid Margin="20,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="12*"/>
+                        <RowDefinition Height="88*"/>
+                    </Grid.RowDefinitions>
+                    <Border x:Name="CmdkCardRoot" Grid.Row="1" Width="560" Height="436.6"
+                            VerticalAlignment="Top" HorizontalAlignment="Center"
+                            Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
+                    <Border x:Name="CmdkCard" Grid.Row="1" Width="560" Height="436.6"
+                            VerticalAlignment="Top" HorizontalAlignment="Center"
+                            Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                            BorderThickness="1" CornerRadius="16">
+                        <StackPanel>
+                            <Border Height="56" Padding="16,18" BorderBrush="{StaticResource Line}"
+                                    BorderThickness="0,0,0,1">
+                                <Grid>
+                                <ContentControl Style="{StaticResource IconSearch}" Width="18" Height="18"
+                                                Foreground="{StaticResource Ink3}" HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"/>
+                                <TextBox x:Name="CmdkInput" Style="{StaticResource CmdkInput}" Margin="48,0,0,0"
+                                         Tag="Search for an action…" AutomationProperties.AutomationId="CmdkInput"
+                                         AutomationProperties.Name="Search commands"
+                                         TextChanged="CmdkInput_TextChanged"/>
+                                <Border Style="{StaticResource CmdkChip}" HorizontalAlignment="Right"
+                                        VerticalAlignment="Center" Margin="0,0,2,0">
+                                    <TextBlock Text="ESC" FontSize="11" Foreground="{StaticResource Ink3}"/>
+                                </Border>
+                                </Grid>
+                            </Border>
+                            <ScrollViewer x:Name="CmdkList" MaxHeight="340" Padding="8"
+                                          VerticalScrollBarVisibility="Auto">
+                                <StackPanel x:Name="CmdkItems"/>
+                            </ScrollViewer>
+                            <Border Height="38.6" Padding="16,10" BorderBrush="{StaticResource Line}"
+                                    BorderThickness="0,1,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="11" Foreground="{StaticResource Ink3}">
+                                        <Run Text="↑↓" FontWeight="SemiBold" Foreground="{StaticResource Ink2}"/><Run Text=" to navigate"/>
+                                    </TextBlock>
+                                    <TextBlock Text="↵ to select" FontSize="11" Foreground="{StaticResource Ink3}" Margin="16,0,0,0"/>
+                                    <TextBlock Text="esc to close" FontSize="11" Foreground="{StaticResource Ink3}" Margin="16,0,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox x:Name="DrawerInvite" Visibility="Collapsed" Focusable="True"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
+                      AutomationProperties.AutomationId="DrawerInvite"
+                      AutomationProperties.Name="Invite a member">
+                <GroupBox.Template>
+                    <ControlTemplate TargetType="GroupBox">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </GroupBox.Template>
+                <Grid Width="440" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                    <Border Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
+                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Height="77" Padding="24,26,20,26" Background="{StaticResource Surface}"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <TextBlock Text="Invite a member" Style="{StaticResource ModalTitle}"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <Button x:Name="DrawerClose" Style="{StaticResource IconButton}"
+                                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            AutomationProperties.AutomationId="DrawerClose"
+                                            AutomationProperties.Name="Close panel" Click="DrawerClose_Click">
+                                        <ContentControl Style="{StaticResource IconClose}" Width="18" Height="18"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <ScrollViewer Grid.Row="1" Padding="24,26" VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Add someone to this workspace. They'll get an email with a link to join."
+                                               Style="{StaticResource ModalBody}" TextWrapping="Wrap"/>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Email address" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox x:Name="DrEmail" Style="{StaticResource FieldInput}"
+                                                 Tag="teammate@example.com" AutomationProperties.AutomationId="DrEmail"
+                                                 TextChanged="DrEmail_TextChanged" KeyDown="DrEmail_KeyDown"/>
+                                        <TextBlock Text="Use their work email so we can find their account."
+                                                   Style="{StaticResource FieldHint}"
+                                                   AutomationProperties.AutomationId="DrEmailHint"/>
+                                        <StackPanel x:Name="DrEmailErrorRow" Style="{StaticResource FormErrorRow}">
+                                            <ContentControl Style="{StaticResource ErrorIcon}" Margin="0,3,5,0"
+                                                            VerticalAlignment="Top"/>
+                                            <TextBlock Text="Enter a valid email address." Style="{StaticResource FormErrorText}"
+                                                       AutomationProperties.AutomationId="DrEmailError"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Role" Style="{StaticResource FieldLabel}"/>
+                                        <ComboBox x:Name="DrRole" Style="{StaticResource FieldSelect}"
+                                                  SelectedIndex="0" AutomationProperties.AutomationId="DrRole">
+                                            <ComboBoxItem Content="Member"/>
+                                            <ComboBoxItem Content="Admin"/>
+                                            <ComboBoxItem Content="Viewer"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Personal note" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox x:Name="DrNote" Style="{StaticResource FieldTextArea}"
+                                                 Tag="Add a short message…" AutomationProperties.AutomationId="DrNote"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="DrSendEmail" Content="Send an invitation email"
+                                              Style="{StaticResource ClaudeSwitch}" IsChecked="True" Margin="0,20,0,0"
+                                              AutomationProperties.AutomationId="DrSendEmail"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{StaticResource Surface}"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button x:Name="DrawerCancel" Content="Cancel" Style="{StaticResource SecondaryButton}"
+                                            Width="77.9" AutomationProperties.AutomationId="DrawerCancel"
+                                            Click="DrawerCancel_Click"/>
+                                    <Button x:Name="DrawerSubmit" Content="Send invite" Style="{StaticResource PrimaryButton}"
+                                            Width="106.5" Margin="10,0,0,0" AutomationProperties.AutomationId="DrawerSubmit"
+                                            Click="DrawerSubmit_Click"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox x:Name="DrawerEdit" Visibility="Collapsed" Focusable="True"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
+                      KeyDown="DrawerEdit_KeyDown"
+                      AutomationProperties.AutomationId="DrawerEdit"
+                      AutomationProperties.Name="Edit member">
+                <GroupBox.Template>
+                    <ControlTemplate TargetType="GroupBox">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </GroupBox.Template>
+                <Grid Width="440" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                    <Border Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
+                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Border Height="77" Padding="24,26,20,26" Background="{StaticResource Surface}"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <TextBlock Text="Edit member" Style="{StaticResource ModalTitle}"
+                                               HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    <Button x:Name="EditDrawerClose" Style="{StaticResource IconButton}"
+                                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                                            AutomationProperties.AutomationId="EditDrawerClose"
+                                            AutomationProperties.Name="Close panel" Click="EditDrawerClose_Click">
+                                        <ContentControl Style="{StaticResource IconClose}" Width="18" Height="18"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <ScrollViewer Grid.Row="1" Padding="24,26" VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Update this member's details and workspace role."
+                                               Style="{StaticResource ModalBody}"/>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Full name" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox x:Name="EdName" Style="{StaticResource FieldInput}"
+                                                 Text="Jamie Rivera" AutomationProperties.AutomationId="EdName"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Email address" Style="{StaticResource FieldLabel}"/>
+                                        <TextBox x:Name="EdEmail" Style="{StaticResource FieldInput}"
+                                                 Text="jamie@example.com" AutomationProperties.AutomationId="EdEmail"
+                                                 TextChanged="EdEmail_TextChanged" KeyDown="EdEmail_KeyDown"/>
+                                        <StackPanel x:Name="EdEmailErrorRow" Style="{StaticResource FormErrorRow}">
+                                            <ContentControl Style="{StaticResource ErrorIcon}" Margin="0,3,5,0"
+                                                            VerticalAlignment="Top"/>
+                                            <TextBlock Text="Enter a valid email address." Style="{StaticResource FormErrorText}"
+                                                       AutomationProperties.AutomationId="EdEmailError"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Role" Style="{StaticResource FieldLabel}"/>
+                                        <ComboBox x:Name="EdRole" Style="{StaticResource FieldSelect}"
+                                                  SelectedIndex="0" AutomationProperties.AutomationId="EdRole">
+                                            <ComboBoxItem Content="Member"/>
+                                            <ComboBoxItem Content="Admin"/>
+                                            <ComboBoxItem Content="Viewer"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <CheckBox x:Name="EdActive" Content="Active in workspace"
+                                              Style="{StaticResource ClaudeSwitch}" IsChecked="True" Margin="0,20,0,0"
+                                              AutomationProperties.AutomationId="EdActive"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{StaticResource Surface}"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0">
+                                <Grid>
+                                    <Button x:Name="EditDelete" Content="Delete" Style="{StaticResource DangerButtonSm}"
+                                            Width="64.1" Height="42" HorizontalAlignment="Left"
+                                            AutomationProperties.AutomationId="EditDelete" Click="EditDelete_Click"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button x:Name="EditCancel" Content="Cancel" Style="{StaticResource SecondaryButton}"
+                                                Width="77.9" AutomationProperties.AutomationId="EditCancel"
+                                                Click="EditCancel_Click"/>
+                                        <Button x:Name="EditSave" Content="Save changes" Style="{StaticResource PrimaryButton}"
+                                                Width="121.3" Margin="10,0,0,0" AutomationProperties.AutomationId="EditSave"
+                                                Click="EditSave_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border x:Name="EditConfirm" Visibility="Collapsed" Background="{StaticResource Surface}" Padding="26"
+                            AutomationProperties.AutomationId="EditConfirm">
+                        <StackPanel Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Border Width="42" Height="42" CornerRadius="21" Background="{StaticResource DangerSoft}"
+                                    HorizontalAlignment="Center">
+                                <ContentControl Style="{StaticResource IconAlert}" Foreground="{StaticResource Danger}"
+                                                Width="20" Height="20"/>
+                            </Border>
+                            <TextBlock Text="Delete this member?" Style="{StaticResource ModalTitle}"
+                                       HorizontalAlignment="Center" TextAlignment="Center" Margin="0,16,0,0"/>
+                            <TextBlock Text="Jamie will lose access to this workspace immediately. This can't be undone."
+                                       Style="{StaticResource ModalBody}" Height="44.8" TextAlignment="Center"
+                                       HorizontalAlignment="Center" Margin="0,0,0,0"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,22.8,0,0">
+                                <Button x:Name="KeepMember" Content="Keep member" Style="{StaticResource SecondaryButton}"
+                                        Width="124.8" AutomationProperties.AutomationId="KeepMember"
+                                        Click="KeepMember_Click"/>
+                                <Button x:Name="ConfirmDelete" Content="Delete member" Style="{StaticResource DangerButton}"
+                                        Width="134.1" Margin="10,0,0,0" AutomationProperties.AutomationId="ConfirmDelete"
+                                        Click="ConfirmDelete_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox x:Name="FormModalDialog" Visibility="Collapsed" Focusable="True"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
+                      AutomationProperties.AutomationId="FormModalDialog"
+                      AutomationProperties.Name="Create a project">
+                <GroupBox.Template>
+                    <ControlTemplate TargetType="GroupBox">
+                        <ContentPresenter/>
+                    </ControlTemplate>
+                </GroupBox.Template>
+                <Grid Width="540" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Border Style="{StaticResource ModalCardShadow}"/>
+                    <Border Style="{StaticResource ModalCard}">
+                        <StackPanel>
+                            <Grid Height="32">
+                                <TextBlock Text="Create a project" Style="{StaticResource ModalTitle}"
+                                           HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <Button x:Name="FormModalClose" Style="{StaticResource IconButton}"
+                                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        AutomationProperties.AutomationId="FormModalClose"
+                                        AutomationProperties.Name="Close dialog"
+                                        Click="FormModalClose_Click">
+                                    <ContentControl Style="{StaticResource IconClose}" Width="18" Height="18"/>
+                                </Button>
+                            </Grid>
+                            <TextBlock Text="Give the project a name and an owner. You can change both later."
+                                       Style="{StaticResource ModalBody}" Height="22.4" Margin="0,10,0,0"/>
+                            <Grid Margin="0,22,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="235"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="235"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Column="0" Grid.Row="0">
+                                    <TextBlock Text="Project name" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="FmName" Style="{StaticResource FieldInput}"
+                                             Tag="Website refresh" AutomationProperties.AutomationId="FmName"
+                                             TextChanged="FmField_TextChanged" KeyDown="FmField_KeyDown"/>
+                                    <StackPanel x:Name="FmNameErrorRow" Style="{StaticResource FormErrorRow}">
+                                        <ContentControl Style="{StaticResource ErrorIcon}" Margin="0,3,5,0"
+                                                        VerticalAlignment="Top"/>
+                                        <TextBlock Text="Give the project a name." Style="{StaticResource FormErrorText}"
+                                                   AutomationProperties.AutomationId="FmNameError"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Grid.Row="0">
+                                    <TextBlock Text="Owner email" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="FmEmail" Style="{StaticResource FieldInput}"
+                                             Tag="you@example.com" AutomationProperties.AutomationId="FmEmail"
+                                             TextChanged="FmField_TextChanged" KeyDown="FmField_KeyDown"/>
+                                    <StackPanel x:Name="FmEmailErrorRow" Style="{StaticResource FormErrorRow}">
+                                        <ContentControl Style="{StaticResource ErrorIcon}" Margin="0,3,5,0"
+                                                        VerticalAlignment="Top"/>
+                                        <TextBlock Text="Enter a valid email address." Style="{StaticResource FormErrorText}"
+                                                   AutomationProperties.AutomationId="FmEmailError"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.ColumnSpan="3" Grid.Row="1" Margin="0,16,0,0">
+                                    <TextBlock Text="Team" Style="{StaticResource FieldLabel}"/>
+                                    <ComboBox x:Name="FmRole" Style="{StaticResource FieldSelect}" Width="486"
+                                              HorizontalAlignment="Left" SelectedIndex="0"
+                                              AutomationProperties.AutomationId="FmRole">
+                                        <ComboBoxItem Content="Design"/>
+                                        <ComboBoxItem Content="Engineering"/>
+                                        <ComboBoxItem Content="Marketing"/>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Grid.ColumnSpan="3" Grid.Row="2" Margin="0,16,0,0">
+                                    <TextBlock Text="Description" Style="{StaticResource FieldLabel}"/>
+                                    <TextBox x:Name="FmDesc" Style="{StaticResource FieldTextArea}" Width="486"
+                                             Tag="What is this project for?"
+                                             AutomationProperties.AutomationId="FmDesc"/>
+                                </StackPanel>
+                                <StackPanel Grid.ColumnSpan="3" Grid.Row="3" Orientation="Horizontal"
+                                            HorizontalAlignment="Right" Margin="0,24,0,0">
+                                    <Button x:Name="FormModalCancel" Content="Cancel" Style="{StaticResource SecondaryButton}"
+                                            Width="77.9" AutomationProperties.AutomationId="FormModalCancel"
+                                            Click="FormModalCancel_Click"/>
+                                    <Button x:Name="FormModalSubmit" Content="Create project" Style="{StaticResource PrimaryButton}"
+                                            Width="125.4" Margin="10,0,0,0"
+                                            AutomationProperties.AutomationId="FormModalSubmit"
+                                            Click="FormModalSubmit_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </GroupBox>
+
             <GroupBox x:Name="ModalDialog" Visibility="Collapsed" Focusable="True"
-                      KeyboardNavigation.TabNavigation="None"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
                       AutomationProperties.AutomationId="ModalDialog"
                       AutomationProperties.Name="Delete this project?">
                 <GroupBox.Template>
@@ -81,8 +490,10 @@
             </GroupBox>
 
             <GroupBox x:Name="LoadingDialog" Visibility="Collapsed" Focusable="True"
+                      FocusVisualStyle="{x:Null}" KeyboardNavigation.TabNavigation="None"
                       AutomationProperties.AutomationId="LoadingDialog"
                       AutomationProperties.Name="Preparing your workspace"
+                      AutomationProperties.HelpText="Please wait a moment while we set things up for you."
                       AutomationProperties.ItemStatus="busy">
                 <GroupBox.Template>
                     <ControlTemplate TargetType="GroupBox">
@@ -109,7 +520,7 @@
                                        Style="{StaticResource ModalBody}" Height="44.8" Margin="0,9,0,0"
                                        HorizontalAlignment="Center" TextAlignment="Center"/>
                             <Border x:Name="LoadingBar" Height="4" Margin="0,22,0,0"
-                                    Background="{StaticResource BgDeep}" CornerRadius="2">
+                                    Background="{StaticResource BgDeep}" CornerRadius="2" ClipToBounds="True">
                                 <Border Width="114.094" Height="4" CornerRadius="2"
                                         Background="{StaticResource Brand}" HorizontalAlignment="Left">
                                     <Border.RenderTransform>

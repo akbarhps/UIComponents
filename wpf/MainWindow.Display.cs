@@ -37,7 +37,7 @@ namespace UIComponents.Wpf
                 _progressTimer.Stop();
                 _progressTimer = null;
                 ProgressLabel.Text = "Upload complete";
-                // ponytail: toast deferred; the WPF toast is private to AdvancedControls, same as the grid copy toast
+                Toasts.Show("success", "Upload complete", "All files were uploaded.");
             }
         }
 

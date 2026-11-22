@@ -401,6 +401,28 @@ namespace UIComponents.Wpf.Tests
         }
 
         public static void Focus(AutomationElement el) { Do("focus", el, null, delegate { el.SetFocus(); }); }
+
+        public static bool Enabled { get { return _enabled; } }
+
+        // A real press at a screen point, hit-tested in the app (App.xaml.cs ClickScreenPoint). Returns 1 = an element
+        // was pressed, 4 = nothing was hit (the press fell through to the window root), 2 = not delivered, -1 = driver off.
+        public static int Click(int x, int y)
+        {
+            if (!_enabled) return -1;
+            int r = Send("click", "", x + "," + y);
+            if (r == 3) throw new InvalidOperationException("driver: app handler threw for 'click " + x + "," + y + "' (see DRIVER error on stderr)");
+            if (r == 1 || r == 4) _fast++;
+            return r;
+        }
+
+        // Press at (dx, dy) from el's top-left corner (screen coordinates; the test window runs at 100% scale).
+        public static int ClickAt(AutomationElement el, double dx, double dy)
+        {
+            object rect = el.GetCurrentPropertyValue(AutomationElement.BoundingRectangleProperty);
+            double x = (double)rect.GetType().GetProperty("X").GetValue(rect, null);
+            double y = (double)rect.GetType().GetProperty("Y").GetValue(rect, null);
+            return Click((int)Math.Round(x + dx), (int)Math.Round(y + dy));
+        }
     }
 
     internal sealed class FastToggle

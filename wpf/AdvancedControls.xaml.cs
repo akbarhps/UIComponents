@@ -15,6 +15,15 @@ namespace UIComponents.Wpf
     public partial class AdvancedControls : UserControl
     {
         private readonly ObservableCollection<Row> _rows = new ObservableCollection<Row>();
+        // Current row order: the web sorts the DOM, so ties keep the previous sort's order.
+        private List<Row> _baseRows;
+
+        private sealed class RowSortComparer : IComparer<Row>
+        {
+            private readonly string _property;
+            public RowSortComparer(string property) { _property = property; }
+            public int Compare(Row a, Row b) { return CompareSort(a, b, _property); }
+        }
 
         public AdvancedControls()
         {
@@ -25,6 +34,7 @@ namespace UIComponents.Wpf
             _rows.Add(new Row { Project = "Help center", Team = "Content", Dept = "Content", Owner = "Ada Lovelace", Status = "Active", Priority = "Medium", Updated = "Last week", Due = "Nov 10", Budget = "$8,750", Progress = "88%" });
             _rows.Add(new Row { Project = "Q3 campaign", Team = "Marketing", Dept = "Marketing", Owner = "Sam Patel", Status = "Pending", Priority = "High", Updated = "Last week", Due = "Nov 18", Budget = "$15,600", Progress = "60%" });
             _rows.Add(new Row { Project = "Legacy archive", Team = "Operations", Dept = "Operations", Owner = "Mia Chen", Status = "Archived", Priority = "Low", Updated = "2 weeks ago", Due = "Sep 30", Budget = "$1,100", Progress = "100%" });
+            _baseRows = _rows.ToList();
             ColumnGrid.ItemsSource = _rows;
             SortGrid.ItemsSource = _rows;
         }
@@ -43,7 +53,7 @@ namespace UIComponents.Wpf
             if (status == "All statuses") status = "";
 
             var rows = _rows.Where(r =>
-                (p.Length == 0 || r.Project.ToLower().Contains(p)) &&
+                (p.Length == 0 || (r.Project + r.Team).ToLower().Contains(p)) &&
                 (o.Length == 0 || r.Owner.ToLower().Contains(o)) &&
                 (status.Length == 0 || string.Equals(r.Status, status, StringComparison.OrdinalIgnoreCase)) &&
                 (u.Length == 0 || r.Updated.ToLower().Contains(u)) &&
@@ -135,18 +145,16 @@ namespace UIComponents.Wpf
             var p = SortProject.Text.Trim().ToLower();
             var o = SortOwner.Text.Trim().ToLower();
             var t = SortTeam.Text.Trim().ToLower();
-            var rows = _rows.Where(r =>
-                (p.Length == 0 || r.Project.ToLower().Contains(p)) &&
-                (o.Length == 0 || r.Owner.ToLower().Contains(o)) &&
-                (t.Length == 0 || r.Dept.ToLower().Contains(t))).ToList();
             if (!string.IsNullOrEmpty(_sortProperty))
             {
-                rows.Sort(delegate(Row a, Row b)
-                {
-                    int cmp = CompareSort(a, b, _sortProperty);
-                    return _sortAscending ? cmp : -cmp;
-                });
+                var comparer = new RowSortComparer(_sortProperty);
+                _baseRows = (_sortAscending ? _baseRows.OrderBy(r => r, comparer)
+                                            : _baseRows.OrderByDescending(r => r, comparer)).ToList();
             }
+            var rows = _baseRows.Where(r =>
+                (p.Length == 0 || (r.Project + r.Team).ToLower().Contains(p)) &&
+                (o.Length == 0 || r.Owner.ToLower().Contains(o)) &&
+                (t.Length == 0 || r.Dept.ToLower().Contains(t))).ToList();
             SortGrid.ItemsSource = rows;
             SortEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
             SortPagination.InfoText = rows.Count == 0 ? "No projects to show"
@@ -216,17 +224,6 @@ namespace UIComponents.Wpf
             RefreshSortGrid();
         }
 
-        private void CommandPalette_Click(object sender, RoutedEventArgs e)
-        {
-            var palette = new CommandPaletteWindow { Owner = Window.GetWindow(this) };
-            palette.ShowDialog();
-        }
-
-        private void Drawer_Click(object sender, RoutedEventArgs e)
-        {
-            var drawer = new DrawerWindow { Owner = Window.GetWindow(this) };
-            drawer.ShowDialog();
-        }
     }
 
     public class Row

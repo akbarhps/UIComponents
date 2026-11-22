@@ -19,6 +19,7 @@ Roles:
    3. capture paths, plus every remaining difference from the web with measured pixel numbers
    4. deviations from the plan, and why
    5. blocking questions
+   **Where it goes (saves reviewer tokens):** write the full report above to `plan/wpf/handoff/<name>-report.md` (overwrite each round). Your final chat message is only a header of at most 12 lines: (a) the verbatim `RESULT passed=N failed=M` line from your `-Only <area>` run, (b) files changed, comma-separated, (c) new `DRIVER fallback` lines or "none", (d) deviations, one line each or "none", (e) "Blocking questions: yes/no" plus "full report: plan/wpf/handoff/<name>-report.md". Do not paste the full report into chat.
 7. Don't commit (rule 5). The reviewer replies with approved / fix-first and the next-phase prompt.
 
 ## Who owns what
@@ -55,7 +56,7 @@ Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes
 - Use `UseLayoutRounding` and `SnapsToDevicePixels` for crisp 1px lines, and `FocusVisualStyle={x:Null}` wherever the web draws its own focus.
 - `pwsh -File script.ps1 -Param "a","b"` arrives as **one** comma-joined string. Pass several captures as one comma-separated string.
 - The clipboard is shared with the user's session, even from the hidden desktop. Any copy/paste check must save the clipboard text first and restore it afterwards.
-- Mouse input can't reach the hidden desktop. For mouse-only behaviour (drag and so on), port it faithfully, say "code-only" in your report, and the user will check it by hand.
+- OS mouse input does not reach the hidden desktop: posted `WM_LBUTTON*` is ignored, and `SendInput` would go to the user's screen, so never use it. Presses go through `Drv.Click` / `Drv.ClickAt` (see "Writing tests"). Drag and other gesture-only behaviour is still code-only unless a test drives it that way; say so in your report.
 - `build-tests.bat` uses relative paths, so run it from `wpf\tests`.
 
 ## Task files
@@ -150,6 +151,7 @@ Pattern actions go through the in-process driver (see "Writing tests"): do not a
 
 **Rules:**
 - Act only through `Invoke(el)`, `SetValue(el, v)`, `FastToggle.Of(el)`, `FastSelectionItem.Of(el)`, `FastExpandCollapse.Of(el)` and `Drv.Focus(el)`. Never `el.SetFocus()` or `((XPattern)el.GetCurrentPattern(...)).Action()`.
+- Mouse presses: `Drv.Click(x, y)` (screen point) and `Drv.ClickAt(el, dx, dy)` (offset from an element's top-left) press through the app's real hit test (`WindowFromPoint`, `VisualTreeHelper.HitTest`), then raise Preview/bubble mouse-button events on the hit element, or on the window root if nothing is hit, so window-level hooks such as outside-click see the same `OriginalSource` as a real press. They do not move the cursor or change focus. Result: 1 = element hit, 4 = fell through to the window, 2 = not delivered, -1 = driver off (`Drv.Enabled` is false: print CODE-ONLY). Use them for mouse-only behaviour; keyboard and focus still use `Drv.Focus` and `PostKey`. Examples: `Pickers` M1-M3. Limit: a press does not raise `Button.Click` (ButtonBase needs real `IsMouseOver`), so check button handlers with `Invoke`.
 - Every element a test acts on has an AutomationId (or `x:Name`) that is unique across the window and its popups. Duplicates and missing ids silently fall back to the slow path.
 - Add no new `DRIVER fallback` lines. This is a done criterion.
 - `Invoke` is asynchronous, for real UIA too. Never read state right after it: `WaitFor(() => ..., 1000-2000)`. No fixed `Thread.Sleep` for state changes.

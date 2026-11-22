@@ -48,29 +48,60 @@ namespace UIComponents.Wpf
     {
         public double GapX { get; set; }
         public double GapY { get; set; }
+        // Tag input: the last child (text field) takes the rest of the line, min 120, else wraps.
+        public bool FillLast { get; set; }
+        public double MinFillWidth { get; set; }
+
+        public ChipWrapPanel() { MinFillWidth = 120; }
 
         protected override Size MeasureOverride(Size availableSize)
         {
             double x = 0, y = 0, rowH = 0, maxW = 0;
-            foreach (UIElement child in InternalChildren)
+            int count = InternalChildren.Count;
+            bool finite = !double.IsInfinity(availableSize.Width);
+            for (int i = 0; i < count; i++)
             {
+                UIElement child = InternalChildren[i];
+                if (FillLast && i == count - 1 && finite)
+                {
+                    // Same rule as Arrange: the field takes the rest of the row, or wraps when too narrow.
+                    double rest = availableSize.Width - x - (x > 0 ? GapX : 0);
+                    if (rest < MinFillWidth) { y += rowH + GapY; x = 0; rowH = 0; rest = availableSize.Width; }
+                    child.Measure(new Size(Math.Max(MinFillWidth, rest), double.PositiveInfinity));
+                    rowH = Math.Max(rowH, child.DesiredSize.Height);
+                    x += rest;
+                    if (x > maxW) maxW = x;
+                    continue;
+                }
                 child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 double w = child.DesiredSize.Width, h = child.DesiredSize.Height;
-                if (x > 0 && x + GapX + w > availableSize.Width) { y += rowH + GapY; x = 0; rowH = 0; }
+                if (finite && x > 0 && x + GapX + w > availableSize.Width) { y += rowH + GapY; x = 0; rowH = 0; }
                 if (x > 0) x += GapX;
                 x += w;
                 if (h > rowH) rowH = h;
                 if (x > maxW) maxW = x;
             }
-            return new Size(double.IsInfinity(availableSize.Width) ? maxW : availableSize.Width, y + rowH);
+            return new Size(finite ? availableSize.Width : maxW, y + rowH);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
             double x = 0, y = 0, rowH = 0;
-            foreach (UIElement child in InternalChildren)
+            int count = InternalChildren.Count;
+            for (int i = 0; i < count; i++)
             {
+                UIElement child = InternalChildren[i];
                 double w = child.DesiredSize.Width, h = child.DesiredSize.Height;
+                if (FillLast && i == count - 1)
+                {
+                    double rest = finalSize.Width - x - (x > 0 ? GapX : 0);
+                    if (rest < MinFillWidth) { y += rowH + GapY; x = 0; rest = finalSize.Width; }
+                    if (x > 0) x += GapX;
+                    child.Arrange(new Rect(x, y, rest, h));
+                    x += rest;
+                    if (h > rowH) rowH = h;
+                    continue;
+                }
                 if (x > 0 && x + GapX + w > finalSize.Width) { y += rowH + GapY; x = 0; rowH = 0; }
                 if (x > 0) x += GapX;
                 child.Arrange(new Rect(x, y, w, h));

@@ -32,6 +32,98 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
+    <!-- ==================== Dialog form fields ==================== -->
+    <Style x:Key="FormErrorRow" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Margin" Value="0,7,0,0"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
+    </Style>
+    <Style x:Key="FormErrorText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{StaticResource Danger}"/>
+        <Setter Property="LineHeight" Value="19.2"/>
+        <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+    </Style>
+
+    <!-- ==================== Command palette ==================== -->
+    <Style x:Key="CmdkInput" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="1,2"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+                        <Grid>
+                            <ScrollViewer x:Name="PART_ContentHost" VerticalScrollBarVisibility="Disabled"
+                                          HorizontalScrollBarVisibility="Disabled"/>
+                            <!-- Tag holds the placeholder, as in FieldInputTemplate. -->
+                            <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
+                                       FontFamily="{StaticResource Sans}" FontSize="16"
+                                       Foreground="{StaticResource Ink3}" Visibility="Collapsed"
+                                       IsHitTestVisible="False" VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CmdkGroup" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Height" Value="29.6"/>
+        <Setter Property="Padding" Value="10,8,10,4"/>
+    </Style>
+    <Style x:Key="CmdkItem" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="11,10"/>
+        <Setter Property="MinHeight" Value="39"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                        </Trigger>
+                        <Trigger Property="Tag" Value="active">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CmdkChip" TargetType="Border">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Padding" Value="6,3"/>
+    </Style>
+
     <!-- ==================== Icon buttons ==================== -->
     <Style x:Key="IconButton" TargetType="Button">
         <Setter Property="Width" Value="32"/>
@@ -78,7 +170,7 @@
                     <Viewbox Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Stretch="Uniform">
                         <Canvas Width="24" Height="24">
                             <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
-                                  StrokeThickness="2" StrokeStartLineCap="Round"
+                                  StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                   Data="M12,5 L12,19 M5,12 L19,12"/>
                         </Canvas>
                     </Viewbox>
@@ -124,7 +216,7 @@
                     <Viewbox Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Stretch="Uniform">
                         <Canvas Width="24" Height="24">
                             <Path Stroke="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
-                                  StrokeThickness="1.8" StrokeStartLineCap="Round"
+                                  StrokeThickness="1.8" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                   Data="M6,7 L18,7 A3,3 0 0,1 21,10 L21,14 A3,3 0 0,1 18,17 L6,17 A3,3 0 0,1 3,14 L3,10 A3,3 0 0,1 6,7 Z M9.5,12 L14.5,12"/>
                         </Canvas>
                     </Viewbox>

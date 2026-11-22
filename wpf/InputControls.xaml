@@ -5,46 +5,70 @@
              xmlns:local="clr-namespace:UIComponents.Wpf">
     <StackPanel x:Name="SectionList">
         <TextBlock Text="Tag input" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel>
-                <Border BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="8" Padding="8" MinHeight="46">
-                    <StackPanel Orientation="Horizontal">
-                        <ItemsControl x:Name="TagList">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="{StaticResource BrandSoft}" CornerRadius="6" Padding="7,4" Margin="0,0,6,0">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding}" Foreground="{StaticResource Brand}" FontSize="12" FontWeight="SemiBold"/>
-                                            <Button Content="×" Style="{StaticResource GhostButton}" FontSize="12" Padding="4,0" Margin="4,0,0,0"
-                                                    Click="RemoveTag_Click" AutomationProperties.AutomationId="TagRemove"/>
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <TextBox x:Name="TagInput" Style="{StaticResource ClaudeInput}" BorderThickness="0" Width="140"
-                                 KeyDown="TagInput_KeyDown" AutomationProperties.AutomationId="TagInput"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Type a value and press Enter or comma to add it as a chip. Backspace on an empty field removes the last one, and each chip has its own remove button."/>
+        <GroupBox AutomationProperties.AutomationId="TagCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="22"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Tags" Style="{StaticResource FieldLabel}"/>
+                        <local:TagInput AutomationProperties.AutomationId="TagTags"
+                                        Label="Tags" Placeholder="Add a tag…" InitialTags="design,research" Max="6"/>
                     </StackPanel>
-                </Border>
-                <TextBlock x:Name="TagCount" Text="0 tags" Style="{StaticResource FieldHint}" AutomationProperties.AutomationId="TagCount"/>
-            </StackPanel>
-        </Border>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Skills (no duplicates)" Style="{StaticResource FieldLabel}"/>
+                        <local:TagInput AutomationProperties.AutomationId="TagSkills"
+                                        Label="Skills" Placeholder="Add a skill…" InitialTags="react" Max="4"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </GroupBox>
 
         <TextBlock Text="Autocomplete" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel>
-                <TextBox x:Name="AutoInput" Style="{StaticResource ClaudeInput}" Width="320" HorizontalAlignment="Left"
-                         TextChanged="AutoInput_TextChanged" AutomationProperties.AutomationId="AutoInput"/>
-                <Popup x:Name="AutoPopup" PlacementTarget="{Binding ElementName=AutoInput}" Placement="Bottom" Width="320">
-                    <ListBox x:Name="AutoList" MaxHeight="200" Background="{StaticResource Surface}"
-                             BorderBrush="{StaticResource Line}" SelectionChanged="AutoList_SelectionChanged"
-                             AutomationProperties.AutomationId="AutoList"/>
-                </Popup>
-            </StackPanel>
-        </Border>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Suggestions filter as you type. Use the arrow keys and Enter to pick one, or type a value that isn't in the list."/>
+        <GroupBox AutomationProperties.AutomationId="AcCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="22"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Technologies as tags" Style="{StaticResource FieldLabel}"/>
+                        <local:Autocomplete AutomationProperties.AutomationId="AcTech"
+                                            Label="Technologies" Placeholder="Search technologies…" Multiple="True"
+                                            Options="React,TypeScript,Vue,Svelte,Node.js,Python,GraphQL,PostgreSQL,Docker,AWS"
+                                            ShowHint="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Framework" Style="{StaticResource FieldLabel}"/>
+                        <local:Autocomplete AutomationProperties.AutomationId="AcFramework"
+                                            Label="Framework" Placeholder="Search or type your own…"
+                                            SearchName="Framework"
+                                            Options="React,Vue,Angular,Svelte,Solid,Next.js,Nuxt"
+                                            HintText="Pick a suggestion or keep your own text."
+                                            ShowHint="True"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </GroupBox>
 
         <TextBlock Text="Searchable select" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"

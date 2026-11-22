@@ -98,7 +98,7 @@
                     </StackPanel>
                     </Grid>
                 </Border>
-                <local:TablePagination x:Name="FilterPagination" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="FilterPagination"/>
+                <local:TablePagination x:Name="FilterPagination" PagerId="FilterPageSize" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="FilterPagination"/>
             </StackPanel>
         </Border>
 
@@ -120,8 +120,10 @@
                                    Foreground="{StaticResource Brand}" VerticalAlignment="Center"
                                    AutomationProperties.AutomationId="BulkText"/>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="Export" Style="{StaticResource SecondaryButtonSm}" Margin="0,0,8,0"/>
-                            <Button Content="Delete" Style="{StaticResource DangerButtonSm}"/>
+                            <Button Content="Export" Style="{StaticResource SecondaryButtonSm}" Margin="0,0,8,0"
+                                    Click="BulkExport_Click" AutomationProperties.AutomationId="BulkExport"/>
+                            <Button Content="Delete" Style="{StaticResource DangerButtonSm}"
+                                    Click="BulkDelete_Click" AutomationProperties.AutomationId="BulkDelete"/>
                         </StackPanel>
                     </Grid>
                 </Border>

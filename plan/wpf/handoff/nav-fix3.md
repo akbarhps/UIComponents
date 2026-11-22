@@ -1,0 +1,3 @@
+Agent "nav": final review is fix-first. Read plan/wpf/handoff/nav-final-review.md. Fix ALL blocking (4) and should-fix (11) items; nits optional. Rulings: (a) remove Window-root Loaded hook, wire Checked/Unchecked etc. in XAML on the elements; (b) 1.3px menu edge accepted; (c) idle spinner must rotate. Mutation-check every new/changed assertion. Build + `-Only nav` must pass alone; re-capture changed refs.
+NEW REPORT FORMAT (README step 6): full report to plan/wpf/handoff/nav-report.md; chat reply = <=12-line header with verbatim `RESULT passed=N failed=M`.
+Rules unchanged: never commit, never kill processes by name.

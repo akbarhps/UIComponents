@@ -1,0 +1,1 @@
+Agent "overlays": read plan/wpf/handoff/worker-common.md, then plan/wpf/handoff/overlays-next.md (review behind it: overlays-o2-review.md) and do ALL of it: O2 fixes, then O3-O6, building + `-Only overlays` after each phase. Your area is wpf/tests/Tests.Overlays.cs. Stop after O6 and report.

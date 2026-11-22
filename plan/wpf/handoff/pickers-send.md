@@ -1,0 +1,1 @@
+Agent "pickers": read plan/wpf/handoff/worker-common.md, then plan/wpf/handoff/pickers-next.md (review behind it: pickers-p2-review.md) and do ALL of it: P1/P2 fixes, P10 self-contained, then P3-P5, building + `-Only pickers` after each phase. Your area is wpf/tests/Tests.Pickers.cs. Stop after P5 and report.

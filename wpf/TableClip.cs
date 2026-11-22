@@ -29,7 +29,8 @@ namespace UIComponents.Wpf
             if (fe.ActualWidth <= 0 || fe.ActualHeight <= 0) return;
             // Whole-pixel clip: a fractional bottom edge cuts the last table line mid-pixel.
             double w = Math.Round(fe.ActualWidth);
-            // Keep the bottom outside the clip: the frame Border paints that line itself.
+            // The frame Border paints the bottom row line itself; clipping 1px lower keeps
+            // that snapped line from being cut mid-pixel by a fractional content height.
             double h = Math.Round(fe.ActualHeight) + 1;
             fe.Clip = new RectangleGeometry(new Rect(0, 0, w, h), 11, 11);
         }

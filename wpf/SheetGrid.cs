@@ -558,7 +558,7 @@ namespace UIComponents.Wpf
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
-            CopySelected();
+            CopySelected(_selection.Count + " cells copied. Paste into Excel.");
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -599,7 +599,8 @@ namespace UIComponents.Wpf
             {
                 TextBox box = Keyboard.FocusedElement as TextBox;
                 if (box != null && box.SelectionLength > 0) return;
-                if (CopySelected()) e.Handled = true;
+                // Web selectionText() is '' below two cells: no custom copy, no toast.
+                if (CopySelected("Cells copied. Paste into Excel.")) e.Handled = true;
                 return;
             }
 
@@ -653,7 +654,7 @@ namespace UIComponents.Wpf
         }
 
         // JS selectionText(): TSV of the selection's bounding box; only for multiple cells.
-        private bool CopySelected()
+        private bool CopySelected(string toastText)
         {
             if (_selection.Count < 2) return false;
             int minR = int.MaxValue, maxR = int.MinValue, minC = int.MaxValue, maxC = int.MinValue;
@@ -681,7 +682,7 @@ namespace UIComponents.Wpf
             }
             try { Clipboard.SetText(sb.ToString()); }
             catch (ExternalException) { return false; }
-            // ponytail: no shared toast yet
+            Toasts.Show("success", "Copied", toastText);
             return true;
         }
 

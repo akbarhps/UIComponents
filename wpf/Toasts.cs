@@ -168,7 +168,7 @@ namespace UIComponents.Wpf
         private static void Schedule(GroupBox root)
         {
             ToastState state;
-            if (!_states.TryGetValue(root, out state) || state.Timer == null) return;
+            if (!_states.TryGetValue(root, out state) || state.Timer == null || state.Timer.IsEnabled) return;
             if (root.IsMouseOver || root.IsKeyboardFocusWithin) return;
             state.Timer.Interval = TimeSpan.FromMilliseconds(state.Remaining);
             state.Started = DateTime.Now;

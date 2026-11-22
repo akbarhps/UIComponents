@@ -23,7 +23,7 @@ namespace UIComponents.Wpf
         }
 
         private readonly List<Entry> _entries = new List<Entry>();
-        private bool[] _selected; // survives panel close/reopen; the web keeps input.checked
+        private bool[] _selected = new bool[0]; // survives close/reopen; the web keeps input.checked
         private readonly List<CheckBox> _checks = new List<CheckBox>();
         private readonly Dictionary<CheckBox, Path> _ticks = new Dictionary<CheckBox, Path>();
         private readonly Dictionary<CheckBox, Border> _boxes = new Dictionary<CheckBox, Border>();
@@ -41,6 +41,7 @@ namespace UIComponents.Wpf
         private KeyEventHandler _windowKeyDown;
         private string _id;
         private bool _closing;
+        private bool _building;
 
         public string Label { get; set; }
         public string Placeholder { get; set; }
@@ -54,6 +55,7 @@ namespace UIComponents.Wpf
             _id = AutomationProperties.GetAutomationId(this);
             if (string.IsNullOrEmpty(_id)) _id = Name;
             ParseOptions();
+            _selected = new bool[_entries.Count];
             BuildTrigger();
             Unloaded += Control_Unloaded;
         }
@@ -74,7 +76,6 @@ namespace UIComponents.Wpf
                 entry.Meta = bits.Length > 1 ? bits[1].Trim() : "";
                 if (entry.Label.Length > 0) _entries.Add(entry);
             }
-            _selected = new bool[_entries.Count];
         }
 
         private void BuildTrigger()
@@ -265,7 +266,9 @@ namespace UIComponents.Wpf
                 _checks.Add(check);
                 list.Children.Add(check);
             }
+            _building = true;
             for (int i = 0; i < _checks.Count; i++) _checks[i].IsChecked = _selected[i];
+            _building = false;
             _empty = new TextBlock();
             _empty.Style = (Style)Res("DropdownEmpty");
             _empty.Text = "No matches";
@@ -415,7 +418,7 @@ namespace UIComponents.Wpf
                 _boxes[check].Background = on ? (Brush)Res("Brand") : (Brush)Res("Surface");
                 _boxes[check].BorderBrush = on ? (Brush)Res("Brand") : (Brush)Res("LineStrong");
             }
-            UpdateTrigger();
+            if (!_building) UpdateTrigger();
         }
 
         private void UpdateTrigger()
@@ -471,7 +474,7 @@ namespace UIComponents.Wpf
                 if (seen != index) continue;
                 _selected[i] = false;
                 if (i < _checks.Count) _checks[i].IsChecked = false; // fires Option_Checked while open
-                UpdateTrigger();
+                else UpdateTrigger(); // closed: no checkbox to fire it
                 break;
             }
         }
@@ -479,14 +482,12 @@ namespace UIComponents.Wpf
         private void SelectAll_Click(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i < _checks.Count; i++)
-                if (_checks[i].Visibility == Visibility.Visible) _checks[i].IsChecked = true; // updates the model
-            UpdateTrigger();
+                if (_checks[i].Visibility == Visibility.Visible) _checks[i].IsChecked = true; // fires Option_Checked
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < _checks.Count; i++) _checks[i].IsChecked = false; // updates the model
-            UpdateTrigger();
+            for (int i = 0; i < _checks.Count; i++) _checks[i].IsChecked = false; // fires Option_Checked
         }
 
         private void Done_Click(object sender, RoutedEventArgs e)

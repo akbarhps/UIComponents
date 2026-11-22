@@ -19,6 +19,7 @@ namespace UIComponents.Wpf
         private static Window _window;
         private static Border _scrim;
         private static FrameworkElement _openDialog;
+        private static FrameworkElement _tabScope;
         private static IInputElement _previousFocus;
         private static object _savedTabNav = DependencyProperty.UnsetValue;
         private static bool _blocking;
@@ -40,23 +41,9 @@ namespace UIComponents.Wpf
             _scrim.Background = new SolidColorBrush(Color.FromArgb(0x6B, 0x1E, 0x1A, 0x14));
             _scrim.Visibility = Visibility.Collapsed;
             // O3: a mouse-up on the scrim itself closes. The scrim is a sibling of the
-            // dialog, so a click on the card never reaches it.
+            // dialog, so a click on the card never reaches it. No proxy control: that
+            // would add an unnamed button to the UIA control view and a11y announcements.
             _scrim.MouseLeftButtonUp += delegate { if (!_blocking) Close(); };
-            // No mouse on the hidden desktop: a transparent, unfocusable Button fills the
-            // scrim so UIA Invoke can raise the same event in-process for the O3 test.
-            Button scrimClick = new Button();
-            scrimClick.Focusable = false;
-            scrimClick.Background = Brushes.Transparent;
-            scrimClick.BorderThickness = new Thickness(0);
-            scrimClick.SetValue(AutomationProperties.AutomationIdProperty, "OverlayScrimClick");
-            scrimClick.Click += delegate
-            {
-                _scrim.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
-                {
-                    RoutedEvent = UIElement.MouseLeftButtonUpEvent
-                });
-            };
-            _scrim.Child = scrimClick;
             _layer.Children.Add(_scrim);
 
             // Move the authored dialogs in once, synchronously: x:Name fields stay valid,
@@ -112,6 +99,22 @@ namespace UIComponents.Wpf
             Open(dialog, focus, false);
         }
 
+        // O4: the edit drawer's confirm scopes Tab to its own two buttons while visible.
+        public static void SetTabScope(FrameworkElement scope)
+        {
+            _tabScope = scope;
+        }
+
+        public static bool IsAnyOpen
+        {
+            get { return _openDialog != null; }
+        }
+
+        public static bool IsOpen(FrameworkElement dialog)
+        {
+            return _openDialog == dialog;
+        }
+
         public static void Close()
         {
             Close(true);
@@ -122,6 +125,7 @@ namespace UIComponents.Wpf
             if (_openDialog == null) return;
             FrameworkElement dialog = _openDialog;
             _openDialog = null;
+            _tabScope = null;
             _blocking = false;
             if (_savedTabNav == DependencyProperty.UnsetValue)
                 _window.ClearValue(KeyboardNavigation.TabNavigationProperty);
@@ -153,7 +157,8 @@ namespace UIComponents.Wpf
             if (e.Key != Key.Tab || _openDialog == null) return;
             e.Handled = true;
             List<FrameworkElement> items = new List<FrameworkElement>();
-            CollectFocusable(_openDialog, items);
+            FrameworkElement scope = _tabScope != null && _tabScope.IsVisible ? _tabScope : _openDialog;
+            CollectFocusable(scope, items);
             if (items.Count == 0) { _openDialog.Focus(); return; }
 
             // Focus can sit on a template inner element (e.g. an editable ComboBox text

@@ -94,18 +94,20 @@
                         </DataGrid>
                         <Border x:Name="ColEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
                             <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="No matching projects" FontSize="15" FontWeight="SemiBold"
+                                <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
+                                           LineHeight="24" LineStackingStrategy="BlockLineHeight"
                                            Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
-                                           AutomationProperties.AutomationId="ColEmpty"/>
+                                           Margin="0,0,0,5" AutomationProperties.AutomationId="ColEmpty"/>
                                 <TextBlock Text="Try changing a column filter." FontSize="14"
-                                           Foreground="{StaticResource Ink2}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                           Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                           LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
                     </Grid>
                 </Border>
 
-                <local:TablePagination x:Name="ColumnPagination" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="ColumnPagination"/>
+                <local:TablePagination x:Name="ColumnPagination" PagerId="ColumnPageSize" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="ColumnPagination"/>
             </StackPanel>
         </Border>
 
@@ -149,7 +151,7 @@
                                     <Button Grid.Column="2" Content="Team" Tag="Team" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
                                     <Button Grid.Column="3" Content="Status" Tag="Status" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
                                     <Button Grid.Column="4" Content="Priority" Tag="Priority" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
-                                    <Button Grid.Column="5" Content="Updated" Tag="Updated" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
+                                    <Button Grid.Column="5" Content="Updated" Tag="Updated" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click" AutomationProperties.AutomationId="HeaderUpdated"/>
                                     <Button Grid.Column="6" Content="Due date" Tag="Due" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"/>
                                     <Button Grid.Column="7" Content="Budget" Tag="Budget" Style="{StaticResource SortHeaderButton}" Margin="16,13" Click="SortHeader_Click"
                                             AutomationProperties.AutomationId="HeaderBudget"/>
@@ -241,11 +243,13 @@
                                 </DataGrid>
                                 <Border x:Name="SortEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
                                     <StackPanel HorizontalAlignment="Center">
-                                        <TextBlock Text="No matching projects" FontSize="15" FontWeight="SemiBold"
+                                        <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
+                                                   LineHeight="24" LineStackingStrategy="BlockLineHeight"
                                                    Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
-                                                   AutomationProperties.AutomationId="SortEmpty"/>
+                                                   Margin="0,0,0,5" AutomationProperties.AutomationId="SortEmpty"/>
                                         <TextBlock Text="Try changing a column filter." FontSize="14"
-                                                   Foreground="{StaticResource Ink2}" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                                   Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                                   LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -254,17 +258,9 @@
                 </ScrollViewer>
 
                 <!-- Web puts pagination directly under the 11px scroll track (wrapper bottom = pagination top). -->
-                <local:TablePagination x:Name="SortPagination" Margin="0,-16,0,0" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="SortPagination"/>
+                <local:TablePagination x:Name="SortPagination" Margin="0,-16,0,0" PagerId="SortPageSize" InfoText="Showing 1–6 of 6" AutomationProperties.AutomationId="SortPagination"/>
             </StackPanel>
         </Border>
 
-        <!-- Overlay launchers -->
-        <TextBlock Text="Dialogs" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Command palette" Style="{StaticResource PrimaryButton}" Click="CommandPalette_Click" AutomationProperties.AutomationId="BtnCommandPalette"/>
-                <Button Content="Drawer form" Style="{StaticResource SecondaryButton}" Margin="12,0,0,0" Click="Drawer_Click" AutomationProperties.AutomationId="BtnDrawer"/>
-            </StackPanel>
-        </Border>
     </StackPanel>
 </UserControl>

@@ -1,0 +1,2 @@
+Agent "pickers": final review is fix-first. Read plan/wpf/handoff/pickers-final-review.md. Fix ALL 3 blocking + all should-fix items (nits optional). Every new/changed assertion must be mutation-checked (the focus fix-up test must fail if the fix is removed; add P11 and hour-clamp tests). Build + `-Only pickers` must pass alone; re-capture changed refs.
+Report: full to plan/wpf/handoff/pickers-report2.md; chat <=12-line header with verbatim `RESULT passed=N failed=M` and a line stating which mutations were run. Never commit, never kill processes by name.

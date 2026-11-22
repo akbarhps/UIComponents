@@ -318,4 +318,56 @@
         <Setter Property="Height" Value="53"/>
     </Style>
 
+    <!-- ==================== Tag input / autocomplete text field ==================== -->
+    <Style x:Key="TagBox" TargetType="Border">
+        <Setter Property="MinHeight" Value="46"/>
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Cursor" Value="IBeam"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Brand}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="BareInputTemplate" TargetType="TextBox">
+        <Grid>
+            <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
+            <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}" Margin="2,0,0,0"
+                       VerticalAlignment="Center" FontFamily="{StaticResource Sans}" FontSize="14"
+                       Foreground="{StaticResource Ink3}" Visibility="Collapsed" IsHitTestVisible="False"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="BareInput" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Height" Value="27"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template" Value="{StaticResource BareInputTemplate}"/>
+    </Style>
+
+    <!-- Autocomplete: 37-high text rows, 52.8-high empty row. -->
+    <Style x:Key="AcOption" TargetType="Button" BasedOn="{StaticResource DropdownOption}">
+        <Setter Property="Height" Value="37"/>
+    </Style>
+    <Style x:Key="AcEmpty" TargetType="TextBlock" BasedOn="{StaticResource DropdownEmpty}">
+        <Setter Property="Padding" Value="10,16"/>
+    </Style>
+
 </ResourceDictionary>

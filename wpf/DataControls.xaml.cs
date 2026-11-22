@@ -97,7 +97,8 @@ namespace UIComponents.Wpf
             var q = FilterSearch.Text.Trim().ToLower();
             var rows = _filterRows.Where(r =>
                 (_statusFilter == "all" || string.Equals(r.Status, _statusFilter, StringComparison.OrdinalIgnoreCase)) &&
-                (q.Length == 0 || r.Project.ToLower().Contains(q) || r.Owner.ToLower().Contains(q))).ToList();
+                (q.Length == 0 || r.Project.ToLower().Contains(q) || r.Owner.ToLower().Contains(q) ||
+                 r.Team.ToLower().Contains(q) || r.Status.ToLower().Contains(q) || r.Updated.ToLower().Contains(q))).ToList();
             FilterGrid.ItemsSource = rows;
             FilterCount.Text = rows.Count + " of " + _filterRows.Count + " projects";
             FilterEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -127,6 +128,27 @@ namespace UIComponents.Wpf
         }
 
         private void SelectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) { UpdateBulkBar(); }
+
+        private void BulkExport_Click(object sender, RoutedEventArgs e)
+        {
+            int count = SelectionGrid.Items.OfType<SelectionRow>().Count(r => r.Selected);
+            if (count == 0) return;
+            Toasts.Show("info", "Export started",
+                "Preparing " + count + (count == 1 ? " row" : " rows") + " for export.");
+        }
+
+        private void BulkDelete_Click(object sender, RoutedEventArgs e)
+        {
+            var rows = SelectionGrid.Items.OfType<SelectionRow>().ToList();
+            int count = rows.Count(r => r.Selected);
+            if (count == 0) return;
+            SelectionGrid.ItemsSource = rows.Where(r => !r.Selected).ToList();
+            // Web's updateBulkbar() recomputes selectAll from the remaining rows (3420-3421).
+            CheckBox selectAll = SelectionGrid.Columns[0].Header as CheckBox;
+            if (selectAll != null) selectAll.IsChecked = false;
+            Toasts.Show("success", "Rows deleted", count + (count == 1 ? " row" : " rows") + " removed.");
+            UpdateBulkBar();
+        }
 
         private void UpdateBulkBar()
         {

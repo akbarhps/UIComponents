@@ -87,9 +87,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="7">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid>
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                                CornerRadius="9" Margin="-2" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="7">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                        </Border>
+                    </Grid>
                     <ControlTemplate.Triggers>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -98,9 +102,60 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
                         </MultiTrigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <!-- File drop: 1px dashed 3/2 border behind the content (a Border cannot dash). -->
+    <Style x:Key="PickerFileDrop" TargetType="Button">
+        <Setter Property="Height" Value="135.6"/>
+        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="Padding" Value="26,20"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                                CornerRadius="15" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="12">
+                            <Grid>
+                                <Rectangle x:Name="Dash" Stroke="{StaticResource LineStrong}" StrokeThickness="1"
+                                           StrokeDashArray="3 2" RadiusX="12" RadiusY="12"
+                                           SnapsToDevicePixels="True" Margin="0.5" IsHitTestVisible="False"/>
+                                <ContentPresenter Margin="{TemplateBinding Padding}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                        <Trigger Property="Tag" Value="dragover">
+                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PickerFileItem" TargetType="Border">
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="12,10"/>
     </Style>
 </ResourceDictionary>

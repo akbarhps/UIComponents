@@ -49,6 +49,7 @@
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
                             <Setter TargetName="Shadow" Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Cursor" Value="No"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -15,6 +15,17 @@ namespace UIComponents.Wpf
             set { SetValue(InfoTextProperty, value); }
         }
 
+        // Each pager gets a distinct id so tests can scope a Find to one pager.
+        public static readonly DependencyProperty PagerIdProperty =
+            DependencyProperty.Register("PagerId", typeof(string), typeof(TablePagination),
+                new PropertyMetadata("PageSize"));
+
+        public string PagerId
+        {
+            get { return (string)GetValue(PagerIdProperty); }
+            set { SetValue(PagerIdProperty, value); }
+        }
+
         public TablePagination()
         {
             InitializeComponent();

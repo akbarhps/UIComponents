@@ -5,13 +5,34 @@
              xmlns:local="clr-namespace:UIComponents.Wpf">
     <StackPanel x:Name="SectionList">
         <TextBlock Text="File input" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
-        <Border Style="{StaticResource ClaudeCard}" Margin="0,16,0,0">
-            <StackPanel>
-                <Button Content="Browse files…" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left"
-                        Click="Browse_Click" AutomationProperties.AutomationId="BtnBrowse"/>
-                <ListBox x:Name="FileList" Height="100" Margin="0,12,0,0" AutomationProperties.AutomationId="FileList"/>
-            </StackPanel>
-        </Border>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="Drop files onto the area or click to browse. Selected files are listed with their size and can be removed individually."/>
+        <GroupBox AutomationProperties.AutomationId="FileCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="22"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Single file" Style="{StaticResource FieldLabel}"/>
+                        <local:FileInput AutomationProperties.AutomationId="FileSingle"
+                                         Title="Drop a file here" Subtitle="or click to browse"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Multiple images" Style="{StaticResource FieldLabel}"/>
+                        <local:FileInput AutomationProperties.AutomationId="FileMulti" Multiple="True" ImageOnly="True"
+                                         Title="Drop images here" Subtitle="or click to browse · images only"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </GroupBox>
 
         <TextBlock Text="Date picker" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
         <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
@@ -25,8 +46,8 @@
             <Border Style="{StaticResource DemoCard}">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="73.8"/>
                         <RowDefinition Height="95.8"/>
+                        <RowDefinition Height="73.8"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -48,6 +69,61 @@
                     <StackPanel Grid.Row="1" Grid.Column="0">
                         <TextBlock Text="Year only" Style="{StaticResource FieldLabel}"/>
                         <local:CalendarPicker AutomationProperties.AutomationId="PickYear"
+                                              Label="Year only" Placeholder="Pick a year…"
+                                              Mode="year" Icon="Calendar"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </GroupBox>
+
+        <TextBlock Text="Date &amp; time picker" Style="{StaticResource SectionTitle}" Margin="0,46,0,0"/>
+        <TextBlock Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0"
+                   Text="The same picker with an hour and minute step for full dates. Month and year modes stay date-only."/>
+        <GroupBox AutomationProperties.AutomationId="DateTimeCard" Margin="0,22,0,0">
+            <GroupBox.Template>
+                <ControlTemplate TargetType="GroupBox">
+                    <ContentPresenter/>
+                </ControlTemplate>
+            </GroupBox.Template>
+            <Border Style="{StaticResource DemoCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="95.8"/>
+                        <RowDefinition Height="95.8"/>
+                        <RowDefinition Height="73.8"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="22"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Full date and time" Style="{StaticResource FieldLabel}"/>
+                        <local:CalendarPicker AutomationProperties.AutomationId="PickDateTime"
+                                              Label="Full date and time" Placeholder="Pick a date and time…"
+                                              Mode="date" WithTime="True" Icon="Clock"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="Full date and time with seconds" Style="{StaticResource FieldLabel}"/>
+                        <local:CalendarPicker AutomationProperties.AutomationId="PickDateTimeSec"
+                                              Label="Full date and time with seconds" Placeholder="Pick a date and time…"
+                                              Mode="date" WithTime="True" WithSeconds="True" Icon="Clock"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0">
+                        <TextBlock Text="Full date only" Style="{StaticResource FieldLabel}"/>
+                        <local:CalendarPicker AutomationProperties.AutomationId="PickDateOnly"
+                                              Label="Full date only" Placeholder="Pick a date…"
+                                              Mode="date" Icon="Calendar"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="2">
+                        <TextBlock Text="Month and year" Style="{StaticResource FieldLabel}"/>
+                        <local:CalendarPicker AutomationProperties.AutomationId="PickMonth2"
+                                              Label="Month and year" Placeholder="Pick a month…"
+                                              Mode="month" Icon="Calendar"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="0">
+                        <TextBlock Text="Year only" Style="{StaticResource FieldLabel}"/>
+                        <local:CalendarPicker AutomationProperties.AutomationId="PickYear2"
                                               Label="Year only" Placeholder="Pick a year…"
                                               Mode="year" Icon="Calendar"/>
                     </StackPanel>

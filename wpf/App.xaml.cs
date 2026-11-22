@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
@@ -108,6 +109,7 @@ namespace UIComponents.Wpf
                 IntPtr data = System.Runtime.InteropServices.Marshal.ReadIntPtr(lParam, IntPtr.Size + 4 + (IntPtr.Size == 8 ? 4 : 0));
                 string[] parts = System.Runtime.InteropServices.Marshal.PtrToStringUni(data, cb / 2).Split('	');
                 if (parts[0] == "ping") return new IntPtr(1);
+                if (parts[0] == "click") return new IntPtr(ClickScreenPoint(parts[2]));
                 Window win = Application.Current.MainWindow;
                 List<FrameworkElement> found = new List<FrameworkElement>();
                 foreach (PresentationSource ps in PresentationSource.CurrentSources)   // main window + popups
@@ -152,6 +154,62 @@ namespace UIComponents.Wpf
             catch (System.Windows.Automation.ElementNotEnabledException) { return new IntPtr(2); }
             catch (Exception ex) { Console.Error.WriteLine("DRIVER error: " + ex); return new IntPtr(3); }
             return new IntPtr(2);
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(NativePoint point);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct NativePoint { public int X; public int Y; }
+
+        // Press at a screen point (payload "click<TAB><TAB>x,y", see Drv.Click). WindowFromPoint picks the window the OS
+        // would deliver to (popups included), VisualTreeHelper.HitTest picks the element in it, and a miss makes that
+        // window's root visual the source, as WPF does for a press on space that is not hit-testable. Preview then
+        // bubbling mouse-button events go to the source, so window-level hooks see the same OriginalSource as on screen.
+        // Returns 1 = element hit, 4 = nothing hit (fell through to the window root), 2 = not delivered.
+        // Nothing moves the real cursor or changes focus.
+        private static int ClickScreenPoint(string payload)
+        {
+            string[] xy = payload.Split(',');
+            int x = int.Parse(xy[0]);
+            int y = int.Parse(xy[1]);
+            IntPtr hwnd = WindowFromPoint(new NativePoint { X = x, Y = y });
+            System.Windows.Interop.HwndSource source = null;
+            foreach (PresentationSource ps in PresentationSource.CurrentSources)
+            {
+                System.Windows.Interop.HwndSource hs = ps as System.Windows.Interop.HwndSource;
+                if (hs != null && hs.Handle == hwnd) source = hs;
+            }
+            Visual root = source == null ? null : source.RootVisual as Visual;
+            if (root == null) return 2;
+            // Collapsed elements are skipped, as on screen (input hit testing). The raw visual hit test keeps a
+            // collapsed overlay scrim (its last size) and would hit it: a press on the page then closes the picker.
+            HitTestResult hit = null;
+            VisualTreeHelper.HitTest(root, delegate(DependencyObject o)
+            {
+                UIElement ue = o as UIElement;
+                return ue != null && !ue.IsVisible ? HitTestFilterBehavior.ContinueSkipSelfAndChildren : HitTestFilterBehavior.Continue;
+            }, delegate(HitTestResult r)
+            {
+                hit = r;
+                return HitTestResultBehavior.Stop;
+            }, new PointHitTestParameters(root.PointFromScreen(new Point(x, y))));
+            DependencyObject target = hit == null ? root : hit.VisualHit;
+            while (target != null && !(target is UIElement)) target = VisualTreeHelper.GetParent(target);
+            if (target == null) return 2;
+            RaiseButtonEvent((UIElement)target, Mouse.PreviewMouseDownEvent);
+            RaiseButtonEvent((UIElement)target, Mouse.MouseDownEvent);
+            RaiseButtonEvent((UIElement)target, Mouse.PreviewMouseUpEvent);
+            RaiseButtonEvent((UIElement)target, Mouse.MouseUpEvent);
+            return hit == null ? 4 : 1;
+        }
+
+        private static void RaiseButtonEvent(UIElement target, RoutedEvent routed)
+        {
+            MouseButtonEventArgs e = new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Left);
+            e.RoutedEvent = routed;
+            e.Source = target;
+            target.RaiseEvent(e);
         }
 
         private static void FindAllById(DependencyObject node, string id, List<FrameworkElement> into)

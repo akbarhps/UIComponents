@@ -44,7 +44,15 @@ namespace UIComponents.Wpf
         private Adorner _adorner;
         private DropdownOutsideClick _outsideClick;
         private readonly Dictionary<Button, Selection> _cellMap = new Dictionary<Button, Selection>();
-        private Button _focusCellOnOpen;
+        private Button _pressedButton;
+        private Button _prevButton;
+        private Button _nextButton;
+        private TextBox _hourBox;
+        private TextBox _minuteBox;
+        private TextBox _secondBox;
+        private string _hourText = "09";
+        private string _minuteText = "30";
+        private string _secondText = "00";
         private bool _closing;
 
         public string Mode { get; set; }
@@ -59,6 +67,7 @@ namespace UIComponents.Wpf
             base.OnInitialized(e);
             _id = AutomationProperties.GetAutomationId(this);
             if (string.IsNullOrEmpty(_id)) _id = Name;
+            if (WithSeconds) WithTime = true; // web: time === 'true' || seconds === 'true'
             _today = DateTime.Today;
             _viewYear = _today.Year;
             _viewMonth = _today.Month - 1;
@@ -141,18 +150,11 @@ namespace UIComponents.Wpf
             Button cell = FindSelectedCell();
             if (cell != null)
             {
-                // The adorner isn't connected until layout, and UIA can set focus after the
-                // Checked handler returns. Focus on LayoutUpdated and once more on a short timer.
-                _focusCellOnOpen = cell;
                 Button focused = cell;
-                DispatcherTimer focusTimer = new DispatcherTimer();
-                focusTimer.Interval = TimeSpan.FromMilliseconds(100);
-                focusTimer.Tick += delegate(object sender2, EventArgs e2)
+                Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
                 {
-                    ((DispatcherTimer)sender2).Stop();
-                    if (_adorner != null && !focused.IsKeyboardFocused) focused.Focus();
-                };
-                focusTimer.Start();
+                    if (_adorner != null) focused.Focus();
+                }));
             }
         }
 
@@ -171,8 +173,15 @@ namespace UIComponents.Wpf
                 }
                 _panelRoot = null;
                 _title = null;
+                // W6: time inputs keep their text across close/reopen and Clear.
+                if (_hourBox != null) _hourText = _hourBox.Text;
+                if (_minuteBox != null) _minuteText = _minuteBox.Text;
+                if (_secondBox != null) _secondText = _secondBox.Text;
+                _hourBox = null;
+                _minuteBox = null;
+                _secondBox = null;
                 _bodyHost = null;
-                _focusCellOnOpen = null;
+                RestorePressedButton();
                 _cellMap.Clear();
                 if (_trigger.IsChecked == true) _trigger.IsChecked = false;
                 if (restoreFocus) _trigger.Focus();
@@ -194,7 +203,11 @@ namespace UIComponents.Wpf
 
         private bool IsSelected(Selection value)
         {
-            return _selected != null && value.Year == _selected.Year && value.Month == _selected.Month && value.Day == _selected.Day;
+            if (_selected == null || value.Year != _selected.Year) return false;
+            if (Mode == "year") return true;
+            if (value.Month != _selected.Month) return false;
+            if (Mode == "month") return true;
+            return value.Day == _selected.Day;
         }
 
         private bool IsToday(int day)
@@ -213,14 +226,20 @@ namespace UIComponents.Wpf
         {
             _panelRoot = new GroupBox();
             _panelRoot.Style = (Style)Res("PickerPanelRoot");
+            // A press on blank panel space reaches no handler inside the panel, so it bubbles to the page
+            // ScrollViewer, which takes focus; focus-out then closes the picker. Stop it at the panel root.
+            _panelRoot.MouseLeftButtonDown += delegate(object s, MouseButtonEventArgs me) { me.Handled = true; };
             AutomationProperties.SetAutomationId(_panelRoot, _id + "_Panel");
             AutomationProperties.SetName(_panelRoot, DialogLabel());
             _panelRoot.KeyDown += Picker_KeyDown;
             _panelRoot.LostKeyboardFocus += Picker_LostKeyboardFocus;
             _panelRoot.PreviewMouseLeftButtonDown += Panel_PreviewMouseLeftButtonDown;
-            _panelRoot.LayoutUpdated += Panel_LayoutUpdated;
+            _panelRoot.PreviewMouseLeftButtonUp += Panel_PreviewMouseLeftButtonUp;
+            _panelRoot.LostMouseCapture += Panel_LostMouseCapture;
 
             Grid shell = new Grid();
+            shell.Width = 300;
+            shell.HorizontalAlignment = HorizontalAlignment.Left;
             Border shadow = new Border();
             shadow.Style = (Style)Res("DropdownPanelShadow");
             shell.Children.Add(shadow);
@@ -235,26 +254,42 @@ namespace UIComponents.Wpf
             rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(32) });
             rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(8) });
             rows.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            int footRow = 4;
             rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(10) });
+            if (WithTime)
+            {
+                rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(71.4) }); // time at row 4
+                rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(10) });
+                footRow = 6;
+            }
             rows.RowDefinitions.Add(new RowDefinition { Height = new GridLength(43) });
 
             Grid head = new Grid();
             head.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
             head.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             head.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(32) });
-            head.Children.Add(BuildNav(-1, 90, true));
+            _prevButton = BuildNav(-1, 90, true);
+            head.Children.Add(_prevButton);
             _title = new TextBlock();
             _title.Style = (Style)Res("PickerTitle");
             Grid.SetColumn(_title, 1);
             AutomationProperties.SetAutomationId(_title, _id + "_Title");
             head.Children.Add(_title);
-            head.Children.Add(BuildNav(1, -90, false));
+            _nextButton = BuildNav(1, -90, false);
+            head.Children.Add(_nextButton);
             Grid.SetRow(head, 0);
             rows.Children.Add(head);
 
             _bodyHost = new Grid();
             Grid.SetRow(_bodyHost, 2);
             rows.Children.Add(_bodyHost);
+
+            if (WithTime)
+            {
+                Border timeRow = BuildTimeRow();
+                Grid.SetRow(timeRow, 4);
+                rows.Children.Add(timeRow);
+            }
 
             Border foot = new Border();
             foot.BorderBrush = (Brush)Res("Line");
@@ -282,14 +317,13 @@ namespace UIComponents.Wpf
             today.Width = WithTime ? 60.4 : 60.9;
             today.Height = 32;
             today.HorizontalAlignment = HorizontalAlignment.Right;
-            // ponytail: P3 turns this into Apply and adds the hour/minute/second inputs.
             if (WithTime) today.Click += Apply_Click; else today.Click += Today_Click;
             AutomationProperties.SetAutomationId(today, WithTime ? _id + "_Apply" : _id + "_Today");
             Grid.SetColumn(today, 2);
             footGrid.Children.Add(today);
 
             foot.Child = footGrid;
-            Grid.SetRow(foot, 4);
+            Grid.SetRow(foot, footRow);
             rows.Children.Add(foot);
 
             panel.Child = rows;
@@ -315,6 +349,68 @@ namespace UIComponents.Wpf
             return button;
         }
 
+        // 71.4 high: 1px top line, 12px padding, 19.2 label + 5 gap + 34.2 input.
+        private Border BuildTimeRow()
+        {
+            Border row = new Border();
+            row.BorderBrush = (Brush)Res("Line");
+            row.BorderThickness = new Thickness(0, 1, 0, 0);
+            row.Padding = new Thickness(0, 12, 0, 0);
+            row.Height = 71.4;
+            Grid grid = new Grid();
+            int count = WithSeconds ? 3 : 2;
+            double width = WithSeconds ? 84.7 : 132;
+            for (int i = 0; i < count; i++)
+            {
+                if (i > 0) grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(width) });
+            }
+            string[] names = { "Hour", "Minute", "Second" };
+            string[] ids = { "_Hour", "_Minute", "_Second" };
+            string[] initial = { _hourText, _minuteText, _secondText };
+            for (int i = 0; i < count; i++)
+            {
+                StackPanel column = new StackPanel();
+                TextBlock label = new TextBlock();
+                label.Text = names[i];
+                label.FontFamily = (FontFamily)Res("Sans");
+                label.FontSize = 12;
+                label.Foreground = (Brush)Res("Ink2");
+                label.LineHeight = 19.2;
+                label.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+                column.Children.Add(label);
+                TextBox box = new TextBox();
+                box.Style = (Style)Res("TableFilterInput");
+                box.Height = 34.2;
+                box.Text = initial[i];
+                box.Margin = new Thickness(0, 5, 0, 0);
+                AutomationProperties.SetAutomationId(box, _id + ids[i]);
+                AutomationProperties.SetName(box, names[i]);
+                column.Children.Add(box);
+                if (i == 0) _hourBox = box;
+                else if (i == 1) _minuteBox = box;
+                else _secondBox = box;
+                Grid.SetColumn(column, i * 2);
+                grid.Children.Add(column);
+            }
+            row.Child = grid;
+            return row;
+        }
+
+        private static int TimeValue(TextBox box)
+        {
+            int value;
+            return box != null && int.TryParse(box.Text, out value) ? value : 0;
+        }
+
+        private void CopyTimeInputs()
+        {
+            if (!WithTime || _selected == null) return;
+            _selected.Hour = TimeValue(_hourBox); // unclamped, web fix W6
+            _selected.Minute = TimeValue(_minuteBox);
+            if (WithSeconds) _selected.Second = TimeValue(_secondBox);
+        }
+
         private void Navigate(int step)
         {
             if (Mode == "month") _viewYear += step;
@@ -334,8 +430,8 @@ namespace UIComponents.Wpf
             // Re-rendering replaces the focused cell. Move focus back into the picker first so
             // focusout never sees a null/outside target and closes the panel (review fix 1).
             IInputElement focused = Keyboard.FocusedElement;
-            if (focused != null && _panelRoot != null && DropdownTree.IsWithin(focused as DependencyObject, _panelRoot))
-                _trigger.Focus();
+            if (focused != null && DropdownTree.IsWithin(focused as DependencyObject, _bodyHost))
+                _trigger.Focus(); // only the body is replaced; Prev/Next and time inputs keep focus
 
             if (Mode == "month") _title.Text = _viewYear.ToString(CultureInfo.InvariantCulture);
             else if (Mode == "year")
@@ -358,6 +454,7 @@ namespace UIComponents.Wpf
             {
                 Selection value = new Selection { Year = _viewYear, Month = i, Day = 1 };
                 Button cell = BuildCell(Months[i], value, _id + "_Month" + i);
+                AutomationProperties.SetName(cell, MonthsFull[i]); // web aria-label is the full month
                 _cellMap[cell] = value;
                 return cell;
             });
@@ -523,29 +620,29 @@ namespace UIComponents.Wpf
         {
             Button cell = sender as Button;
             if (cell == null || !_cellMap.ContainsKey(cell)) return;
-            // ponytail: P3 copies the hour/minute/second inputs, re-renders and stays open.
             _selected = _cellMap[cell];
-            if (!WithTime) Commit(); else Render();
+            if (WithTime)
+            {
+                CopyTimeInputs();
+                Render(); // time mode re-renders and stays open without committing
+                return;
+            }
+            Commit();
         }
 
         private void Today_Click(object sender, RoutedEventArgs e)
         {
-            // ponytail: P3 replaces the 09:30 defaults with the live time inputs.
-            _selected = new Selection
-            {
-                Year = _today.Year,
-                Month = _today.Month - 1,
-                Day = _today.Day,
-                Hour = 9,
-                Minute = 30,
-                Second = 0
-            };
+            _selected = new Selection { Year = _today.Year, Month = _today.Month - 1, Day = _today.Day };
             Commit();
         }
 
         private void Apply_Click(object sender, RoutedEventArgs e)
         {
             if (_selected == null) return;
+            CopyTimeInputs();
+            _selected.Hour = Math.Min(23, Math.Max(0, _selected.Hour));
+            _selected.Minute = Math.Min(59, Math.Max(0, _selected.Minute));
+            _selected.Second = Math.Min(59, Math.Max(0, _selected.Second));
             Commit();
         }
 
@@ -581,31 +678,62 @@ namespace UIComponents.Wpf
 
         private void Picker_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Escape || _adorner == null) return;
-            e.Handled = true;
-            Close(true);
-        }
-
-        private void Panel_LayoutUpdated(object sender, EventArgs e)
-        {
-            Button cell = _focusCellOnOpen;
-            if (cell == null || _adorner == null) return;
-            _focusCellOnOpen = null;
-            cell.Focus();
-        }
-
-        // Web: mousedown on the panel calls preventDefault, so buttons and cells stay tab stops
-        // but a mouse press must not move focus. Never mark the event Handled: that kills Click.
-        private void Panel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            IInputElement saved = Keyboard.FocusedElement;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(delegate
+            if (_adorner == null) return;
+            if (e.Key == Key.Escape)
             {
-                if (_adorner == null) return;
-                Visual visual = saved as Visual;
-                if (saved != null && visual != null && PresentationSource.FromVisual(visual) != null) saved.Focus();
-                else _trigger.Focus();
-            }));
+                e.Handled = true;
+                Close(true);
+                return;
+            }
+            if (e.Key != Key.Tab) return;
+            bool shift = Keyboard.Modifiers == ModifierKeys.Shift;
+            if (sender == _trigger && !shift && _prevButton != null)
+            {
+                // The adorner isn't after the trigger in the tab order: Tab must reach Prev.
+                e.Handled = true;
+                _prevButton.Focus();
+            }
+            else if (sender == _panelRoot && !shift && e.OriginalSource == _prevButton && _nextButton != null)
+            {
+                // Tab from the first head button leaves the adorner without help.
+                e.Handled = true;
+                _nextButton.Focus();
+            }
+            else if (sender == _panelRoot && shift && e.OriginalSource == _prevButton)
+            {
+                // Web: Shift+Tab from the first panel control returns to the trigger.
+                e.Handled = true;
+                _trigger.Focus();
+            }
+        }
+
+        private void RestorePressedButton()
+        {
+            if (_pressedButton != null) _pressedButton.Focusable = true;
+            _pressedButton = null;
+        }
+
+        // Web: mousedown on the panel calls preventDefault. Keep buttons as tab stops but stop
+        // a mouse press from taking focus, without disturbing Click (never mark Handled).
+        private void Panel_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {            DependencyObject target = e.OriginalSource as DependencyObject;
+            while (target != null && !(target is Button)) target = VisualTreeHelper.GetParent(target);
+            Button button = target as Button;
+            if (button == null) return; // time inputs (TextBox) must stay mouse-focusable
+            if (button.IsKeyboardFocused) return; // a press on the focused button can't move focus
+            RestorePressedButton();
+            _pressedButton = button;
+            button.Focusable = false;
+        }
+
+        private void Panel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            RestorePressedButton();
+        }
+
+        private void Panel_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            RestorePressedButton();
         }
 
         private void Picker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
