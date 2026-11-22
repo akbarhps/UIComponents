@@ -35,7 +35,7 @@ Never read `ui-design/web/index.html` (212 KB) or `ui-design/wpf/MainWindow.xaml
 2. Find the CSS class, or the section comment (`/* ── Name ── */`), with `grep -n "<name>" ui-design/web/index.html`. Read about 40 lines around the match.
 
 **WPF**
-1. Read `wpf-index.md` next to this file (`.claude/skills/ui-components/wpf-index.md` in the hub). Find the component row.
+1. Read `ui-design/wpf/COMPONENTS.md`. Find the component row.
 2. Open only the named file, or the style key: `grep -n 'x:Key="KEY"' ui-design/wpf/Themes/*.xaml`.
 
 ## Delegating UI work
