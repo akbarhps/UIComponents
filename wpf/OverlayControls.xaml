@@ -93,7 +93,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Open command palette" VerticalAlignment="Center"/>
                             <Border Style="{StaticResource CmdkChip}" Margin="8,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Ctrl K" FontSize="11" Foreground="{StaticResource Ink3}"/>
+                                <TextBlock Text="Ctrl K" FontSize="11" Foreground="{DynamicResource Ink3}"/>
                             </Border>
                         </StackPanel>
                     </Button>
@@ -118,17 +118,17 @@
                     </Grid.RowDefinitions>
                     <Border x:Name="CmdkCardRoot" Grid.Row="1" Width="560" Height="436.6"
                             VerticalAlignment="Top" HorizontalAlignment="Center"
-                            Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
+                            Background="{DynamicResource Surface}" Effect="{DynamicResource Shadow2}"/>
                     <Border x:Name="CmdkCard" Grid.Row="1" Width="560" Height="436.6"
                             VerticalAlignment="Top" HorizontalAlignment="Center"
-                            Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                            Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}"
                             BorderThickness="1" CornerRadius="16">
                         <StackPanel>
-                            <Border Height="56" Padding="16,18" BorderBrush="{StaticResource Line}"
+                            <Border Height="56" Padding="16,18" BorderBrush="{DynamicResource Line}"
                                     BorderThickness="0,0,0,1">
                                 <Grid>
                                 <ContentControl Style="{StaticResource IconSearch}" Width="18" Height="18"
-                                                Foreground="{StaticResource Ink3}" HorizontalAlignment="Left"
+                                                Foreground="{DynamicResource Ink3}" HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"/>
                                 <TextBox x:Name="CmdkInput" Style="{StaticResource CmdkInput}" Margin="48,0,0,0"
                                          Tag="Search for an action…" AutomationProperties.AutomationId="CmdkInput"
@@ -136,7 +136,7 @@
                                          TextChanged="CmdkInput_TextChanged"/>
                                 <Border Style="{StaticResource CmdkChip}" HorizontalAlignment="Right"
                                         VerticalAlignment="Center" Margin="0,0,2,0">
-                                    <TextBlock Text="ESC" FontSize="11" Foreground="{StaticResource Ink3}"/>
+                                    <TextBlock Text="ESC" FontSize="11" Foreground="{DynamicResource Ink3}"/>
                                 </Border>
                                 </Grid>
                             </Border>
@@ -144,14 +144,14 @@
                                           VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="CmdkItems"/>
                             </ScrollViewer>
-                            <Border Height="38.6" Padding="16,10" BorderBrush="{StaticResource Line}"
+                            <Border Height="38.6" Padding="16,10" BorderBrush="{DynamicResource Line}"
                                     BorderThickness="0,1,0,0">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock FontSize="11" Foreground="{StaticResource Ink3}">
-                                        <Run Text="↑↓" FontWeight="SemiBold" Foreground="{StaticResource Ink2}"/><Run Text=" to navigate"/>
+                                    <TextBlock FontSize="11" Foreground="{DynamicResource Ink3}">
+                                        <Run Text="↑↓" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}"/><Run Text=" to navigate"/>
                                     </TextBlock>
-                                    <TextBlock Text="↵ to select" FontSize="11" Foreground="{StaticResource Ink3}" Margin="16,0,0,0"/>
-                                    <TextBlock Text="esc to close" FontSize="11" Foreground="{StaticResource Ink3}" Margin="16,0,0,0"/>
+                                    <TextBlock Text="↵ to select" FontSize="11" Foreground="{DynamicResource Ink3}" Margin="16,0,0,0"/>
+                                    <TextBlock Text="esc to close" FontSize="11" Foreground="{DynamicResource Ink3}" Margin="16,0,0,0"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -169,16 +169,16 @@
                     </ControlTemplate>
                 </GroupBox.Template>
                 <Grid Width="440" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-                    <Border Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
-                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
+                    <Border Background="{DynamicResource Surface}" Effect="{DynamicResource Shadow2}"/>
+                    <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1,0,0,0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Border Height="77" Padding="24,26,20,26" Background="{StaticResource Surface}"
-                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                            <Border Height="77" Padding="24,26,20,26" Background="{DynamicResource Surface}"
+                                    BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1">
                                 <Grid>
                                     <TextBlock Text="Invite a member" Style="{StaticResource ModalTitle}"
                                                HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -228,8 +228,8 @@
                                               AutomationProperties.AutomationId="DrSendEmail"/>
                                 </StackPanel>
                             </ScrollViewer>
-                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{StaticResource Surface}"
-                                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0">
+                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{DynamicResource Surface}"
+                                    BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button x:Name="DrawerCancel" Content="Cancel" Style="{StaticResource SecondaryButton}"
                                             Width="77.9" AutomationProperties.AutomationId="DrawerCancel"
@@ -255,16 +255,16 @@
                     </ControlTemplate>
                 </GroupBox.Template>
                 <Grid Width="440" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-                    <Border Background="{StaticResource Surface}" Effect="{StaticResource Shadow2}"/>
-                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1,0,0,0">
+                    <Border Background="{DynamicResource Surface}" Effect="{DynamicResource Shadow2}"/>
+                    <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}" BorderThickness="1,0,0,0">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Border Height="77" Padding="24,26,20,26" Background="{StaticResource Surface}"
-                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                            <Border Height="77" Padding="24,26,20,26" Background="{DynamicResource Surface}"
+                                    BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1">
                                 <Grid>
                                     <TextBlock Text="Edit member" Style="{StaticResource ModalTitle}"
                                                HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -311,8 +311,8 @@
                                               AutomationProperties.AutomationId="EdActive"/>
                                 </StackPanel>
                             </ScrollViewer>
-                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{StaticResource Surface}"
-                                    BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0">
+                            <Border Grid.Row="2" Height="79" Padding="18,26" Background="{DynamicResource Surface}"
+                                    BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0">
                                 <Grid>
                                     <Button x:Name="EditDelete" Content="Delete" Style="{StaticResource DangerButtonSm}"
                                             Width="64.1" Height="42" HorizontalAlignment="Left"
@@ -329,12 +329,12 @@
                             </Border>
                         </Grid>
                     </Border>
-                    <Border x:Name="EditConfirm" Visibility="Collapsed" Background="{StaticResource Surface}" Padding="26"
+                    <Border x:Name="EditConfirm" Visibility="Collapsed" Background="{DynamicResource Surface}" Padding="26"
                             AutomationProperties.AutomationId="EditConfirm">
                         <StackPanel Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <Border Width="42" Height="42" CornerRadius="21" Background="{StaticResource DangerSoft}"
+                            <Border Width="42" Height="42" CornerRadius="21" Background="{DynamicResource DangerSoft}"
                                     HorizontalAlignment="Center">
-                                <ContentControl Style="{StaticResource IconAlert}" Foreground="{StaticResource Danger}"
+                                <ContentControl Style="{StaticResource IconAlert}" Foreground="{DynamicResource Danger}"
                                                 Width="20" Height="20"/>
                             </Border>
                             <TextBlock Text="Delete this member?" Style="{StaticResource ModalTitle}"
@@ -506,8 +506,8 @@
                         <StackPanel>
                             <Grid x:Name="LoadingSpinner" Width="36" Height="36" Margin="0,0,0,18"
                                   HorizontalAlignment="Center">
-                                <Ellipse Width="36" Height="36" Stroke="{StaticResource BrandSoft}" StrokeThickness="3"/>
-                                <Path Stroke="{StaticResource Brand}" StrokeThickness="3"
+                                <Ellipse Width="36" Height="36" Stroke="{DynamicResource BrandSoft}" StrokeThickness="3"/>
+                                <Path Stroke="{DynamicResource Brand}" StrokeThickness="3"
                                       Data="M6.33,6.33 A16.5,16.5 0 0,1 29.67,6.33">
                                     <Path.RenderTransform>
                                         <RotateTransform x:Name="SpinnerRotate" Angle="0" CenterX="18" CenterY="18"/>
@@ -520,9 +520,9 @@
                                        Style="{StaticResource ModalBody}" Height="44.8" Margin="0,9,0,0"
                                        HorizontalAlignment="Center" TextAlignment="Center"/>
                             <Border x:Name="LoadingBar" Height="4" Margin="0,22,0,0"
-                                    Background="{StaticResource BgDeep}" CornerRadius="2" ClipToBounds="True">
+                                    Background="{DynamicResource BgDeep}" CornerRadius="2" ClipToBounds="True">
                                 <Border Width="114.094" Height="4" CornerRadius="2"
-                                        Background="{StaticResource Brand}" HorizontalAlignment="Left">
+                                        Background="{DynamicResource Brand}" HorizontalAlignment="Left">
                                     <Border.RenderTransform>
                                         <TranslateTransform x:Name="LoadingBarShift" X="0"/>
                                     </Border.RenderTransform>

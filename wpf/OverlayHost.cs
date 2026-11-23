@@ -38,7 +38,7 @@ namespace UIComponents.Wpf
             _scrim = new Border();
             _scrim.Name = "OverlayScrim";
             _scrim.SetValue(AutomationProperties.AutomationIdProperty, "OverlayScrim");
-            _scrim.Background = new SolidColorBrush(Color.FromArgb(0x6B, 0x1E, 0x1A, 0x14));
+            _scrim.SetResourceReference(Border.BackgroundProperty, "Scrim");
             _scrim.Visibility = Visibility.Collapsed;
             // O3: a mouse-up on the scrim itself closes. The scrim is a sibling of the
             // dialog, so a click on the card never reaches it. No proxy control: that

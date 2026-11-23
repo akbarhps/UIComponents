@@ -9,37 +9,37 @@
                    Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
         <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
-                <TextBlock x:Name="ColCount" Text="6 of 6 projects" FontSize="13" Foreground="{StaticResource Ink3}"
+                <TextBlock x:Name="ColCount" Text="6 of 6 projects" FontSize="13" Foreground="{DynamicResource Ink3}"
                            HorizontalAlignment="Right" Margin="0,0,0,16" LineHeight="20.8"
                            LineStackingStrategy="MaxHeight"
                            AutomationProperties.AutomationId="ColCount"/>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                <Border BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
                     <Grid local:TableClip.Enabled="True">
                     <StackPanel>
                         <!-- Header titles -->
-                        <Grid Background="{StaticResource Surface2}" Height="46.2">
+                        <Grid Background="{DynamicResource Surface2}" Height="46.2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="183*"/><ColumnDefinition Width="181*"/>
                                 <ColumnDefinition Width="123*"/><ColumnDefinition Width="181*"/>
                                 <ColumnDefinition Width="180*"/><ColumnDefinition Width="72*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
-                            <TextBlock Grid.Column="0" Text="Project" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
-                            <TextBlock Grid.Column="1" Text="Owner" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
-                            <TextBlock Grid.Column="2" Text="Status" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
-                            <TextBlock Grid.Column="3" Text="Updated" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
-                            <TextBlock Grid.Column="4" Text="Budget" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource Ink2}" Margin="16,13"/>
+                            <Border Grid.ColumnSpan="6" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                            <TextBlock Grid.Column="0" Text="Project" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}" Margin="16,13"/>
+                            <TextBlock Grid.Column="1" Text="Owner" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}" Margin="16,13"/>
+                            <TextBlock Grid.Column="2" Text="Status" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}" Margin="16,13"/>
+                            <TextBlock Grid.Column="3" Text="Updated" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}" Margin="16,13"/>
+                            <TextBlock Grid.Column="4" Text="Budget" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource Ink2}" Margin="16,13"/>
                         </Grid>
 
                         <!-- Per-column filters -->
-                        <Grid Background="{StaticResource Surface}" Height="51.2">
+                        <Grid Background="{DynamicResource Surface}" Height="51.2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="183*"/><ColumnDefinition Width="181*"/>
                                 <ColumnDefinition Width="123*"/><ColumnDefinition Width="181*"/>
                                 <ColumnDefinition Width="180*"/><ColumnDefinition Width="72*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.ColumnSpan="6" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                            <Border Grid.ColumnSpan="6" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
                             <TextBox x:Name="ColProject" Grid.Column="0" Style="{StaticResource TableFilterInput}"
                                      Margin="10,8" Tag="Filter projects…"
                                      TextChanged="Filter" AutomationProperties.AutomationId="ColProject"/>
@@ -64,8 +64,8 @@
 
                         <DataGrid x:Name="ColumnGrid" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled"
                                   HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False" SnapsToDevicePixels="True"
-                                  IsReadOnly="True" Background="{StaticResource Surface}" BorderThickness="0"
-                                  Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRowTall}"
+                                  IsReadOnly="True" Background="{DynamicResource Surface}" BorderThickness="0"
+                                  Foreground="{DynamicResource Ink}" RowStyle="{StaticResource TableRowTall}"
                                   CellStyle="{StaticResource TableCell}"
                                   AutomationProperties.AutomationId="ColumnGrid">
                             <DataGrid.Columns>
@@ -78,7 +78,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                       Foreground="{StaticResource Ink}" HorizontalAlignment="Left"
+                                                       Foreground="{DynamicResource Ink}" HorizontalAlignment="Left"
                                                        VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -92,14 +92,14 @@
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Border x:Name="ColEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
+                        <Border x:Name="ColEmpty" Visibility="Collapsed" Background="{DynamicResource Surface2}" Padding="36,57">
                             <StackPanel HorizontalAlignment="Center">
                                 <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
                                            LineHeight="24" LineStackingStrategy="BlockLineHeight"
-                                           Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource Ink}" HorizontalAlignment="Center"
                                            Margin="0,0,0,5" AutomationProperties.AutomationId="ColEmpty"/>
                                 <TextBlock Text="Try changing a column filter." FontSize="14"
-                                           Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource Ink2}" HorizontalAlignment="Center"
                                            LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
                             </StackPanel>
                         </Border>
@@ -121,11 +121,11 @@
                               HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
                               AutomationProperties.AutomationId="SortScroll"
                               ScrollChanged="SortScroll_ScrollChanged">
-                    <Border Width="973" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                    <Border Width="973" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
                         <Grid local:TableClip.Enabled="True">
                             <StackPanel>
                                 <!-- Header -->
-                                <Grid x:Name="SortHeaderGrid" Background="{StaticResource Surface2}" Height="46.2"
+                                <Grid x:Name="SortHeaderGrid" Background="{DynamicResource Surface2}" Height="46.2"
                                       AutomationProperties.AutomationId="SortHeaderGrid">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="123"/><ColumnDefinition Width="86"/>
@@ -134,9 +134,9 @@
                                         <ColumnDefinition Width="99"/><ColumnDefinition Width="89"/>
                                         <ColumnDefinition Width="97"/><ColumnDefinition Width="72"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.ColumnSpan="10" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                                    <Border Grid.ColumnSpan="10" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
                                     <Border x:Name="PinHeader" Grid.Column="0" Panel.ZIndex="2"
-                                            Background="{StaticResource Surface2}" BorderBrush="{StaticResource Line}"
+                                            Background="{DynamicResource Surface2}" BorderBrush="{DynamicResource Line}"
                                             BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
                                         <StackPanel Orientation="Horizontal" Margin="16,13,0,13">
                                             <ToggleButton x:Name="PinToggle" Style="{StaticResource PinButton}"
@@ -159,7 +159,7 @@
                                 </Grid>
 
                                 <!-- Filters -->
-                                <Grid Background="{StaticResource Surface}" Height="51.2">
+                                <Grid Background="{DynamicResource Surface}" Height="51.2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="123"/><ColumnDefinition Width="86"/>
                                         <ColumnDefinition Width="106"/><ColumnDefinition Width="112"/>
@@ -167,9 +167,9 @@
                                         <ColumnDefinition Width="99"/><ColumnDefinition Width="89"/>
                                         <ColumnDefinition Width="97"/><ColumnDefinition Width="72"/>
                                     </Grid.ColumnDefinitions>
-                                    <Border Grid.ColumnSpan="10" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
+                                    <Border Grid.ColumnSpan="10" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1" SnapsToDevicePixels="True"/>
                                     <Border x:Name="PinFilter" Grid.Column="0" Panel.ZIndex="2"
-                                            Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                                            Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}"
                                             BorderThickness="0,0,0,1" SnapsToDevicePixels="True">
                                         <TextBox x:Name="SortProject" Style="{StaticResource TableFilterInput}"
                                                  Margin="10,8" Tag="Project…" TextChanged="SortFilter"/>
@@ -201,8 +201,8 @@
                                 <DataGrid x:Name="SortGrid" AutoGenerateColumns="False" CanUserAddRows="False"
                                           VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
                                           HeadersVisibility="None" GridLinesVisibility="None" CanUserSortColumns="False" SnapsToDevicePixels="True"
-                                          IsReadOnly="True" Background="{StaticResource Surface}" BorderThickness="0"
-                                          Foreground="{StaticResource Ink}" RowStyle="{StaticResource TableRowSort}"
+                                          IsReadOnly="True" Background="{DynamicResource Surface}" BorderThickness="0"
+                                          Foreground="{DynamicResource Ink}" RowStyle="{StaticResource TableRowSort}"
                                           CellStyle="{StaticResource TableCell}"
                                           AutomationProperties.AutomationId="SortGrid">
                                     <DataGrid.Columns>
@@ -212,7 +212,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Owner}" Foreground="{StaticResource Ink}"
+                                                        <TextBlock Text="{Binding Owner}" Foreground="{DynamicResource Ink}"
                                                                    Style="{StaticResource TableCellWrap}"/>
                                                     </StackPanel>
                                                 </DataTemplate>
@@ -227,7 +227,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                               Foreground="{StaticResource Ink}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                               Foreground="{DynamicResource Ink}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -241,14 +241,14 @@
                                         </DataGridTemplateColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Border x:Name="SortEmpty" Visibility="Collapsed" Background="{StaticResource Surface2}" Padding="36,57">
+                                <Border x:Name="SortEmpty" Visibility="Collapsed" Background="{DynamicResource Surface2}" Padding="36,57">
                                     <StackPanel HorizontalAlignment="Center">
                                         <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
                                                    LineHeight="24" LineStackingStrategy="BlockLineHeight"
-                                                   Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                                   Foreground="{DynamicResource Ink}" HorizontalAlignment="Center"
                                                    Margin="0,0,0,5" AutomationProperties.AutomationId="SortEmpty"/>
                                         <TextBlock Text="Try changing a column filter." FontSize="14"
-                                                   Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                                   Foreground="{DynamicResource Ink2}" HorizontalAlignment="Center"
                                                    LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
                                     </StackPanel>
                                 </Border>

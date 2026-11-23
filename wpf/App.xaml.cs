@@ -26,6 +26,7 @@ namespace UIComponents.Wpf
         // (wpf/tests/run-hidden.ps1), so nothing shows on the user's screen.
         protected override void OnStartup(StartupEventArgs e)
         {
+            ThemeManager.Initialize();   // before StartupUri creates the window
             base.OnStartup(e);
             // Test driver (wpf/tests/run-hidden.ps1 sets UITEST_DRIVE=1): UIA actions cost a flat 2 s on this
             // machine, so the tests send the same pattern calls in-process through WM_COPYDATA instead.
@@ -286,7 +287,7 @@ namespace UIComponents.Wpf
             int rh = (int)Math.Ceiling(root.ActualHeight);
             DrawingVisual bg = new DrawingVisual();
             using (DrawingContext dc = bg.RenderOpen())
-                dc.DrawRectangle((Brush)FindResource("Bg"), null, new Rect(0, 0, rw, rh));   // page background
+                dc.DrawRectangle((Brush)FindResource("Bg"), null, new Rect(0, 0, rw, rh));   // page background; theme-lint: allow
             RenderTargetBitmap full = new RenderTargetBitmap(rw, rh, 96, 96, PixelFormats.Pbgra32);
             full.Render(bg);
             full.Render(root);

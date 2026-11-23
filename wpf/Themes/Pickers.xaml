@@ -15,8 +15,8 @@
     <!-- 46 high, 1px LineStrong, radius 8. Icon at +14, value at +39 (B1). -->
     <Style x:Key="PickerTrigger" TargetType="ToggleButton">
         <Setter Property="Height" Value="46"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="13,11"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -24,9 +24,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                                 CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="12" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
@@ -36,10 +36,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ink3}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="OpenRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <MultiTrigger>
@@ -59,7 +59,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -67,7 +67,7 @@
     <Style x:Key="PickerDow" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="11"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="LineHeight" Value="17.6"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -80,7 +80,7 @@
         <Setter Property="Height" Value="32"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -88,7 +88,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="9" Margin="-2" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="7">
                             <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
@@ -100,7 +100,7 @@
                                 <Condition Property="IsMouseOver" Value="True"/>
                                 <Condition Property="Tag" Value="{x:Null}"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </MultiTrigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
@@ -113,18 +113,18 @@
     <!-- File drop: 1px dashed 3/2 border behind the content (a Border cannot dash). -->
     <Style x:Key="PickerFileDrop" TargetType="Button">
         <Setter Property="Height" Value="135.6"/>
-        <Setter Property="Background" Value="{StaticResource Surface2}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface2}"/>
         <Setter Property="Padding" Value="26,20"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                                 CornerRadius="15" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="12">
                             <Grid>
-                                <Rectangle x:Name="Dash" Stroke="{StaticResource LineStrong}" StrokeThickness="1"
+                                <Rectangle x:Name="Dash" Stroke="{DynamicResource LineStrong}" StrokeThickness="1"
                                            StrokeDashArray="3 2" RadiusX="12" RadiusY="12"
                                            SnapsToDevicePixels="True" Margin="0.5" IsHitTestVisible="False"/>
                                 <ContentPresenter Margin="{TemplateBinding Padding}"/>
@@ -133,15 +133,15 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Dash" Property="Stroke" Value="{DynamicResource Brand}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                         <Trigger Property="Tag" Value="dragover">
-                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Dash" Property="Stroke" Value="{DynamicResource Brand}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Dash" Property="Stroke" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Dash" Property="Stroke" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -152,8 +152,8 @@
 
     <Style x:Key="PickerFileItem" TargetType="Border">
         <Setter Property="Height" Value="48"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="12,10"/>

@@ -8,9 +8,9 @@
     <ControlTemplate x:Key="FieldInputTemplate" TargetType="TextBox">
         <Grid>
             <!-- 3px BrandSoft ring outside the 1px border; margin -3 keeps it out of layout. -->
-            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                     CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-            <Border x:Name="Bd" Background="{StaticResource Surface}"
+            <Border x:Name="Bd" Background="{DynamicResource Surface}"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
                 <Grid>
                     <!-- Content host sits 3px left of the placeholder to cancel WPF's
@@ -21,7 +21,7 @@
                         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
                                    FontFamily="{StaticResource Sans}" FontSize="15"
                                    LineHeight="21" LineStackingStrategy="BlockLineHeight"
-                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
+                                   Foreground="{DynamicResource Ink3}" Visibility="Collapsed"/>
                     </Border>
                 </Grid>
             </Border>
@@ -39,9 +39,9 @@
     <!-- Search: text/placeholder start 39px from the outer edge (1px border + 38). -->
     <ControlTemplate x:Key="FieldInputSearchTemplate" TargetType="TextBox">
         <Grid>
-            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                     CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-            <Border x:Name="Bd" Background="{StaticResource Surface}"
+            <Border x:Name="Bd" Background="{DynamicResource Surface}"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
                 <Grid>
                     <ScrollViewer x:Name="PART_ContentHost" Margin="35,0,11,0" VerticalAlignment="Center"/>
@@ -49,7 +49,7 @@
                         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
                                    FontFamily="{StaticResource Sans}" FontSize="15"
                                    LineHeight="21" LineStackingStrategy="BlockLineHeight"
-                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
+                                   Foreground="{DynamicResource Ink3}" Visibility="Collapsed"/>
                     </Border>
                 </Grid>
             </Border>
@@ -67,9 +67,9 @@
     <Style x:Key="FieldInput" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="45"/>
@@ -77,10 +77,10 @@
         <Setter Property="Template" Value="{StaticResource FieldInputTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Ink3}"/>
             </Trigger>
             <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Brand}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brand}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -95,9 +95,9 @@
     <Style x:Key="FieldInputError" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Danger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Danger}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="45"/>
@@ -109,7 +109,7 @@
     <Style x:Key="FieldSelectItem" TargetType="ComboBoxItem">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Padding" Value="13,8"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -120,10 +120,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -134,9 +134,9 @@
     <Style x:Key="FieldSelect" TargetType="ComboBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Height" Value="45"/>
         <Setter Property="ItemContainerStyle" Value="{StaticResource FieldSelectItem}"/>
@@ -145,9 +145,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">
                     <Grid>
-                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                        <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                                 CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-                        <Border x:Name="Bd" Background="{StaticResource Surface}"
+                        <Border x:Name="Bd" Background="{DynamicResource Surface}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
                             <Grid>
                                 <ContentPresenter x:Name="ContentSite" Margin="13,0,38,0" VerticalAlignment="Center"
@@ -158,7 +158,7 @@
                                 <Viewbox Width="16" Height="16" Stretch="Uniform" IsHitTestVisible="False"
                                          HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
                                     <Canvas Width="24" Height="24">
-                                        <Path Data="M6,9 L12,15 L18,9" Stroke="{StaticResource Ink3}"
+                                        <Path Data="M6,9 L12,15 L18,9" Stroke="{DynamicResource Ink3}"
                                               StrokeThickness="2" StrokeLineJoin="Round"
                                               StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                                     </Canvas>
@@ -167,8 +167,8 @@
                                               IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"/>
                                 <Popup x:Name="PART_Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}"
                                        AllowsTransparency="True" Focusable="False">
-                                    <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
-                                            BorderThickness="1" CornerRadius="8" Padding="4" Effect="{StaticResource Shadow2}"
+                                    <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource LineStrong}"
+                                            BorderThickness="1" CornerRadius="8" Padding="4" Effect="{DynamicResource Shadow2}"
                                             MinWidth="{TemplateBinding ActualWidth}">
                                         <ScrollViewer MaxHeight="240"><ItemsPresenter/></ScrollViewer>
                                     </Border>
@@ -178,14 +178,14 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ink3}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsDropDownOpen" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -197,9 +197,9 @@
     <!-- ==================== Field textarea (.textarea) ==================== -->
     <ControlTemplate x:Key="FieldTextAreaTemplate" TargetType="TextBox">
         <Grid>
-            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                     CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-            <Border x:Name="Bd" Background="{StaticResource Surface}"
+            <Border x:Name="Bd" Background="{DynamicResource Surface}"
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="8">
                 <Grid>
                     <!-- Top-aligned; -3px left cancels the host's internal text inset. -->
@@ -209,7 +209,7 @@
                         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}"
                                    FontFamily="{StaticResource Sans}" FontSize="15"
                                    LineHeight="21" LineStackingStrategy="BlockLineHeight"
-                                   Foreground="{StaticResource Ink3}" Visibility="Collapsed"/>
+                                   Foreground="{DynamicResource Ink3}" Visibility="Collapsed"/>
                     </Border>
                 </Grid>
             </Border>
@@ -227,9 +227,9 @@
     <Style x:Key="FieldTextArea" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="104"/>
@@ -240,10 +240,10 @@
         <Setter Property="Template" Value="{StaticResource FieldTextAreaTemplate}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Ink3}"/>
             </Trigger>
             <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Brand}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brand}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -258,7 +258,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
                     <Canvas Width="14" Height="14">
-                        <Path Data="M6,14 L14,6 M10,14 L14,10" Stroke="{StaticResource Ink3}"
+                        <Path Data="M6,14 L14,6 M10,14 L14,10" Stroke="{DynamicResource Ink3}"
                               StrokeThickness="1.1" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                     </Canvas>
                 </ControlTemplate>
@@ -271,7 +271,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="LineHeight" Value="20.8"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="Margin" Value="0,0,0,16"/>
@@ -281,7 +281,7 @@
     <Style x:Key="ClaudeRadio" TargetType="RadioButton">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
@@ -293,13 +293,13 @@
                             <ColumnDefinition Width="10"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="13.5" Height="27" Margin="-4,-3,-4,-27"
                                 VerticalAlignment="Top" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Width="19" Height="19" CornerRadius="9.5"
-                                BorderBrush="{StaticResource LineStrong}" BorderThickness="1.5"
-                                Background="{StaticResource Surface}" Margin="0,1,0,0" VerticalAlignment="Top">
-                            <Ellipse x:Name="Dot" Width="9" Height="9" Fill="{StaticResource Brand}"
+                                BorderBrush="{DynamicResource LineStrong}" BorderThickness="1.5"
+                                Background="{DynamicResource Surface}" Margin="0,1,0,0" VerticalAlignment="Top">
+                            <Ellipse x:Name="Dot" Width="9" Height="9" Fill="{DynamicResource Brand}"
                                      Visibility="Collapsed"/>
                         </Border>
                         <ContentPresenter Grid.Column="2" VerticalAlignment="Center"
@@ -307,7 +307,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="Dot" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
@@ -326,7 +326,7 @@
     <Style x:Key="ClaudeSwitch" TargetType="CheckBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
@@ -338,17 +338,13 @@
                             <ColumnDefinition Width="11"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="16" Margin="-4"
                                 Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Track" Width="42" Height="24" CornerRadius="12"
-                                Background="{StaticResource LineStrong}" VerticalAlignment="Center">
-                            <Ellipse x:Name="Knob" Width="18" Height="18" Fill="White"
-                                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,0,0">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="1"
-                                                      Direction="270" Opacity="0.2"/>
-                                </Ellipse.Effect>
+                                Background="{DynamicResource LineStrong}" VerticalAlignment="Center">
+                            <Ellipse x:Name="Knob" Width="18" Height="18" Fill="{DynamicResource Knob}"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,0,0" Effect="{DynamicResource KnobShadow}">
                             </Ellipse>
                         </Border>
                         <ContentPresenter Grid.Column="2" VerticalAlignment="Center"
@@ -356,7 +352,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Track" Property="Background" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Track" Property="Background" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="Knob" Property="Margin" Value="21,0,0,0"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
@@ -380,8 +376,8 @@
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="24" Height="24">
                             <Ellipse Canvas.Left="4" Canvas.Top="4" Width="14" Height="14"
-                                     Stroke="{StaticResource Ink3}" StrokeThickness="1.9"/>
-                            <Path Data="M20,20 L16.5,16.5" Stroke="{StaticResource Ink3}"
+                                     Stroke="{DynamicResource Ink3}" StrokeThickness="1.9"/>
+                            <Path Data="M20,20 L16.5,16.5" Stroke="{DynamicResource Ink3}"
                                   StrokeThickness="1.9" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                         </Canvas>
                     </Viewbox>
@@ -400,10 +396,10 @@
                 <ControlTemplate TargetType="ContentControl">
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M12,3 L2,20 L22,20 Z" Stroke="{StaticResource Danger}"
+                            <Path Data="M12,3 L2,20 L22,20 Z" Stroke="{DynamicResource Danger}"
                                   StrokeThickness="1.8" StrokeLineJoin="Round"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
-                            <Path Data="M12,9 L12,14 M12,17.5 L12,18" Stroke="{StaticResource Danger}"
+                            <Path Data="M12,9 L12,14 M12,17.5 L12,18" Stroke="{DynamicResource Danger}"
                                   StrokeThickness="1.8" StrokeLineJoin="Round"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                         </Canvas>
@@ -416,7 +412,7 @@
     <!-- .divider: 1px Line with 26px above and below. -->
     <Style x:Key="Divider" TargetType="Border">
         <Setter Property="Height" Value="1"/>
-        <Setter Property="Background" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Line}"/>
         <Setter Property="Margin" Value="0,26,0,26"/>
     </Style>
 

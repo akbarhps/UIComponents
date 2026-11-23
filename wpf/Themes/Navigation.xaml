@@ -30,8 +30,8 @@
                         <Grid.RenderTransform>
                             <RotateTransform Angle="0"/>
                         </Grid.RenderTransform>
-                        <Ellipse Stroke="#73FFFFFF" StrokeThickness="2" Margin="1"/>
-                        <Path Data="M2.9,2.9 A6.5,6.5 0 0 1 12.1,2.9" Stroke="White" StrokeThickness="2"
+                        <Ellipse Stroke="{TemplateBinding Foreground}" Opacity="0.45" StrokeThickness="2" Margin="1"/>
+                        <Path Data="M2.9,2.9 A6.5,6.5 0 0 1 12.1,2.9" Stroke="{TemplateBinding Foreground}" StrokeThickness="2"
                               StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                     </Grid>
                 </ControlTemplate>
@@ -105,7 +105,7 @@
     <Style x:Key="CrumbLink" TargetType="Button">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -113,7 +113,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid>
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="8" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <TextBlock x:Name="Text" Text="{TemplateBinding Content}" FontFamily="{TemplateBinding FontFamily}"
                                    FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}"
@@ -121,7 +121,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="Text" Property="TextDecorations" Value="Underline"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
@@ -136,20 +136,20 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="LineHeight" Value="20.8"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
     <Style x:Key="CrumbEllipsis" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="Width" Value="10.6"/>
         <Setter Property="LineHeight" Value="20.8"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
     <Style x:Key="CrumbSep" TargetType="ContentControl">
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="Width" Value="13"/>
         <Setter Property="Height" Value="13"/>
         <Setter Property="Margin" Value="0,3.9,0,0"/>
@@ -171,7 +171,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="Padding" Value="14,10"/>
         <Setter Property="Height" Value="41"/>
         <Setter Property="Margin" Value="0,0,0,-1"/>
@@ -181,7 +181,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
                     <Grid>
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="8" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" BorderBrush="Transparent" BorderThickness="0,0,0,2"
                                 Padding="{TemplateBinding Padding}">
@@ -190,11 +190,11 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource Brand}"/>
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
@@ -207,7 +207,7 @@
     <Style x:Key="TabPanelText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="22.4"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
@@ -224,22 +224,22 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="LineHeight" Value="22.4"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
     <Style x:Key="StepDesc" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="LineHeight" Value="19.2"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
 
     <!-- Accordion -->
     <Style x:Key="Accordion" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="4"/>
@@ -250,14 +250,14 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid x:Name="Root">
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="8" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}">
                             <Grid>
@@ -265,13 +265,13 @@
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
                                 <ContentControl x:Name="Chevron" Style="{StaticResource IconChevron}"
                                                 Width="16" Height="16" HorizontalAlignment="Right"
-                                                Foreground="{StaticResource Ink3}"/>
+                                                Foreground="{DynamicResource Ink3}"/>
                             </Grid>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Surface2}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Chevron" Property="LayoutTransform">
@@ -289,7 +289,7 @@
     <Style x:Key="AccordionPanelText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="22.4"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -299,7 +299,7 @@
     <Style x:Key="TipBubbleText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="{DynamicResource OnInk}"/>
         <Setter Property="LineHeight" Value="19.2"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
@@ -308,8 +308,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="GroupBox">
                     <Grid>
-                        <Border Background="{StaticResource Ink}" CornerRadius="6" Effect="{StaticResource Shadow1}" Margin="0,2,0,0"/>
-                        <Border Background="{StaticResource Ink}" CornerRadius="6" Padding="9,6">
+                        <Border Background="{DynamicResource Ink}" CornerRadius="6" Effect="{DynamicResource Shadow1}" Margin="0,2,0,0"/>
+                        <Border Background="{DynamicResource Ink}" CornerRadius="6" Padding="9,6">
                             <ContentPresenter/>
                         </Border>
                     </Grid>
@@ -321,7 +321,7 @@
     <Style x:Key="MenuShortcut" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="LineHeight" Value="19.2"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
     </Style>
@@ -334,8 +334,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="GroupBox">
                     <Grid>
-                        <Border Background="{StaticResource Surface}" CornerRadius="12" Effect="{StaticResource Shadow2}" Margin="0,2,0,0"/>
-                        <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                        <Border Background="{DynamicResource Surface}" CornerRadius="12" Effect="{DynamicResource Shadow2}" Margin="0,2,0,0"/>
+                        <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource Line}"
                                 BorderThickness="1" CornerRadius="12">
                             <ContentPresenter Margin="6"/>
                         </Border>
@@ -349,7 +349,7 @@
         <Setter Property="Padding" Value="10,0"/>
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -362,10 +362,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Bd" Property="Opacity" Value="0.45"/>
@@ -376,7 +376,7 @@
         </Setter>
     </Style>
     <Style x:Key="MenuItemDanger" TargetType="Button" BasedOn="{StaticResource MenuItem}">
-        <Setter Property="Foreground" Value="{StaticResource Danger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -386,10 +386,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource DangerSoft}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource DangerSoft}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -398,7 +398,7 @@
     </Style>
     <Style x:Key="MenuDivider" TargetType="Border">
         <Setter Property="Height" Value="1"/>
-        <Setter Property="Background" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Line}"/>
         <Setter Property="Margin" Value="4,5"/>
     </Style>
 

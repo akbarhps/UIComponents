@@ -13,6 +13,9 @@ namespace UIComponents.Wpf
         public MainWindow()
         {
             InitializeComponent();
+            SyncThemeToggle();
+            ThemeManager.ThemeChanged += OnThemeChanged;
+            Closed += delegate { ThemeManager.ThemeChanged -= OnThemeChanged; };
             Toasts.Install(this);
             OverlayHost.Install(this, Overlays.DialogStore);
             DemoGrid.ItemsSource = new List<ProjectRow>
@@ -25,6 +28,30 @@ namespace UIComponents.Wpf
             };
             ApplyStandaloneMode();
             ApplyReducedMotion();
+        }
+
+        private bool _syncingTheme;
+
+        private void OnThemeChanged(object sender, EventArgs e) { SyncThemeToggle(); }
+
+        // Checks the radio that matches ThemeManager.Mode (the user choice, not the resolved theme).
+        private void SyncThemeToggle()
+        {
+            _syncingTheme = true;
+            try
+            {
+                ThemeSystem.IsChecked = ThemeManager.Mode == ThemeMode.System;
+                ThemeLight.IsChecked = ThemeManager.Mode == ThemeMode.Light;
+                ThemeDark.IsChecked = ThemeManager.Mode == ThemeMode.Dark;
+            }
+            finally { _syncingTheme = false; }
+        }
+
+        private void ThemeToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_syncingTheme) return;
+            string tag = (string)((FrameworkElement)sender).Tag;
+            ThemeManager.SetTheme(tag == "dark" ? ThemeMode.Dark : tag == "light" ? ThemeMode.Light : ThemeMode.System);
         }
 
         // Launch with a section title (e.g. "Data table") to show only that section.

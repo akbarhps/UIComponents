@@ -178,14 +178,13 @@ namespace UIComponents.Wpf
                 bool done = i < _step, current = i == _step;
                 if (marker != null)
                 {
-                    marker.Background = done ? (Brush)FindResource("Brand")
-                        : current ? (Brush)FindResource("BrandSoft") : (Brush)FindResource("Surface");
-                    marker.BorderBrush = done || current ? (Brush)FindResource("Brand") : (Brush)FindResource("LineStrong");
+                    marker.SetResourceReference(Border.BackgroundProperty, done ? "Brand" : current ? "BrandSoft" : "Surface");
+                    marker.SetResourceReference(Border.BorderBrushProperty, done || current ? "Brand" : "LineStrong");
                 }
                 if (num != null)
                 {
                     num.Visibility = done ? Visibility.Collapsed : Visibility.Visible;
-                    num.Foreground = current ? (Brush)FindResource("Brand") : (Brush)FindResource("Ink3");
+                    num.SetResourceReference(TextBlock.ForegroundProperty, current ? "Brand" : "Ink3");
                     AutomationProperties.SetItemStatus(num, done ? "done" : current ? "current" : "todo");
                 }
                 if (check != null)
@@ -193,8 +192,8 @@ namespace UIComponents.Wpf
                     check.Visibility = done ? Visibility.Visible : Visibility.Collapsed;
                     AutomationProperties.SetItemStatus(check, done ? "done" : current ? "current" : "todo");
                 }
-                if (title != null) title.Foreground = done || current ? (Brush)FindResource("Ink") : (Brush)FindResource("Ink3");
-                if (line != null) line.Background = done ? (Brush)FindResource("Brand") : (Brush)FindResource("Line");
+                if (title != null) title.SetResourceReference(TextBlock.ForegroundProperty, done || current ? "Ink" : "Ink3");
+                if (line != null) line.SetResourceReference(Border.BackgroundProperty, done ? "Brand" : "Line");
             }
             StepStatus.Text = "Step " + (_step + 1) + " of 4";
             // Web reads the active element before disabling; capture focus first (W17 fix).

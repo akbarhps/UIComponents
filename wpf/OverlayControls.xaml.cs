@@ -172,8 +172,8 @@ namespace UIComponents.Wpf
                     row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(11) });
                     row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
                     row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-                    var icon = new ContentControl { Style = (Style)TryFindResource(c.Icon),
-                        Foreground = (Brush)TryFindResource("Ink3"), Width = 16, Height = 16 };
+                    var icon = new ContentControl { Style = (Style)TryFindResource(c.Icon), Width = 16, Height = 16 };
+                    icon.SetResourceReference(Control.ForegroundProperty, "Ink3");
                     Grid.SetColumn(icon, 0);
                     var label = new TextBlock { Text = c.Label, FontSize = 14, VerticalAlignment = VerticalAlignment.Center };
                     Grid.SetColumn(label, 2);
@@ -183,8 +183,9 @@ namespace UIComponents.Wpf
                     {
                         var chip = new Border { Style = (Style)TryFindResource("CmdkChip"),
                             VerticalAlignment = VerticalAlignment.Center };
-                        chip.Child = new TextBlock { Text = c.Shortcut, FontSize = 11,
-                            Foreground = (Brush)TryFindResource("Ink3") };
+                        var shortcut = new TextBlock { Text = c.Shortcut, FontSize = 11 };
+                        shortcut.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
+                        chip.Child = shortcut;
                         Grid.SetColumn(chip, 3);
                         chip.HorizontalAlignment = HorizontalAlignment.Right;
                         row.Children.Add(chip);

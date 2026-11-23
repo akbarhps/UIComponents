@@ -38,13 +38,24 @@ namespace UIComponents.Wpf
             return false;
         }
 
+        static Shimmer()
+        {
+            // The brush is unfrozen and animated, so it cannot hold a DynamicResource: re-read the token on a theme switch.
+            ThemeManager.ThemeChanged += delegate { OverlayBrush.GradientStops[1].Color = BandColor(); };
+        }
+
+        private static Color BandColor()
+        {
+            return ((SolidColorBrush)Application.Current.FindResource("Shimmer")).Color;   // theme-lint: allow
+        }
+
         private static LinearGradientBrush CreateBrush()
         {
             LinearGradientBrush brush = new LinearGradientBrush();
             brush.StartPoint = new Point(0, 0);
             brush.EndPoint = new Point(1, 0);
             brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 0));
-            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0xA6, 0xFF, 0xFF, 0xFF), 0.5));
+            brush.GradientStops.Add(new GradientStop(BandColor(), 0.5));
             brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 1));
             brush.RelativeTransform = new TranslateTransform();
             return brush;
@@ -63,8 +74,7 @@ namespace UIComponents.Wpf
             bool reduced = !SystemParameters.ClientAreaAnimation;
             if (reduced)
             {
-                Brush line = Application.Current.FindResource("Line") as Brush;
-                if (line != null) border.Background = line;
+                border.SetResourceReference(Border.BackgroundProperty, "Line");
             }
 
             Border overlay = new Border();

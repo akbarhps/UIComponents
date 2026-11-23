@@ -7,7 +7,7 @@
     <Style x:Key="SheetSectionDesc" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="24"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="MaxWidth" Value="501"/>
@@ -17,8 +17,8 @@
 
     <!-- .demo: Surface, 1px Line, radius 16, padding 30, no shadow. -->
     <Style x:Key="DemoCard" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="30"/>
@@ -31,7 +31,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="12,7"/>
@@ -44,7 +44,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid x:Name="Root">
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="11" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
@@ -55,8 +55,8 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
-                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
@@ -75,7 +75,7 @@
     <Style x:Key="SheetInfo" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -83,7 +83,7 @@
     <Style x:Key="SheetHint" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="LineHeight" Value="19.2"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -91,16 +91,16 @@
 
     <!-- ==================== Frame ==================== -->
     <Style x:Key="SheetFrame" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
     </Style>
 
     <!-- Plain Surface2 filler: the top-left corner and the empty cells under + column. -->
     <Style x:Key="SheetFillCell" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface2}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface2}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
     </Style>
 
@@ -110,9 +110,9 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
-        <Setter Property="Background" Value="{StaticResource Surface2}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface2}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="Padding" Value="12,0"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -132,11 +132,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
                         </Trigger>
                         <Trigger Property="Tag" Value="selected">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoft}"/>
-                            <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoft}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -155,9 +155,10 @@
     <Style x:Key="SheetTextCell" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Ink}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -170,13 +171,13 @@
                         <Grid>
                             <ScrollViewer x:Name="PART_ContentHost" Margin="10,0,10,0" VerticalAlignment="Center"/>
                             <!-- The focus ring is overlaid so it never shifts the text. -->
-                            <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                            <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                     CornerRadius="2" Visibility="Collapsed" IsHitTestVisible="False"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="selected">
-                            <Setter TargetName="Bg" Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter TargetName="Bg" Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                         <Trigger Property="IsFocused" Value="True">
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
@@ -192,9 +193,9 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -211,7 +212,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandSoftHover}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandSoftHover}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -231,9 +232,9 @@
     <Style x:Key="SheetSelectCell" TargetType="ComboBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -242,7 +243,7 @@
                 <Style TargetType="ComboBoxItem">
                     <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
                     <Setter Property="FontSize" Value="14"/>
-                    <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
                     <Setter Property="Padding" Value="12,7"/>
                     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Setter Property="Template">
@@ -253,10 +254,10 @@
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsHighlighted" Value="True">
-                                        <Setter TargetName="ItemBd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                                        <Setter TargetName="ItemBd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="ItemBd" Property="Background" Value="{StaticResource BrandSoft}"/>
+                                        <Setter TargetName="ItemBd" Property="Background" Value="{DynamicResource BrandSoft}"/>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
@@ -286,18 +287,18 @@
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
                             <Path x:Name="Chevron" Data="M4,6 L8,10 L12,6" Width="16" Height="16" Stretch="None"
-                                  Stroke="{StaticResource Ink3}" StrokeThickness="1.33"
+                                  Stroke="{DynamicResource Ink3}" StrokeThickness="1.33"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
                                   HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"
                                   IsHitTestVisible="False"/>
-                            <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                            <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                     CornerRadius="2" Visibility="Collapsed" IsHitTestVisible="False"/>
                             <Popup x:Name="PART_Popup" Placement="Bottom" StaysOpen="False" AllowsTransparency="True"
                                    IsOpen="{TemplateBinding IsDropDownOpen}" Focusable="False" PopupAnimation="None">
-                                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}"
+                                <Border Background="{DynamicResource Surface}" BorderBrush="{DynamicResource LineStrong}"
                                         BorderThickness="1" CornerRadius="8" Margin="0,2,12,12" Padding="0"
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Effect="{StaticResource Shadow2}">
+                                        Effect="{DynamicResource Shadow2}">
                                     <ScrollViewer MaxHeight="200"><ItemsPresenter/></ScrollViewer>
                                 </Border>
                             </Popup>
@@ -305,7 +306,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="selected">
-                            <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
                             <Setter TargetName="Chevron" Property="Visibility" Value="Collapsed"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
@@ -317,10 +318,10 @@
         </Setter>
     </Style>
 
-    <!-- Checkbox cell: 16x16, radius 2.5; Surface + #767676 when off, Brand + white check when on. -->
+    <!-- Checkbox cell: 16x16, radius 2.5; imitates Chromium accent-color: SheetCheckFill + SheetCheckBorder when off, Brand + SheetCheckMark tick when on (dark: #3B3B3B fill, #858585 border, #3B3B3B tick, measured). -->
     <Style x:Key="SheetCheckboxCell" TargetType="CheckBox">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,0,1,1"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Cursor" Value="Hand"/>
@@ -334,19 +335,19 @@
                                 BorderThickness="{TemplateBinding BorderThickness}" IsHitTestVisible="False"/>
                         <Border x:Name="Box" Width="16" Height="16" CornerRadius="2.5"
                                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Background="Transparent" BorderBrush="#FF767676" BorderThickness="1">
+                                Background="{DynamicResource SheetCheckFill}" BorderBrush="{DynamicResource SheetCheckBorder}" BorderThickness="1">
                             <Path x:Name="Tick" Data="M3.5,8 L6.5,11 L12.5,4" Width="16" Height="16" Stretch="None"
-                                  Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round"
+                                  Stroke="{DynamicResource SheetCheckMark}" StrokeThickness="2" StrokeStartLineCap="Round"
                                   StrokeEndLineCap="Round" StrokeLineJoin="Round" Visibility="Collapsed"
                                   IsHitTestVisible="False"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Tag" Value="selected">
-                            <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
+                            <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Box" Property="Background" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Box" Property="Background" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="Box" Property="BorderThickness" Value="0"/>
                             <Setter TargetName="Tick" Property="Visibility" Value="Visible"/>
                         </Trigger>

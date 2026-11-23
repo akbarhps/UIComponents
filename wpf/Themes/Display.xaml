@@ -2,15 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:UIComponents.Wpf">
 
-    <!-- Web :root colours that have no token in Tokens.xaml. -->
-    <SolidColorBrush x:Key="AvatarBorder" Color="#FFECD4C8"/>
-    <SolidColorBrush x:Key="SageBg" Color="#FFE6EEE7"/>
-    <SolidColorBrush x:Key="SageBorder" Color="#FFD3E3D6"/>
-
     <!-- .card: Surface, 1px Line, radius 12, padding 22, no shadow. -->
     <Style x:Key="DisplayCard" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="22"/>
@@ -23,7 +18,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
         <Setter Property="FontSize" Value="17"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="LineHeight" Value="22.1"/>
         <!-- Palatino's natural line box is ~22.94 (>22.1); MaxHeight grows the box and
              pushes everything below down 0.84. BlockLineHeight keeps the 22.1 layout. -->
@@ -32,7 +27,7 @@
     <Style x:Key="DisplayCardText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="22.4"/>
         <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -44,9 +39,9 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <!-- 12,7,12,5 keeps the 13px text ink at +8.4 while MinHeight stays 32. -->
         <Setter Property="Padding" Value="12,7,12,5"/>
@@ -59,7 +54,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid x:Name="Root">
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="11" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -71,8 +66,8 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Surface2}"/>
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface2}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ink3}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
@@ -98,8 +93,8 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="{StaticResource Brand}"/>
+        <Setter Property="Foreground" Value="{DynamicResource OnBrand}"/>
+        <Setter Property="Background" Value="{DynamicResource Brand}"/>
         <!-- No border: CSS paints the background under the 1px transparent border, so
              the Brand fill must span the full 106.3x32. 13,8,13,6 keeps the text ink
              at +8.4 while MinHeight stays 32. -->
@@ -110,12 +105,12 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Setter Property="Effect" Value="{StaticResource Shadow1}"/>
+        <Setter Property="Effect" Value="{DynamicResource Shadow1}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid x:Name="Root">
-                        <Border x:Name="Ring" BorderBrush="{StaticResource Brand}" BorderThickness="2"
+                        <Border x:Name="Ring" BorderBrush="{DynamicResource Brand}" BorderThickness="2"
                                 CornerRadius="11" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -127,7 +122,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrandHover}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BrandHover}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="Ring" Property="Visibility" Value="Visible"/>
@@ -156,7 +151,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContentControl">
@@ -185,24 +180,24 @@
         </Setter>
     </Style>
     <Style x:Key="BadgeNeutralDot" TargetType="ContentControl" BasedOn="{StaticResource DisplayBadge}">
-        <Setter Property="Background" Value="{StaticResource BgDeep}"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Background" Value="{DynamicResource BgDeep}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
     </Style>
     <Style x:Key="BadgeBrandDot" TargetType="ContentControl" BasedOn="{StaticResource DisplayBadge}">
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
     </Style>
     <Style x:Key="BadgeSuccessDot" TargetType="ContentControl" BasedOn="{StaticResource DisplayBadge}">
-        <Setter Property="Background" Value="{StaticResource SuccessSoft}"/>
-        <Setter Property="Foreground" Value="{StaticResource Success}"/>
+        <Setter Property="Background" Value="{DynamicResource SuccessSoft}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Success}"/>
     </Style>
     <Style x:Key="BadgeWarningDot" TargetType="ContentControl" BasedOn="{StaticResource DisplayBadge}">
-        <Setter Property="Background" Value="{StaticResource WarningSoft}"/>
-        <Setter Property="Foreground" Value="{StaticResource Warning}"/>
+        <Setter Property="Background" Value="{DynamicResource WarningSoft}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Warning}"/>
     </Style>
     <Style x:Key="BadgeDangerDot" TargetType="ContentControl" BasedOn="{StaticResource DisplayBadge}">
-        <Setter Property="Background" Value="{StaticResource DangerSoft}"/>
-        <Setter Property="Foreground" Value="{StaticResource Danger}"/>
+        <Setter Property="Background" Value="{DynamicResource DangerSoft}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Danger}"/>
     </Style>
 
     <!-- ==================== Alerts ==================== -->
@@ -220,7 +215,7 @@
     <Style x:Key="AlertText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <!-- CSS half-leading (22.4 - 1.33*14)/2 = 1.9px above and below the natural
              18.62px line box: same 22.4px box, ink centred like Chromium.
              Margin top = web 2px gap + 1.9px half-leading. -->
@@ -324,14 +319,14 @@
         <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Height" Value="27"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
     <Style x:Key="EmptyText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="22.4"/>
         <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
         <Setter Property="TextAlignment" Value="Center"/>
@@ -345,15 +340,15 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="CornerRadius" Value="20"/>
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource AvatarBorder}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrandLine}"/>
         <Setter Property="BorderThickness" Value="1"/>
     </Style>
     <Style x:Key="AvatarInitials" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
         <!-- No LineHeight: the natural line box centres the glyph like CSS place-items. -->
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -364,18 +359,18 @@
         <Setter Property="Height" Value="12"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="CornerRadius" Value="6"/>
-        <Setter Property="Background" Value="{StaticResource BgDeep}"/>
+        <Setter Property="Background" Value="{DynamicResource BgDeep}"/>
         <Setter Property="local:Shimmer.Enabled" Value="True"/>
     </Style>
     <Style x:Key="SkCircle" TargetType="Border">
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="CornerRadius" Value="20"/>
-        <Setter Property="Background" Value="{StaticResource BgDeep}"/>
+        <Setter Property="Background" Value="{DynamicResource BgDeep}"/>
         <Setter Property="local:Shimmer.Enabled" Value="True"/>
     </Style>
     <Style x:Key="MotionCue" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
         <Setter Property="CornerRadius" Value="99"/>
         <Setter Property="Padding" Value="10,4"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -390,9 +385,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
-                    <Border x:Name="PART_Track" Background="{StaticResource BgDeep}" CornerRadius="4"
+                    <Border x:Name="PART_Track" Background="{DynamicResource BgDeep}" CornerRadius="4"
                             SnapsToDevicePixels="True">
-                        <Border x:Name="PART_Indicator" Background="{StaticResource Brand}" CornerRadius="4"
+                        <Border x:Name="PART_Indicator" Background="{DynamicResource Brand}" CornerRadius="4"
                                 HorizontalAlignment="Left" Width="0" SnapsToDevicePixels="True"/>
                     </Border>
                 </ControlTemplate>

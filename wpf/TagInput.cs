@@ -54,7 +54,7 @@ namespace UIComponents.Wpf
             Grid shell = new Grid();
             _focusRing = new Border();
             _focusRing.BorderThickness = new Thickness(3);
-            _focusRing.BorderBrush = (Brush)Res("BrandSoft");
+            _focusRing.SetResourceReference(Border.BorderBrushProperty, "FocusRing");
             _focusRing.CornerRadius = new CornerRadius(11);
             _focusRing.Margin = new Thickness(-3);
             _focusRing.Visibility = Visibility.Collapsed;
@@ -194,7 +194,7 @@ namespace UIComponents.Wpf
                 text.FontWeight = FontWeights.SemiBold;
                 text.LineHeight = 19.2;
                 text.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-                text.Foreground = (Brush)Res("Brand");
+                text.SetResourceReference(TextBlock.ForegroundProperty, "Brand");
                 text.VerticalAlignment = VerticalAlignment.Center;
                 AutomationProperties.SetAutomationId(text, _id + "_Chip" + i);
                 Button remove = new Button();

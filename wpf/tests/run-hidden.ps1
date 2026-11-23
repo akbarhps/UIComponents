@@ -10,7 +10,8 @@
 # -Capture entries: "<AutomationId>=<out.png>" or "<AutomationId>@<FocusAutomationId>=<out.png>".
 # Each agent gets its own desktop (uitest-<agent>), so parallel agents don't collide either.
 param([Parameter(Mandatory)][string]$Agent, [string]$Section = '', [string[]]$Capture = @(), [switch]$NoTests,
-      [int]$TimeoutSec = 600, [string]$Only = '')
+      [int]$TimeoutSec = 600, [string]$Only = '',
+      [ValidateSet('light','dark','system','none')][string]$Theme = 'light')
 $ErrorActionPreference = 'Stop'
 $Capture = @($Capture | ForEach-Object { $_ -split ',' } | Where-Object { $_ })   # pwsh -File passes arrays as one comma-joined string
 Add-Type @'
@@ -47,6 +48,9 @@ $tests = Join-Path $root "wpf\tests\bin\$Agent\UIAutomationTests.exe"   # own co
 if (-not (Test-Path $tests)) { $tests = Join-Path $root "wpf\tests\bin\UIAutomationTests.exe" }   # fallback: shared copy (can be locked by another agent)
 elseif ((Get-Item $tests).LastWriteTime -lt (Get-ChildItem (Join-Path $root "wpf\tests\Tests.*.cs") | Sort-Object LastWriteTime | Select-Object -Last 1).LastWriteTime) { "WARNING: $tests is older than the newest wpf\tests\Tests.*.cs - rerun wpf\tests\build-tests.bat $Agent" }
 if (-not (Test-Path $exe)) { throw "missing $exe - run wpf\build.bat $Agent first" }
+# App theme (ThemeManager reads UI_THEME and then never touches the stored choice): captures and tests never depend on the OS theme.
+# 'none' = leave unset (only for the persistence check, it uses the real registry value).
+if ($Theme -ne 'none') { $env:UI_THEME = $Theme } else { Remove-Item Env:UI_THEME -ErrorAction SilentlyContinue }
 $env:UITEST_DRIVE = '1'   # app installs the in-process test driver (App.xaml.cs DriverHook); tests fall back to UIA if absent
 $deskName = "uitest-$Agent"
 $desk = [HiddenDesktop]::CreateDesktop($deskName, [IntPtr]::Zero, [IntPtr]::Zero, 0, 0x10000000 <# GENERIC_ALL #>, [IntPtr]::Zero)
@@ -110,5 +114,5 @@ try {
         }
     }
 }
-finally { [void][HiddenDesktop]::CloseDesktop($desk); Remove-Item Env:UITEST_DRIVE -ErrorAction SilentlyContinue }
+finally { [void][HiddenDesktop]::CloseDesktop($desk); Remove-Item Env:UITEST_DRIVE -ErrorAction SilentlyContinue; Remove-Item Env:UI_THEME -ErrorAction SilentlyContinue }
 exit $exit

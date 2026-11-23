@@ -67,13 +67,14 @@ namespace UIComponents.Wpf
             icon.Style = (Style)Res("IconUpload");
             icon.Width = 24;
             icon.Height = 24;
-            icon.Foreground = (Brush)Res("Brand");
+            icon.SetResourceReference(Control.ForegroundProperty, "Brand");
             icon.HorizontalAlignment = HorizontalAlignment.Center;
             stack.Children.Add(icon);
             TextBlock title = new TextBlock();
             title.Text = Title;
             title.FontFamily = (FontFamily)Res("Sans");
             title.FontSize = 14;
+            title.SetResourceReference(TextBlock.ForegroundProperty, "Ink");
             title.FontWeight = FontWeights.Bold;
             title.LineHeight = 22.4;
             title.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
@@ -84,7 +85,7 @@ namespace UIComponents.Wpf
             subtitle.Text = Subtitle;
             subtitle.FontFamily = (FontFamily)Res("Sans");
             subtitle.FontSize = 12;
-            subtitle.Foreground = (Brush)Res("Ink3");
+            subtitle.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             subtitle.LineHeight = 19.2;
             subtitle.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
             subtitle.HorizontalAlignment = HorizontalAlignment.Center;
@@ -113,7 +114,7 @@ namespace UIComponents.Wpf
             _count = new TextBlock();
             _count.FontFamily = (FontFamily)Res("Sans");
             _count.FontSize = 12;
-            _count.Foreground = (Brush)Res("Ink2");
+            _count.SetResourceReference(TextBlock.ForegroundProperty, "Ink2");
             _count.LineHeight = 19.2;
             _count.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
             _count.Margin = new Thickness(0, 12, 0, 0);
@@ -233,14 +234,14 @@ namespace UIComponents.Wpf
                 fileIcon.Style = (Style)Res("IconFile");
                 fileIcon.Width = 16;
                 fileIcon.Height = 16;
-                fileIcon.Foreground = (Brush)Res("Ink3");
+                fileIcon.SetResourceReference(Control.ForegroundProperty, "Ink3");
                 grid.Children.Add(fileIcon);
 
                 TextBlock name = new TextBlock();
                 name.Text = entry.Name;
                 name.FontFamily = (FontFamily)Res("Sans");
                 name.FontSize = 14;
-                name.Foreground = (Brush)Res("Ink");
+                name.SetResourceReference(TextBlock.ForegroundProperty, "Ink");
                 name.TextTrimming = TextTrimming.CharacterEllipsis;
                 name.TextWrapping = TextWrapping.NoWrap;
                 name.VerticalAlignment = VerticalAlignment.Center;
@@ -251,7 +252,7 @@ namespace UIComponents.Wpf
                 size.Text = SizeLabel(entry.Size);
                 size.FontFamily = (FontFamily)Res("Sans");
                 size.FontSize = 12;
-                size.Foreground = (Brush)Res("Ink3");
+                size.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
                 size.VerticalAlignment = VerticalAlignment.Center;
                 Grid.SetColumn(size, 4);
                 grid.Children.Add(size);
@@ -267,7 +268,7 @@ namespace UIComponents.Wpf
                 close.Style = (Style)Res("IconClose");
                 close.Width = 15;
                 close.Height = 15;
-                close.Foreground = (Brush)Res("Ink3");
+                close.SetResourceReference(Control.ForegroundProperty, "Ink3");
                 remove.Content = close;
                 grid.Children.Add(remove);
 

@@ -25,6 +25,27 @@
     <SolidColorBrush x:Key="DangerSoft" Color="#FFF9EAE7"/>
     <SolidColorBrush x:Key="Info" Color="#FF3F6485"/>
     <SolidColorBrush x:Key="InfoSoft" Color="#FFEAF0F6"/>
+    <SolidColorBrush x:Key="Focus" Color="#FFA64E2A"/>
+    <SolidColorBrush x:Key="OnBrand" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="OnInk" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="InkHover" Color="#FF000000"/>
+    <SolidColorBrush x:Key="OnDanger" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="DangerHover" Color="#FF982F27"/>
+    <SolidColorBrush x:Key="BrandLine" Color="#FFECD4C8"/>
+    <SolidColorBrush x:Key="SuccessLine" Color="#FFD7E7DD"/>
+    <SolidColorBrush x:Key="InfoLine" Color="#FFD9E4EE"/>
+    <SolidColorBrush x:Key="DangerLine" Color="#FFF0DCD8"/>
+    <SolidColorBrush x:Key="SageSoft" Color="#FFE6EEE7"/>
+    <SolidColorBrush x:Key="SageLine" Color="#FFD3E3D6"/>
+    <SolidColorBrush x:Key="Wash" Color="#99FFFFFF"/>
+    <SolidColorBrush x:Key="WashStrong" Color="#BFFFFFFF"/>
+    <SolidColorBrush x:Key="Scrim" Color="#6B1E1A14"/>
+    <SolidColorBrush x:Key="Shimmer" Color="#A6FFFFFF"/>
+    <SolidColorBrush x:Key="FocusRing" Color="#FFF8ECE4"/>
+    <SolidColorBrush x:Key="Knob" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="SheetCheckBorder" Color="#FF767676"/>
+    <SolidColorBrush x:Key="SheetCheckMark" Color="#FFFFFFFF"/>
+    <SolidColorBrush x:Key="SheetCheckFill" Color="#00FFFFFF"/>
 
     <!-- Web order: Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif. -->
     <FontFamily x:Key="Serif">Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif</FontFamily>
@@ -36,4 +57,5 @@
 
     <DropShadowEffect x:Key="Shadow1" Color="#28211A" Opacity="0.08" BlurRadius="14" ShadowDepth="2" Direction="270"/>
     <DropShadowEffect x:Key="Shadow2" Color="#28211A" Opacity="0.16" BlurRadius="30" ShadowDepth="4" Direction="270"/>
+    <DropShadowEffect x:Key="KnobShadow" Color="#FF000000" Opacity="0.2" BlurRadius="3" ShadowDepth="1" Direction="270"/>
 </ResourceDictionary>

@@ -6,11 +6,11 @@
          Keyboard focus while closed uses the web's 2px Brand outline. -->
     <Style x:Key="DropdownTrigger" TargetType="ToggleButton">
         <Setter Property="Height" Value="46"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="13,11"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -18,9 +18,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                                 CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="12" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
@@ -33,7 +33,7 @@
                                         <RotateTransform Angle="0" CenterX="8" CenterY="8"/>
                                     </Viewbox.RenderTransform>
                                     <Canvas Width="24" Height="24">
-                                        <Path Data="M6,9 L12,15 L18,9" Stroke="{StaticResource Ink3}" StrokeThickness="2"
+                                        <Path Data="M6,9 L12,15 L18,9" Stroke="{DynamicResource Ink3}" StrokeThickness="2"
                                               Fill="Transparent" StrokeLineJoin="Round" StrokeStartLineCap="Round"
                                               StrokeEndLineCap="Round"/>
                                     </Canvas>
@@ -43,10 +43,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ink3}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="OpenRing" Property="Visibility" Value="Visible"/>
                             <Setter TargetName="Chevron" Property="RenderTransform">
                                 <Setter.Value>
@@ -70,13 +70,13 @@
     <!-- ==================== Panel ==================== -->
     <!-- Shadow2 lives on a sibling background Border: an Effect on the content greyscales text. -->
     <Style x:Key="DropdownPanelShadow" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
         <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Effect" Value="{StaticResource Shadow2}"/>
+        <Setter Property="Effect" Value="{DynamicResource Shadow2}"/>
     </Style>
     <Style x:Key="DropdownPanel" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
     </Style>
@@ -84,16 +84,16 @@
     <!-- ==================== Search field ==================== -->
     <ControlTemplate x:Key="DropdownSearchTemplate" TargetType="TextBox">
         <Grid>
-            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+            <Border x:Name="FocusRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                     CornerRadius="10" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-            <Border x:Name="Bd" Background="{StaticResource Surface}" BorderBrush="{TemplateBinding BorderBrush}"
+            <Border x:Name="Bd" Background="{DynamicResource Surface}" BorderBrush="{TemplateBinding BorderBrush}"
                     BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="7">
                 <Grid>
                     <ScrollViewer x:Name="PART_ContentHost" Margin="29,0,10,0" VerticalAlignment="Center"/>
                     <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}" Margin="31,0,0,0"
                                VerticalAlignment="Center" FontFamily="{StaticResource Sans}" FontSize="13"
                                LineHeight="18.2" LineStackingStrategy="BlockLineHeight"
-                               Foreground="{StaticResource Ink3}" Visibility="Collapsed" IsHitTestVisible="False"/>
+                               Foreground="{DynamicResource Ink3}" Visibility="Collapsed" IsHitTestVisible="False"/>
                 </Grid>
             </Border>
         </Grid>
@@ -102,7 +102,7 @@
                 <Setter TargetName="Placeholder" Property="Visibility" Value="Visible"/>
             </Trigger>
             <Trigger Property="IsFocused" Value="True">
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                 <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
             </Trigger>
         </ControlTemplate.Triggers>
@@ -110,9 +110,9 @@
     <Style x:Key="DropdownSearch" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="36.2"/>
@@ -132,8 +132,8 @@
                             <Thumb>
                                 <Thumb.Template>
                                     <ControlTemplate TargetType="Thumb">
-                                        <Border Width="11" Background="{StaticResource LineStrong}"
-                                                BorderBrush="{StaticResource Bg}" BorderThickness="3"
+                                        <Border Width="11" Background="{DynamicResource LineStrong}"
+                                                BorderBrush="{DynamicResource Bg}" BorderThickness="3"
                                                 CornerRadius="5.5" Margin="0,1"/>
                                     </ControlTemplate>
                                 </Thumb.Template>
@@ -150,7 +150,7 @@
         <Setter Property="Height" Value="40.4"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -165,7 +165,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -178,7 +178,7 @@
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="LineHeight" Value="20.8"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="Padding" Value="10,18"/>
     </Style>
@@ -193,7 +193,7 @@
                 <ControlTemplate TargetType="ContentControl">
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M5,12 L10,17 L19,7" Stroke="{StaticResource Brand}" StrokeThickness="2.4"
+                            <Path Data="M5,12 L10,17 L19,7" Stroke="{DynamicResource Brand}" StrokeThickness="2.4"
                                   Fill="Transparent" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                         </Canvas>
                     </Viewbox>
@@ -207,17 +207,17 @@
          its empty (centred) and with-chips (top) positions. -->
     <Style x:Key="MultiTriggerChrome" TargetType="ToggleButton">
         <Setter Property="MinHeight" Value="46"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
                     <Grid>
-                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{StaticResource BrandSoft}"
+                        <Border x:Name="OpenRing" BorderThickness="3" BorderBrush="{DynamicResource FocusRing}"
                                 CornerRadius="11" Margin="-3" Visibility="Collapsed" IsHitTestVisible="False"/>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="12" Margin="-4" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
@@ -227,10 +227,10 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Ink3}"/>
                         </Trigger>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource Brand}"/>
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource Brand}"/>
                             <Setter TargetName="OpenRing" Property="Visibility" Value="Visible"/>
                         </Trigger>
                         <MultiTrigger>
@@ -251,13 +251,13 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="LineHeight" Value="19.6"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <!-- 24.8 high: 16.8 line + 8 padding. -->
     <Style x:Key="MultiChip" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource BrandSoft}"/>
+        <Setter Property="Background" Value="{DynamicResource BrandSoft}"/>
         <Setter Property="CornerRadius" Value="6"/>
         <Setter Property="Padding" Value="7,4"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -275,7 +275,7 @@
                 <ControlTemplate TargetType="Button">
                     <Viewbox Stretch="Uniform">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M6,6 L18,18 M18,6 L6,18" Stroke="{StaticResource Brand}"
+                            <Path Data="M6,6 L18,18 M18,6 L6,18" Stroke="{DynamicResource Brand}"
                                   StrokeThickness="2" Fill="Transparent" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                         </Canvas>
                     </Viewbox>
@@ -292,7 +292,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
                     <Grid>
-                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{StaticResource Brand}"
+                        <Border x:Name="FocusRing" BorderThickness="2" BorderBrush="{DynamicResource Brand}"
                                 CornerRadius="9" Margin="-2" Visibility="Collapsed" IsHitTestVisible="False"/>
                         <Border x:Name="Bd" Background="Transparent" CornerRadius="7" Padding="10,9">
                             <ContentPresenter VerticalAlignment="Center"/>
@@ -300,7 +300,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="FocusRing" Property="Visibility" Value="Visible"/>
@@ -312,7 +312,7 @@
     </Style>
 
     <Style x:Key="MultiFoot" TargetType="Border">
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="0,1,0,0"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="Height" Value="53"/>
@@ -321,18 +321,18 @@
     <!-- ==================== Tag input / autocomplete text field ==================== -->
     <Style x:Key="TagBox" TargetType="Border">
         <Setter Property="MinHeight" Value="46"/>
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource LineStrong}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="8"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Cursor" Value="IBeam"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Ink3}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Ink3}"/>
             </Trigger>
             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Brand}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Brand}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -342,7 +342,7 @@
             <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"/>
             <TextBlock x:Name="Placeholder" Text="{TemplateBinding Tag}" Margin="2,0,0,0"
                        VerticalAlignment="Center" FontFamily="{StaticResource Sans}" FontSize="14"
-                       Foreground="{StaticResource Ink3}" Visibility="Collapsed" IsHitTestVisible="False"/>
+                       Foreground="{DynamicResource Ink3}" Visibility="Collapsed" IsHitTestVisible="False"/>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="Text" Value="">
@@ -353,8 +353,9 @@
     <Style x:Key="BareInput" TargetType="TextBox">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource Ink}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Height" Value="27"/>

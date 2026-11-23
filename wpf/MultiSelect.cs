@@ -96,18 +96,17 @@ namespace UIComponents.Wpf
             _chevron.Stretch = Stretch.Uniform;
             _chevron.HorizontalAlignment = HorizontalAlignment.Right;
             _chevron.VerticalAlignment = VerticalAlignment.Top;
+            Path chevronPath = new Path
+            {
+                Data = Geometry.Parse("M6,9 L12,15 L18,9"),
+                StrokeThickness = 2, Fill = Brushes.Transparent,
+                StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round
+            };
+            chevronPath.SetResourceReference(Shape.StrokeProperty, "Ink3");
             _chevron.Child = new Canvas
             {
                 Width = 24, Height = 24,
-                Children =
-                {
-                    new Path
-                    {
-                        Data = Geometry.Parse("M6,9 L12,15 L18,9"), Stroke = (Brush)Res("Ink3"),
-                        StrokeThickness = 2, Fill = Brushes.Transparent,
-                        StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round
-                    }
-                }
+                Children = { chevronPath }
             };
 
             Grid content = new Grid();
@@ -230,7 +229,7 @@ namespace UIComponents.Wpf
             content.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             Border searchArea = new Border();
-            searchArea.BorderBrush = (Brush)Res("Line");
+            searchArea.SetResourceReference(Border.BorderBrushProperty, "Line");
             searchArea.BorderThickness = new Thickness(0, 0, 0, 1);
             searchArea.Padding = new Thickness(10);
             Grid searchGrid = new Grid();
@@ -302,7 +301,7 @@ namespace UIComponents.Wpf
             _count.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
             _count.VerticalAlignment = VerticalAlignment.Center;
             _count.Margin = new Thickness(0, 0, 10, 0);
-            _count.Foreground = (Brush)Res("Ink3");
+            _count.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             AutomationProperties.SetAutomationId(_count, _id + "_Count");
             Button done = new Button { Content = "Done", Style = (Style)Res("PrimaryButtonSm"), Width = 57.6, Height = 32 };
             AutomationProperties.SetAutomationId(done, _id + "_Done");
@@ -341,12 +340,12 @@ namespace UIComponents.Wpf
             Border box = new Border();
             box.Width = 19; box.Height = 19; box.CornerRadius = new CornerRadius(5);
             box.BorderThickness = new Thickness(1);
-            box.BorderBrush = (Brush)Res("LineStrong");
-            box.Background = (Brush)Res("Surface");
+            box.SetResourceReference(Border.BorderBrushProperty, "LineStrong");
+            box.SetResourceReference(Border.BackgroundProperty, "Surface");
             box.VerticalAlignment = VerticalAlignment.Top;
             Path tick = new Path();
             tick.Data = Geometry.Parse("M5,12 L10,17 L19,7");
-            tick.Stroke = Brushes.White;
+            tick.SetResourceReference(Shape.StrokeProperty, "OnBrand");
             tick.StrokeThickness = 2.4;
             tick.Fill = Brushes.Transparent;
             tick.Stretch = Stretch.Uniform;
@@ -362,6 +361,7 @@ namespace UIComponents.Wpf
             label.Text = entry.Label;
             label.FontFamily = (FontFamily)Res("Sans");
             label.FontSize = 14;
+            label.SetResourceReference(TextBlock.ForegroundProperty, "Ink");
             label.LineHeight = 22.4;
             label.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
             label.Margin = new Thickness(0, -5, 0, 0);
@@ -375,7 +375,7 @@ namespace UIComponents.Wpf
             meta.FontSize = 12;
             meta.LineHeight = 19.2;
             meta.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            meta.Foreground = (Brush)Res("Ink3");
+            meta.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             meta.VerticalAlignment = VerticalAlignment.Top;
             meta.Margin = new Thickness(10, 0, 0, 0);
             Grid.SetColumn(meta, 3);
@@ -415,8 +415,8 @@ namespace UIComponents.Wpf
                 bool on = check.IsChecked == true;
                 _selected[(int)check.Tag] = on;
                 _ticks[check].Visibility = on ? Visibility.Visible : Visibility.Collapsed;
-                _boxes[check].Background = on ? (Brush)Res("Brand") : (Brush)Res("Surface");
-                _boxes[check].BorderBrush = on ? (Brush)Res("Brand") : (Brush)Res("LineStrong");
+                _boxes[check].SetResourceReference(Border.BackgroundProperty, on ? "Brand" : "Surface");
+                _boxes[check].SetResourceReference(Border.BorderBrushProperty, on ? "Brand" : "LineStrong");
             }
             if (!_building) UpdateTrigger();
         }
@@ -439,7 +439,7 @@ namespace UIComponents.Wpf
                 text.FontWeight = FontWeights.SemiBold;
                 text.LineHeight = 16.8;
                 text.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-                text.Foreground = (Brush)Res("Brand");
+                text.SetResourceReference(TextBlock.ForegroundProperty, "Brand");
                 text.VerticalAlignment = VerticalAlignment.Center;
                 AutomationProperties.SetAutomationId(text, _id + "_Chip" + (count - 1));
                 Button remove = new Button();

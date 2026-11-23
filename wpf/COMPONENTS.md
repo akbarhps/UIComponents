@@ -6,7 +6,9 @@ Paths are relative to the `ui-design/` root; `Themes/X.xaml` means `wpf/Themes/X
 
 | Component | Class or style key | File | Use when |
 |---|---|---|---|
-| Tokens | `Bg`, `Ink`, `Brand`, `Line`, `Serif`, `Sans`, `Radius`, `RadiusSm`, `RadiusLg`, `Shadow1`, `Shadow2` | `wpf/Themes/Tokens.xaml` | Any colour, font, radius, shadow |
+| Tokens | Colour keys, same set in both files: `Bg`, `BgDeep`, `Surface`, `Surface2`, `Ink`, `Ink2`, `Ink3`, `Line`, `LineStrong`, `Brand`, `BrandHover`, `BrandBright`, `BrandSoft`, `BrandSoftHover`, `Success`, `SuccessSoft`, `Warning`, `WarningSoft`, `Danger`, `DangerSoft`, `Info`, `InfoSoft`, `Focus`, `OnBrand`, `OnInk`, `InkHover`, `OnDanger`, `DangerHover`, `BrandLine`, `SuccessLine`, `InfoLine`, `DangerLine`, `SageSoft`, `SageLine`, `Wash`, `WashStrong`, `Scrim`, `Shimmer`, `FocusRing`, `Knob`, `SheetCheckBorder`, `SheetCheckMark`, `SheetCheckFill`. Effects per theme: `Shadow1`, `Shadow2`, `KnobShadow`. Light only: `Serif`, `Sans`, `Radius`, `RadiusSm`, `RadiusLg` | `wpf/Themes/Tokens.xaml` (light), `wpf/Themes/Tokens.Dark.xaml` (dark overlay) | Any colour, font, radius, shadow. Colours: `DynamicResource` only |
+| Theme | class `ThemeManager` (`Initialize`, `SetTheme`, `Mode`, `IsDark`, `StorageKey`, `ThemeChanged`); enum `ThemeMode` (`System`, `Light`, `Dark`) | `wpf/ThemeManager.cs` | Light, dark or System theme; call `Initialize()` once at startup |
+| Theme toggle | `ThemeSystem`, `ThemeLight`, `ThemeDark` (3 `SegmentButton` radios, `GroupName="ThemeMode"`); `MainWindow.SyncThemeToggle` | `wpf/MainWindow.xaml`, `wpf/MainWindow.xaml.cs` | Showcase switch under the masthead chip (masthead is not parity-tracked) |
 | Button | `PrimaryButton`, `SecondaryButton`, `GhostButton`, `DangerButton`, `DarkButton` (base `ClaudeButtonBase`) | `wpf/Themes/Controls.xaml` | One action |
 | Small button | `PrimaryButtonSm`, `SecondaryButtonSm`, `GhostButtonSm`, `DangerButtonSm` | `wpf/Themes/Display.xaml`, `Themes/Sheet.xaml`, `Themes/Controls.xaml` | Compact action in a card or table |
 | Icon button | `IconButton`, `IconButtonSm` | `wpf/Themes/Overlays.xaml` | Icon-only action |
@@ -83,3 +85,23 @@ Mirror `wpf/App.xaml`: merge the same 11 dictionaries in this order. Omit `Start
 - Linked (no copy): `<Page Include="<repo>\wpf\Themes\*.xaml"><Link>Themes\%(Filename)%(Extension)</Link></Page>`, and `<Compile Include="...\X.cs"><Link>Lib\X.cs</Link></Compile>`. `Link` must be a child element (as an attribute: MSB4066). Relative `Source="Themes/Tokens.xaml"` then resolves (same `themes/*.baml` names as the copy). `Source="/Consumer2;component/Themes/Tokens.xaml"` also builds. File-relative `Source="..\..\wpf\Themes\..."` builds but matches no resource (inferred, not run).
 - Required at runtime: `Toasts.Install(window)` casts `window.Content` to `Panel`; `OverlayHost.Install(window, panel)` needs a Panel such as `x:Name="DialogStore"` in that window.
 - Verified at runtime (hidden desktop, copy and link variants, same render): button, field, badge, SearchableSelect, MultiSelect, Autocomplete, CalendarPicker, a dialog via OverlayHost and a toast all render styled, no exceptions. Not run: SheetGrid, FileInput, TablePagination, Popover, TagInput.
+
+## Theme (light / dark / system)
+
+- Compile `ThemeManager.cs` (required: `Shimmer.cs` uses `ThemeManager.ThemeChanged`).
+- Copy or link `Themes/Tokens.Dark.xaml` next to `Themes/Tokens.xaml`. Do not merge it yourself: `ThemeManager` loads it on first dark use and adds it as the last merged dictionary (highest precedence).
+- Merge `Tokens.xaml` into `Application.Resources`, not `Window.Resources`, so popups resolve. `ThemeManager` finds the dark sibling through the merged `Tokens.xaml` source; without it, it throws `InvalidOperationException`.
+- Call `ThemeManager.Initialize()` first in `OnStartup`, before `base.OnStartup` (so before the first window).
+- Colours only via `{DynamicResource K}` or `SetResourceReference`. Never `StaticResource`, and never read a brush in code (`(Brush)FindResource`, `Brushes.White`): those do not switch. `node plan/wpf/theme-lint.mjs` checks this in the repo.
+- Persistence: `HKCU\Software\UIComponents.Wpf`, value `ui-theme` (`light` or `dark`; absent = System). `ThemeManager.StorageKey` takes your own subkey, or `null` for no persistence.
+- Env `UI_THEME=light|dark|system` forces a mode for the process and never reads or writes storage. Tests and captures use it (`run-hidden.ps1 -Theme`).
+- `ThemeManager.SetTheme(ThemeMode.Dark)` applies and persists; `ThemeChanged` fires after every apply, including System-driven ones.
+- Title bar: `ThemeManager` asks DWM for a dark title bar on each window (attribute 20, fallback 19). Older Windows ignore it silently. Manual check only; captures do not show it.
+
+Known dark-mode gaps (accepted for task 09, not fixed):
+1. Scrollbars: the default Aero2 scrollbars stay light in dark (command palette list, drawer and modal bodies when they overflow, FileInput list, ComboBox popups, textarea hosts, page scroller). The web themes all of them. Fix = apply `DropdownScrollBar`; that also changes light, so it is a separate task.
+2. Keyboard focus: the default dashed `FocusVisualStyle` is not overridden on several styles (`SegmentButton`, `SortHeaderButton`, table cells and rows, `TableThinThumb`, `FieldSelectItem`, `TextAreaGrip`, `ContextMenu`/`MenuItem`, legacy `ClaudeInput`). It is black, so invisible on dark. Not observed: captures draw no keyboard focus. Check on a visible desktop.
+3. Not visually verified in dark: ComboBox popups, action menu, FileInput with files, Shimmer overlay (code-reviewed only).
+4. Legacy `ClaudeInput` stays light by rule (no restyle).
+5. `-Theme system` was exercised on the dark branch only.
+6. Fractional-pixel lines (stepper dividers, tabs underline, card bottom edges) straddle two pixel rows in both themes. Pre-existing layout, not theming.

@@ -97,7 +97,7 @@ namespace UIComponents.Wpf
             Thickness borders = pinned ? new Thickness(0, 0, 1, 1) : new Thickness(0, 0, 0, 1);
             PinHeader.BorderThickness = borders;
             PinFilter.BorderThickness = borders;
-            PinFilter.Background = (Brush)FindResource(pinned ? "Surface2" : "Surface");
+            PinFilter.SetResourceReference(Border.BackgroundProperty, pinned ? "Surface2" : "Surface");
             PinHeader.CornerRadius = pinned ? new CornerRadius(12, 0, 0, 0) : new CornerRadius(0);
             PinHeader.RenderTransform = new TranslateTransform(dx, 0);
             PinFilter.RenderTransform = new TranslateTransform(dx, 0);
@@ -197,11 +197,10 @@ namespace UIComponents.Wpf
 
         private void UpdateSortVisuals()
         {
-            Brush brand = (Brush)FindResource("Brand");
             foreach (Button button in FindButtons(SortHeaderGrid))
             {
                 bool active = (button.Tag as string) == _sortProperty;
-                if (active) button.Foreground = brand;
+                if (active) button.SetResourceReference(Button.ForegroundProperty, "Brand");
                 else button.ClearValue(Button.ForegroundProperty);
                 Viewbox chevron = button.Template.FindName("Chevron", button) as Viewbox;
                 if (chevron == null) continue;

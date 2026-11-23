@@ -4,8 +4,8 @@
 
     <!-- ToolTip -->
     <Style TargetType="ToolTip">
-        <Setter Property="Background" Value="{StaticResource Ink}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource OnInk}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Padding" Value="9,6"/>
         <Setter Property="BorderThickness" Value="0"/>
@@ -23,8 +23,8 @@
 
     <!-- Context menu (action menu) -->
     <Style TargetType="ContextMenu">
-        <Setter Property="Background" Value="{StaticResource Surface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="Background" Value="{DynamicResource Surface}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Line}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Padding" Value="6"/>
         <Setter Property="Template">
@@ -39,7 +39,7 @@
         </Setter>
     </Style>
     <Style TargetType="MenuItem">
-        <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="Template">
@@ -50,7 +50,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource BgDeep}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource BgDeep}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

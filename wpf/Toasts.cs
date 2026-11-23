@@ -55,13 +55,10 @@ namespace UIComponents.Wpf
         {
             string accentKey = type == "error" ? "Danger" : (type == "info" ? "Info" : "Success");
             string bgKey = type == "error" ? "DangerSoft" : (type == "info" ? "InfoSoft" : "SuccessSoft");
-            string borderHex = type == "error" ? "#FFF0DCD8" : (type == "info" ? "#FFD9E4EE" : "#FFD7E7DD");
+            string borderKey = type == "error" ? "DangerLine" : (type == "info" ? "InfoLine" : "SuccessLine");
             string iconKey = type == "error" ? "IconClose" : (type == "info" ? "IconInfo" : "IconCheck");
 
             ResourceDictionary res = Application.Current.Resources;
-            Brush accent = (Brush)res[accentKey];
-            Brush background = (Brush)res[bgKey];
-            Brush border = new SolidColorBrush((Color)ColorConverter.ConvertFromString(borderHex));
             string id = "Toast" + _nextId++;
 
             GroupBox root = new GroupBox();
@@ -73,20 +70,22 @@ namespace UIComponents.Wpf
             root.Margin = new Thickness(0, 5, 0, 5);
 
             Grid card = new Grid { Width = 360 };
-            Border shadow = new Border { Style = (Style)res["ToastShadow"], Background = background };
+            Border shadow = new Border { Style = (Style)res["ToastShadow"] };
+            shadow.SetResourceReference(Border.BackgroundProperty, bgKey);
             Border content = new Border
             {
                 Style = (Style)res["ToastCard"],
-                Background = Brushes.Transparent,
-                BorderBrush = border
+                Background = Brushes.Transparent
             };
+            content.SetResourceReference(Border.BorderBrushProperty, borderKey);
 
             StackPanel row = new StackPanel { Orientation = Orientation.Horizontal };
             Border circle = new Border { Style = (Style)res["ToastIconCircle"] };
             ContentControl icon = new ContentControl
             {
-                Style = (Style)res[iconKey], Foreground = accent, Width = 14, Height = 14
+                Style = (Style)res[iconKey], Width = 14, Height = 14
             };
+            icon.SetResourceReference(Control.ForegroundProperty, accentKey);
             circle.Child = icon;
             row.Children.Add(circle);
 
@@ -95,7 +94,9 @@ namespace UIComponents.Wpf
                 Width = (dismissible || persistent) ? 262 : 291,
                 Margin = new Thickness(11, 0, 0, 0)
             };
-            body.Children.Add(new TextBlock { Style = (Style)res["ToastTitle"], Text = title, Foreground = accent });
+            TextBlock titleText = new TextBlock { Style = (Style)res["ToastTitle"], Text = title };
+            titleText.SetResourceReference(TextBlock.ForegroundProperty, accentKey);
+            body.Children.Add(titleText);
             body.Children.Add(new TextBlock { Style = (Style)res["ToastText"], Text = text });
             if (action != null)
             {
@@ -115,10 +116,12 @@ namespace UIComponents.Wpf
             if (dismissible || persistent)
             {
                 closeButton = new Button { Style = (Style)res["ToastClose"], Margin = new Thickness(11, 0, 0, 0) };
-                closeButton.Content = new ContentControl
+                ContentControl closeIcon = new ContentControl
                 {
-                    Style = (Style)res["IconClose"], Foreground = (Brush)res["Ink3"], Width = 14, Height = 14
+                    Style = (Style)res["IconClose"], Width = 14, Height = 14
                 };
+                closeIcon.SetResourceReference(Control.ForegroundProperty, "Ink3");
+                closeButton.Content = closeIcon;
                 closeButton.SetValue(AutomationProperties.AutomationIdProperty, id + "_Close");
                 closeButton.SetValue(AutomationProperties.NameProperty, "Dismiss");
                 closeButton.Click += delegate { Dismiss(root); };

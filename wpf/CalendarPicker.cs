@@ -93,7 +93,7 @@ namespace UIComponents.Wpf
             icon.Style = (Style)Res(Icon == "Clock" ? "IconClock" : "IconCalendar");
             icon.Width = 16;
             icon.Height = 16;
-            icon.Foreground = (Brush)Res("Ink3");
+            icon.SetResourceReference(Control.ForegroundProperty, "Ink3");
             icon.IsHitTestVisible = false;
             grid.Children.Add(icon);
 
@@ -103,7 +103,7 @@ namespace UIComponents.Wpf
             _value.FontSize = 15;
             _value.LineHeight = 21;
             _value.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            _value.Foreground = (Brush)Res("Ink3");
+            _value.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             _value.TextTrimming = TextTrimming.CharacterEllipsis;
             _value.TextWrapping = TextWrapping.NoWrap;
             _value.VerticalAlignment = VerticalAlignment.Center;
@@ -292,7 +292,7 @@ namespace UIComponents.Wpf
             }
 
             Border foot = new Border();
-            foot.BorderBrush = (Brush)Res("Line");
+            foot.SetResourceReference(Border.BorderBrushProperty, "Line");
             foot.BorderThickness = new Thickness(0, 1, 0, 0);
             foot.Padding = new Thickness(0, 10, 0, 0);
             foot.Height = 43;
@@ -353,7 +353,7 @@ namespace UIComponents.Wpf
         private Border BuildTimeRow()
         {
             Border row = new Border();
-            row.BorderBrush = (Brush)Res("Line");
+            row.SetResourceReference(Border.BorderBrushProperty, "Line");
             row.BorderThickness = new Thickness(0, 1, 0, 0);
             row.Padding = new Thickness(0, 12, 0, 0);
             row.Height = 71.4;
@@ -375,7 +375,7 @@ namespace UIComponents.Wpf
                 label.Text = names[i];
                 label.FontFamily = (FontFamily)Res("Sans");
                 label.FontSize = 12;
-                label.Foreground = (Brush)Res("Ink2");
+                label.SetResourceReference(TextBlock.ForegroundProperty, "Ink2");
                 label.LineHeight = 19.2;
                 label.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
                 column.Children.Add(label);
@@ -505,13 +505,13 @@ namespace UIComponents.Wpf
             cell.Style = (Style)Res("PickerCell");
             cell.Height = 32;
             cell.Tag = selected ? "selected" : null;
-            if (selected) cell.Background = (Brush)Res("Brand");
+            if (selected) cell.SetResourceReference(Control.BackgroundProperty, "Brand");
             TextBlock label = new TextBlock();
             label.Text = text;
             label.FontFamily = (FontFamily)Res("Sans");
             label.FontSize = 13;
             label.FontWeight = selected ? FontWeights.SemiBold : FontWeights.Medium;
-            label.Foreground = selected ? Brushes.White : (Brush)Res("Ink");
+            label.SetResourceReference(TextBlock.ForegroundProperty, selected ? "OnBrand" : "Ink");
             label.HorizontalAlignment = HorizontalAlignment.Center;
             label.VerticalAlignment = VerticalAlignment.Center;
             cell.Content = label;
@@ -581,15 +581,15 @@ namespace UIComponents.Wpf
             cell.Tag = selected ? "selected" : null;
             if (selected)
             {
-                cell.Background = (Brush)Res("Brand");
-                cell.Foreground = Brushes.White;
+                cell.SetResourceReference(Control.BackgroundProperty, "Brand");
+                cell.SetResourceReference(Control.ForegroundProperty, "OnBrand");
                 cell.FontWeight = FontWeights.SemiBold;
             }
             Grid content = new Grid();
             if (today)
             {
                 Border ring = new Border();
-                ring.BorderBrush = (Brush)Res("LineStrong");
+                ring.SetResourceReference(Border.BorderBrushProperty, "LineStrong");
                 ring.BorderThickness = new Thickness(1);
                 ring.CornerRadius = new CornerRadius(7);
                 ring.IsHitTestVisible = false;
@@ -600,7 +600,7 @@ namespace UIComponents.Wpf
             label.FontFamily = (FontFamily)Res("Sans");
             label.FontSize = 13;
             label.FontWeight = selected ? FontWeights.SemiBold : FontWeights.Medium;
-            label.Foreground = selected ? Brushes.White : (Brush)Res("Ink");
+            label.SetResourceReference(TextBlock.ForegroundProperty, selected ? "OnBrand" : "Ink");
             label.HorizontalAlignment = HorizontalAlignment.Center;
             label.VerticalAlignment = VerticalAlignment.Center;
             content.Children.Add(label);
@@ -651,7 +651,7 @@ namespace UIComponents.Wpf
             // W6: the time inputs keep their values (there are none in date mode).
             _selected = null;
             _value.Text = Placeholder;
-            _value.Foreground = (Brush)Res("Ink3");
+            _value.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             Close(false);
         }
 
@@ -672,7 +672,7 @@ namespace UIComponents.Wpf
         private void Commit()
         {
             _value.Text = Format();
-            _value.Foreground = (Brush)Res("Ink");
+            _value.SetResourceReference(TextBlock.ForegroundProperty, "Ink");
             Close(false);
         }
 

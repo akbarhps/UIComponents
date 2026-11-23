@@ -15,7 +15,7 @@
     <!-- Shadow on a sibling background Border, never on the content (text would rasterise). -->
     <Style x:Key="ToastShadow" TargetType="Border">
         <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Effect" Value="{StaticResource Shadow2}"/>
+        <Setter Property="Effect" Value="{DynamicResource Shadow2}"/>
     </Style>
 
     <Style x:Key="ToastCard" TargetType="Border">
@@ -30,7 +30,7 @@
         <Setter Property="Height" Value="24"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Background" Value="#BFFFFFFF"/>
+        <Setter Property="Background" Value="{DynamicResource WashStrong}"/>
     </Style>
 
     <Style x:Key="ToastTitle" TargetType="TextBlock">
@@ -45,7 +45,7 @@
     <Style x:Key="ToastText" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink2}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink2}"/>
         <Setter Property="LineHeight" Value="24"/>
         <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
@@ -56,7 +56,7 @@
         <Setter Property="Height" Value="18"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Padding" Value="2"/>
-        <Setter Property="Foreground" Value="{StaticResource Ink3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ink3}"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -66,8 +66,8 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Background" Value="#99FFFFFF"/>
-                            <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Wash}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource Ink}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -81,7 +81,7 @@
         <Setter Property="FontFamily" Value="{StaticResource Sans}"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource Brand}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Brand}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>

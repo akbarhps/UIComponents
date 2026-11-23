@@ -86,7 +86,7 @@ namespace UIComponents.Wpf
             _value.FontSize = 15;
             _value.LineHeight = 21;
             _value.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            _value.Foreground = (Brush)Res("Ink3");
+            _value.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             _value.TextTrimming = TextTrimming.CharacterEllipsis;
             _value.TextWrapping = TextWrapping.NoWrap;
             AutomationProperties.SetAutomationId(_value, _id + "_Value");
@@ -184,7 +184,7 @@ namespace UIComponents.Wpf
             content.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
 
             Border searchArea = new Border();
-            searchArea.BorderBrush = (Brush)Res("Line");
+            searchArea.SetResourceReference(Border.BorderBrushProperty, "Line");
             searchArea.BorderThickness = new Thickness(0, 0, 0, 1);
             searchArea.Padding = new Thickness(10);
             Grid searchGrid = new Grid();
@@ -277,7 +277,7 @@ namespace UIComponents.Wpf
             meta.FontSize = 12;
             meta.LineHeight = 19.2;
             meta.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-            meta.Foreground = (Brush)Res("Ink3");
+            meta.SetResourceReference(TextBlock.ForegroundProperty, "Ink3");
             meta.VerticalAlignment = VerticalAlignment.Center;
             meta.Margin = new Thickness(10, -1, 0, 0); // web meta ink sits ~1px higher
             Grid.SetColumn(meta, 3);
@@ -369,8 +369,9 @@ namespace UIComponents.Wpf
             bool active = _activeRow == row;
             string status = (active ? "active" : "") + (selected ? (active ? " " : "") + "selected" : "");
             AutomationProperties.SetItemStatus(row.Button, status);
-            row.Button.Background = active ? (Brush)Res("BgDeep") : Brushes.Transparent;
-            row.Label.Foreground = selected ? (Brush)Res("Brand") : (Brush)Res("Ink");
+            if (active) row.Button.SetResourceReference(Control.BackgroundProperty, "BgDeep");
+            else row.Button.Background = Brushes.Transparent;
+            row.Label.SetResourceReference(TextBlock.ForegroundProperty, selected ? "Brand" : "Ink");
             row.Label.FontWeight = selected ? FontWeights.SemiBold : FontWeights.Normal;
             row.Check.Visibility = selected ? Visibility.Visible : Visibility.Collapsed;
         }
@@ -393,7 +394,7 @@ namespace UIComponents.Wpf
         {
             _selected = row.Entry;
             _value.Text = row.Entry.Label;
-            _value.Foreground = (Brush)Res("Ink");
+            _value.SetResourceReference(TextBlock.ForegroundProperty, "Ink");
             AutomationProperties.SetItemStatus(_value, "selected");
             for (int i = 0; i < _rows.Count; i++) UpdateRow(_rows[i]);
             Close(true);

@@ -44,6 +44,7 @@ Edit only your own area. If you need a change in someone else's area, ask in you
 | `MainWindow.Forms.cs` | `forms` |
 | `MainWindow.xaml.cs` (`ApplyStandaloneMode`) | reviewer |
 | `App.xaml.cs` (in-process driver and `--capture`) | reviewer |
+| `wpf/ThemeManager.cs`, `Themes/Tokens.xaml`, `Themes/Tokens.Dark.xaml`, `plan/wpf/theme-*.{ps1,mjs}` (task 09) | reviewer |
 
 Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes/Sheet.xaml`) are the section shell for every component, and `FieldInput` (`Themes/Forms.xaml`) is the text input. `ClaudeInput` is legacy: don't change it.
 
@@ -58,6 +59,9 @@ Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes
 - The clipboard is shared with the user's session, even from the hidden desktop. Any copy/paste check must save the clipboard text first and restore it afterwards.
 - OS mouse input does not reach the hidden desktop: posted `WM_LBUTTON*` is ignored, and `SendInput` would go to the user's screen, so never use it. Presses go through `Drv.Click` / `Drv.ClickAt` (see "Writing tests"). Drag and other gesture-only behaviour is still code-only unless a test drives it that way; say so in your report.
 - `build-tests.bat` uses relative paths, so run it from `wpf\tests`.
+- Colour = `{DynamicResource K}` or `SetResourceReference`, never `StaticResource` or a `Res()`/`FindResource` snapshot (`node plan/wpf/theme-lint.mjs`, checks C3 and C5).
+- Captures and tests run light unless you pass `-Theme dark` (`run-hidden.ps1 -Theme` sets `UI_THEME`, so the OS theme and a stored choice never leak in).
+- In dark, text is the **bright** pixel. Invert any "first dark pixel" check from the older light-mode notes.
 
 ## Task files
 
@@ -68,6 +72,7 @@ Reuse shared styles; don't copy them. `SheetSectionDesc` and `DemoCard` (`Themes
 | 03 | [03-dropdown.md](03-dropdown.md) | Dropdown family: searchable select, multi-select, tag input, autocomplete | ready (agent `dropdown`) |
 | 04 | [04-tables.md](04-tables.md) | Fix-up of the existing table port: data, row selection, filters, column filters, sortable | ready (agent `tables`) |
 | 05 | [05-display.md](05-display.md) | Cards, badges, alerts, avatar, skeleton, progress, empty state (fix-up audit) | in progress (agent `display`) |
+| 09 | [09-dark-mode.md](09-dark-mode.md) | Light, dark and System theme: tokens, DynamicResource sweep, `ThemeManager` | done, uncommitted; final review pending (agent `theme`) |
 | … | — | everything else | later |
 
 ## Hard constraints (apply to every task)

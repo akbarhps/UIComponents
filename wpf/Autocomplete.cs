@@ -82,7 +82,7 @@ namespace UIComponents.Wpf
             {
                 _focusRing = new Border();
                 _focusRing.BorderThickness = new Thickness(3);
-                _focusRing.BorderBrush = (Brush)Res("BrandSoft");
+                _focusRing.SetResourceReference(Border.BorderBrushProperty, "FocusRing");
                 _focusRing.CornerRadius = new CornerRadius(11);
                 _focusRing.Margin = new Thickness(-3);
                 _focusRing.Visibility = Visibility.Collapsed;
@@ -152,7 +152,7 @@ namespace UIComponents.Wpf
                 text.FontWeight = FontWeights.SemiBold;
                 text.LineHeight = 19.2;
                 text.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-                text.Foreground = (Brush)Res("Brand");
+                text.SetResourceReference(TextBlock.ForegroundProperty, "Brand");
                 text.VerticalAlignment = VerticalAlignment.Center;
                 AutomationProperties.SetAutomationId(text, _id + "_Chip" + i);
                 Button remove = new Button();
@@ -316,7 +316,8 @@ namespace UIComponents.Wpf
             for (int i = 0; i < _optionButtons.Count; i++)
             {
                 bool active = i == _active;
-                _optionButtons[i].Background = active ? (Brush)Res("BgDeep") : Brushes.Transparent;
+                if (active) _optionButtons[i].SetResourceReference(Control.BackgroundProperty, "BgDeep");
+                else _optionButtons[i].Background = Brushes.Transparent;
                 AutomationProperties.SetItemStatus(_optionButtons[i], active ? "active" : "");
                 if (active) _optionButtons[i].BringIntoView();
             }

@@ -37,7 +37,7 @@
                         <ContentControl Style="{StaticResource SearchIcon}" Margin="13,0,0,0"
                                         HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     </Grid>
-                    <Border Grid.Column="1" Background="{StaticResource BgDeep}" CornerRadius="9" Padding="3"
+                    <Border Grid.Column="1" Background="{DynamicResource BgDeep}" CornerRadius="9" Padding="3"
                             VerticalAlignment="Center" Margin="12,0,0,0" Height="37">
                         <StackPanel Orientation="Horizontal">
                             <RadioButton x:Name="SegAll" Content="All" Tag="all" GroupName="FilterStatus"
@@ -55,16 +55,16 @@
                         </StackPanel>
                     </Border>
                     <TextBlock x:Name="FilterCount" Grid.Column="2" Text="6 of 6 projects" FontSize="13"
-                               Foreground="{StaticResource Ink3}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                               Foreground="{DynamicResource Ink3}" HorizontalAlignment="Right" VerticalAlignment="Center"
                                AutomationProperties.AutomationId="FilterCount"/>
                 </Grid>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                <Border BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
                     <Grid local:TableClip.Enabled="True">
                     <StackPanel>
                     <DataGrid x:Name="FilterGrid" AutoGenerateColumns="False" CanUserAddRows="False"
                               HorizontalScrollBarVisibility="Disabled" GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
-                              Background="{StaticResource Surface}" BorderThickness="0" Foreground="{StaticResource Ink}"
+                              Background="{DynamicResource Surface}" BorderThickness="0" Foreground="{DynamicResource Ink}"
                               ColumnHeaderStyle="{StaticResource TableHeader}" RowStyle="{StaticResource TableRow}"
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="FilterGrid">
@@ -73,8 +73,8 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{StaticResource Ink}"/>
-                                            <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{StaticResource Ink3}" Margin="10,0,0,0"/>
+                                            <TextBlock Text="{Binding Project}" FontWeight="SemiBold" Foreground="{DynamicResource Ink}"/>
+                                            <TextBlock Text="{Binding Team}" FontSize="12" Foreground="{DynamicResource Ink3}" Margin="10,0,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -88,10 +88,10 @@
                         <StackPanel HorizontalAlignment="Center">
                             <TextBlock Text="No matching projects" FontSize="15" FontWeight="Bold"
                                        LineHeight="24" LineStackingStrategy="BlockLineHeight"
-                                       Foreground="{StaticResource Ink}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource Ink}" HorizontalAlignment="Center"
                                        Margin="0,0,0,5" AutomationProperties.AutomationId="FilterEmpty"/>
                             <TextBlock Text="Try a different search or status." FontSize="14"
-                                       Foreground="{StaticResource Ink2}" HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource Ink2}" HorizontalAlignment="Center"
                                        LineHeight="22.4" LineStackingStrategy="BlockLineHeight"/>
                         </StackPanel>
                     </Border>
@@ -108,8 +108,8 @@
                    Style="{StaticResource SheetSectionDesc}" Margin="0,8,0,0" TextWrapping="Wrap"/>
         <Border Style="{StaticResource DemoCard}" Margin="0,22,0,0">
             <StackPanel>
-                <Border x:Name="BulkBar" Visibility="Collapsed" Background="{StaticResource BrandSoft}"
-                        BorderBrush="#FFECD4C8" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,16"
+                <Border x:Name="BulkBar" Visibility="Collapsed" Background="{DynamicResource BrandSoft}"
+                        BorderBrush="{DynamicResource BrandLine}" BorderThickness="1" CornerRadius="8" Padding="14,10" Margin="0,0,0,16"
                         AutomationProperties.AutomationId="BulkBar">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -117,7 +117,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock x:Name="BulkText" Text="1 row selected" FontSize="14" FontWeight="SemiBold"
-                                   Foreground="{StaticResource Brand}" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource Brand}" VerticalAlignment="Center"
                                    AutomationProperties.AutomationId="BulkText"/>
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                             <Button Content="Export" Style="{StaticResource SecondaryButtonSm}" Margin="0,0,8,0"
@@ -128,11 +128,11 @@
                     </Grid>
                 </Border>
 
-                <Border BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
+                <Border BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="12" SnapsToDevicePixels="True">
                     <Grid local:TableClip.Enabled="True">
                     <DataGrid x:Name="SelectionGrid" AutoGenerateColumns="False" CanUserAddRows="False"
                               Margin="0,0,0,-1" HorizontalScrollBarVisibility="Disabled" GridLinesVisibility="None" CanUserSortColumns="False" IsReadOnly="True"
-                              Background="{StaticResource Surface}" BorderThickness="0" Foreground="{StaticResource Ink}"
+                              Background="{DynamicResource Surface}" BorderThickness="0" Foreground="{DynamicResource Ink}"
                               ColumnHeaderStyle="{StaticResource TableHeader}" RowStyle="{StaticResource TableRow}"
                               CellStyle="{StaticResource TableCell}"
                               AutomationProperties.AutomationId="SelectionGrid">
@@ -160,7 +160,7 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Budget}" FontFamily="{StaticResource Sans}" FontSize="14"
-                                                   Foreground="{StaticResource Ink}" HorizontalAlignment="Left"
+                                                   Foreground="{DynamicResource Ink}" HorizontalAlignment="Left"
                                                    VerticalAlignment="Center"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

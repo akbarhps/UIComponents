@@ -29,7 +29,8 @@ Read `plan/wpf/README.md` (rules every worker follows) and the task files before
 | 07 overlays, pickers, toasts (incl. file input) | `overlays`, `pickers`, `toasts` | DONE, committed (bebf113 or earlier) | — |
 | web bug fixes (`web/index.html`, A1-A12, B1, C1-C9) | `web` | DONE, committed f4c5faa | — |
 | 08 partial tests (split `UIAutomationTests.cs`, in-process driver, csproj wildcards) | `reviewer` | DONE, committed (bebf113 or earlier) | — |
-| rest (anything not in 01-08) | — | not planned | group into similar sets, one task file each |
+| 09 dark mode (light/dark/system theming, `ThemeManager`, DynamicResource sweep, parity with web ba418c1) | `theme` | DONE, not committed (Phases 0-5; Q1-Q4 = plan defaults) | Final `reviewer` pass (once). Manual on a visible desktop: title bar dark; System follows a live Windows theme switch; reload keeps the stored choice. Gaps (accepted, see `wpf/COMPONENTS.md` "Theme"): Aero2 scrollbars light in dark, default dashed focus visuals invisible on dark, ComboBox popups / action menu / FileInput-with-files / Shimmer not visually verified in dark |
+| rest (anything not in 01-09) | — | not planned | group into similar sets, one task file each |
 
 Dependencies:
 - All satisfied.
@@ -87,6 +88,10 @@ Compare-Object (Names base1.log) (Names new.log)   # empty = same checks; flaky 
 # WPF capture, hidden: Id or x:Name; !Click chains; @Focus. Several captures = ONE comma-joined string
 pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer -NoTests -Section "Grid input" -Capture "InputGrid!InputGrid_row1=$env:TEMP\rv\sel.png"
 pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer -NoTests -Section "Data table" -Capture "Sections=$env:TEMP\rv\dt.png"
+# dark capture: -Theme is explicit (default light; "none" = real stored choice, persistence check only)
+pwsh -NoProfile -File wpf/tests/run-hidden.ps1 -Agent reviewer -NoTests -Theme dark -Section "Data table" -Capture "Sections=$env:TEMP\rv\dt-dark.png"
+# theme lint (all checks; must print RESULT theme-lint failed=0)
+node plan/wpf/theme-lint.mjs
 
 # web reference: sections by id, optional -Js run after load (click, focus…)
 pwsh -NoProfile -File plan/wpf/capture-web.ps1 -Sections data-table -Out plan/wpf/ref/web-table-data-table.png
@@ -145,6 +150,10 @@ Report: files changed, build/test summary, capture paths + diffs, deviations, bl
 - **Shared styles:** `SheetSectionDesc` (15/24 section description) and `DemoCard` (radius 16, no shadow) in `Themes/Sheet.xaml` are the shared section shell for all tasks.
 - **Serif token:** `Palatino Linotype, Book Antiqua, Georgia, Times New Roman, serif`.
 - **Workers never commit.** The user commits at stable points. (`eba14b6` swept other agents' files in with `git add -A`. Don't let that happen again.)
+- **Dark mode: overlay dictionary.** `Themes/Tokens.Dark.xaml` has the same colour key set as `Tokens.xaml`. `ThemeManager` merges it last to switch and removes it for light. Light values never change, so light mode keeps the same resource graph.
+- **Dark mode: rejected approaches (do not retry).** Mutating `SolidColorBrush.Color` in place (style and template sealing freezes the setter brushes, so it throws). Reloading dictionaries or recreating windows (loses state; the web keeps state). `DynamicResource` inside a Freezable property (effects swap as whole keyed objects instead).
+- **Dark mode: persistence (Q1).** `HKCU\Software\UIComponents.Wpf`, value `ui-theme`; absent = System. `StorageKey` can take a consumer subkey or `null`. The `UI_THEME` env override never reads or writes storage, so tests cannot persist a choice.
+- **Dark mode: accepted gaps (Q2/Q3).** Scrollbars, default focus visuals, ComboBox popups, action menu, FileInput-with-files and Shimmer. Full list in `wpf/COMPONENTS.md` "Theme". Restyling them is a follow-up task: the scrollbar fix also changes light.
 
 ## Tests: split layout, driver, open items (task 08)
 
