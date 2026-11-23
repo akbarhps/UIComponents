@@ -1,6 +1,6 @@
 # Web snippets
 
-usage = link `dist/ui.css` in `<head>` (path relative to your page), `dist/ui.js` at END of `<body>`, never copy CSS/JS, never read index.html whole (grep -n, then read ranges), ids below are neutral and not wired by ui.js (except `#toastStack`, which ui.js requires). Never reuse index.html ids (sheet, overlay, filterTable, ...): ui.js wires those by name.
+usage = link `dist/ui.css` in `<head>` (path relative to your page), `dist/ui.js` at END of `<body>`, `dist/theme.js` as a plain `<script src>` in `<head>` (blocking, before content) only if the page offers a manual theme toggle; without it the page follows the OS theme, never copy CSS/JS, never read index.html whole (grep -n, then read ranges), ids below are neutral and not wired by ui.js (except `#toastStack`, which ui.js requires). Never reuse index.html ids (sheet, overlay, filterTable, ...): ui.js wires those by name.
 icons: ui.js injects the sprite; use <svg><use href="#i-name"/></svg>; never inline <symbol>s
 icon ids: spark grid button form card modal badge alert more check close search arrow info table filter panel chevron pin calendar clock upload file edit copy download trash plus
 Markup is copied from index.html: whitespace condensed, repeated rows and options trimmed, showcase ids renamed to neutral ones; otherwise unchanged. Class hooks that ui.js requires are never trimmed. Section names match the Quick picker in COMPONENTS.md.
@@ -485,3 +485,9 @@ when: Run a command by search
 </div>
 ```
 init: NOT auto. Call once after load (one palette per page): `const palette = createCommandPalette(document.getElementById('myPalette'), [{ group: 'Actions', label: 'Export workspace', icon: 'i-download', shortcut: '', run: () => exportWorkspace() }]);`. Ctrl/Cmd+K opens it (ignored while another overlay is open); `icon` is an id from the icon list above. Optional: `document.getElementById('openPalette').addEventListener('click', palette.open)`.
+
+### Theme toggle
+```html
+<div class="segment" data-theme-toggle role="group" aria-label="Colour theme"><button type="button" data-theme-value="system">System</button><button type="button" data-theme-value="light">Light</button><button type="button" data-theme-value="dark">Dark</button></div>
+```
+init: auto (ui.js). Programmatic: `setTheme('light'|'dark'|'system')`. Requires dist/theme.js in <head> to avoid a flash on reload.

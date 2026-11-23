@@ -6,9 +6,9 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 ## How the library is put together
 
-- All colours, radii, shadows and fonts are CSS custom properties in `:root`. Change a token there, not individual rules.
+- All colours, radii, shadows and fonts are CSS custom properties in `:root`. Colour tokens are `light-dark(light, dark)` pairs. Change a token there, not individual rules. Never hard-code a colour: `--check` fails on literals outside `:root`.
 - Components are scoped classes (`.btn`, `.input`, `.card`, `.modal`, `.picker`, …). Link `web/dist/ui.css` and `web/dist/ui.js` (generated; never copy them) and take each component's markup from `SNIPPETS.md`.
-- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.table-wrap` pagination). Anything added to the DOM **after** that script runs must be initialised with one of the exported functions (`openOverlay`, `closeOverlay`, `setFieldError`, `showToast`, `createGrid`, `bindSimpleFilters`, `bindColumnFilters`, `bindRowSelection`, `bindSortable`, `createCommandPalette`) or re-initialised manually. Everything else auto-inits by class at load.
+- The `<script>` sits at the end of `<body>` and auto-initialises components by class (`.combo`, `.multi`, `.picker`, `.accordion`, `.file-input`, `.tag-input-wrap`, `.ac`, `.menu`, `.overlay`, `.table-wrap` pagination). Anything added to the DOM **after** that script runs must be initialised with one of the exported functions (`openOverlay`, `closeOverlay`, `setFieldError`, `showToast`, `createGrid`, `bindSimpleFilters`, `bindColumnFilters`, `bindRowSelection`, `bindSortable`, `createCommandPalette`, `setTheme`) or re-initialised manually. Everything else auto-inits by class at load.
 - IDs in the demo (`#sheet`, `#filterTable`, `#sortTable`, `#modal`, …) exist for the showcase. In your app, keep the class hooks and change the IDs — but update any JS that references them.
 - **`index.html` is the reference implementation.** For exact markup, class names and CSS, copy from the matching section there. This doc explains the decisions and wiring; the HTML is the working example.
 
@@ -48,6 +48,7 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 | Select several rows and act on them | Row selection table | Data table |
 | Sort and pin columns | Sortable table | Data table |
 | Run a command by search | Command palette | Action menu |
+| Let the user pick light/dark/system | Theme toggle | A custom switch |
 
 ---
 
@@ -87,6 +88,13 @@ This library lives in **one file**: `web/index.html`. HTML, CSS and JavaScript a
 
 - **Use for:** primary app navigation.
 - **Wire:** `.app` is the grid; toggling `.app--collapsed` switches to the 72px icon rail. `#sidebarToggle` (page icon beside the title) and `#brandToggle` (the brand spark icon, used to expand) both call `setCollapsed()`. Links live inside `.nav-group` blocks; each `.nav-label` is a group heading. `navLinks.forEach` copies link text into `data-tip` and sets `aria-label`.
+
+### Theme — light / dark
+
+- **Use for:** pages that offer a manual light / dark / system choice. Without a toggle, the page follows the OS theme by itself.
+- **Wire:** the theme is the `data-theme="light|dark"` attribute on `<html>`; no attribute means system. The stored choice lives under the localStorage key `ui-theme`. Link `dist/theme.js` in `<head>` (blocking, before content) when there is a toggle: it applies the stored choice before first paint, so a reload does not flash. Markup is in `### Theme toggle` (SNIPPETS.md). Programmatic: `setTheme('light'|'dark'|'system')`.
+- **Colour:** each theme sets `color-scheme`, so native controls (select, date inputs, scrollbars, `accent-color`) follow the theme. Text on filled backgrounds uses `--on-brand` (on `--brand`) or `--on-ink` (on `--ink`). To force a subtree to one theme, set `style="color-scheme:dark"` on its root; this works because `light-dark()` resolves per element.
+- **Tokens:** `--on-brand`, `--on-ink`, `--ink-hover`, `--on-danger`, `--danger-hover`, `--brand-line`, `--brand-soft-hover`, `--success-line`, `--info-line`, `--danger-line`, `--sage-soft`, `--sage-line`, `--wash`, `--wash-strong`, `--scrim`, `--shimmer`, `--focus-ring`, `--knob`, `--knob-shadow`.
 
 ---
 
