@@ -18,6 +18,8 @@ namespace UIComponents.Wpf
         private static ThemeMode _mode = ThemeMode.System;
         private static bool _isDark;
         private static bool _initialized;
+        private static bool _everDark;                  // dark title bar has been set on some window
+        private static bool _applied;                  // Apply has run at least once (_isDark is valid)
         private static bool _override;                  // env UI_THEME active: never read or write storage
         private static ResourceDictionary _dark;        // loaded once, cached
 
@@ -28,6 +30,9 @@ namespace UIComponents.Wpf
 
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int value, int size);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hwnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
 
         // Call once in App.OnStartup BEFORE any window is created; idempotent.
         public static void Initialize()
@@ -50,7 +55,11 @@ namespace UIComponents.Wpf
                       : ThemeMode.System;
             }
 
-            Apply();
+            // Load Tokens.Dark.xaml now, in every mode and OS theme: a missing file fails here at startup, not on the
+            // first dark switch (which in System mode would only happen on machines where the OS is dark).
+            if (Application.Current != null) LoadDark(Application.Current.Resources);
+
+            Apply(true);
 
             SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
             Application.Current.Exit += delegate { SystemEvents.UserPreferenceChanged -= OnUserPreferenceChanged; };
@@ -62,7 +71,7 @@ namespace UIComponents.Wpf
         public static void SetTheme(ThemeMode mode)
         {
             _mode = mode;
-            Apply();
+            Apply(true);
             if (!_override) WriteStored(mode);
         }
 
@@ -81,7 +90,7 @@ namespace UIComponents.Wpf
             // Raised on a SystemEvents thread: hop to the UI thread.
             if (e.Category != UserPreferenceCategory.General || _mode != ThemeMode.System) return;
             Application app = Application.Current;
-            if (app != null) app.Dispatcher.BeginInvoke(new Action(Apply));
+            if (app != null) app.Dispatcher.BeginInvoke(new Action(delegate { Apply(false); }));
         }
 
         private static bool SystemIsDark()
@@ -132,23 +141,32 @@ namespace UIComponents.Wpf
                 string src = d.Source == null ? null : d.Source.OriginalString;
                 if (src != null && src.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
                 {
-                    string sibling = src.Substring(0, src.Length - suffix.Length) + "Tokens.Dark.xaml";
-                    _dark = new ResourceDictionary { Source = new Uri(sibling, UriKind.RelativeOrAbsolute) };
+                    // Absolute sibling URI, resolved against the XAML that declared Tokens.xaml (IUriContext.BaseUri), not the
+                    // application root: a relative string would break a consumer whose App.xaml or Themes live in a subfolder.
+                    Uri baseUri = ((System.Windows.Markup.IUriContext)d).BaseUri ?? new Uri("pack://application:,,,/");
+                    Uri tokens = d.Source.IsAbsoluteUri ? d.Source : new Uri(baseUri, d.Source);
+                    _dark = new ResourceDictionary { Source = new Uri(tokens, "Tokens.Dark.xaml") };
                     return _dark;
                 }
             }
             throw new InvalidOperationException("ThemeManager: merge Themes/Tokens.xaml into Application.Resources first");
         }
 
-        private static void Apply()
+        // force = startup / SetTheme (always raises ThemeChanged: Mode may have changed). A System-driven call
+        // (force false; Windows raises General preference changes often) is a no-op when the resolved theme is unchanged.
+        private static void Apply(bool force)
         {
             Application app = Application.Current;
             if (app == null) return;
             bool dark = _mode == ThemeMode.Dark || (_mode == ThemeMode.System && SystemIsDark());
+            if (!force && _applied && dark == _isDark) return;
             ResourceDictionary res = app.Resources;
-            if (_dark != null && res.MergedDictionaries.Contains(_dark)) res.MergedDictionaries.Remove(_dark);
-            if (dark) res.MergedDictionaries.Add(LoadDark(res));   // last = highest precedence
+            bool has = _dark != null && res.MergedDictionaries.Contains(_dark);
+            // Touch the dictionary only when membership changes: every add/remove invalidates every DynamicResource.
+            if (dark && !has) res.MergedDictionaries.Add(LoadDark(res));   // last = highest precedence
+            else if (!dark && has) res.MergedDictionaries.Remove(_dark);
             _isDark = dark;
+            _applied = true;
             foreach (Window w in app.Windows) ApplyTitleBar(w, dark);
             EventHandler handler = ThemeChanged;
             if (handler != null) handler(null, EventArgs.Empty);
@@ -163,6 +181,11 @@ namespace UIComponents.Wpf
             try
             {
                 if (DwmSetWindowAttribute(hwnd, 20, ref on, 4) != 0) DwmSetWindowAttribute(hwnd, 19, ref on, 4);
+                // Force a non-client repaint: DWM may not redraw the caption until the next activation or resize.
+                // SWP_NOSIZE | NOMOVE | NOZORDER | NOACTIVATE | FRAMECHANGED. Skipped until dark has ever been used,
+                // so a light-only session never touches the frame (the caption is already light).
+                if (dark) _everDark = true;
+                if (_everDark) SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, 0x0001 | 0x0002 | 0x0004 | 0x0010 | 0x0020);
             }
             catch (Exception) { }   // older Windows / no dwmapi: silent no-op
         }

@@ -105,3 +105,7 @@ Known dark-mode gaps (accepted for task 09, not fixed):
 4. Legacy `ClaudeInput` stays light by rule (no restyle).
 5. `-Theme system` was exercised on the dark branch only.
 6. Fractional-pixel lines (stepper dividers, tabs underline, card bottom edges) straddle two pixel rows in both themes. Pre-existing layout, not theming.
+
+Intentional light-mode changes made by task 09 (the only ones; everything else is byte-identical, aside from the accepted File-input.png and Buttons.png 7px deltas):
+1. Caret: every `TextBox` style except legacy `ClaudeInput` (`FieldInput` and its Search/Error variants, `FieldTextArea`, `TableFilterInput`, `DropdownSearch`, `BareInput`, `CmdkInput`, `SheetTextCell`) sets `CaretBrush="{DynamicResource Brand}"`. The web has `*{ caret-color: var(--brand) }` (`web/index.html:74`). The WPF default is an inverted-background caret (black in light, near-white in dark). The caret blinks, so static captures do not show it.
+2. File-input title ("Drop a file here"): was black, now `Ink` (`#26241F`), like the web `.file-drop strong`.

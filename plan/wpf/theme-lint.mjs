@@ -176,7 +176,8 @@ const checks = {
     run() {
       const pats = [
         /Brushes\.(?!Transparent\b)\w+/,
-        /Color\.FromA?Rgb/,
+        /Color\.From(Argb|Rgb|ScRgb)/,
+        /\bColors\.(?!Transparent\b)\w+/,
         /ColorConverter/,
         /\(Brush\)\s*(Res|FindResource|TryFindResource|res\[)/,
         /\b(Res|FindResource|TryFindResource)\([^)]*\)\s*as\s+Brush/,
@@ -189,6 +190,23 @@ const checks = {
           if (pats.some((p) => p.test(line))) v.push(`${rel(f)}:${i + 1} ${line.trim().slice(0, 100)}`);
         });
       }
+      return v;
+    },
+  },
+  C6: {
+    name: 'thememanager',   // ThemeManager contract: eager absolute dark load; no remove/re-add or event when the theme is unchanged
+    run() {
+      const text = read(path.join(root, 'wpf/ThemeManager.cs')).replace(/\r\n/g, '\n');
+      const body = (re) => { const m = re.exec(text); return m ? text.slice(m.index, text.indexOf('\n        }\n', m.index)) : ''; };
+      const init = body(/public static void Initialize\(\)/);
+      const load = body(/private static ResourceDictionary LoadDark\(/);
+      const apply = body(/private static void Apply\(bool force\)/);
+      const v = [];
+      if (!/LoadDark\(/.test(init)) v.push('ThemeManager.Initialize must call LoadDark eagerly (missing Tokens.Dark.xaml must fail at startup in every mode)');
+      if (!/IsAbsoluteUri/.test(load) || !/IUriContext/.test(load)) v.push('ThemeManager.LoadDark must build an absolute sibling URI against the declaring dictionary (IUriContext.BaseUri)');
+      if (!/if \(!force && _applied && dark == _isDark\) return;/.test(apply)) v.push('ThemeManager.Apply must return early when a System-driven apply leaves the resolved theme unchanged');
+      if (!/dark && !has/.test(apply) || !/!dark && has/.test(apply)) v.push('ThemeManager.Apply must change the dictionary only when membership changes (dark && !has / !dark && has)');
+      if (!/Apply\(false\)/.test(text)) v.push('ThemeManager.OnUserPreferenceChanged must call Apply(false)');
       return v;
     },
   },

@@ -50,6 +50,7 @@ elseif ((Get-Item $tests).LastWriteTime -lt (Get-ChildItem (Join-Path $root "wpf
 if (-not (Test-Path $exe)) { throw "missing $exe - run wpf\build.bat $Agent first" }
 # App theme (ThemeManager reads UI_THEME and then never touches the stored choice): captures and tests never depend on the OS theme.
 # 'none' = leave unset (only for the persistence check, it uses the real registry value).
+$prevTheme = $env:UI_THEME   # restored in finally (only matters when dot-sourced or called with &)
 if ($Theme -ne 'none') { $env:UI_THEME = $Theme } else { Remove-Item Env:UI_THEME -ErrorAction SilentlyContinue }
 $env:UITEST_DRIVE = '1'   # app installs the in-process test driver (App.xaml.cs DriverHook); tests fall back to UIA if absent
 $deskName = "uitest-$Agent"
@@ -114,5 +115,5 @@ try {
         }
     }
 }
-finally { [void][HiddenDesktop]::CloseDesktop($desk); Remove-Item Env:UITEST_DRIVE -ErrorAction SilentlyContinue; Remove-Item Env:UI_THEME -ErrorAction SilentlyContinue }
+finally { [void][HiddenDesktop]::CloseDesktop($desk); Remove-Item Env:UITEST_DRIVE -ErrorAction SilentlyContinue; if ($null -ne $prevTheme) { $env:UI_THEME = $prevTheme } else { Remove-Item Env:UI_THEME -ErrorAction SilentlyContinue } }
 exit $exit

@@ -46,7 +46,10 @@ namespace UIComponents.Wpf
 
         private static Color BandColor()
         {
-            return ((SolidColorBrush)Application.Current.FindResource("Shimmer")).Color;   // theme-lint: allow
+            // No Application (designer, WinForms host) or no Shimmer key in the consumer's tokens: fall back to the light value.
+            Application app = Application.Current;
+            SolidColorBrush token = app == null ? null : app.TryFindResource("Shimmer") as SolidColorBrush;   // theme-lint: allow
+            return token != null ? token.Color : Color.FromArgb(0xA6, 0xFF, 0xFF, 0xFF);   // theme-lint: allow
         }
 
         private static LinearGradientBrush CreateBrush()
@@ -54,9 +57,9 @@ namespace UIComponents.Wpf
             LinearGradientBrush brush = new LinearGradientBrush();
             brush.StartPoint = new Point(0, 0);
             brush.EndPoint = new Point(1, 0);
-            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 0));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 0));   // theme-lint: allow (transparent end)
             brush.GradientStops.Add(new GradientStop(BandColor(), 0.5));
-            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 1));
+            brush.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, 0xFF, 0xFF, 0xFF), 1));   // theme-lint: allow (transparent end)
             brush.RelativeTransform = new TranslateTransform();
             return brush;
         }
